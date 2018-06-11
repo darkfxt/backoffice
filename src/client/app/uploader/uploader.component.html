@@ -1,0 +1,14 @@
+<div class="uploader-ctn" [formGroup]="group">
+  <input type="file" #fileInput (change)="onFileSelected($event)" name="files" multiple style="display: none">
+  <div *ngIf="mode == 'DRAG_DROP'" class="dd-container" (drop)="onDrag($event)" (dragenter)="onDrag($event)" (dragleave)="onDrag($event)"  (dragover)="onDrag($event)">
+    <mat-icon class="upload-icon" color="primary">cloud_upload</mat-icon>
+    <div class="instruction-content">
+      <p>Drag and Drop files here</p>
+      <p>or</p>
+      <button type="button" mat-raised-button color="accent" (click)="fileInput.click()" >Browse file</button>
+    </div>
+  </div>
+  <div *ngIf="mode == 'BOX'" class="add-more" (click)="fileInput.click()">
+    <span>+</span>
+  </div>
+</div>

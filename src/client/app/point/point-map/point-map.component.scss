@@ -1,0 +1,16 @@
+
+.location-desc{
+  mat-form-field{
+    width: 100%;
+  }
+}
+
+.map-container{
+  mat-form-field{
+    width: 50%;
+
+    @media screen and (max-device-width: 736px) {
+      width: 100%;
+    }
+  }
+}
