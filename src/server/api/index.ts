@@ -3,7 +3,7 @@ import {createConnection} from 'typeorm';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as httpStatus from 'http-status';
-import PlaceRouter from './place/place.route';
+import PlaceRouter from './routers/place.route';
 import {fourOFour} from '../middlewares/404-middleware';
 import {server} from '../server';
 

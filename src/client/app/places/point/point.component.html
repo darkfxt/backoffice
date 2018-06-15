@@ -1,0 +1,29 @@
+
+<div class="top-header">
+  <div class="app-container">
+    <h1>Nuevo punto</h1>
+  </div>
+</div>
+<div class="app-container full-size">
+  <form [formGroup]="placeForm" #formDir="ngForm" class="box-container" (ngSubmit)="onSubmit()" novalidate>
+    <div class="save-button">
+      <button mat-fab>
+        <mat-icon aria-label="Save and exit">save</mat-icon>
+      </button>
+      <span class="save-exit-label">Save and close</span>
+    </div>
+    <div class="row">
+      <app-point-head class="col-sm-4 col-xs-12" [headGroup]="placeForm" (optionSelected)="onOptionSelected($event)"></app-point-head>
+
+      <app-point-map class="col-sm-8 col-xs-12" [mapGroup]="placeForm"></app-point-map>
+    </div>
+
+    <div class="row gallery-container">
+      <div class="col-xs-12">
+        <h3>Gallery</h3>
+        <app-gallery [form]="placeForm"></app-gallery>
+      </div>
+    </div>
+  </form>
+</div>
+

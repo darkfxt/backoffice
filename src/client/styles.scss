@@ -78,3 +78,30 @@ ul{
     color: $secondary-color;
   }
 }
+
+.save-button{
+  position: absolute;
+  right: 16px;
+  top: -106px;
+  text-align: center;
+
+  .save-exit-label{
+    display: block;
+    margin-top: 8px;
+    font-weight: 300;
+    color: #666;
+  }
+}
+
+.top-header{
+  background: $primary-color;
+  height: 80px;
+
+  h1{
+    margin: 28px 0 0;
+    font-size: 24px;
+    font-weight: 400;
+    color: white;
+    float: left;
+  }
+}

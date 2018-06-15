@@ -17,5 +17,8 @@ export const config = {
       'apiVersion': '2006-03-01'
     }
   },
-  googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg'
+  googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
+  geo: {
+    url: 'http://localhost:3000'
+  }
 };

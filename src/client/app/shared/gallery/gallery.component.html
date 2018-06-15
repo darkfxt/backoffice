@@ -1,0 +1,23 @@
+
+<app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="previewImages.length == 0"></app-uploader>
+<div class="preview-content" *ngIf="previewImages.length > 0">
+  <ul>
+    <li>
+      <app-uploader (filesLoaded)="onFilesLoaded($event)" mode="BOX" [group]="form" *ngIf="previewImages.length > 0"></app-uploader>
+    </li>
+    <li *ngFor="let image of previewImages; let i = index;">
+      <div class="close">
+        <mat-icon [matMenuTriggerFor]="menu" color="accent">more_vert</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <span>Set as default</span>
+          </button>
+          <button mat-menu-item (click)="deleteItem('preview',i)">
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="image" [style.background-image]="'url('+image.preview+')'"></div>
+    </li>
+  </ul>
+</div>
