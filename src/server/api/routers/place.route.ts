@@ -26,6 +26,9 @@ const upload = multer({
 PlaceRouter.route('/autocomplete')
   .get(PlaceController.autocomplete);
 
+PlaceRouter.route('/search')
+  .get(PlaceController.search);
+
 PlaceRouter.route('/:place_id')
   .get(PlaceController.getDetail);
 

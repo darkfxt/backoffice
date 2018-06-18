@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PlaceService} from '../place.service';
+import {PlaceService} from '../../shared/services/place.service';
 
 @Component({
   selector: 'app-point',
@@ -54,6 +54,7 @@ export class PointComponent implements OnInit {
     formData.append('type', place.type);
     formData.append('description', place.description);
     formData.append('geo', JSON.stringify(place.geo));
+    formData.append('place_id', place.place_id);
     const files = place.files;
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {

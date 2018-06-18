@@ -25,10 +25,17 @@ export class PlaceService {
       );
   }
 
+  search (query: string): Observable<any>{
+    return this.http.get(`/api/places/search/?${query}&lang=es`)
+      .pipe(
+        catchError(this.handleError('search', []))
+      );
+  }
+
   getDetail (place_id: string): Observable<any>{
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(
-        catchError(this.handleError('autocomplete'))
+        catchError(this.handleError('getDetail', []))
       );
   }
 

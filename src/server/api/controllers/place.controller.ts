@@ -21,6 +21,24 @@ export class PlaceController {
     }
   }
 
+  public static async search(request: Request, response: Response, next: NextFunction) {
+    try {
+      const query: string[] = [];
+      Object.entries(request.query).forEach(
+        ([key, value]) => {
+          if(key !== 'lang')
+            query.push(`${key}=${value}`);
+        }
+      );
+      const resp = await PlaceService.search(decodeURI(query.join('&')), request.query.lang);
+      if(resp.data.length === 0)
+        return response.sendStatus(404);
+      response.json(resp.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
       const data = await PlaceService.getDetail(request.params.place_id, request.query.lang);

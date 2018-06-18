@@ -1,34 +1,58 @@
 <div [formGroup]="routeGroup">
-  <h3>Gallery</h3>
+  <h3>Route Points</h3>
   <div class="row">
-    <div class="col-sm-4">
-      <div>
+    <div class="col-sm-4 points-content">
+
+      <div class="markers-content">
+        <mat-icon>radio_button_unchecked</mat-icon>
+        <div class="sep"></div>
+        <div *ngFor="let point of middlePoints; let i=index" style="display: flex; flex-direction: column; align-items: center;">
+          <mat-icon>radio_button_unchecked</mat-icon>
+          <div class="sep"></div>
+        </div>
+        <mat-icon class="add-point-circle">add_circle_outline</mat-icon>
+        <div class="sep"></div>
+        <mat-icon>radio_button_checked</mat-icon>
+      </div>
+
+      <div class="inputs-content">
         <mat-form-field color="accent" floatLabel="never">
-          <input type="text" matInput placeholder="Elije un origen" required [matAutocomplete]="autoGroupO" name="origin" formControlName="origin"/>
-          <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of originOptions " [value]="option">{{option.name}}</mat-option>
+          <input type="text" matInput placeholder="Elije un origen"
+                 required [matAutocomplete]="autoGroupO" name="origin"
+                 formControlName="origin" (keyup)="search($event)"
+          />
+          <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 0)">
+            <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
         </mat-form-field>
-      </div>
-      <div *ngFor="let point of middlePoints.controls; let i=index" class="middle-point">
+
+        <div *ngFor="let point of middlePoints; let i=index" class="middle-point">
+          <mat-form-field color="accent" floatLabel="never">
+            <input type="text" matInput placeholder="Elije un punto"
+                   [matAutocomplete]="autoGroup" required name="middle_points"
+                   [id]="'input-'+i" (keyup)="search($event)"
+            />
+            <mat-icon class="delete-point" matSuffix (click)="deletePoint($event, i)">close</mat-icon>
+            <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setMiddlePoint($event, i)">
+              <mat-option *ngFor="let option of options " [value]="option">{{option.name}}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div (click)="addPoint()" class="add-point">
+          <span>Añadir punto</span>
+        </div>
+
         <mat-form-field color="accent" floatLabel="never">
-          <input type="text" matInput placeholder="Elije un punto" [matAutocomplete]="autoGroup" name="middle_points" [id]="'input-'+i" #input/>
-          <mat-icon matSuffix (click)="deletePoint($event, i)">cancel</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setMiddlePoint($event, i, input)">
-            <mat-option *ngFor="let option of middlePointsOptions " [value]="option">{{option.name}}</mat-option>
+          <input type="text" matInput placeholder="Elije un destino" required
+                 [matAutocomplete]="autoGroupD" name="destination"
+                 formControlName="destination" (keyup)="search($event)"
+          />
+          <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, middlePoints.length +1)">
+            <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
         </mat-form-field>
-      </div>
-      <div (click)="addPoint()" class="add-point">
-        <span>Añadir punto</span>
-      </div>
-      <div>
-        <mat-form-field color="accent" floatLabel="never">
-          <input type="text" matInput placeholder="Elije un destino" required [matAutocomplete]="autoGroupD" name="destination" formControlName="destination"/>
-          <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of destinationOptions " [value]="option">{{option.name}}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+
       </div>
     </div>
     <div class="col-sm-8">

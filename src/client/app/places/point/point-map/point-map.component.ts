@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {} from '@types/googlemaps';
-import {PlaceStore} from '../../place-store.services';
+import {PlaceStore} from '../../../shared/services/place-store.services';
 
 @Component({
   selector: 'app-point-map',

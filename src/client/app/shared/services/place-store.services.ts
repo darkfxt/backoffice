@@ -14,7 +14,8 @@ export class PlaceStore {
     },
     label: '',
     formatted_address: '',
-    place_id: ''
+    place_id: '',
+    id: ''
   });
 
   constructor() {}

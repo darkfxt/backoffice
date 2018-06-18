@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {PlaceService} from '../../place.service';
+import {PlaceService} from '../../../shared/services/place.service';
 import {Observable} from 'rxjs';
-import {PlaceStore} from '../../place-store.services';
+import {PlaceStore} from '../../../shared/services/place-store.services';
 
 
 @Component({

@@ -30,4 +30,8 @@ export class PlaceService {
       );
   }
 
+  public static async search(query, lang: string = 'en'): Promise<any> {
+    return axios.get(`${config.geo.url}/places/search?${query}`);
+  }
+
 }
