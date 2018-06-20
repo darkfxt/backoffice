@@ -4,10 +4,14 @@ import {MatIconModule} from '@angular/material';
 import {PlacesModule} from './places/places.module';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginRoutingModule} from './login/login-routing.module';
 import {RoutesModule} from './routes/routes.module';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // Components
 import {AppComponent} from './app.component';
@@ -17,6 +21,13 @@ import {LoginComponent} from './login/login.component';
 
 // Config
 import {environment} from '../environments/environment';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
+// Register new locales
+registerLocaleData(localeEs, 'es');
 
 
 @NgModule({
@@ -35,7 +46,14 @@ import {environment} from '../environments/environment';
     RoutesModule,
     LoginRoutingModule,
     AppRoutingModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -30,12 +30,7 @@ export class PointHeadComponent implements OnInit {
   onOptionSelected(e) {
     this.placeForm.patchValue({name: e.option.value.name.split(',')[0]});
     this.placeService.getDetail(e.option.value.place_id).subscribe(resp => {
-      this.placeStore.setLocation({
-        label: resp.name,
-        formatted_address: resp.formatted_address,
-        point: resp.location,
-        place_id: resp.place_id
-      });
+      this.placeStore.setLocation(resp);
     });
   }
 

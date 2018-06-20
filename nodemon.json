@@ -9,7 +9,8 @@
     "NODE_ENV": "local"
   },
   "ext": "js json",
+  "debug": true,
   "args": [
-    "--debug=5001"
+    "--inspect=5858"
   ]
 }

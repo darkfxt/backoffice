@@ -24,18 +24,29 @@ export class PointComponent implements OnInit {
       description: ['', Validators.required],
       geo: this.fb.group({
         label: ['', Validators.required],
-        location: '',
-        address: ['', Validators.required]
+        point: '',
+        address: this.fb.group({
+          country_code: '',
+          country: '',
+          locality: '',
+          region: '',
+          postalCode: '',
+          route: '',
+          street_number: '',
+          formatted_address: ''
+        })
       }),
       place_id: '',
-      files: null
+      files: null,
+      status: '1'
     });
   }
 
   // Form control
   onSubmit() {
     console.log(this.placeForm.value);
-    if (this.placeForm.valid) {
+
+    if(this.placeForm.valid) {
       const formData = this.prepareToSave(this.placeForm.value);
       this.placeService.addPlace(formData).subscribe((resp) => {
         console.log(resp);
@@ -50,15 +61,11 @@ export class PointComponent implements OnInit {
 
   private prepareToSave(place): FormData {
     const formData = new FormData();
-    formData.append('name', place.name);
-    formData.append('type', place.type);
-    formData.append('description', place.description);
-    formData.append('geo', JSON.stringify(place.geo));
-    formData.append('place_id', place.place_id);
-    const files = place.files;
-    if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        formData.append('files[]', files[i], files[i].name);
+    formData.append('data', JSON.stringify(place));
+    const images = place.files;
+    if (images && images.length > 0) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('files[]', images[i], images[i].name);
       }
     }
     return formData;

@@ -6,6 +6,7 @@ import {RouteComponent} from './route/route.component';
 import {MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouteMapComponent} from './route/route-map/route-map.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {RouteMapComponent} from './route/route-map/route-map.component';
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    TranslateModule
   ],
   declarations: [
     RoutesComponent,

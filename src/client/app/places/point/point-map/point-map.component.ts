@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {} from '@types/googlemaps';
 import {PlaceStore} from '../../../shared/services/place-store.services';
+import {AddressComponent} from '../../../../../server/api/entity/GooglePlace';
 
 @Component({
   selector: 'app-point-map',
@@ -46,18 +47,18 @@ export class PointMapComponent implements OnInit {
     this.map.addListener('dragend', () => {
       this.geocoder.geocode({
         location: this.map.getCenter()
-      }, resp => {
+      }, (resp: any) => {
         if (resp && resp.length > 0) {
+          resp[0].geo = this.getAddress(resp[0]);
           this.updateForm(resp[0]);
         }
       });
     });
 
     this.placeStore.getLocation().subscribe(location => {
-      if (location.point.lat === 0 && location.point.lng === 0)
+      if (location.geo.point.lat === 0 && location.geo.point.lng === 0)
         return false;
-      const coords = new google.maps.LatLng(location.point.lat, location.point.lng);
-      this.map.setCenter(coords);
+      this.map.setCenter(location.geo.point);
       this.updateForm(location);
     });
   }
@@ -72,8 +73,9 @@ export class PointMapComponent implements OnInit {
     this.map.setCenter(coords);
     this.geocoder.geocode({
       location: this.map.getCenter()
-    }, resp => {
+    }, (resp: any) => {
       if (resp && resp.length > 0) {
+        resp[0].geo = this.getAddress(resp[0]);
         this.updateForm(resp[0]);
       }
     });
@@ -84,29 +86,51 @@ export class PointMapComponent implements OnInit {
     if (event.code !== 'Enter')
       return false;
 
-    const address = this.placeForm.get('geo').value.address;
+    const address = this.placeForm.get('geo').value.address.formatted_address;
 
     this.geocoder.geocode({
       address: address
-    }, resp => {
+    }, (resp: any) => {
       if (resp && resp.length > 0) {
         this.map.setCenter(resp[0].geometry.location);
+        resp[0].geo = this.getAddress(resp[0]);
         this.updateForm(resp[0]);
       }
     });
   }
+
+  private getAddress(resp){
+    return {address:
+      {
+        country_code: getAddressName(resp.address_components, 'country', 'short_name'),
+        country: getAddressName(resp.address_components, 'country'),
+        locality: getAddressName(resp.address_components, 'locality'),
+        region: getAddressName(resp.address_components, 'administrative_area_level_1'),
+        postalCode: getAddressName(resp.address_components, 'postal_code'),
+        route: getAddressName(resp.address_components, 'route'),
+        street_number: getAddressName(resp.address_components, 'street_number'),
+        formatted_address: resp.formatted_address
+      }
+    }
+
+    function getAddressName(componentList: AddressComponent[], type: string, label = 'long_name'): string{
+      const component = componentList.filter(value  => value.types.indexOf(type) > -1)[0];
+      return component? component[label] : '';
+    }
+  }
+
 
   private updateForm(resp) {
     this.map.setZoom(17);
     const data = {
       geo: {
         label: this.map.getCenter().toUrlValue(),
-        location: this.map.getCenter().toJSON(),
-        address: resp.formatted_address
+        point: this.map.getCenter().toJSON(),
+        address: resp.geo.address
       },
       place_id: resp.place_id
     };
-    this.placeForm.patchValue(data);
+    this.placeForm.patchValue(data, {onlySelf: true});
   }
 
 }

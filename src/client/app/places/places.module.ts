@@ -14,6 +14,7 @@ import {
   MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatOptionModule,
   MatSelectModule
 } from '@angular/material';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import {
     MatAutocompleteModule,
     MatOptionModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    TranslateModule
   ],
   declarations: [
     PointComponent,

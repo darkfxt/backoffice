@@ -1,7 +1,11 @@
 import axios from 'axios';
 import {config} from '../../config/env';
-import {Place} from '../entity/Place';
+import GooglePlace from '../entity/GooglePlace';
 import {Autocomplete} from '../entity/Autocomplete';
+import {until} from 'selenium-webdriver';
+import elementIsSelected = until.elementIsSelected;
+import {PlaceFactory} from '../factories/place.factory';
+import Place from '../entity/Place';
 
 
 export class PlaceService {
@@ -18,20 +22,39 @@ export class PlaceService {
       });
   }
 
-  public static async getDetail(place_id: string, lang: string = 'en'): Promise<any> {
+  public static async getDetail(place_id: string, lang: string = 'en'): Promise<Place> {
     return axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?&key=${config.googleApiKey}&placeid=${place_id}&language=${lang}`)
-      .then(resp => new Place(
-          resp.data.result.place_id,
-          resp.data.result.name,
-          resp.data.result.geometry.location,
-          resp.data.result.photos,
-          resp.data.result.formatted_address)
-      );
+      .then(resp => {
+        return PlaceFactory.getPlaceFromGoogle(<GooglePlace>resp.data.result);
+      });
   }
 
-  public static async search(query, lang: string = 'en'): Promise<any> {
-    return axios.get(`${config.geo.url}/places/search?${query}`);
+  public static async search(params, lang: string = 'en'): Promise<any> {
+    const query: string[] = [];
+    Object.entries(params).forEach(
+      ([key, value]) => {
+        if(key !== 'lang')
+          query.push(`${key}=${value}`);
+      }
+    );
+
+    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`)
+      .then(resp => {
+        if(resp.data.length === 0){
+          return this.addPoint(params.place_id, lang);
+        }else{
+          return resp;
+        }
+      });
+  }
+
+  private static async addPoint(placeId, lang): Promise<any>{
+    const place: Place = await this.getDetail(placeId, lang);
+    return this.create(place).then(resp => {
+      place._id = resp.data.identifiers[0]._id;
+      return {data: [place]};
+    });
   }
 
 }

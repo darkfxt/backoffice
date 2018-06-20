@@ -1,10 +1,11 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {} from '@types/googlemaps';
-import {Point} from '../../../shared/models/Point';
+import {Point} from '../../../shared/models/Place';
 import {PlaceService} from '../../../shared/services/place.service';
 import {Observable} from 'rxjs';
 import {PlaceStore} from '../../../shared/services/place-store.services';
+import Place from '../../../../../server/api/entity/Place';
 
 @Component({
   selector: 'app-route-map',
@@ -20,9 +21,9 @@ export class RouteMapComponent implements OnInit {
 
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
-  middlePoints: Point[] = [];
+  middlePoints: Place[] = [];
   autocompleteTimeout;
-  options: Point[];
+  options: Place[];
   lastSearch = '';
 
   constructor(private fb: FormBuilder, private placeService: PlaceService, private placeStore: PlaceStore) {
@@ -44,7 +45,7 @@ export class RouteMapComponent implements OnInit {
   }
 
   addPoint() {
-    this.middlePoints.push(new Point());
+    this.middlePoints.push(new Place());
   }
 
   deletePoint($event, index){
@@ -56,16 +57,12 @@ export class RouteMapComponent implements OnInit {
   }
 
   setMiddlePoint(event, index) {
-    this.middlePoints[index]._id = event.option.value._id;
     this.middlePoints[index].name = event.option.value.name;
-    this.middlePoints[index].description = event.option.value.description;
-    this.middlePoints[index].location = event.option.value.location;
     this.middlePoints[index].place_id = event.option.value.place_id;
     this.saveControl();
     this.options = [];
     this.markers.splice(index+1, 0, undefined);
     this.setPoint(event, index + 1);
-    console.log(event);
   }
 
   setPoint(event, i){

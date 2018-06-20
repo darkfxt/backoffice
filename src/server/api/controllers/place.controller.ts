@@ -23,15 +23,9 @@ export class PlaceController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-      const query: string[] = [];
-      Object.entries(request.query).forEach(
-        ([key, value]) => {
-          if(key !== 'lang')
-            query.push(`${key}=${value}`);
-        }
-      );
-      const resp = await PlaceService.search(decodeURI(query.join('&')), request.query.lang);
-      if(resp.data.length === 0)
+
+      const resp = await PlaceService.search(request.query, request.query.lang);
+      if (resp.data.length === 0)
         return response.sendStatus(404);
       response.json(resp.data);
     } catch (err) {
@@ -50,24 +44,16 @@ export class PlaceController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      const geo = JSON.parse(request.body.geo);
-      const data = {
-        name: request.body.name,
-        description: request.body.description,
-        type: request.body.type,
-        images: (<any>request).files.map(image => {
-          return {key: image.key, location: image.location};
-        }),
-        place_id: request.body.place_id,
-        geo: {
-          point: geo.location,
-          address: {
-            streetAddress: geo.address
-          }
-        }
-      };
+      const data = JSON.parse(request.body.data);
+      data.images = (<any>request).files.map(image => {
+        return {
+          key: image.key,
+          source: 'S3',
+          sizes: [{size: 'original', url: image.location}]
+        };
+      });
       const place = await PlaceService.create(data);
-      response.send(place.data);
+      response.json(place.data);
     } catch (err) {
       next(err);
     }

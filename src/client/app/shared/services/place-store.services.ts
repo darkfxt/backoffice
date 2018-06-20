@@ -8,12 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 export class PlaceStore {
 
   private location = new BehaviorSubject({
-    point: {
-      lat: 0,
-      lng: 0
+    geo: {
+      point: {
+        lat: 0,
+        lng: 0
+      },
+      label: '',
+      formatted_address: ''
     },
-    label: '',
-    formatted_address: '',
     place_id: '',
     id: ''
   });
