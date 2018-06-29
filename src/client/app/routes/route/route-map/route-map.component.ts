@@ -1,33 +1,28 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {} from '@types/googlemaps';
-import {Point} from '../../../shared/models/Place';
-import {PlaceService} from '../../../shared/services/place.service';
-import {Observable} from 'rxjs';
 import {PlaceStore} from '../../../shared/services/place-store.services';
 import Place from '../../../../../server/api/entity/Place';
 
 @Component({
   selector: 'app-route-map',
-  templateUrl: './route-map.component.html',
-  styleUrls: ['./route-map.component.scss']
+  template: `
+    <div #gmap style="width:100%; height:340px"></div>`,
 })
 export class RouteMapComponent implements OnInit {
-
-  @Input()
-  routeGroup: FormGroup;
 
   @ViewChild('gmap') gmapElement: any;
 
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
-  middlePoints: Place[] = [];
-  autocompleteTimeout;
-  options: Place[];
-  lastSearch = '';
+  waypoints = [];
+  origin: Place;
+  destination: Place;
 
-  constructor(private fb: FormBuilder, private placeService: PlaceService, private placeStore: PlaceStore) {
-  }
+  private stepDisplay = new google.maps.InfoWindow;
+  private directionsService = new google.maps.DirectionsService;
+  private directionsDisplay = new google.maps.DirectionsRenderer({map: this.map});
+
+  constructor(private placeStore: PlaceStore) { }
 
   ngOnInit() {
 
@@ -38,77 +33,104 @@ export class RouteMapComponent implements OnInit {
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-  }
+    this.directionsDisplay.setMap(this.map);
 
-  displayFn(value) {
-    return value.name;
-  }
+    this.map.addListener('click', (e) => {
+      const place = new Place({
+        name: 'Waypoint',
+        geo: {
+          point: e.latLng.toJSON()
+        },
+        type: 'waypoint',
+        _id: '1'
+      });
 
-  addPoint() {
-    this.middlePoints.push(new Place());
-  }
+      this.placeStore.setLocation(place);
+      this.waypoints.push(place);
+      this.calculateAndDisplayRoute();
+    });
 
-  deletePoint($event, index){
-    this.middlePoints.splice(index, 1);
-    this.markers[index+1].setMap(null);
-    this.markers.splice(index+1, 1);
-    this.saveControl();
-    this.centerMap();
-  }
-
-  setMiddlePoint(event, index) {
-    this.middlePoints[index].name = event.option.value.name;
-    this.middlePoints[index].place_id = event.option.value.place_id;
-    this.saveControl();
-    this.options = [];
-    this.markers.splice(index+1, 0, undefined);
-    this.setPoint(event, index + 1);
-  }
-
-  setPoint(event, i){
-    this.placeService.search(`place_id=${event.option.value.place_id}`).subscribe(place => {
-      console.log(place);
-      if(place.length === 0) // TODO: show message
+    this.placeStore.getWaypoints().subscribe(( waypoints ) => {
+      if(!waypoints)
         return false;
+      this.waypoints = waypoints;
+      this.addMarker();
+    });
 
-      if(this.markers[i])
-        this.markers[i].setPosition(place[0].geo.point);
-      else
-        this.markers[i] = new google.maps.Marker({position: place[0].geo.point, map: this.map});
+    this.placeStore.getPlace('origin').subscribe((place) => {
+      if(!place)
+        return false;
+      this.origin = place;
+      this.addMarker();
+    });
 
-      this.centerMap();
+    this.placeStore.getPlace('destination').subscribe((place) => {
+      if(!place)
+        return false;
+      this.destination = place;
+      this.addMarker();
     });
   }
 
-  private centerMap(){
+  private addMarker() {
+    this.markers.forEach(marker => marker.setMap(null));
+    this.markers = [];
+
+    if(this.origin)
+      this.markers[0] = new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map});
+
+    if(this.destination)
+      this.markers[this.waypoints.length +1] = new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map});
+
+    this.waypoints
+      .filter(place => place.type !== 'waypoint')
+      .forEach((place, i) => {
+        this.markers[i + 1] = new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map});
+      });
+
+    this.markers.forEach((marker: google.maps.Marker) => {
+      marker.addListener('click', () => {
+        this.stepDisplay.setContent(marker.getTitle());
+        this.stepDisplay.open(this.map, marker);
+      });
+    })
+
+    this.calculateAndDisplayRoute();
+  }
+
+  private centerMap() {
     const bounds = new google.maps.LatLngBounds();
-    for(let j=0; j < this.markers.length; j++){
+    for (let j = 0; j < this.markers.length; j++) {
       bounds.extend(this.markers[j].getPosition());
     }
-
     this.map.setCenter(bounds.getCenter());
     this.map.fitBounds(bounds);
   }
 
-  search(event) {
-    if (event.target.value.length < 3 || event.target.value === this.lastSearch){
+  private calculateAndDisplayRoute() {
+    const waypts = [];
+    this.waypoints.forEach((place: Place) => {
+      waypts.push({
+        location: place.geo.point,
+        stopover: true
+      });
+    });
+
+    if (!this.origin || !this.destination) {
+      this.centerMap();
       return false;
     }
 
-    this.lastSearch = event.target.value;
-    clearTimeout(this.autocompleteTimeout);
-    this.autocompleteTimeout = setTimeout(() => {
-       this.placeService.autocomplete(event.target.value).subscribe(resp => {
-         this.options = resp;
-       });
-    }, 300);
-
-  }
-
-  private saveControl(){
-    const points = this.middlePoints.map(point => this.fb.group(point));
-    const faPoints = this.fb.array(points);
-    this.routeGroup.setControl('middle_points', faPoints);
+    // TODO: Optimize waypoints
+    this.directionsService.route(<any>{
+      origin: this.origin.geo.point,
+      destination: this.destination.geo.point,
+      waypoints: waypts,
+      optimizeWaypoints: false,
+      travelMode: 'DRIVING'
+    }, (response, status: any) => {
+      this.directionsDisplay.setDirections(response);
+    });
   }
 
 }

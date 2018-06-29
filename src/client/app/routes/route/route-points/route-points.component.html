@@ -1,0 +1,56 @@
+<div class="points-content" [formGroup]="routeGroup">
+
+  <div class="markers-content">
+    <mat-icon>radio_button_unchecked</mat-icon>
+    <div class="sep"></div>
+    <div *ngFor="let point of middlePoints.controls; let i=index" style="display: flex; flex-direction: column; align-items: center;">
+      <mat-icon>radio_button_unchecked</mat-icon>
+      <div class="sep"></div>
+    </div>
+    <mat-icon class="add-point-circle" *ngIf="routeGroup.value.origin.name && routeGroup.value.destination.name">add_circle_outline</mat-icon>
+    <div class="sep" *ngIf="routeGroup.value.origin.name && routeGroup.value.destination.name"></div>
+    <mat-icon>radio_button_checked</mat-icon>
+  </div>
+
+  <div class="inputs-content">
+    <mat-form-field color="accent" floatLabel="never">
+      <input type="text" matInput placeholder="Elije un origen"
+             required [matAutocomplete]="autoGroupO" name="origin"
+             formControlName="origin" (keyup)="search($event)"
+      />
+      <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')">
+        <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div formArrayName="middle_points">
+      <div *ngFor="let point of middlePoints.controls; let i=index" class="middle-point" [formGroupName]="i">
+        <mat-form-field color="accent" floatLabel="never">
+          <input type="text" matInput placeholder="Elije un punto"
+                 [matAutocomplete]="autoGroup" required name="name" formControlName="name"
+                 [id]="'input-'+i" (keyup)="search($event)"
+          />
+          <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
+          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setMiddlePoint($event, i)">
+            <mat-option *ngFor="let option of options " [value]="option">{{option.name}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div (click)="addPoint()" class="add-point" *ngIf="routeGroup.value.origin.name && routeGroup.value.destination.name">
+      <span>Añade un lugar o haz click en el mapa</span>
+    </div>
+
+    <mat-form-field color="accent" floatLabel="never">
+      <input type="text" matInput placeholder="Elije un destino" required
+             [matAutocomplete]="autoGroupD" name="destination"
+             formControlName="destination" (keyup)="search($event)"
+      />
+      <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')">
+        <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+  </div>
+</div>

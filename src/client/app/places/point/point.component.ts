@@ -1,55 +1,80 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PlaceService} from '../../shared/services/place.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import Place from '../../../../server/api/entity/Place';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-point',
   templateUrl: './point.component.html',
   styleUrls: ['./point.component.scss']
 })
-export class PointComponent implements OnInit {
+export class PointComponent implements OnInit, OnDestroy {
 
   placeForm: FormGroup;
-  place = {
-    name: ''
-  };
+  place: Place = new Place();
+  _subsription: Subscription;
+  bussy: boolean;
 
-  constructor(private fb: FormBuilder, private placeService: PlaceService) {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private placeService: PlaceService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    let isUpdate = false;
+    this.route.data.subscribe(({ point }) => {
+      if(point){
+        this.place = point[0];
+        isUpdate = true;
+      }
+    });
+
     this.placeForm = this.fb.group({
-      name: ['', Validators.required],
-      type: ['', Validators.required],
-      description: ['', Validators.required],
+      name: [this.place.name, Validators.required],
+      type: [this.place.type, Validators.required],
+      description: [this.place.description, Validators.required],
       geo: this.fb.group({
-        label: ['', Validators.required],
-        point: '',
+        label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
+        point: this.place.geo.point,
         address: this.fb.group({
-          country_code: '',
-          country: '',
-          locality: '',
-          region: '',
-          postalCode: '',
-          route: '',
-          street_number: '',
-          formatted_address: ''
+          country_code: this.place.geo.address.country_code,
+          country: this.place.geo.address.country,
+          locality: this.place.geo.address.locality,
+          region: this.place.geo.address.region,
+          postalCode: this.place.geo.address.postalCode,
+          route: this.place.geo.address.route,
+          street_number: this.place.geo.address.street_number,
+          formatted_address: this.place.geo.address.formatted_address
         })
       }),
-      place_id: '',
+      place_id: this.place.place_id,
       files: null,
-      status: '1'
+      status: this.place.status,
+      images: this.fb.array(this.place.images),
+      deleted_images: this.fb.array([]),
+      _id: this.place._id
     });
+
+  }
+
+  ngOnDestroy(){
+    if(this._subsription)
+      this._subsription.unsubscribe();
   }
 
   // Form control
   onSubmit() {
-    console.log(this.placeForm.value);
-
     if(this.placeForm.valid) {
+      this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
-      this.placeService.addPlace(formData).subscribe((resp) => {
-        console.log(resp);
+      this._subsription = this.placeService.addPlace(formData).subscribe((resp) => {
+        this.router.navigate(['/places']);
+      }, err => {
+
       });
     }else{
       Object.keys(this.placeForm.controls).forEach(field => {

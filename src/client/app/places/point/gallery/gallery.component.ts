@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-gallery',
@@ -10,9 +10,13 @@ export class GalleryComponent implements OnInit {
   @Input()
   form: FormGroup;
 
-  previewImages = [];
+  @Input()
+  preloadedImages: any[];
 
-  constructor() { }
+  previewImages = [];
+  deletedItems = [];
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
   }
@@ -43,11 +47,24 @@ export class GalleryComponent implements OnInit {
     });
   }
 
-  deleteItem(source, index){
+  deleteUploadedItem(index){
     const files = this.form.get('files').value;
     files.splice(index, 1);
     this.previewImages.splice(index, 1);
     this.form.patchValue({files: files});
+  }
+
+  deleteStoredItem(index){
+    const item = this.preloadedImages[index];
+    const deletedImages = this.form.get('deleted_images').value;
+    this.preloadedImages.splice(index, 1);
+    deletedImages.push(item);
+    const dImages = deletedImages.map(image => this.fb.group(image));
+    const faDImages = this.fb.array(dImages);
+    const images = this.preloadedImages.map(image => this.fb.group(image));
+    const faImages = this.fb.array(images);
+    this.form.setControl('deleted_images', faDImages);
+    this.form.setControl('images', faImages);
   }
 
 }

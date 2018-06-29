@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {PlaceService} from '../../../shared/services/place.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {PlaceStore} from '../../../shared/services/place-store.services';
 
 
@@ -10,10 +10,12 @@ import {PlaceStore} from '../../../shared/services/place-store.services';
   templateUrl: './point-head.component.html',
   styleUrls: ['./point-head.component.scss']
 })
-export class PointHeadComponent implements OnInit {
+export class PointHeadComponent implements OnInit, OnDestroy {
 
   @Input('headGroup')
   placeForm: FormGroup;
+
+  _subscription: Subscription;
 
   @Output()
   optionSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -27,9 +29,14 @@ export class PointHeadComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy(){
+    if(this._subscription)
+      this._subscription.unsubscribe();
+  }
+
   onOptionSelected(e) {
     this.placeForm.patchValue({name: e.option.value.name.split(',')[0]});
-    this.placeService.getDetail(e.option.value.place_id).subscribe(resp => {
+    this._subscription = this.placeService.getDetail(e.option.value.place_id).subscribe(resp => {
       this.placeStore.setLocation(resp);
     });
   }

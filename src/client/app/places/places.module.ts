@@ -3,7 +3,7 @@ import { CommonModule }   from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { PointComponent}    from './point/point.component';
-import {GalleryComponent} from '../shared/gallery/gallery.component';
+import {GalleryComponent} from './point/gallery/gallery.component';
 import {PointMapComponent} from './point/point-map/point-map.component';
 import {PointHeadComponent} from './point/point-head/point-head.component';
 import {UploaderComponent} from '../shared/uploader/uploader.component';
@@ -11,10 +11,11 @@ import {PlacesComponent} from './places.component';
 
 import {PlacesRoutingModule} from './places-routing.module';
 import {
-  MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatOptionModule,
-  MatSelectModule
+  MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatMenuModule, MatOptionModule, MatSelectModule
 } from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
+import {LoadingModule} from '../shared/loading/loading.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {TranslateModule} from '@ngx-translate/core';
     FormsModule,
     ReactiveFormsModule,
     PlacesRoutingModule,
+    LoadingModule,
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -30,7 +32,8 @@ import {TranslateModule} from '@ngx-translate/core';
     MatOptionModule,
     MatSelectModule,
     MatMenuModule,
-    TranslateModule
+    TranslateModule,
+    MatIconModule
   ],
   declarations: [
     PointComponent,

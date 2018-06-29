@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {PlaceService} from '../services/place.service';
+import Place from '../entity/Place';
 
 
 export class PlaceController {
@@ -12,9 +13,9 @@ export class PlaceController {
     }
   }
 
-  public static async autocomplete(request: Request, response: Response, next: NextFunction) {
+  public static async glAutocomplete(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = await PlaceService.autocomplete(decodeURI(request.query.q), request.query.lang);
+      const data = await PlaceService.glAutocomplete(decodeURI(request.query.q), request.query.lang);
       response.json(data);
     } catch (err) {
       next(err);
@@ -25,8 +26,6 @@ export class PlaceController {
     try {
 
       const resp = await PlaceService.search(request.query, request.query.lang);
-      if (resp.data.length === 0)
-        return response.sendStatus(404);
       response.json(resp.data);
     } catch (err) {
       next(err);
@@ -45,14 +44,25 @@ export class PlaceController {
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
       const data = JSON.parse(request.body.data);
-      data.images = (<any>request).files.map(image => {
-        return {
-          key: image.key,
-          source: 'S3',
-          sizes: [{size: 'original', url: image.location}]
-        };
-      });
-      const place = await PlaceService.create(data);
+      const uploadedImages = (<any>request).files
+        .map(image => {
+          return {
+            key: image.key,
+            source: 'S3',
+            url: image.location
+          };
+        });
+      data.images = [...data.images, ...uploadedImages];
+      data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const oPlace = new Place(data);
+      let place;
+      if(data._id)
+        place = await PlaceService.update(data._id, oPlace);
+      else{
+        delete oPlace._id;
+        place = await PlaceService.create(oPlace);
+      }
+
       response.json(place.data);
     } catch (err) {
       next(err);

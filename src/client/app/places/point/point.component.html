@@ -1,10 +1,11 @@
 
 <div class="top-header">
   <div class="app-container">
+    <mat-icon routerLink="/places">arrow_back</mat-icon>
     <h1>Nuevo punto</h1>
   </div>
 </div>
-<div class="app-container full-size">
+<div class="app-container full-size body-content">
   <form [formGroup]="placeForm" #formDir="ngForm" class="box-container" (ngSubmit)="onSubmit()" novalidate>
     <div class="save-button">
       <button mat-fab>
@@ -21,9 +22,10 @@
     <div class="row gallery-container">
       <div class="col-xs-12">
         <h3>Gallery</h3>
-        <app-gallery [form]="placeForm"></app-gallery>
+        <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
       </div>
     </div>
   </form>
 </div>
+<app-loading *ngIf="bussy"></app-loading>
 

@@ -1,7 +1,27 @@
 @import '../../../assets/variables';
 
-.app-container{
+.body-content{
+  @media only screen and (max-device-width: 736px) {
+    margin-top: -116px;
+  }
+}
 
+.top-header{
+  .app-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    mat-icon{
+      color: white;
+      margin-right: 24px;
+      display: none;
+
+      @media only screen and (max-device-width: 736px) {
+        display: block;
+      }
+    }
+  }
 }
 
 form{

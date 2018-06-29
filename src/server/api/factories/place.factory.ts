@@ -25,27 +25,11 @@ export class PlaceFactory{
       }
     };
     place.images = [];
+    glPlace.photos = glPlace.photos || [];
     glPlace.photos.forEach(value => {
       place.images.push({
         source: 'google_place',
-        sizes: [
-          {
-            size: 'thumbnail',
-            url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
-          },
-          {
-            size: 'small',
-            url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
-          },
-          {
-            size: 'large',
-            url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
-          },
-          {
-            size: 'original',
-            url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${value.width}&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
-          }
-        ]
+        url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
       });
     });
 

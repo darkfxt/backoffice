@@ -1,26 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import Place from '../../../../server/api/entity/Place';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceStore {
+  private origin = new BehaviorSubject(undefined);
+  private destination = new BehaviorSubject(undefined);
+  private location = new BehaviorSubject(undefined);
 
-  private location = new BehaviorSubject({
-    geo: {
-      point: {
-        lat: 0,
-        lng: 0
-      },
-      label: '',
-      formatted_address: ''
-    },
-    place_id: '',
-    id: ''
-  });
+  private waypoints = new BehaviorSubject(undefined);
 
-  constructor() {}
+  constructor() {
+  }
 
   setLocation(location){
     this.location.next(location);
@@ -28,5 +22,21 @@ export class PlaceStore {
 
   getLocation(){
     return this.location.asObservable();
+  }
+
+  getPlace(location:string){
+    return (this[location] as BehaviorSubject<Place>).asObservable();
+  }
+
+  setPlace(location:string, place: Place){
+    (this[location] as BehaviorSubject<Place>).next(place);
+  }
+
+  getWaypoints(){
+    return this.waypoints.asObservable();
+  }
+
+  setWaypoints(waypoints){
+    this.waypoints.next(waypoints);
   }
 }

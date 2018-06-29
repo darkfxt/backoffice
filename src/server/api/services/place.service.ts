@@ -14,7 +14,7 @@ export class PlaceService {
     return axios.post(`${config.geo.url}/places`, body);
   }
 
-  public static async autocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
+  public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
     return axios
       .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?&key=${config.googleApiKey}&input=${encodeURI(query)}&language=${lang}`)
       .then(resp => {
@@ -39,14 +39,12 @@ export class PlaceService {
       }
     );
 
-    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`)
-      .then(resp => {
-        if(resp.data.length === 0){
-          return this.addPoint(params.place_id, lang);
-        }else{
-          return resp;
-        }
-      });
+    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`);
+
+  }
+
+  public static async update(id, body): Promise<any>{
+    return axios.patch(`${config.geo.url}/places/${id}`, body);
   }
 
   private static async addPoint(placeId, lang): Promise<any>{

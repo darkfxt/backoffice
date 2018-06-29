@@ -1,15 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, OnDestroy} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {} from '@types/googlemaps';
 import {PlaceStore} from '../../../shared/services/place-store.services';
 import {AddressComponent} from '../../../../../server/api/entity/GooglePlace';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-point-map',
   templateUrl: './point-map.component.html',
   styleUrls: ['./point-map.component.scss']
 })
-export class PointMapComponent implements OnInit {
+export class PointMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('gmap') gmapElement: any;
   @ViewChild('location') location: ElementRef;
@@ -21,14 +22,15 @@ export class PointMapComponent implements OnInit {
   map: google.maps.Map;
   marker: google.maps.Marker;
   geocoder: google.maps.Geocoder = new google.maps.Geocoder();
+  _subscription: Subscription;
 
   constructor(private placeStore: PlaceStore) {
   }
 
   ngOnInit() {
     const mapProp = {
-      center: new google.maps.LatLng(0, 0),
-      zoom: 1,
+      center: this.placeForm.value.geo.point,
+      zoom: (this.placeForm.value.geo.point.lat === 0)? 1 : 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -55,12 +57,17 @@ export class PointMapComponent implements OnInit {
       });
     });
 
-    this.placeStore.getLocation().subscribe(location => {
+    this._subscription = this.placeStore.getLocation().subscribe(location => {
       if (location.geo.point.lat === 0 && location.geo.point.lng === 0)
         return false;
       this.map.setCenter(location.geo.point);
+      this.map.setZoom(17);
       this.updateForm(location);
     });
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   onChangeCoords(event) {
@@ -121,7 +128,6 @@ export class PointMapComponent implements OnInit {
 
 
   private updateForm(resp) {
-    this.map.setZoom(17);
     const data = {
       geo: {
         label: this.map.getCenter().toUrlValue(),

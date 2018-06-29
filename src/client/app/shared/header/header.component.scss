@@ -3,6 +3,7 @@
 header{
   min-height: 54px;
   background: $primary-color;
+
 }
 
 .logo{
@@ -31,6 +32,8 @@ header{
       color: #953035;
       font-size: 14px;
       font-weight: 400;
+      outline: none;
+      cursor: pointer;
 
       &.current, &:hover{
         border-bottom: 2px solid white;

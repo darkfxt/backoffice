@@ -1,13 +1,13 @@
-<header>
+<header #header>
   <div class="app-container">
     <div class="logo">
       <img >
     </div>
     <nav class="main-nav">
       <ul>
-        <li class="current">TRIPS</li>
-        <li>ROUTES</li>
-        <li>POINTS</li>
+        <li [class.current]="currentRoute == 'trips'" routerLink="/trips" (click)="currentRoute = 'trips'">TRIPS</li>
+        <li [class.current]="currentRoute == 'routes'" routerLink="/routes" (click)="currentRoute = 'routes'">ROUTES</li>
+        <li [class.current]="currentRoute == 'places'" routerLink="/places" (click)="currentRoute = 'places'">PLACES</li>
       </ul>
     </nav>
     <nav class="user-nav">

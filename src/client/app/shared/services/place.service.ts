@@ -12,24 +12,19 @@ export class PlaceService {
   }
 
   addPlace (place): Observable<any> {
-    return this.http.post('/api/places', place)
-      .pipe(
-        catchError(this.handleError('addPlace'))
-      );
+    return this.http.patch('/api/places', place);
   }
 
   autocomplete (query: string): Observable<any>{
-    return this.http.get(`/api/places/autocomplete/?q=${query}&lang=es`)
+    return this.http.get(`/api/places/glautocomplete/?q=${query}&lang=es`)
       .pipe(
         catchError(this.handleError('autocomplete'))
       );
   }
 
   search (query: string): Observable<any>{
-    return this.http.get(`/api/places/search/?${query}&lang=es`)
-      .pipe(
-        catchError(this.handleError('search', []))
-      );
+    return this.http.get(`/api/places/search/?${query}&lang=es`);
+
   }
 
   getDetail (place_id: string): Observable<any>{
