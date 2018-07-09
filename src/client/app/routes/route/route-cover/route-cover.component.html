@@ -1,0 +1,7 @@
+<h3>Cover image</h3>
+<app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="!previewImage"></app-uploader>
+
+<div *ngIf="previewImage">
+  <div class="image" [style.background-image]="'url('+previewImage.preview+')'"></div>
+  <a class="link" (click)="deleteUploadedItem()">Delete image</a>
+</div>

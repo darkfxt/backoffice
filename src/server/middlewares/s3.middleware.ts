@@ -7,13 +7,19 @@ import * as httpStatus from 'http-status';
 
 const s3 = new S3(config.get().aws.s3);
 
+class Options {
+  bucket: string;
+}
+
 export class S3Middleware {
 
-  static uploader() {
+  constructor(private options: Options){}
+
+  uploader() {
     return multer({
       storage: multerS3({
         s3: s3,
-        bucket: 'taylorgps/places',
+        bucket: `taylorgps/${this.options.bucket}`,
         acl: 'public-read',
         metadata: (req, file, cb) => {
           cb(null, {fieldName: file.fieldname});
@@ -26,7 +32,7 @@ export class S3Middleware {
     });
   }
 
-  static deleteObjects(req: Request, res: Response, next: NextFunction) {
+  deleteObjects(req: Request, res: Response, next: NextFunction) {
 
     const data = JSON.parse(req.body.data);
     if (data.deleted_images.length === 0)
@@ -36,7 +42,7 @@ export class S3Middleware {
       Bucket: 'taylorgps',
       Delete: { // required
         Objects: data.deleted_images.map(image => {
-          return {Key: `places/${image.key}`};
+          return {Key: `${this.options.bucket}/${image.key}`};
         })
       },
     };

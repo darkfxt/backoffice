@@ -16,12 +16,14 @@ import {
 } from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
 import {LoadingModule} from '../shared/loading/loading.module';
+import {UploaderModule} from '../shared/uploader/uploader.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    UploaderModule,
     PlacesRoutingModule,
     LoadingModule,
     MatIconModule,
@@ -40,7 +42,6 @@ import {LoadingModule} from '../shared/loading/loading.module';
     GalleryComponent,
     PointMapComponent,
     PointHeadComponent,
-    UploaderComponent,
     PlacesComponent
   ],
   providers: [ ]

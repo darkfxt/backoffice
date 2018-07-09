@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
-import {reject} from 'q';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-uploader',

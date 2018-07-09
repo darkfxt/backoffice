@@ -12,8 +12,6 @@
       </button>
       <span class="save-exit-label">Save and close</span>
     </div>
-    <div class="row">
-    </div>
 
     <div class="row gallery-container">
       <div class="col-xs-12">
@@ -28,6 +26,17 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row bottom-row">
+      <div class="col-sm-4 col-xs-12">
+        <app-route-cover [form]="routeForm"></app-route-cover>
+      </div>
+      <div class="col-sm-4 col-xs-12">
+        <app-route-head [form]="routeForm"></app-route-head>
+      </div>
+      <div class="col-sm-4 col-xs-12">
+        <app-route-info [form]="routeForm"></app-route-info>
       </div>
     </div>
   </form>

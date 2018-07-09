@@ -77,6 +77,8 @@ export class RoutePointsComponent implements OnInit {
     const place = event.option.value;
     this.placeStore.setPlace(inputName, place);
     this.options = [];
+    if(this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
+      this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
   }
 
   search(event) {

@@ -58,6 +58,8 @@ export class PointMapComponent implements OnInit, OnDestroy {
     });
 
     this._subscription = this.placeStore.getLocation().subscribe(location => {
+      if(!location)
+        return false;
       if (location.geo.point.lat === 0 && location.geo.point.lng === 0)
         return false;
       this.map.setCenter(location.geo.point);

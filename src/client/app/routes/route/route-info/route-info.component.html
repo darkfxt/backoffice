@@ -1,0 +1,31 @@
+<h3>Things to know</h3>
+<div *ngIf="thingsToKnow.controls.length == 0">
+  <p>Agrega información util para que los viajeros cuenten con todo lo necesario para su viaje.
+    Ej: Documentación, equipamiento, estaciones de combustible, etc.
+  </p>
+  <div class="button-ctn">
+    <button type="button" mat-raised-button color="accent" (click)="addTTK($event)" >Agregar información</button>
+  </div>
+</div>
+<div [formGroup]="form" *ngIf="thingsToKnow.controls.length > 0">
+  <div formArrayName="things_to_know">
+    <div *ngFor="let ttk of thingsToKnow.controls; let i= index;" [formGroupName]="i" class="ttk-content">
+      <mat-form-field color="accent">
+        <input type="text" matInput placeholder="Title" name="title" formControlName="title"/>
+        <mat-error *ngIf="ttk.get('title').invalid && (ttk.get('title').dirty || ttk.get('title').touched)">Error</mat-error>
+      </mat-form-field>
+
+      <mat-form-field color="accent">
+        <textarea matInput placeholder="Description" required name="description" formControlName="description"></textarea>
+        <mat-error *ngIf="ttk.get('description').invalid && (ttk.get('description').dirty || ttk.get('description').touched)">Error</mat-error>
+      </mat-form-field>
+      <a (click)="deleteTTK($event, i)" class="link">Delete</a>
+    </div>
+  </div>
+  <div class="add-more-ctn">
+    <mat-icon class="add-point-circle">add_circle_outline</mat-icon>
+    <a (click)="addTTK($event)">Add other</a>
+  </div>
+</div>
+
+

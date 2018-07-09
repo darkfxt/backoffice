@@ -1,0 +1,32 @@
+<h3>Route data</h3>
+<div [formGroup]="form">
+  <mat-form-field color="accent">
+    <input type="text" matInput placeholder="Route name" name="name" formControlName="name"/>
+    <mat-hint align="start">It will be generated automatically</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-select placeholder="Road type" required name="route_type" formControlName="route_type">
+      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
+        {{routeType.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-select placeholder="Road surface" required name="road_surface" formControlName="road_surface">
+      <mat-option *ngFor="let roadSurface of roadSurfaces" [value]="roadSurface.value">
+        {{roadSurface.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <input type="text" matInput placeholder="Via (opcional)" name="via" formControlName="via"/>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <textarea matInput placeholder="Description" required name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)">Error</mat-error>
+  </mat-form-field>
+</div>

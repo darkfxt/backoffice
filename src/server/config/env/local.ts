@@ -1,14 +1,5 @@
 export const config = {
   env: 'local',
-  db: {
-    'type': 'mssql',
-    'host': '184.168.194.77',
-    'port': 1433,
-    'username': 'Taylor',
-    'password': 'TaylorAB2015',
-    'database': 'TaylorGPS_prueba',
-    'synchronize': false
-  },
   aws: {
     s3: {
       'accessKeyId': 'AKIAIWKWSV2WVMSW4STA',
@@ -21,4 +12,5 @@ export const config = {
   geo: {
     url: 'http://localhost:3000'
   }
+
 };
