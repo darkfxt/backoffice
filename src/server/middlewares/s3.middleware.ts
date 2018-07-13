@@ -32,31 +32,34 @@ export class S3Middleware {
     });
   }
 
-  deleteObjects(req: Request, res: Response, next: NextFunction) {
+  deleteObjects() {
+    const _options = this.options;
 
-    const data = JSON.parse(req.body.data);
-    if (data.deleted_images.length === 0)
-      return next();
+    return (req: Request, res: Response, next: NextFunction) => {
+      const data = JSON.parse(req.body.data);
+      if (data.deleted_images.length === 0)
+        return next();
 
-    const _params = {
-      Bucket: 'taylorgps',
-      Delete: { // required
-        Objects: data.deleted_images.map(image => {
-          return {Key: `${this.options.bucket}/${image.key}`};
-        })
-      },
-    };
+      const _params = {
+        Bucket: 'taylorgps',
+        Delete: { // required
+          Objects: data.deleted_images.map(image => {
+            return {Key: `${_options.bucket}/${image.key}`};
+          })
+        },
+      };
 
-    s3.deleteObjects(_params, (err) => {
-      if (err) {
-        if (res.headersSent) {
+      s3.deleteObjects(_params, (err) => {
+        if (err) {
+          if (res.headersSent) {
+            return next(err);
+          }
+          res.status(httpStatus.BAD_REQUEST);
           return next(err);
         }
-        res.status(httpStatus.BAD_REQUEST);
-        return next(err);
-      }
-      next();
-    });
+        next();
+      });
+    };
   }
 }
 

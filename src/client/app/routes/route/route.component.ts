@@ -28,8 +28,9 @@ export class RouteComponent implements OnInit, OnDestroy {
       destination: ['', Validators.required],
       middle_points: this.fb.array([]),
       things_to_know: this.fb.array([]),
-      files: undefined,
-      deleted_images: undefined
+      file: undefined,
+      deleted_images: this.fb.array([]),
+      legs: ''
     });
   }
 
@@ -58,11 +59,21 @@ export class RouteComponent implements OnInit, OnDestroy {
 
   private prepareToSave(): FormData {
     const formData = new FormData();
-    const data = this.routeForm.value;
+    const data = Object.assign({}, this.routeForm.value);
+    data.name = `${data.origin.name} to ${data.destination.name}`
+    data.origin = data.origin._id;
+    data.destination = data.destination._id;
+    data.middle_points = data.middle_points
+      .map(value => ({
+        name: value.name,
+        type: value.type,
+        _id: value._id,
+        geo: {point: value.geo.point}
+      }));
     formData.append('data', JSON.stringify(data));
     const image = data.file;
     if (image)
-      formData.append('file', image, image.name);
+      formData.append('files[]', image, image.name);
     return formData;
   }
 

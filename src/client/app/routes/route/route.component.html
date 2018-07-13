@@ -22,7 +22,7 @@
               <app-route-points [routeGroup]="routeForm"></app-route-points>
             </div>
             <div class="col-sm-8">
-              <app-route-map></app-route-map>
+              <app-route-map [form]="routeForm"></app-route-map>
             </div>
           </div>
         </div>
@@ -30,10 +30,10 @@
     </div>
     <div class="row bottom-row">
       <div class="col-sm-4 col-xs-12">
-        <app-route-cover [form]="routeForm"></app-route-cover>
+        <app-route-head [form]="routeForm"></app-route-head>
       </div>
       <div class="col-sm-4 col-xs-12">
-        <app-route-head [form]="routeForm"></app-route-head>
+        <app-route-cover [form]="routeForm"></app-route-cover>
       </div>
       <div class="col-sm-4 col-xs-12">
         <app-route-info [form]="routeForm"></app-route-info>

@@ -4,8 +4,8 @@ import {config} from '../../config/env';
 
 export class RoutesService {
 
-  public static async create(body): Promise<any> {
-    return axios.post(`${config.geo.url}/routes`, body);
+  public static async create(route): Promise<any> {
+    return axios.post(`${config.routes.url}/segments`, route);
   }
 
 }

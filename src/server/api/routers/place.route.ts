@@ -16,6 +16,6 @@ PlaceRouter.route('/:place_id')
 
 PlaceRouter.route('/')
   .get(PlaceController.getAll)
-  .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects], PlaceController.create);
+  .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], PlaceController.create);
 
 export default PlaceRouter;

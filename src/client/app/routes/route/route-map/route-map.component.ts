@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {} from '@types/googlemaps';
 import {PlaceStore} from '../../../shared/services/place-store.services';
 import Place from '../../../../../server/api/entity/Place';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-route-map',
@@ -9,6 +10,8 @@ import Place from '../../../../../server/api/entity/Place';
     <div #gmap style="width:100%; height:340px"></div>`,
 })
 export class RouteMapComponent implements OnInit {
+  @Input()
+  form: FormGroup;
 
   @ViewChild('gmap') gmapElement: any;
 
@@ -41,8 +44,8 @@ export class RouteMapComponent implements OnInit {
         geo: {
           point: e.latLng.toJSON()
         },
-        type: 'waypoint',
-        _id: '1'
+        type: 'WAYPOINT',
+        _id: ''
       });
 
       this.placeStore.setLocation(place);
@@ -83,7 +86,7 @@ export class RouteMapComponent implements OnInit {
       this.markers[this.waypoints.length +1] = new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map});
 
     this.waypoints
-      .filter(place => place.type !== 'waypoint')
+      .filter(place => place.type !== 'WAYPOINT')
       .forEach((place, i) => {
         this.markers[i + 1] = new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map});
       });
@@ -129,7 +132,18 @@ export class RouteMapComponent implements OnInit {
       optimizeWaypoints: false,
       travelMode: 'DRIVING'
     }, (response, status: any) => {
-      this.directionsDisplay.setDirections(response);
+      if(status === 'OK'){
+        this.directionsDisplay.setDirections(response);
+        const legs = response.routes[0].legs
+          .map(value => (
+            {
+              distance: value.distance,
+              duration: value.duration
+            })
+          );
+
+        this.form.patchValue({legs: legs});
+      }
     });
   }
 

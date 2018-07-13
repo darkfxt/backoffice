@@ -11,6 +11,9 @@ export const config = {
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
     url: 'http://localhost:3000'
+  },
+  routes: {
+    url: 'http://localhost:6001'
   }
 
 };

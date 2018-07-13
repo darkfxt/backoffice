@@ -6,7 +6,11 @@
   </mat-form-field>
 
   <mat-form-field color="accent">
-    <mat-select placeholder="Road type" required name="route_type" formControlName="route_type">
+    <input type="text" matInput placeholder="Via (opcional)" name="via" formControlName="via"/>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-select placeholder="Route type" required name="route_type" formControlName="route_type">
       <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
         {{routeType.viewValue}}
       </mat-option>
@@ -19,10 +23,6 @@
         {{roadSurface.viewValue}}
       </mat-option>
     </mat-select>
-  </mat-form-field>
-
-  <mat-form-field color="accent">
-    <input type="text" matInput placeholder="Via (opcional)" name="via" formControlName="via"/>
   </mat-form-field>
 
   <mat-form-field color="accent">
