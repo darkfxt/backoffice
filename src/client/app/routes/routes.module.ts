@@ -14,13 +14,14 @@ import {RoutePointsComponent} from './route/route-points/route-points.component'
 import {RouteHeadComponent} from './route/route-head/route-head.component';
 import {RouteCoverComponent} from './route/route-cover/route-cover.component';
 import {RouteInfoComponent} from './route/route-info/route-info.component';
-import {UploaderComponent} from '../shared/uploader/uploader.component';
 import {UploaderModule} from '../shared/uploader/uploader.module';
+import {ModalModule} from '../shared/modal/modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     UploaderModule,
+    ModalModule,
     FormsModule,
     ReactiveFormsModule,
     RoutesRoutingModule,
@@ -31,7 +32,8 @@ import {UploaderModule} from '../shared/uploader/uploader.module';
     MatAutocompleteModule,
     MatSelectModule,
     MatMenuModule,
-    TranslateModule
+    TranslateModule,
+    ModalModule
   ],
   declarations: [
     RoutesComponent,

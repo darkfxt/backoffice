@@ -1,3 +1,5 @@
+@import '../../../../assets/variables';
+
 .image{
   background: no-repeat scroll center transparent;
   background-size: cover;
@@ -6,6 +8,8 @@
 }
 
 .link{
-  color: #1a0dab;
+  color: $link-color;
   cursor: pointer;
+  float: right;
+  margin-top: 8px;
 }

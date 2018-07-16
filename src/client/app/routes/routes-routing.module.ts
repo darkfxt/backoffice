@@ -18,6 +18,7 @@ const rRoutes: Routes = [
       {
         path: ':id',
         component: RouteComponent,
+        canDeactivate: [CanDeactivateGuard]
       }
     ]
   }

@@ -1,20 +1,35 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoutesService} from '../../shared/services/routes.service';
+import {CanComponentDeactivate} from '../../shared/services/can-deactivate-guard.service';
+import {MatDialog} from '@angular/material';
+import {GuardModalComponent} from '../../shared/modal/guard-modal.component';
+import {ModalService} from '../../shared/modal/modal.service';
+import {FormGuard} from '../../shared/form-guard/form-guard';
 
 @Component({
   selector: 'app-tg-route',
   templateUrl: './route.component.html',
   styleUrls: ['./route.component.scss']
 })
-export class RouteComponent implements OnInit, OnDestroy {
+
+export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
 
   routeForm: FormGroup;
   bussy: boolean;
   _subsription: Subscription;
-  constructor(private fb: FormBuilder, private router: Router, private routesService: RoutesService) { }
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private routesService: RoutesService,
+    private dialog: MatDialog,
+    private modalService: ModalService
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.routeForm = this.fb.group({
