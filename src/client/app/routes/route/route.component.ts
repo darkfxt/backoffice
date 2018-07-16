@@ -3,11 +3,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoutesService} from '../../shared/services/routes.service';
-import {CanComponentDeactivate} from '../../shared/services/can-deactivate-guard.service';
+import {FormGuard, IFormGuard} from '../../shared/form-guard/form-guard';
 import {MatDialog} from '@angular/material';
-import {GuardModalComponent} from '../../shared/modal/guard-modal.component';
 import {ModalService} from '../../shared/modal/modal.service';
-import {FormGuard} from '../../shared/form-guard/form-guard';
 
 @Component({
   selector: 'app-tg-route',
@@ -17,7 +15,7 @@ import {FormGuard} from '../../shared/form-guard/form-guard';
 
 export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
 
-  routeForm: FormGroup;
+  form: FormGroup;
   bussy: boolean;
   _subsription: Subscription;
 
@@ -25,14 +23,14 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
     private fb: FormBuilder,
     private router: Router,
     private routesService: RoutesService,
-    private dialog: MatDialog,
-    private modalService: ModalService
+    dialog: MatDialog,
+    modalService: ModalService
   ) {
-    super();
+    super(dialog, modalService);
   }
 
   ngOnInit() {
-    this.routeForm = this.fb.group({
+    this.form = this.fb.group({
       name: [{value: '', disabled: true}, Validators.required],
       route_type: ['', Validators.required],
       road_surface: ['', Validators.required],
@@ -56,7 +54,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
 
   // Form control
   onSubmit() {
-    if(this.routeForm.valid) {
+    if(this.form.valid) {
       this.bussy = true;
       const formData = this.prepareToSave();
       this._subsription = this.routesService.addRoute(formData).subscribe((resp) => {
@@ -65,8 +63,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
 
       });
     }else{
-      Object.keys(this.routeForm.controls).forEach(field => {
-        const control = this.routeForm.get(field);
+      Object.keys(this.form.controls).forEach(field => {
+        const control = this.form.get(field);
         control.markAsTouched({ onlySelf: true });
       });
     }
@@ -74,7 +72,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy{
 
   private prepareToSave(): FormData {
     const formData = new FormData();
-    const data = Object.assign({}, this.routeForm.value);
+    const data = Object.assign({}, this.form.value);
     data.name = `${data.origin.name} to ${data.destination.name}`
     data.origin = data.origin._id;
     data.destination = data.destination._id;
