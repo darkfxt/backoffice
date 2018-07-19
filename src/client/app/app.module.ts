@@ -18,6 +18,7 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './shared/header/header.component';
 import {PageNotFoundComponent} from './not-found.component';
 import {LoginComponent} from './login/login.component';
+import {TagsComponent} from './shared/tags/tags.component';
 
 // Config
 import {environment} from '../environments/environment';
@@ -35,7 +36,8 @@ registerLocaleData(localeEs, 'es');
     AppComponent,
     HeaderComponent,
     PageNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    TagsComponent
   ],
   imports: [
     BrowserModule,

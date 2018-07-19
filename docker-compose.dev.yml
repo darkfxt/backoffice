@@ -1,0 +1,21 @@
+version: '3'
+services:
+  reverse_proxy:
+    image: tg-bo/angular
+    environment:
+      - NGINX_BACKEND_PORT=5000
+      - STATIC_DIR=/opt/app/dist/client
+    ports:
+      - 80:80
+    depends_on:
+      - node1
+  node1:
+    image: tg-bo/node
+    environment:
+      - "NODE_ENV=local"
+    ports:
+      - "5000:5000"
+networks:
+  default:
+    external:
+      name: olnw-tgbo

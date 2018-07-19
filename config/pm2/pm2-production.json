@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "tg-backoffice",
+      "script": "/opt/app/dist/server/server.js",
+      "instances": "4",
+      "exec_mode": "cluster",
+      "max_memory_restart": "2G"
+    }
+  ]
+}
