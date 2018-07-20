@@ -1,7 +1,7 @@
 version: '3'
 services:
   reverse_proxy:
-    image: tg-bo/angular
+    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/nginx:dv_${TAG}
     environment:
       - NGINX_BACKEND_PORT=5000
       - STATIC_DIR=/opt/app/dist/client
@@ -10,7 +10,7 @@ services:
     depends_on:
       - node1
   node1:
-    image: tg-bo/node
+    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/node:dv_${TAG}
     environment:
       - "NODE_ENV=local"
     ports:
