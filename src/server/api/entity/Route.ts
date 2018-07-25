@@ -26,8 +26,8 @@ export default class Route{
     public via: string,
     public description: string,
     public images: any[],
-    public origin_id: string,
-    public destination_id: string,
+    public origin: Point,
+    public destination: Point,
     public middle_points: Point[],
     public things_to_know: ThingToKnow[],
     public legs: Leg[]

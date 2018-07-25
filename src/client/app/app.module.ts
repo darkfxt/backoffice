@@ -21,6 +21,7 @@ import {LoginComponent} from './login/login.component';
 
 // Config
 import {environment} from '../environments/environment';
+import {ProgramsModule} from './programs/programs.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -44,6 +45,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     PlacesModule,
     RoutesModule,
+    ProgramsModule,
     LoginRoutingModule,
     AppRoutingModule,
     MatIconModule,

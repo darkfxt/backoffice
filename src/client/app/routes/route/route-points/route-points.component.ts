@@ -29,6 +29,7 @@ export class RoutePointsComponent implements OnInit {
     this.placeStore.getLocation().subscribe((place)=>{
       if(!place)
         return false;
+
       this.addPoint(place, false);
       this.ref.detectChanges();
       const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length -1}`);
@@ -58,18 +59,12 @@ export class RoutePointsComponent implements OnInit {
 
   deletePoint(type, index) {
     this.middlePoints.removeAt(index);
-    this.ref.detectChanges();
     this.placeStore.setWaypoints(this.middlePoints.value);
+    this.ref.detectChanges();
   }
 
   setMiddlePoint(event, index) {
     this.middlePoints.controls[index].setValue(event.option.value);
-    const $elem = this.renderer.selectRootElement(`#input-${index}`);
-    setTimeout(() => {
-      this.options = [];
-      this.renderer.setProperty($elem, 'value', event.option.value.name);
-      this.ref.detectChanges();
-    }, 100);
     this.placeStore.setWaypoints(this.middlePoints.value);
   }
 

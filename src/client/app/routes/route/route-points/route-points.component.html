@@ -27,11 +27,11 @@
       <div *ngFor="let point of middlePoints.controls; let i=index" class="middle-point" [formGroupName]="i">
         <mat-form-field color="accent" floatLabel="never">
           <input type="text" matInput placeholder="Elije un punto"
-                 [matAutocomplete]="autoGroup" required name="name" formControlName="name"
+                 [matAutocomplete]="autoGroup" name="name" formControlName="name"
                  [id]="'input-'+i" (keyup)="search($event)"
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setMiddlePoint($event, i)">
+          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)">
             <mat-option *ngFor="let option of options " [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
         </mat-form-field>

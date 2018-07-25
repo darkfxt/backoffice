@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent }    from './not-found.component';
 
 import { CanDeactivateGuard }       from './shared/services/can-deactivate-guard.service';
-import { AuthGuard }                from './shared/services/auth-guard.service';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 
 const appRoutes: Routes = [
@@ -15,6 +14,10 @@ const appRoutes: Routes = [
   {
     path: 'routes',
     loadChildren: './routes/routes.module#RoutesModule',
+  },
+  {
+    path: 'programs',
+    loadChildren: './programs/programs.module#ProgramsModule',
   },
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

@@ -80,16 +80,16 @@ export class RouteMapComponent implements OnInit {
     this.markers = [];
 
     if(this.origin)
-      this.markers[0] = new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map});
-
-    if(this.destination)
-      this.markers[this.waypoints.length +1] = new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map});
+      this.markers.push(new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map}));
 
     this.waypoints
       .filter(place => place.type !== 'WAYPOINT')
       .forEach((place, i) => {
-        this.markers[i + 1] = new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map});
+        this.markers.push(new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map}));
       });
+
+    if(this.destination)
+      this.markers.push(new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map}));
 
     this.markers.forEach((marker: google.maps.Marker) => {
       marker.addListener('click', () => {

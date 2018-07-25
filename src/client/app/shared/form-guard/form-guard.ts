@@ -18,7 +18,7 @@ export abstract class FormGuard implements CanComponentDeactivate, IFormGuard{
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
 
-    if(!this.form.dirty)
+    if(!this.form.dirty || !this.form.invalid)
       return true;
 
     this.dialog.open(GuardModalComponent, {
@@ -33,7 +33,7 @@ export abstract class FormGuard implements CanComponentDeactivate, IFormGuard{
   // @HostListener allows us to also guard against browser refresh, close, etc.
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    if(!this.form.dirty)
+    if(!this.form.dirty || !this.form.invalid)
       return true;
 
     if (confirm('You have unsaved changes! If you leave, your changes will be lost.')) {
