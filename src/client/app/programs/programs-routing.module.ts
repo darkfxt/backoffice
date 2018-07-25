@@ -2,26 +2,22 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import {CanDeactivateGuard} from '../shared/services/can-deactivate-guard.service';
+import {ProgramsComponent} from './programs.component';
+import {ProgramComponent} from './program/program.component';
 
-import {RouteComponent} from './route/route.component';
-import {RoutesComponent} from './routes.component';
-import {RoutesResolver} from './routes.resolver';
 
 const rRoutes: Routes = [
   {
-    path: 'routes',
+    path: 'programs',
     children: [
       {
         path: '',
-        component: RoutesComponent,
+        component: ProgramsComponent,
       },
       {
         path: ':id',
-        component: RouteComponent,
-        canDeactivate: [CanDeactivateGuard],
-        resolve: {
-          segment: RoutesResolver
-        }
+        component: ProgramComponent,
+        canDeactivate: [CanDeactivateGuard]
       }
     ]
   }
@@ -35,4 +31,4 @@ const rRoutes: Routes = [
     RouterModule
   ]
 })
-export class RoutesRoutingModule { }
+export class ProgramsRoutingModule { }

@@ -2,6 +2,7 @@
 <app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="!previewImage"></app-uploader>
 
 <div *ngIf="previewImage">
-  <div class="image" [style.background-image]="'url('+previewImage.preview+')'"></div>
+  <div class="image" [style.background-image]="'url('+previewImage.url+')'"></div>
   <a class="link" (click)="deleteUploadedItem()">Remove image</a>
 </div>
+

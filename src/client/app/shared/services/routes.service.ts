@@ -11,8 +11,12 @@ export class RoutesService {
   constructor(private http: HttpClient) {
   }
 
-  addRoute (route): Observable<any> {
-    return this.http.patch('/api/routes', route);
+  create (params): Observable<any> {
+    return this.http.post('/api/routes', params.body);
+  }
+
+  update (params): Observable<any> {
+    return this.http.patch(`/api/routes/${params.id}`, params.body);
   }
 
   getDetail (route_id: string): Observable<any>{

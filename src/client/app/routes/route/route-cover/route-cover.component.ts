@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-route-cover',
@@ -13,9 +13,10 @@ export class RouteCoverComponent implements OnInit {
 
   previewImage;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.previewImage = this.form.get('images').value[0];
   }
 
   // Images control
@@ -31,7 +32,7 @@ export class RouteCoverComponent implements OnInit {
       try {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          resolve({file: file, preview: e.target.result});
+          resolve({file: file, url: e.target.result});
         };
         reader.readAsDataURL(file);
       } catch (err) {
@@ -41,8 +42,11 @@ export class RouteCoverComponent implements OnInit {
   }
 
   deleteUploadedItem(){
-    const deletedImage = this.form.get('image').value !== null? [this.form.get('image').value] : [];
-    this.form.patchValue({file: undefined, image: undefined, deleted_images: deletedImage});
+    const deletedImage = (<FormArray>this.form.get('images')).controls.length > 0? this.form.get('images').value : [];
+    this.form.patchValue({file: undefined});
+    this.form.setControl('images', this.fb.array([]));
+    this.form.setControl('deleted_images', this.fb.array(deletedImage));
     this.previewImage = undefined;
   }
+
 }
