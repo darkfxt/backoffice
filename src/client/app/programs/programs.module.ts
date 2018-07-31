@@ -11,6 +11,7 @@ import {ModalModule} from '../shared/modal/modal.module';
 import {ProgramsRoutingModule} from './programs-routing.module';
 import {ProgramsComponent} from './programs.component';
 import {ProgramComponent} from './program/program.component';
+import {SegmentListComponent} from './program/segment-list/segment-list.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import {ProgramComponent} from './program/program.component';
   declarations: [
     ProgramsComponent,
     ProgramComponent,
+    SegmentListComponent
   ]
 })
 export class ProgramsModule { }
