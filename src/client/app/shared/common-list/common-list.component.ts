@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import { ListItemComponent } from './common-list-item/common-list-item.component';
 import {PageEvent} from '@angular/material';
 import {OuterSubscriber} from 'rxjs/internal/OuterSubscriber';
+import {PaginationOptionsInterface} from './common-list-item/pagination-options.interface';
 
 @Component({
   selector: 'app-common-list',
@@ -13,7 +14,7 @@ export class CommonListComponent implements OnInit {
   @Input() list: Observable<any[]>;
   @Input() component: ListItemComponent;
   @Input() totalElements: number;
-  @Input() paginationMetadata: PageEvent;
+  @Input() paginationMetadata: PaginationOptionsInterface;
 
   @Input() filterComponent: any;
   @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
@@ -32,7 +33,8 @@ export class CommonListComponent implements OnInit {
           previousPageIndex: 0,
           pageIndex: 1,
           pageSize: 3,
-          length: storeData.totalCount
+          length: storeData.totalCount,
+          query: ''
         };
         console.log(this.paginationMetadata);
       } else {
@@ -40,7 +42,8 @@ export class CommonListComponent implements OnInit {
           previousPageIndex: 0,
           pageIndex: 1,
           pageSize: 3,
-          length: 0
+          length: 0,
+          query: ''
         };
       }
     });

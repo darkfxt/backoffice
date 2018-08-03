@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { Point, PointWithMetadata } from '../../shared/models/Place';
 import {PageEvent} from '@angular/material';
+import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export enum PointActionTypes {
   GET_POINTS = '[Point] Retrieving',

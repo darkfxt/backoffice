@@ -28,9 +28,9 @@ export class PointComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let isUpdate = false;
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
-      console.log('point', point)
-      if(point._id !== ''){
-        this.place = point[0];
+      console.log('point', point.data[0])
+      if(point.data.length && point.data.length > 0 && point.data[0]._id !== ''){
+        this.place = point.data[0];
         isUpdate = true;
       } else {
         this.place = new Place();

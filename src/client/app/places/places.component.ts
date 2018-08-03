@@ -9,6 +9,7 @@ import { ListItemComponent } from '../shared/common-list/common-list-item/common
 import { PointSummarizedCardComponent } from './point/point-summarized-card/point-summarized-card.component';
 import {Router} from '@angular/router';
 import {PageEvent} from '@angular/material';
+import {PaginationOptionsInterface} from '../shared/common-list/common-list-item/pagination-options.interface';
 
 @Component({
   selector: 'app-places',
@@ -22,8 +23,7 @@ export class PlacesComponent implements OnInit{
   paginationOptions: PageEvent;
 
   constructor(private placesServiceInstance: PlaceService,
-              private store: Store<AppState>,
-              private router: Router){
+              private store: Store<AppState>){
     store.select(loadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
     });
