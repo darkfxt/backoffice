@@ -7,7 +7,8 @@ export class PlaceController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
-      response.send('ok');
+      const answer = await PlaceService.getAll(request.query);
+      response.json(answer.data);
     } catch (err) {
       next(err);
     }

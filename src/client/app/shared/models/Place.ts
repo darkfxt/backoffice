@@ -9,3 +9,12 @@ export class Point {
   ) {}
 
 }
+
+export class PointWithMetadata {
+  data: Point[];
+  count: number;
+  constructor(points: Point[], total: number) {
+    this.data = points;
+    this.count = total;
+  }
+}

@@ -39,4 +39,11 @@ export class PlaceStore {
   setWaypoints(waypoints){
     this.waypoints.next(waypoints);
   }
+
+  clearAll(){
+    this.origin = new BehaviorSubject(undefined);
+    this.destination = new BehaviorSubject(undefined);
+    this.location = new BehaviorSubject(undefined);
+    this.waypoints = new BehaviorSubject(undefined);
+  }
 }

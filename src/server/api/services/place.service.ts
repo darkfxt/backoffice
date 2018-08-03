@@ -10,6 +10,13 @@ import Place from '../entity/Place';
 
 export class PlaceService {
 
+  public static async getAll(query): Promise<any> {
+    console.log(query);
+
+    return axios
+      .get(`${config.geo.url}/places?size=${query.size}&page=${query.page}`);
+  }
+
   public static async create(body): Promise<any> {
     return axios.post(`${config.geo.url}/places`, body);
   }
