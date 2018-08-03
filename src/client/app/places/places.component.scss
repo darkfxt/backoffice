@@ -1,0 +1,15 @@
+@import '../../assets/variables';
+
+.body-content {
+  @media only screen and (max-device-width: 736px) {
+    margin-top: -116px;
+  }
+}
+
+  .app-container {
+
+    .save-button{
+      top: -30px;
+    }
+  }
+

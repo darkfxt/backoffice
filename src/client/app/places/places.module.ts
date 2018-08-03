@@ -8,6 +8,7 @@ import {PointMapComponent} from './point/point-map/point-map.component';
 import {PointHeadComponent} from './point/point-head/point-head.component';
 import {UploaderComponent} from '../shared/uploader/uploader.component';
 import {PlacesComponent} from './places.component';
+import { CommonListModule } from '../shared/common-list/common-list.module';
 
 import {PlacesRoutingModule} from './places-routing.module';
 import {
@@ -17,10 +18,16 @@ import {
 import {TranslateModule} from '@ngx-translate/core';
 import {LoadingModule} from '../shared/loading/loading.module';
 import {UploaderModule} from '../shared/uploader/uploader.module';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from '../store';
+import { PointSummarizedCardComponent } from './point/point-summarized-card/point-summarized-card.component';
+import { PointFiltersComponent } from './point/point-filters/point-filters.component';
 
 @NgModule({
   imports: [
+    StoreModule.forFeature('points', reducers),
     CommonModule,
+    CommonListModule,
     FormsModule,
     ReactiveFormsModule,
     UploaderModule,
@@ -42,7 +49,9 @@ import {UploaderModule} from '../shared/uploader/uploader.module';
     GalleryComponent,
     PointMapComponent,
     PointHeadComponent,
-    PlacesComponent
+    PlacesComponent,
+    PointSummarizedCardComponent,
+    PointFiltersComponent
   ],
   providers: [ ]
 })

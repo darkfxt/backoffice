@@ -12,6 +12,9 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 
 // Components
 import {AppComponent} from './app.component';
@@ -19,15 +22,17 @@ import {HeaderComponent} from './shared/header/header.component';
 import {PageNotFoundComponent} from './not-found.component';
 import {LoginComponent} from './login/login.component';
 import {TagsComponent} from './shared/tags/tags.component';
+import {PointEffects} from './store/place/place.effects';
 
 // Config
 import {environment} from '../environments/environment';
 import {ProgramsModule} from './programs/programs.module';
+import { reducers, metaReducers } from './store';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
-
+const StoreDevTools = !environment.production ? StoreDevtoolsModule.instrument() : [];
 // Register new locales
 registerLocaleData(localeEs, 'es');
 
@@ -43,6 +48,9 @@ registerLocaleData(localeEs, 'es');
   imports: [
     BrowserModule,
     HttpClientModule,
+    StoreModule.forRoot(reducers, {metaReducers}),
+    EffectsModule.forRoot([PointEffects]),
+    StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
     PlacesModule,

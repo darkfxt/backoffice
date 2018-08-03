@@ -10,10 +10,10 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://localhost:3000'
+    url: 'http://localhost:6002/geo'
   },
   routes: {
-    url: 'http://localhost:6001'
+    url: 'http://localhost:6001/places'
   }
 
 };
