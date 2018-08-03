@@ -1,4 +1,4 @@
-<form [formGroup]="pointSearchForm" #formDir="ngForm" class="box-container" (ngSubmit)="onSearch()" novalidate>
+<form [formGroup]="pointSearchForm" #formDir="ngForm" class="box-container" (ngSubmit)="onSearch($event)" novalidate>
   <div class="point-filter-container" [formGroup]="pointSearchForm">
     <mat-form-field color="accent">
       <input #location type="text" matInput placeholder="Search" required
