@@ -15,6 +15,7 @@ export class PointComponent implements OnInit, OnDestroy {
   placeForm: FormGroup;
   place: Place = new Place();
   _subsription: Subscription;
+  _resolverSubscription: Subscription;
   bussy: boolean;
 
   constructor(
@@ -26,7 +27,7 @@ export class PointComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let isUpdate = false;
-    this.route.data.subscribe(({ point }) => {
+    this._resolverSubscription = this.route.data.subscribe(({ point }) => {
       console.log('point', point)
       if(point._id !== ''){
         this.place = point[0];
@@ -66,6 +67,7 @@ export class PointComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this._resolverSubscription.unsubscribe();
     if(this._subsription)
       this._subsription.unsubscribe();
   }

@@ -69,6 +69,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.placeStore.clearAll();
     this._subscription.unsubscribe();
   }
 
