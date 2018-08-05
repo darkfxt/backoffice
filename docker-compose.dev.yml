@@ -12,7 +12,7 @@ services:
   node1:
     image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/node:dv_${TAG}
     environment:
-      - "NODE_ENV=local"
+      - "NODE_ENV=development"
     ports:
       - "5000:5000"
 networks:
