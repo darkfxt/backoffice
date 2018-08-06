@@ -10,10 +10,10 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://dev.api.taylorgps.com/geo'
+    url: 'http://dev.taylorgps.com/geo'
   },
   routes: {
-    url: 'http://dev.api.taylorgps.com/routes'
+    url: 'http://dev.apiest.taylorgps.com/routes'
   }
 
 };
