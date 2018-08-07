@@ -18,4 +18,4 @@ services:
 networks:
   default:
     external:
-      name: olnw-tgbo
+      name: tg-oln-mongodb
