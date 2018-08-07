@@ -1,0 +1,10 @@
+.list-container{
+  background: #fff;
+  border: 1px solid #ccc;
+  border-bottom: none;
+
+  @media only screen and (max-device-width: 736px) {
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+}

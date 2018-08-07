@@ -1,13 +1,9 @@
-<form [formGroup]="pointSearchForm" #formDir="ngForm" class="box-container" (ngSubmit)="onSearch()" novalidate>
-  <div class="point-filter-container" [formGroup]="pointSearchForm">
+<form [formGroup]="pointSearchForm" #formDir="ngForm" (ngSubmit)="onSearch()" novalidate>
+  <div class="point-filter-container">
     <mat-form-field color="accent">
       <input #location type="text" matInput placeholder="Search" required
              name="name" formControlName="name" [(ngModel)]="searchString"/>
       <mat-icon (click)="onSearch(location.value)" matSuffix>search</mat-icon>
-      <!--<mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
-        <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
-      </mat-autocomplete>
-      <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">Error</mat-error>-->
     </mat-form-field>
   </div>
 </form>

@@ -32,7 +32,7 @@ export class CommonListComponent implements OnInit {
         this.paginationMetadata = {
           previousPageIndex: 0,
           pageIndex: 1,
-          pageSize: 3,
+          pageSize: 10,
           length: storeData.totalCount,
           query: ''
         };
@@ -41,7 +41,7 @@ export class CommonListComponent implements OnInit {
         this.paginationMetadata = {
           previousPageIndex: 0,
           pageIndex: 1,
-          pageSize: 3,
+          pageSize: 10,
           length: 0,
           query: ''
         };

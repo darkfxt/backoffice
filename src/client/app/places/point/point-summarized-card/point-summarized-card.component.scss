@@ -1,35 +1,47 @@
 @import '../../../../assets/variables';
 
-.body-content{
-  @media only screen and (max-device-width: 736px) {
-    margin-top: -116px;
-  }
-}
 
 .card-container {
   display: flex;
-  align-items: center;
-  height: 100%;
-  background-color: white;
-  padding: 8px;
+  padding: 16px;
   cursor: pointer;
+  border-bottom: 1px solid #ccc;
+
+  &:hover{
+    background: #e8e8e8;
+  }
+
   .image-container {
     width: 64px;
-    padding: 8px 12px;
-    .point-thumbnail {
-      max-width: 48px;
+    margin-right: 16px;
+
+    .point-thumbnail{
+      width: 100%;
     }
   }
   .info-container {
-    padding: 16px 8px;
-    border-bottom: #cccccc 1px solid;
-    width: 100%;
+
     .summarized-card-title {
       margin-bottom: 8px;
+      color: $secondary-color;
+      line-height: 16px;
+
+      a{
+        color: $gray-caption;
+        font-size: 14px;
+      }
     }
     .summarized-card-subtitle {
-      margin: 2px 0;
+      color: #666;
+      margin: 0;
     }
+  }
+
+  mat-icon{
+    flex: auto;
+    align-self: center;
+    text-align: right;
+    margin-right: -8px;
   }
 
 }

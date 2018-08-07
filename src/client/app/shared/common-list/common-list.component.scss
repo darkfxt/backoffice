@@ -1,0 +1,21 @@
+.common-list{
+  margin-top: 76px;
+  background: #F5F5F5;
+  @media only screen and (max-device-width: 736px) {
+    padding-top: 55px;
+    margin-top: 110px;
+    overflow: hidden;
+  }
+}
+
+.list-filters{
+  margin-top: -37px;
+
+  @media only screen and (max-device-width: 736px) {
+    padding: 0 16px;
+  }
+}
+
+.mat-paginator{
+  background: none;
+}

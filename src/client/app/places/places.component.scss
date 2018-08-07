@@ -1,15 +1,15 @@
 @import '../../assets/variables';
 
-.body-content {
+.top-header{
+
   @media only screen and (max-device-width: 736px) {
-    margin-top: -116px;
+    top: 54px;
+  }
+
+  .app-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
 }
-
-  .app-container {
-
-    .save-button{
-      top: -30px;
-    }
-  }
 

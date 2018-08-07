@@ -4,6 +4,25 @@ header{
   min-height: 54px;
   background: $primary-color;
 
+  @media only screen and (max-device-width: 736px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+  }
+
+}
+
+.menu{
+  display: none;
+  color: #fff;
+  margin-right: 16px;
+  align-self: center;
+
+  @media only screen and (max-device-width: 736px) {
+    display: block;
+  }
 }
 
 .logo{
@@ -18,10 +37,27 @@ header{
   flex-direction: row;
   box-sizing: border-box;
   flex-wrap: wrap;
+  min-height: 54px;
+}
+
+.nav-overlay{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  z-index: 99;
+  display: none;
+
+  &.open{
+    display: block;
+  }
 }
 
 .main-nav{
   min-width: 320px;
+
   ul{
     display: flex;
     flex-direction: row;
@@ -39,6 +75,26 @@ header{
         border-bottom: 2px solid white;
         color: white;
       }
+    }
+  }
+
+  @media only screen and (max-device-width: 736px) {
+    position: fixed;
+    width: 80%;
+    height: 100%;
+    left: 0;
+    z-index: 99;
+    background: #ff5151;
+    min-width: auto;
+    transform: translate3d(-100%, 0, 0);
+    transition: transform 0.5s;
+
+    &.open{
+      transform: translate3d(0, 0, 0);
+    }
+
+    ul{
+      flex-direction: column;
     }
   }
 }
