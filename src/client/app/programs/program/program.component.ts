@@ -23,4 +23,8 @@ export class ProgramComponent extends FormGuard implements OnInit, OnDestroy{
   ngOnDestroy(){
   }
 
+  onSubmit() {
+    console.log('nada');
+  }
+
 }

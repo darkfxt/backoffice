@@ -19,13 +19,13 @@ if (config.logger.console) {
 //   });
 // }
 
-if (config.logger.reportErrors) {
-  import NewRelicStream from 'bunyan-newrelic-stream';
-  logger.addStream({
-    level: 'error',
-    type: 'raw',
-    stream: new NewRelicStream()
-  });
-}
+// if (config.logger.reportErrors) {
+//   import NewRelicStream from 'bunyan-newrelic-stream';
+//   logger.addStream({
+//     level: 'error',
+//     type: 'raw',
+//     stream: new NewRelicStream()
+//   });
+// }
 
 export { logger };
