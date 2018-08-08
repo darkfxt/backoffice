@@ -1,3 +1,5 @@
+import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+
 export class Point {
 
   constructor(
@@ -12,9 +14,9 @@ export class Point {
 
 export class PointWithMetadata {
   data: Point[];
-  count: number;
-  constructor(points: Point[], total: number) {
+  metadata: PaginationOptionsInterface;
+  constructor(points: Point[], metadata: PaginationOptionsInterface) {
     this.data = points;
-    this.count = total;
+    this.metadata = metadata;
   }
 }

@@ -26,7 +26,7 @@ export class PointEffects {
   searchPoints$ = this.actions$
     .ofType(PointActionTypes.FILTER_POINTS)
     .pipe(
-      switchMap((query: FilterPoints) => this.placeServiceInstance.search(query.payload)),
+      switchMap((query: FilterPoints) => this.placeServiceInstance.getAll(query.payload)),
       map((points: PointWithMetadata) => new PointsRetrieved(points))
     );
 }

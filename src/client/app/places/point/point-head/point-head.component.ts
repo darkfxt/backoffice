@@ -46,7 +46,6 @@ export class PointHeadComponent implements OnInit, OnDestroy {
   }
 
   search(event) {
-    console.log('search');
     if (this.placeForm.value.name.length < 3 || this.placeForm.value.name === this.lastSearch){
       return false;
     }

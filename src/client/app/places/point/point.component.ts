@@ -28,7 +28,6 @@ export class PointComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let isUpdate = false;
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
-      console.log('point', point.data[0])
       if(point.data.length && point.data.length > 0 && point.data[0]._id !== ''){
         this.place = point.data[0];
         isUpdate = true;
@@ -37,7 +36,6 @@ export class PointComponent implements OnInit, OnDestroy {
       }
     });
 
-    console.log(this.place);
     this.placeForm = this.fb.group({
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],

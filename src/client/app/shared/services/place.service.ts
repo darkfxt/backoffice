@@ -3,7 +3,7 @@ import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
 import {Point} from '../models/Place';
-import {PageEvent} from '@angular/material';
+import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,15 @@ export class PlaceService {
   constructor(private http: HttpClient) {
   }
 
-  getAll (paginationMetadata: PageEvent): Observable<any> {
+  getAll (paginationMetadata: PaginationOptionsInterface): Observable<any> {
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
+      if(paginationMetadata.search){
+        queryParams += `&search=${paginationMetadata.search}`;
+      }
     }
-    console.log('/api/places' + queryParams);
+
     return this.http.get('/api/places' + queryParams);
   }
 
@@ -34,7 +37,6 @@ export class PlaceService {
   }
 
   search (query: string): Observable<any>{
-    console.log('estoy pasando por la busqueda', query);
     return this.http.get(`/api/places/search/?${query}&lang=es`);
 
   }

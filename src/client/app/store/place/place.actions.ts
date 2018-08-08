@@ -13,22 +13,26 @@ export enum PointActionTypes {
 
 export class GetPoints implements Action {
   readonly type = PointActionTypes.GET_POINTS;
-  constructor(readonly payload: PageEvent) {
+  constructor(readonly payload: PaginationOptionsInterface) {
     this.payload = payload;
   }
 }
 
 export class FilterPoints implements Action {
   readonly type = PointActionTypes.FILTER_POINTS;
-  constructor(readonly payload: string) {
+  constructor(readonly payload: PaginationOptionsInterface) {
     this.payload = payload;
   }
 }
 
 export class PointsRetrieved implements Action {
   readonly type = PointActionTypes.POINTS_RETRIEVED;
-  constructor(readonly payload: PointWithMetadata) {
-    this.payload = payload;
+  readonly payload: Point[];
+  readonly metadata: PaginationOptionsInterface;
+  constructor(response: PointWithMetadata) {
+    this.payload = response.data;
+    this.metadata = response.metadata;
+
   }
 }
 
