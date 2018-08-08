@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   header: any;
 
   currentRoute = 'trips';
+  open = false;
   constructor(router: Router) {
   }
 
