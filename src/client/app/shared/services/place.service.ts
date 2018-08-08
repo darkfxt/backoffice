@@ -13,13 +13,16 @@ export class PlaceService {
   constructor(private http: HttpClient) {
   }
 
-  getAll (paginationMetadata: PaginationOptionsInterface): Observable<any> {
+  getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
       if(paginationMetadata.search){
         queryParams += `&search=${paginationMetadata.search}`;
       }
+    }
+    if(withoutMetadata){
+      queryParams += '&simple=true';
     }
 
     return this.http.get('/api/places' + queryParams);

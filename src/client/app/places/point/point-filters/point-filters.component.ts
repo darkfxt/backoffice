@@ -5,6 +5,8 @@ import {AppState, metadataSelector} from '../../../store';
 import {Store} from '@ngrx/store';
 import {FilterPoints} from '../../../store/place/place.actions';
 import {PaginationOptionsInterface} from '../../../shared/common-list/common-list-item/pagination-options.interface';
+import {Observable} from 'rxjs';
+import {SearchOptions} from '../../../shared/common-list/common-list-item/search-options';
 
 @Component({
   selector: 'app-point-filters',
@@ -13,11 +15,11 @@ import {PaginationOptionsInterface} from '../../../shared/common-list/common-lis
 })
 export class PointFiltersComponent implements OnInit {
   searchString: string;
-  paginationMetadata: PaginationOptionsInterface;
-
+  options: Observable<{data: any[], metadata: object}>;
+  private autocompleteTimeout;
   @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() {
+  constructor(private placeService: PlaceService) {
 
   }
 
@@ -25,7 +27,27 @@ export class PointFiltersComponent implements OnInit {
 
   }
 
+  onOptionSelected(event) {
+    this.searchString = event.option.value.name;
+    this.filterChanged.emit(event.option.value.name);
+  }
+
   onSearch(event) {
+    if (this.searchString.length < 3){
+      return false;
+    }
+
+    const searchParams: PaginationOptionsInterface = new SearchOptions(0, 10, 0, null, event);
+
+    clearTimeout(this.autocompleteTimeout);
+    this.autocompleteTimeout = setTimeout(() => {
+      this.placeService.getAll(searchParams, true).subscribe(data => console.log(data));
+      this.options = this.placeService.getAll(searchParams, true);
+    }, 300);
+
+  }
+
+  onEnter(event) {
     this.filterChanged.emit(event);
   }
 

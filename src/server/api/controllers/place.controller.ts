@@ -8,6 +8,10 @@ export class PlaceController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
       const answer = await PlaceService.getAll(request.query);
+      if(request.query.simple){
+        response.json(answer.data.data);
+        return;
+      }
       response.json(answer.data);
     } catch (err) {
       next(err);
