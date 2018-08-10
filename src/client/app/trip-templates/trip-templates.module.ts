@@ -9,10 +9,9 @@ import {TranslateModule} from '@ngx-translate/core';
 import { TripTemplateDetailComponent } from './trip-template-detail/trip-template-detail.component';
 import {TripTemplatesRoutingModule} from './trip-templates-routing.module';
 import {TripTemplatesComponent} from './trip-templates.component';
-import { ItineraryComponent } from './trip-template-detail/itinerary/itinerary.component';
-import { MapsComponent } from './trip-template-detail/maps/maps.component';
 import { TripMapsComponent } from './trip-template-detail/trip-maps/trip-maps.component';
 import { TripTemplateItineraryComponent } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
+import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 
 @NgModule({
   imports: [
@@ -33,8 +32,12 @@ import { TripTemplateItineraryComponent } from './trip-template-detail/trip-temp
     TripTemplatesComponent,
     TripTemplateDetailComponent,
     TripMapsComponent,
-    TripTemplateItineraryComponent
+    TripTemplateItineraryComponent,
+    EventDialogComponent
   ],
-  providers: [ ]
+  providers: [ ],
+  entryComponents: [
+    EventDialogComponent
+  ],
 })
 export class TripTemplatesModule { }
