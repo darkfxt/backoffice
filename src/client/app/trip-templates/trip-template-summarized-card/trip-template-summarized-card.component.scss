@@ -1,0 +1,47 @@
+@import '../../../assets/variables';
+
+
+.card-container {
+  display: flex;
+  padding: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+
+  &:hover{
+    background: #e8e8e8;
+  }
+
+  .image-container {
+    width: 64px;
+    margin-right: 16px;
+
+    .point-thumbnail{
+      width: 100%;
+    }
+  }
+  .info-container {
+
+    .summarized-card-title {
+      margin-bottom: 8px;
+      color: $secondary-color;
+      line-height: 16px;
+
+      a{
+        color: $gray-caption;
+        font-size: 14px;
+      }
+    }
+    .summarized-card-subtitle {
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  mat-icon{
+    flex: auto;
+    align-self: center;
+    text-align: right;
+    margin-right: -8px;
+  }
+
+}

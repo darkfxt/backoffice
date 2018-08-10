@@ -9,14 +9,18 @@ import {TranslateModule} from '@ngx-translate/core';
 import { TripTemplateDetailComponent } from './trip-template-detail/trip-template-detail.component';
 import {TripTemplatesRoutingModule} from './trip-templates-routing.module';
 import {TripTemplatesComponent} from './trip-templates.component';
-import { ItineraryComponent } from './trip-template-detail/itinerary/itinerary.component';
-import { MapsComponent } from './trip-template-detail/maps/maps.component';
 import { TripMapsComponent } from './trip-template-detail/trip-maps/trip-maps.component';
 import { TripTemplateItineraryComponent } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from '../store';
+import {CommonListModule} from '../shared/common-list/common-list.module';
+import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 
 @NgModule({
   imports: [
+    StoreModule.forFeature('tripTemplates', reducers),
     CommonModule,
+    CommonListModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -33,7 +37,8 @@ import { TripTemplateItineraryComponent } from './trip-template-detail/trip-temp
     TripTemplatesComponent,
     TripTemplateDetailComponent,
     TripMapsComponent,
-    TripTemplateItineraryComponent
+    TripTemplateItineraryComponent,
+    TripTemplateSummarizedCardComponent
   ],
   providers: [ ]
 })
