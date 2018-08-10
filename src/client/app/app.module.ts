@@ -15,7 +15,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-
+import {TripTemplatesModule} from './trip-templates/trip-templates.module';
+import { reducers, metaReducers } from './store';
+import {SegmentEffects} from './store/route/route.effects';
 
 // Components
 import {AppComponent} from './app.component';
@@ -27,9 +29,8 @@ import {PointEffects} from './store/place/place.effects';
 
 // Config
 import {environment} from '../environments/environment';
-import {ProgramsModule} from './programs/programs.module';
-import { reducers, metaReducers } from './store';
-import {SegmentEffects} from './store/route/route.effects';
+
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -57,7 +58,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     PlacesModule,
     RoutesModule,
-    ProgramsModule,
+    TripTemplatesModule,
     LoginRoutingModule,
     AppRoutingModule,
     MatIconModule,

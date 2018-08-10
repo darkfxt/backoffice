@@ -1,0 +1,33 @@
+
+<div class="top-header">
+  <div class="app-container">
+    <h1>{{'Nuevo Trip Template' | translate}}</h1>
+  </div>
+</div>
+<div class="app-container full-size body-content">
+  <form [formGroup]="form" #formDir="ngForm" class=""  novalidate>
+    <div class="save-button">
+      <button mat-fab>
+        <mat-icon aria-label="Save and exit">save</mat-icon>
+      </button>
+      <span class="save-exit-label">Save and close</span>
+    </div>
+
+    <div class="row ">
+      <div class="col-xs-5">
+        <h3>Itinerary</h3>
+        <div>
+          <app-trip-template-itinerary></app-trip-template-itinerary>
+        </div>
+      </div>
+      <div class="col-xs-7">
+        <h3>Maps</h3>
+        <div>
+          <app-trip-maps></app-trip-maps>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
