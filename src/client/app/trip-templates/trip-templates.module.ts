@@ -10,11 +10,11 @@ import { TripTemplateDetailComponent } from './trip-template-detail/trip-templat
 import {TripTemplatesRoutingModule} from './trip-templates-routing.module';
 import {TripTemplatesComponent} from './trip-templates.component';
 import { TripMapsComponent } from './trip-template-detail/trip-maps/trip-maps.component';
-import { TripTemplateItineraryComponent } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from '../store';
 import {CommonListModule} from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
+import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 
 @NgModule({
   imports: [
@@ -37,9 +37,12 @@ import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-
     TripTemplatesComponent,
     TripTemplateDetailComponent,
     TripMapsComponent,
-    TripTemplateItineraryComponent,
-    TripTemplateSummarizedCardComponent
+    TripTemplateSummarizedCardComponent,
+    EventDialogComponent
   ],
-  providers: [ ]
+  providers: [ ],
+  entryComponents: [
+    EventDialogComponent
+  ],
 })
 export class TripTemplatesModule { }
