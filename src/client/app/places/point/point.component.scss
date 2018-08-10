@@ -3,11 +3,12 @@
 .body-content{
 
   @media only screen and (max-device-width: 736px) {
-    margin-top: -116px;
+    margin-top: 0px;
   }
 }
 
 .top-header{
+  z-index: 99;
   .app-container{
     display: flex;
     align-items: center;
