@@ -11,16 +11,19 @@ import { storeLogger } from 'ngrx-store-logger';
 import { pointReducer, PointState } from './place/place.reducer';
 
 import { environment } from '../../environments/environment';
-import {segmentReducer, SegmentState} from './route/route.reducer';
+import { segmentReducer, SegmentState } from './route/route.reducer';
+import { tripTemplateReducer, TripTemplateState } from './trip-template/trip-template.reducer';
 
 export interface AppState {
   points: PointState;
   segments: SegmentState;
+  tripTemplates: TripTemplateState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   points: pointReducer,
-  segments: segmentReducer
+  segments: segmentReducer,
+  tripTemplates: tripTemplateReducer
 };
 
 export function logger(reducer: ActionReducer<AppState>) {
@@ -65,5 +68,23 @@ export const segmentMetadataSelector = createSelector(
   (state: SegmentState) => state.metadata
 );
 
+const TripTemplateStateSelector = createFeatureSelector('tripTemplates');
+
+export const tripTemplateLoadingSelector = createSelector(
+  TripTemplateStateSelector,
+  (state: TripTemplateState) => state.loading
+);
+
+export const tripTemplateSelector = createSelector(
+  TripTemplateStateSelector,
+  (state: TripTemplateState) => state.tripTemplates
+);
+
+export const tripTemplateMetadataSelector = createSelector(
+  TripTemplateStateSelector,
+  (state: TripTemplateState) => state.metadata
+);
+
 export { PointsRetrieved } from './place/place.actions';
 export { SegmentsRetrieved } from './route/route.actions';
+export { TripTemplatesRetrieved } from './trip-template/trip-template.actions';
