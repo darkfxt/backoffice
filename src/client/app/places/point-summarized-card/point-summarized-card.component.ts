@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ListItemInterface } from '../../../shared/common-list/common-list-item/list-item.interface';
+import { ListItemInterface } from '../../shared/common-list/common-list-item/list-item.interface';
 
 @Component({
   selector: 'app-point-summarized-card',
@@ -22,7 +22,7 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   ngOnInit(){
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
       ? this.data.images[0].url
-      : 'http://leeford.in/wp-content/uploads/2017/09/image-not-found.jpg';
+      : 'https://www.theraband.com/media/catalog/product/cache/18/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/ImageNotFound_3.png';
     this.title = this.data.name;
     this.subtitle = this.data.geo.address.formatted_address;
     this.description = this.data.description;

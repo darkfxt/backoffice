@@ -16,6 +16,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
+
 // Components
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './shared/header/header.component';
@@ -28,6 +29,7 @@ import {PointEffects} from './store/place/place.effects';
 import {environment} from '../environments/environment';
 import {ProgramsModule} from './programs/programs.module';
 import { reducers, metaReducers } from './store';
+import {SegmentEffects} from './store/route/route.effects';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -49,7 +51,7 @@ registerLocaleData(localeEs, 'es');
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([PointEffects]),
+    EffectsModule.forRoot([PointEffects, SegmentEffects]),
     StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,

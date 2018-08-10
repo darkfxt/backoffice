@@ -8,6 +8,7 @@ const RoutesRouter: Router = Router();
 const s3Middleware: S3Middleware = new S3Middleware({bucket: 'routes'});
 
 RoutesRouter.route('/')
+  .get(RoutesController.getAll)
   .post([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], RoutesController.create);
 
 RoutesRouter.route('/:id')

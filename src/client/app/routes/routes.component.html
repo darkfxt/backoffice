@@ -1,3 +1,19 @@
-<p>
-  routes works!
-</p>
+<div class="top-header">
+  <div class="app-container">
+    <h1><span *ngIf="!loading">{{paginationOptions.length}}</span> rutas encontradas</h1>
+  </div>
+</div>
+<div class="app-container full-size body-content">
+  <div class="save-button">
+    <a routerLink="/routes/new" mat-fab >
+      <mat-icon aria-label="New">add</mat-icon>
+    </a>
+    <span class="save-exit-label">New</span>
+  </div>
+
+  <div [hidden]="loading">
+    <app-common-list [list]="routes$" [component]="drawingComponent" [storeToWatch]="'segments'" (pageChanged)="onPageChanged($event)">
+      <app-route-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-route-filters>
+    </app-common-list>
+  </div>
+</div>

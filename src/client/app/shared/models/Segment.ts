@@ -1,3 +1,5 @@
+import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+
 export class Leg{
   distance: any;
   duration: any;
@@ -42,5 +44,14 @@ export default class Segment{
     this.middle_points= params.middle_points || [];
     this.things_to_know= params.things_to_know || [];
     this.legs= params.legs || [];
+  }
+}
+
+export class SegmentWithMetadata {
+  data: Segment[];
+  metadata: PaginationOptionsInterface;
+  constructor(segments: Segment[], metadata: PaginationOptionsInterface) {
+    this.data = segments;
+    this.metadata = metadata;
   }
 }

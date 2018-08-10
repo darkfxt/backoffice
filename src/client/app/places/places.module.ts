@@ -20,8 +20,8 @@ import {LoadingModule} from '../shared/loading/loading.module';
 import {UploaderModule} from '../shared/uploader/uploader.module';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from '../store';
-import { PointSummarizedCardComponent } from './point/point-summarized-card/point-summarized-card.component';
-import { PointFiltersComponent } from './point/point-filters/point-filters.component';
+import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
+import { PointFiltersComponent } from './point-filters/point-filters.component';
 
 @NgModule({
   imports: [

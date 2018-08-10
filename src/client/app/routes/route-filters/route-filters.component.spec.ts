@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaginatorComponent } from './paginator.component';
+import { RouteFiltersComponent } from './route-filters.component';
 
-describe('PaginatorComponent', () => {
-  let component: PaginatorComponent;
-  let fixture: ComponentFixture<PaginatorComponent>;
+describe('RouteFiltersComponent', () => {
+  let component: RouteFiltersComponent;
+  let fixture: ComponentFixture<RouteFiltersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaginatorComponent ]
+      declarations: [ RouteFiltersComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PaginatorComponent);
+    fixture = TestBed.createComponent(RouteFiltersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

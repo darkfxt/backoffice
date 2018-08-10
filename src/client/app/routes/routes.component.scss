@@ -1,0 +1,15 @@
+@import '../../assets/variables';
+
+.top-header{
+
+  @media only screen and (max-device-width: 736px) {
+    top: 54px;
+  }
+
+  .app-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+}
+

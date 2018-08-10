@@ -58,7 +58,8 @@
     "rxjs": "^6.0.0",
     "typeorm": "^0.2.0",
     "zone.js": "^0.8.26",
-    "@ngrx/store-devtools": "latest"
+    "@ngrx/store-devtools": "latest",
+    "@ngrx/router-store": "latest"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.5",

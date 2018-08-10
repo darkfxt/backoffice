@@ -15,7 +15,7 @@ export class CommonListComponent implements OnInit {
   @Input() component: ListItemComponent;
   @Input() totalElements: number;
   @Input() paginationMetadata: PaginationOptionsInterface;
-
+  @Input() storeToWatch: string;
   @Input() filterComponent: any;
   @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
 
@@ -33,7 +33,7 @@ export class CommonListComponent implements OnInit {
           previousPageIndex: 0,
           pageIndex: 0,
           pageSize: 10,
-          length: storeData.metadata.length
+          length: storeData.metadata.length || 0
         };
       } else {
         this.paginationMetadata = {

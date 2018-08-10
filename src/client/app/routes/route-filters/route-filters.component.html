@@ -1,0 +1,13 @@
+<div class="route-filter-container" >
+  <mat-form-field color="accent">
+    <input #route
+           type="text" matInput placeholder="Search" required
+           name="name" (keyup)="onSearch(route.value)"
+           [matAutocomplete]="autoGroup"
+           (keyup.enter)="onEnter(route.value)" [(ngModel)]="searchString"/>
+    <mat-icon (click)="onSearch(route.value)" matSuffix>search</mat-icon>
+    <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
+      <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

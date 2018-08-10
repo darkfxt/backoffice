@@ -16,10 +16,17 @@ import {RouteCoverComponent} from './route/route-cover/route-cover.component';
 import {RouteInfoComponent} from './route/route-info/route-info.component';
 import {UploaderModule} from '../shared/uploader/uploader.module';
 import {ModalModule} from '../shared/modal/modal.module';
+import { RouteSummarizedCardComponent } from './route-summarized-card/route-summarized-card.component';
+import { RouteFiltersComponent } from './route-filters/route-filters.component';
+import {CommonListModule} from '../shared/common-list/common-list.module';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from '../store';
 
 @NgModule({
   imports: [
+    StoreModule.forFeature('segments', reducers),
     CommonModule,
+    CommonListModule,
     UploaderModule,
     ModalModule,
     FormsModule,
@@ -42,7 +49,10 @@ import {ModalModule} from '../shared/modal/modal.module';
     RoutePointsComponent,
     RouteHeadComponent,
     RouteCoverComponent,
-    RouteInfoComponent
-  ]
+    RouteInfoComponent,
+    RouteSummarizedCardComponent,
+    RouteFiltersComponent
+  ],
+  providers: [ ]
 })
 export class RoutesModule { }

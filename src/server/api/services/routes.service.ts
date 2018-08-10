@@ -4,6 +4,16 @@ import {config} from '../../config/env';
 
 export class RoutesService {
 
+  public static async getAll(query): Promise<any> {
+    let queryParams = `?size=${query.size}&page=${query.page}`;
+    if(query.search){
+      queryParams += `&search=${query.search}`;
+    }
+    console.log(`${config.routes.url}/segments${queryParams}`);
+    return axios
+      .get(`${config.routes.url}/segments${queryParams}`);
+  }
+
   public static async create(route): Promise<any> {
     return axios.post(`${config.routes.url}/segments`, route);
   }

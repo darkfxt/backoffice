@@ -19,6 +19,7 @@ const placesRoutes: Routes = [
       {
         path: ':id',
         component: PointComponent,
+        canDeactivate: [CanDeactivateGuard],
         resolve: {
           point: PointResolver
         }

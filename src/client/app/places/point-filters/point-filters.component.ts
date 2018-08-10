@@ -1,12 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {PlaceService} from '../../../shared/services/place.service';
-import {FormGroup} from '@angular/forms';
-import {AppState, metadataSelector} from '../../../store';
-import {Store} from '@ngrx/store';
-import {FilterPoints} from '../../../store/place/place.actions';
-import {PaginationOptionsInterface} from '../../../shared/common-list/common-list-item/pagination-options.interface';
+import {PlaceService} from '../../shared/services/place.service';
+import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
 import {Observable} from 'rxjs';
-import {SearchOptions} from '../../../shared/common-list/common-list-item/search-options';
+import {SearchOptions} from '../../shared/common-list/common-list-item/search-options';
 
 @Component({
   selector: 'app-point-filters',
@@ -41,7 +37,6 @@ export class PointFiltersComponent implements OnInit {
 
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
-      this.placeService.getAll(searchParams, true).subscribe(data => console.log(data));
       this.options = this.placeService.getAll(searchParams, true);
     }, 300);
 

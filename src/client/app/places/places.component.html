@@ -1,6 +1,6 @@
 <div class="top-header">
   <div class="app-container">
-    <h1>123 puntos encontrados</h1>
+    <h1><span *ngIf="!loading">{{paginationOptions.length}}</span> puntos encontrados</h1>
   </div>
 </div>
 <div class="app-container full-size body-content">
@@ -12,7 +12,7 @@
   </div>
 
   <div [hidden]="loading">
-    <app-common-list [list]="points$" [component]="drawingComponent" (pageChanged)="onPageChanged($event)">
+    <app-common-list [list]="points$" [component]="drawingComponent" [storeToWatch]="'points'" (pageChanged)="onPageChanged($event)">
       <app-point-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-point-filters>
     </app-common-list>
   </div>

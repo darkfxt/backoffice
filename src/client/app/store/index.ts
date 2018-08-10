@@ -11,13 +11,16 @@ import { storeLogger } from 'ngrx-store-logger';
 import { pointReducer, PointState } from './place/place.reducer';
 
 import { environment } from '../../environments/environment';
+import {segmentReducer, SegmentState} from './route/route.reducer';
 
 export interface AppState {
   points: PointState;
+  segments: SegmentState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  points: pointReducer
+  points: pointReducer,
+  segments: segmentReducer
 };
 
 export function logger(reducer: ActionReducer<AppState>) {
@@ -45,4 +48,22 @@ export const metadataSelector = createSelector(
   (state: PointState) => state.metadata,
 );
 
+const SegmentStateSelector = createFeatureSelector('segments');
+
+export const segmentLoadingSelector = createSelector(
+  SegmentStateSelector,
+  (state: SegmentState) => state.loading
+);
+
+export const segmentSelector = createSelector(
+  SegmentStateSelector,
+  (state: SegmentState) => state.segments
+);
+
+export const segmentMetadataSelector = createSelector(
+  SegmentStateSelector,
+  (state: SegmentState) => state.metadata
+);
+
 export { PointsRetrieved } from './place/place.actions';
+export { SegmentsRetrieved } from './route/route.actions';

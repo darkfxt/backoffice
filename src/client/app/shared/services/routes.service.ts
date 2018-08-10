@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
+import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,21 @@ import {HttpClient} from '@angular/common/http';
 export class RoutesService {
 
   constructor(private http: HttpClient) {
+  }
+
+  getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
+    let queryParams = '';
+    if (paginationMetadata) {
+      queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
+      if(paginationMetadata.search){
+        queryParams += `&search=${paginationMetadata.search}`;
+      }
+    }
+    if(withoutMetadata){
+      queryParams += '&simple=true';
+    }
+
+    return this.http.get('/api/routes' + queryParams);
   }
 
   create (params): Observable<any> {

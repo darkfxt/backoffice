@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import { CommonListDirective } from '../common-list.directive';
 import {ListItemComponent} from '../common-list-item/common-list-item.component';
 import {ListItemInterface} from '../common-list-item/list-item.interface';
-import {PointSummarizedCardComponent} from '../../../places/point/point-summarized-card/point-summarized-card.component';
+import {PointSummarizedCardComponent} from '../../../places/point-summarized-card/point-summarized-card.component';
 import {LoadingComponent} from '../../loading/loading.component';
 import {loadConfigurationFromPath} from 'tslint/lib/configuration';
 import {AppState, loadingSelector} from '../../../store';
@@ -17,8 +17,8 @@ import {Store} from '@ngrx/store';
 })
 export class ListComponent implements OnInit {
   @Input() objectList: Observable<any[]>;
-  @Input() componentsList: ListItemComponent[];
   @Input() drawingComponent: ListItemComponent;
+  @Input() storeToWatch: string;
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
   iterationList: any[];
   loading = false;
@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
     this.objectList.subscribe( (data: any) => {
       this.loading = data.loading;
       if(!data.loading){
-        this.iterationList = data.points;
+        this.iterationList = data[this.storeToWatch];
         this.loadComponent(this.drawingComponent.component);
       }
     });
