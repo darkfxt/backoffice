@@ -31,19 +31,16 @@ export class CommonListComponent implements OnInit {
       if (!storeData.loading) {
         this.paginationMetadata = {
           previousPageIndex: 0,
-          pageIndex: 1,
+          pageIndex: 0,
           pageSize: 10,
-          length: storeData.totalCount,
-          query: ''
+          length: storeData.metadata.length
         };
-        console.log(this.paginationMetadata);
       } else {
         this.paginationMetadata = {
           previousPageIndex: 0,
-          pageIndex: 1,
+          pageIndex: 0,
           pageSize: 10,
-          length: 0,
-          query: ''
+          length: 0
         };
       }
     });

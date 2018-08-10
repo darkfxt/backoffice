@@ -13,7 +13,7 @@
 
   <div [hidden]="loading">
     <app-common-list [list]="points$" [component]="drawingComponent" (pageChanged)="onPageChanged($event)">
-      <app-point-filters class="common-list-filters"></app-point-filters>
+      <app-point-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-point-filters>
     </app-common-list>
   </div>
 </div>

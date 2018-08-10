@@ -20,7 +20,6 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   }
 
   ngOnInit(){
-    console.log('fuck', this.data);
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
       ? this.data.images[0].url
       : 'http://leeford.in/wp-content/uploads/2017/09/image-not-found.jpg';

@@ -40,4 +40,9 @@ export const pointSelector = createSelector(
   (state: PointState) => state.points,
 );
 
+export const metadataSelector = createSelector(
+  PointStateSelector,
+  (state: PointState) => state.metadata,
+);
+
 export { PointsRetrieved } from './place/place.actions';

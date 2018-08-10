@@ -31,7 +31,6 @@ export class ListComponent implements OnInit {
       this.loading = data.loading;
       if(!data.loading){
         this.iterationList = data.points;
-        console.log('apap', this.drawingComponent.component.constructor.name);
         this.loadComponent(this.drawingComponent.component);
       }
     });
