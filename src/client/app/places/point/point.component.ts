@@ -4,13 +4,16 @@ import {PlaceService} from '../../shared/services/place.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
 import {Subscription} from 'rxjs';
+import {FormGuard} from '../../shared/form-guard/form-guard';
+import {MatDialog} from '@angular/material';
+import {ModalService} from '../../shared/modal/modal.service';
 
 @Component({
   selector: 'app-point',
   templateUrl: './point.component.html',
   styleUrls: ['./point.component.scss']
 })
-export class PointComponent implements OnInit, OnDestroy {
+export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   placeForm: FormGroup;
   place: Place = new Place();
@@ -22,8 +25,12 @@ export class PointComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private placeService: PlaceService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    matDialog: MatDialog,
+    modalService: ModalService
+  ) {
+    super(matDialog, modalService);
+  }
 
   ngOnInit() {
     let isUpdate = false;
