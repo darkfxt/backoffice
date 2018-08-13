@@ -5,13 +5,22 @@ import {PaginationOptionsInterface} from '../../shared/common-list/common-list-i
 export enum TripTemplateActionTypes {
   GET_TRIP_TEMPLATES = '[T.Template] Retrieving',
   TRIP_TEMPLATES_RETRIEVED = '[T.Template] Retrieved Succesfully',
+  CREATE_TRIP_TEMPLATE = '[T.Template] Posting',
   GET_EVENTS_FOR_T_TEMPLATE = '[Events] Retrieving',
-  EVENTS_RETRIEVED_FOR_TEMPLATE = '[Events] Retrieved Succesfully'
+  EVENTS_RETRIEVED_FOR_TEMPLATE = '[Events] Retrieved Succesfully',
+
 }
 
 export class GetTripTemplates implements Action {
   readonly type = TripTemplateActionTypes.GET_TRIP_TEMPLATES;
   constructor (readonly payload: PaginationOptionsInterface){
+    this.payload = payload;
+  }
+}
+
+export class CreateTripTemplate implements Action {
+  readonly type = TripTemplateActionTypes.CREATE_TRIP_TEMPLATE;
+  constructor (readonly payload: TripTemplate){
     this.payload = payload;
   }
 }
@@ -42,4 +51,4 @@ export class EventsRetrieved implements Action {
   }
 }
 
-export type TripTemplateActions = GetTripTemplates | TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved;
+export type TripTemplateActions = GetTripTemplates | CreateTripTemplate | TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved;

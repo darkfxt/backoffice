@@ -31,7 +31,9 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.GET_TRIP_TEMPLATES :
       return {...state, loading: true};
     case TripTemplateActionTypes.TRIP_TEMPLATES_RETRIEVED:
-      return {...state, loading: true, tripTemplates: action.payload, metadata: action.metadata};
+      return {...state, loading: false, tripTemplates: action.payload, metadata: action.metadata};
+    case TripTemplateActionTypes.CREATE_TRIP_TEMPLATE:
+      return {...state, loading: true};
     default:
       return state;
   }

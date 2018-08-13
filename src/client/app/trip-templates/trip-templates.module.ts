@@ -15,6 +15,7 @@ import {reducers} from '../store';
 import {CommonListModule} from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
+import { TripTemplateItineraryComponent } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { EventDialogComponent } from './trip-template-detail/trip-template-itine
     TripTemplatesComponent,
     TripTemplateDetailComponent,
     TripMapsComponent,
+    TripTemplateItineraryComponent,
     TripTemplateSummarizedCardComponent,
     EventDialogComponent
   ],
