@@ -45,7 +45,6 @@ import {SharedModule} from '../shared/shared.module';
     TripTemplateSummarizedCardComponent,
     TripTemplateItineraryComponent,
     EventDialogComponent
-
   ],
   providers: [ ],
   entryComponents: [

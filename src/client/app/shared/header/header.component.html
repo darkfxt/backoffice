@@ -7,7 +7,7 @@
     <div class="nav-overlay" [class.open]="open" (click)="open=false"></div>
     <nav class="main-nav" [class.open]="open">
       <ul>
-        <li [class.current]="currentRoute == 'trips'" routerLink="/trips" (click)="currentRoute = 'trips'">TRIPS</li>
+        <li [class.current]="currentRoute == 'trips'" routerLink="/trip-templates" (click)="currentRoute = 'trip-templates'">TRIPS</li>
         <li [class.current]="currentRoute == 'routes'" routerLink="/routes" (click)="currentRoute = 'routes'">ROUTES</li>
         <li [class.current]="currentRoute == 'places'" routerLink="/places" (click)="currentRoute = 'places'">PLACES</li>
       </ul>
