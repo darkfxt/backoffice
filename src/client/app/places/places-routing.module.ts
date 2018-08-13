@@ -1,12 +1,10 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {PointComponent} from './point/point.component';
-import {PlacesComponent} from './places.component';
-
-import {AuthGuard} from '../shared/services/auth-guard.service';
 import {CanDeactivateGuard} from '../shared/services/can-deactivate-guard.service';
 import {PointResolver} from './point/point.resolver';
+import {PlaceDetailComponent} from './place-detail/place-detail.component';
+import {PlacesComponent} from './places.component';
 
 const placesRoutes: Routes = [
   {
@@ -18,7 +16,7 @@ const placesRoutes: Routes = [
       },
       {
         path: ':id',
-        component: PointComponent,
+        component: PlaceDetailComponent,
         canDeactivate: [CanDeactivateGuard],
         resolve: {
           point: PointResolver

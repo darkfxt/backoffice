@@ -1,6 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject, Input} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {EventDialogComponent} from './event-dialog/event-dialog.component';
+import {FormArray, FormBuilder} from '@angular/forms';
+import {Event} from '../../../shared/models/TripTemplate';
 
 
 @Component({
@@ -9,15 +11,24 @@ import {EventDialogComponent} from './event-dialog/event-dialog.component';
   styleUrls: ['./trip-template-itinerary.component.scss']
 })
 export class TripTemplateItineraryComponent implements OnInit {
-
-  constructor(public dialog: MatDialog) { }
+  @Input()
+  itinerary: FormArray;
+  constructor(public dialog: MatDialog, private fb: FormBuilder) { }
 
   ngOnInit() {
   }
 
-  openDialog(): void{
+  openDialog(productType): void{
+    this.itinerary.push(this.fb.group(new Event()));
     const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '250px'
+      width: '80%',
+      height: '80%',
+      maxWidth: '1024px',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {productType: productType},
+      disableClose: true,
+      closeOnNavigation: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

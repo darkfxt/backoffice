@@ -30,6 +30,7 @@ import {PointEffects} from './store/place/place.effects';
 // Config
 import {environment} from '../environments/environment';
 import {TripTemplateEffects} from './store/trip-template/trip-template.effects';
+import { DetailHeaderComponent } from './shared/detail-header/detail-header.component';
 
 
 
@@ -47,7 +48,7 @@ registerLocaleData(localeEs, 'es');
     HeaderComponent,
     PageNotFoundComponent,
     LoginComponent,
-    TagsComponent
+    TagsComponent,
   ],
   imports: [
     BrowserModule,

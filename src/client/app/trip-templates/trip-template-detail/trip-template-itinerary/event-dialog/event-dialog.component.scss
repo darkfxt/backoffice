@@ -1,0 +1,10 @@
+/deep/ #eventDialog{
+  padding: 0;
+}
+
+/deep/ .eventDialogPanel{
+  @media only screen and (max-device-width: 736px) {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

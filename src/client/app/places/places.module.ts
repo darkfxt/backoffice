@@ -22,6 +22,8 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from '../store';
 import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
 import { PointFiltersComponent } from './point-filters/point-filters.component';
+import {SharedModule} from '../shared/shared.module';
+import { PlaceDetailComponent } from './place-detail/place-detail.component';
 
 @NgModule({
   imports: [
@@ -42,10 +44,12 @@ import { PointFiltersComponent } from './point-filters/point-filters.component';
     MatSelectModule,
     MatMenuModule,
     TranslateModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
   ],
   declarations: [
     PointComponent,
+    PlaceDetailComponent,
     GalleryComponent,
     PointMapComponent,
     PointHeadComponent,

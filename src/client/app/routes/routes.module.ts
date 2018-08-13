@@ -21,6 +21,9 @@ import { RouteFiltersComponent } from './route-filters/route-filters.component';
 import {CommonListModule} from '../shared/common-list/common-list.module';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from '../store';
+import {DetailHeaderComponent} from '../shared/detail-header/detail-header.component';
+import {SharedModule} from '../shared/shared.module';
+import { RouteDetailComponent } from './route-detail/route-detail.component';
 
 @NgModule({
   imports: [
@@ -40,7 +43,11 @@ import {reducers} from '../store';
     MatSelectModule,
     MatMenuModule,
     TranslateModule,
-    ModalModule
+    ModalModule,
+    SharedModule
+  ],
+  exports: [
+    RouteComponent,
   ],
   declarations: [
     RoutesComponent,
@@ -51,8 +58,10 @@ import {reducers} from '../store';
     RouteCoverComponent,
     RouteInfoComponent,
     RouteSummarizedCardComponent,
-    RouteFiltersComponent
+    RouteFiltersComponent,
+    RouteDetailComponent
   ],
-  providers: [ ]
+  providers: [ ],
+
 })
 export class RoutesModule { }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-event-dialog',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventDialogComponent implements OnInit {
 
-  constructor() { }
+  eventGroup: FormGroup;
+
+  eventTypes = [
+    {value: 'DRIVING', viewValue:'Driving'},
+    {value: 'OTHER', viewValue:'Other'}
+  ];
+
+  constructor(
+    public dialogRef: MatDialogRef<EventDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
   }
+
+  closeDialog(){
+    this.dialogRef.close();
+  }
+
 
 }

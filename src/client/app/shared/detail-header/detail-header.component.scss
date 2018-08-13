@@ -1,0 +1,63 @@
+@import '../../../assets/variables';
+
+.top-header{
+  background: $primary-color;
+  position: sticky;
+  top: 0px;
+  z-index: 99;
+  overflow: hidden;
+
+  &.dialog{
+    background: $secondary-color;
+  }
+
+  .app-container{
+    height: 54px;
+    display: flex;
+    align-items: center;
+  }
+
+  h1{
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .close-button{
+
+    margin-left: -12px;
+
+    mat-icon{
+      color: #fff;
+    }
+  }
+
+  .save-button{
+    display: flex;
+    flex: auto;
+    justify-content: flex-end;
+
+    .mat-button{
+      margin-right: -24px;
+    }
+
+    /deep/.mat-button-wrapper{
+      color: #fff;
+    }
+  }
+
+
+  @media only screen and (max-device-width: 736px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    height: 55px;
+
+    h1{
+      font-size: 20px;
+    }
+  }
+}

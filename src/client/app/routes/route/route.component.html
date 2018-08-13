@@ -1,45 +1,35 @@
-
-<div class="top-header">
-  <div class="app-container">
-    <h1>{{'Nueva ruta' | translate}}</h1>
-  </div>
-</div>
-<div class="app-container full-size">
-  <form [formGroup]="form" #formDir="ngForm" class="box-container" (ngSubmit)="onSubmit()" novalidate>
-    <div class="save-button">
-      <button mat-fab>
-        <mat-icon aria-label="Save and exit">save</mat-icon>
-      </button>
-      <span class="save-exit-label">Save and close</span>
-    </div>
-
-    <div class="row gallery-container">
-      <div class="col-xs-12">
-        <div>
-          <h3>Route Points</h3>
-          <div class="row">
-            <div class="col-sm-4">
-              <app-route-points [routeGroup]="form"></app-route-points>
-            </div>
-            <div class="col-sm-8">
-              <app-route-map [form]="form"></app-route-map>
+<form [formGroup]="form" #formDir="ngForm" (ngSubmit)="onSubmit()" novalidate>
+  <ng-content select=".detail-header-content"></ng-content>
+  <div class="app-container full-size">
+    <div class="box-container">
+      <div class="row gallery-container">
+        <div class="col-xs-12">
+          <div>
+            <h3>Route Points</h3>
+            <div class="row">
+              <div class="col-sm-4 col-xs-12">
+                <app-route-points [routeGroup]="form"></app-route-points>
+              </div>
+              <div class="col-sm-8 col-xs-12">
+                <app-route-map [form]="form"></app-route-map>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="row bottom-row">
+        <div class="col-sm-4 col-xs-12">
+          <app-route-head [form]="form"></app-route-head>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <app-route-cover [form]="form"></app-route-cover>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <app-route-info [form]="form"></app-route-info>
+        </div>
+      </div>
     </div>
-    <div class="row bottom-row">
-      <div class="col-sm-4 col-xs-12">
-        <app-route-head [form]="form"></app-route-head>
-      </div>
-      <div class="col-sm-4 col-xs-12">
-        <app-route-cover [form]="form"></app-route-cover>
-      </div>
-      <div class="col-sm-4 col-xs-12">
-        <app-route-info [form]="form"></app-route-info>
-      </div>
-    </div>
-  </form>
-</div>
+  </div>
+</form>
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -10,10 +10,12 @@ export class TripTemplateDetailComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.form = new FormGroup({});
+    this.form = this.fb.group({
+      itinerary: this.fb.array([])
+    });
   }
 
 }

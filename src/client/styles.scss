@@ -79,19 +79,8 @@ ul{
   }
 }
 
-.save-button{
-  position: absolute;
-  right: 16px;
-  top: -106px;
-  text-align: center;
 
-  @media only screen and (max-device-width: 736px) {
-    position: fixed;
-    top: auto;
-    bottom: 16px;
-    z-index: 9;
-  }
-
+.float-button{
   .save-exit-label{
     display: block;
     margin-top: 8px;
@@ -104,29 +93,4 @@ ul{
   }
 }
 
-.top-header{
-  background: $primary-color;
-  height: 80px;
 
-  h1{
-    margin: 28px 0 0;
-    font-size: 24px;
-    font-weight: 400;
-    color: white;
-    float: left;
-  }
-
-  @media only screen and (max-device-width: 736px) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9;
-    height: 55px;
-
-    h1{
-      font-size: 20px;
-      margin-top: 0;
-    }
-  }
-}

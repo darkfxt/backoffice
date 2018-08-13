@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,7 +10,7 @@ import Segment from '../../shared/models/Segment';
 import {PlaceStore} from '../../shared/services/place-store.services';
 
 @Component({
-  selector: 'app-tg-route',
+  selector: 'app-route',
   templateUrl: './route.component.html',
   styleUrls: ['./route.component.scss']
 })
