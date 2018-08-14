@@ -5,7 +5,6 @@
   position: sticky;
   top: 0px;
   z-index: 99;
-  overflow: hidden;
 
   &.dialog{
     background: $secondary-color;
@@ -16,6 +15,27 @@
     display: flex;
     align-items: center;
   }
+
+  .float-button{
+
+    position: absolute;
+    right: 20px;
+    top: 24px;
+    z-index: 9;
+    text-align: center;
+
+    .save-exit-label{
+      display: block;
+      margin-top: 8px;
+      font-weight: 300;
+      color: #666;
+
+      @media only screen and (max-device-width: 736px) {
+        display: none;
+      }
+    }
+  }
+
 
   h1{
     margin: 0;
