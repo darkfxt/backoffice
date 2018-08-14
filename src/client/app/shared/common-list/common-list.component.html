@@ -1,7 +1,7 @@
 
 <div class="common-list">
   <div class="row">
-    <div class="col-xs-12 col-sm-4">
+    <div *ngIf="!hideFilter" class="col-xs-12 col-sm-4">
       <app-filters>
         <div class="list-filters">
           <ng-content select=".common-list-filters"></ng-content>
@@ -11,7 +11,7 @@
     <div class="col-xs-12 col-sm-8">
       <app-list [objectList]="list" [drawingComponent]="component" [storeToWatch]="storeToWatch"></app-list>
     </div>
-    <div class="col-xs-12">
+    <div *ngIf="!hidePagination" class="col-xs-12">
       <mat-paginator [length]="paginationMetadata.length"
                      [pageSize]="10"
                      [pageSizeOptions]="[5,10,25,50]"

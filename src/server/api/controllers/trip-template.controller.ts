@@ -42,8 +42,9 @@ export class TripTemplateController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = await TripTemplateService.getDetail(request.params.trip_template_id, request.query.lang);
-      response.json(data);
+      console.log('se rooompeeee', request.params)
+      const answer = await TripTemplateService.getDetail(request.params.id, request.query.lang);
+      response.json(answer.data);
     } catch (err) {
       next(err);
     }

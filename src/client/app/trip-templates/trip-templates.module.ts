@@ -18,6 +18,7 @@ import { EventDialogComponent } from './trip-template-detail/trip-template-itine
 import {TripTemplateItineraryComponent} from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
 import {RoutesModule} from '../routes/routes.module';
 import {SharedModule} from '../shared/shared.module';
+import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import {SharedModule} from '../shared/shared.module';
     TripMapsComponent,
     TripTemplateSummarizedCardComponent,
     TripTemplateItineraryComponent,
-    EventDialogComponent
+    EventDialogComponent,
+    EventSummarizedCardComponent
   ],
   providers: [ ],
   entryComponents: [

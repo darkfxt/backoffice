@@ -7,9 +7,7 @@ import {TripTemplateService} from '../shared/services/trip-template.service';
 import {Store} from '@ngrx/store';
 import {
   AppState,
-  segmentLoadingSelector,
-  segmentMetadataSelector,
-  segmentSelector, tripTemplateLoadingSelector,
+  tripTemplateLoadingSelector,
   tripTemplateMetadataSelector,
   tripTemplateSelector
 } from '../store';

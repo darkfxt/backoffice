@@ -23,6 +23,7 @@ export class TripTemplateService {
   }
 
   public static async getDetail(id: string, lang: string = 'en'): Promise<any> {
+    console.log('se rompió', `${config.routes.url}/trip-templates/${id}?lang=${lang}`);
     return axios.get(`${config.routes.url}/trip-templates/${id}?lang=${lang}`);
   }
 

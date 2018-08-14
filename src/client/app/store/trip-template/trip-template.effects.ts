@@ -9,7 +9,7 @@ import {
   EventsRetrieved,
   TripTemplateActions, TripTemplateActionTypes, CreateTripTemplate
 } from './trip-template.actions';
-import {TripTemplate, TripTemplateWithMetadata} from '../../shared/models/TripTemplate';
+import {TripTemplate, TripTemplateWithMetadata, Event} from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class TripTemplateEffects {
   }
 
   @Effect()
-  getAllSegments$ = this.actions$
+  getAllTripTemplates$ = this.actions$
     .ofType(TripTemplateActionTypes.GET_TRIP_TEMPLATES)
     .pipe(
       switchMap((query: GetTripTemplates) => this.TripTemplateServiceInstance.getAll(query.payload)),
@@ -26,11 +26,19 @@ export class TripTemplateEffects {
     );
 
   @Effect()
-  createSegment$ = this.actions$
+  createTripTemplate$ = this.actions$
     .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
     .pipe(
       switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
       map((serverResponse: any) => new TripTemplatesRetrieved(serverResponse))
+    );
+
+  @Effect()
+  getEventsFromTemplate$ = this.actions$
+    .ofType(TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE)
+    .pipe(
+      switchMap((tripTemplate: GetEventsForTripTemplate) => this.TripTemplateServiceInstance.getDetail(tripTemplate.payload)),
+      map((serverResponse: Event[]) => new EventsRetrieved(serverResponse))
     );
 
 }

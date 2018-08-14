@@ -37,16 +37,15 @@ export class TripTemplatesRetrieved implements Action {
 
 export class GetEventsForTripTemplate implements Action {
   readonly type = TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE;
-  constructor (readonly payload: PaginationOptionsInterface, readonly tripTemplateId: string){
+  constructor (readonly payload: string){
     this.payload = payload;
-    this.tripTemplateId = tripTemplateId;
   }
 }
 
 export class EventsRetrieved implements Action {
   readonly type = TripTemplateActionTypes.EVENTS_RETRIEVED_FOR_TEMPLATE;
   readonly payload: Event[];
-  constructor (readonly  response: Event[]) {
+  constructor (readonly response: Event[]) {
     this.payload = response;
   }
 }

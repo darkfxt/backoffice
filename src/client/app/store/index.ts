@@ -13,6 +13,7 @@ import { pointReducer, PointState } from './place/place.reducer';
 import { environment } from '../../environments/environment';
 import { segmentReducer, SegmentState } from './route/route.reducer';
 import { tripTemplateReducer, TripTemplateState } from './trip-template/trip-template.reducer';
+import {Event} from '../shared/models/TripTemplate';
 
 export interface AppState {
   points: PointState;
@@ -78,6 +79,11 @@ export const tripTemplateLoadingSelector = createSelector(
 export const tripTemplateSelector = createSelector(
   TripTemplateStateSelector,
   (state: TripTemplateState) => state.tripTemplates
+);
+
+export const eventsFromTemplateSelector = createSelector(
+  TripTemplateStateSelector,
+  (state: TripTemplateState) => state.selectedTripTemplateEvents
 );
 
 export const tripTemplateMetadataSelector = createSelector(

@@ -2,8 +2,8 @@ import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@ang
 import {EMPTY, Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/internal/operators';
 import {Injectable} from '@angular/core';
-import {RoutesService} from '../shared/services/routes.service';
-import { default as Segment } from '../shared/models/Segment';
+import {TripTemplate} from '../shared/models/TripTemplate';
+import {TripTemplateService} from '../shared/services/trip-template.service';
 
 
 @Injectable({
@@ -12,7 +12,7 @@ import { default as Segment } from '../shared/models/Segment';
 export class TripTemplatesResolver implements Resolve<any> {
 
   constructor(
-    private service: RoutesService,
+    private service: TripTemplateService,
     private router: Router
   ) {}
 
@@ -22,7 +22,7 @@ export class TripTemplatesResolver implements Resolve<any> {
   ): Observable<any> {
     const id = route.paramMap.get('id');
     if(id === 'new')
-      return of(new Segment());
+      return of(new TripTemplate());
 
     return this.service.getDetail(id)
       .pipe(catchError((err)  => {

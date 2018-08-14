@@ -5,7 +5,7 @@
       <div class="col-xs-5">
         <h3>Itinerary</h3>
         <div>
-          <app-trip-template-itinerary [itinerary]="form.get('itinerary')"></app-trip-template-itinerary>
+          <app-trip-template-itinerary [events$]="selectedTripEvents$" [itinerary]="form.get('itinerary')"></app-trip-template-itinerary>
         </div>
       </div>
       <div class="col-xs-7">
