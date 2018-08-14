@@ -10,13 +10,13 @@ import {CommonModule} from '@angular/common';
     MatButtonModule
   ],
   exports: [
-    DetailHeaderComponent
+    DetailHeaderComponent,
   ],
   declarations: [
-    DetailHeaderComponent
+    DetailHeaderComponent,
   ],
   entryComponents: [
-    DetailHeaderComponent
+    DetailHeaderComponent,
   ],
   providers: [ ]
 })

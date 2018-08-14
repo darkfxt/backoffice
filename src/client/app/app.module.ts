@@ -52,6 +52,7 @@ registerLocaleData(localeEs, 'es');
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects]),
