@@ -1,4 +1,4 @@
-<app-detail-header [disableBackButton]="true" [title]="paginationOptions.length + ' rutas encontradas'" class="detail-header-content" navUrl="/routes/new"></app-detail-header>
+<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' rutas encontradas'" class="detail-header-content" navUrl="/routes/new"></app-detail-header>
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
