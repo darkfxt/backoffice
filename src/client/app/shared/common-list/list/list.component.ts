@@ -16,7 +16,7 @@ import {Store} from '@ngrx/store';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  @Input() objectList: Observable<any[]>;
+  @Input() objectList: Observable<any>;
   @Input() drawingComponent: ListItemComponent;
   @Input() storeToWatch: string;
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
@@ -27,7 +27,10 @@ export class ListComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log('ListComponent!');
+    console.log(this.objectList)
     this.objectList.subscribe( (data: any) => {
+      console.log('ListComponentSubscribe', data);
       this.loading = data.loading;
       if(!data.loading){
         this.iterationList = data[this.storeToWatch];

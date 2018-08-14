@@ -9,6 +9,7 @@ import {LoadingModule} from '../loading/loading.module';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {RouteSummarizedCardComponent} from '../../routes/route-summarized-card/route-summarized-card.component';
 import {TripTemplateSummarizedCardComponent} from '../../trip-templates/trip-template-summarized-card/trip-template-summarized-card.component';
+import {EventSummarizedCardComponent} from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
 
 
 @NgModule({
@@ -24,6 +25,6 @@ import {TripTemplateSummarizedCardComponent} from '../../trip-templates/trip-tem
     CommonListComponent
   ],
   entryComponents: [PointSummarizedCardComponent, RouteSummarizedCardComponent,
-    TripTemplateSummarizedCardComponent]
+    TripTemplateSummarizedCardComponent, EventSummarizedCardComponent]
 })
 export class CommonListModule { }

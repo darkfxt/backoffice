@@ -11,12 +11,14 @@ import {PaginationOptionsInterface} from './common-list-item/pagination-options.
   styleUrls: ['./common-list.component.scss']
 })
 export class CommonListComponent implements OnInit {
-  @Input() list: Observable<any[]>;
+  @Input() list: Observable<any>;
   @Input() component: ListItemComponent;
   @Input() totalElements: number;
   @Input() paginationMetadata: PaginationOptionsInterface;
   @Input() storeToWatch: string;
   @Input() filterComponent: any;
+  @Input() hideFilter = false;
+  @Input() hidePagination = false;
   @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
 
   // MatPaginator Output
@@ -27,7 +29,9 @@ export class CommonListComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('commonList', this.list);
     this.list.subscribe((storeData: any) => {
+      console.log('CommonListOnSubscribe', storeData);
       if (!storeData.loading) {
         this.paginationMetadata = {
           previousPageIndex: 0,
