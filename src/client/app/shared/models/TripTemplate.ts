@@ -1,6 +1,6 @@
 import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
 
-enum eventType {
+export enum eventType {
   'HOTEL',
   'SEGMENT',
   'ACTIVITY',

@@ -10,6 +10,7 @@ import { ListItemInterface } from '../../shared/common-list/common-list-item/lis
 })
 export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   @Input() data: any;
+  @Input() selectionMode = false;
   imageUrl: string;
   title: string;
   subtitle: string;

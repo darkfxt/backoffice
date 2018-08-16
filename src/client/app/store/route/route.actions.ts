@@ -7,11 +7,19 @@ export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',
   FILTER_SEGMENTS = '[Segment] Filtering',
   SEGMENTS_RETRIEVED = '[Segment] Retrieved Succesfully',
+  SEGMENT_SELECTED = '[Segment] Selected'
 }
 
 export class GetSegments implements Action {
   readonly type = SegmentActionTypes.GET_SEGMENTS;
   constructor(readonly payload: PaginationOptionsInterface) {
+    this.payload = payload;
+  }
+}
+
+export class SegmentSelected implements Action {
+  readonly type = SegmentActionTypes.SEGMENT_SELECTED;
+  constructor(readonly payload: Segment) {
     this.payload = payload;
   }
 }
@@ -34,4 +42,4 @@ export class SegmentsRetrieved implements Action {
   }
 }
 
-export type SegmentActions = GetSegments | SegmentsRetrieved | FilterSegments;
+export type SegmentActions = GetSegments | SegmentsRetrieved | FilterSegments | SegmentSelected;

@@ -1,3 +1,6 @@
+<div>
+  <app-add-event [ordinal]="data.index"></app-add-event>
+</div>
 <div class="event-cluster">
   <div class="icon-ctn">
     <div class="tg-icon-driving"></div>
@@ -10,8 +13,8 @@
   </div>
   <div class="divisor"></div>
   <div class="summary-ctn">
-    <h5>Salta to Cafayate</h5>
-    <p>From Salta to Cafayate</p>
+    <h5>{{data.name}}</h5>
+    <p>{{data.description}}</p>
     <p class="extra-info">Estimated time 4:00 hs</p>
   </div>
   <div class="menu">

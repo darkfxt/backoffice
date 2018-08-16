@@ -1,6 +1,5 @@
 @import '../../../../assets/variables';
 
-
 .day-count{
   h4{
     color: #7F848C;
@@ -124,55 +123,4 @@
   }
 }
 
-.product-event{
-  overflow: hidden;
-  width: 100%;
 
-  .option-ctn{
-    display: flex;
-    flex-wrap: nowrap;
-  }
-
-  .summary-ctn{
-    flex: 1 0 100%;
-    cursor: pointer;
-  }
-
-  ul{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 8px;
-    flex: 1 0 100%;
-    box-sizing: border-box;
-
-    li{
-      text-align: center;
-      cursor: pointer;
-      margin: 0;
-
-      &:hover{
-        .product-icon div, p{
-          color: $secondary-color;
-        }
-      }
-
-      p{
-        color: $gray-body;
-        margin: 0;
-        font-size: 12px;
-      }
-    }
-  }
-
-  .product-icon{
-    height: 40px;
-    width: 42px;
-    margin: 0 8px 2px;
-
-    div{
-      font-size: 34px;
-      color: #666;
-    }
-  }
-}

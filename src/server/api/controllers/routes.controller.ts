@@ -7,7 +7,6 @@ export class RoutesController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
-      console.log('llegué al controller');
       const answer = await RoutesService.getAll(request.query);
       if(request.query.simple){
         response.json(answer.data.data);

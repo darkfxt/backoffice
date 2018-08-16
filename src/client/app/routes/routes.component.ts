@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PaginationOptionsInterface} from '../shared/common-list/common-list-item/pagination-options.interface';
 import {ListItemComponent} from '../shared/common-list/common-list-item/common-list-item.component';
 import {Observable} from 'rxjs';
@@ -8,6 +8,8 @@ import {RouteSummarizedCardComponent} from './route-summarized-card/route-summar
 import {RoutesService} from '../shared/services/routes.service';
 import {GetSegments} from '../store/route/route.actions';
 import Segment from '../shared/models/Segment';
+import Route from '../../../server/api/entity/Route';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-tg-routes',
@@ -15,6 +17,10 @@ import Segment from '../shared/models/Segment';
   styleUrls: ['./routes.component.scss']
 })
 export class RoutesComponent implements OnInit {
+  @Input() selectMode? = false;
+
+  @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
+
   loading = false;
   routes$: Observable<Segment[]>;
   drawingComponent: ListItemComponent;

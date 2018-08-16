@@ -12,7 +12,11 @@
   </div>
 
   <div [hidden]="loading">
-    <app-common-list [list]="routes$" [component]="drawingComponent" [storeToWatch]="'segments'" (pageChanged)="onPageChanged($event)">
+    <app-common-list
+      [list]="routes$"
+      [component]="drawingComponent"
+      [storeToWatch]="'segments'"
+      (pageChanged)="onPageChanged($event)">
       <app-route-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-route-filters>
     </app-common-list>
   </div>

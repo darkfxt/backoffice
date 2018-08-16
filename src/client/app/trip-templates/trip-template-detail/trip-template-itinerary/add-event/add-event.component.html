@@ -1,0 +1,27 @@
+<div class="event-cluster">
+  <div class="icon-ctn" (click)="showOptions()">
+    <div class="bottom-text">
+      <div class="add-icon" [@addEventState]="'add-'+state">+</div>
+      <span class="small-text">{{addEventText[state]}}</span>
+    </div>
+  </div>
+  <div class="divisor"></div>
+  <div class="product-event">
+    <div [@addEventState]="state" class="option-ctn">
+      <div class="summary-ctn" (click)="showOptions()">
+        <div>
+          <h5>Añadir nuevo evento para este día</h5>
+          <p class="extra-info">Elige entre una actividad, hotel o recorrido en automovil</p>
+        </div>
+      </div>
+      <ul>
+        <li (click)="openDialog(producType.value)" *ngFor="let producType of productTypes">
+          <div class="product-icon">
+            <div class="tg-icon-{{producType.value.toLowerCase()}}"></div>
+          </div>
+          <p>{{producType.viewValue}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

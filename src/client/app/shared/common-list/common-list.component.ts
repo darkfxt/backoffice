@@ -19,7 +19,9 @@ export class CommonListComponent implements OnInit {
   @Input() filterComponent: any;
   @Input() hideFilter = false;
   @Input() hidePagination = false;
+  @Input() activateSelectionMode = false;
   @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+  @Output() itemSelected: EventEmitter<any> = new EventEmitter<any>();
 
   // MatPaginator Output
   pageEvent: PageEvent;
@@ -29,15 +31,14 @@ export class CommonListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('commonList', this.list);
     this.list.subscribe((storeData: any) => {
-      console.log('CommonListOnSubscribe', storeData);
       if (!storeData.loading) {
         this.paginationMetadata = {
           previousPageIndex: 0,
           pageIndex: 0,
           pageSize: 10,
-          length: storeData.metadata.length || 0
+          length: (storeData.metadata && storeData.metadata.length)
+            ? storeData.metadata.length : 0
         };
       } else {
         this.paginationMetadata = {

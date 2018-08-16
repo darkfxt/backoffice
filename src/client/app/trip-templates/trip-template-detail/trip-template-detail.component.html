@@ -1,11 +1,11 @@
 <form [formGroup]="form" #formDir="ngForm" class="" novalidate>
-  <app-detail-header title="New trip template"></app-detail-header>
+  <app-detail-header (saveButtonClicked)="saveTripTemplate()" title="New trip template"></app-detail-header>
   <div class="app-container full-size body-content">
     <div class="row ">
       <div class="col-xs-5">
         <h3>Itinerary</h3>
         <div>
-          <app-trip-template-itinerary [events$]="selectedTripEvents$" [itinerary]="form.get('itinerary')"></app-trip-template-itinerary>
+          <app-trip-template-itinerary [itinerary]="form.get('itinerary')"></app-trip-template-itinerary>
         </div>
       </div>
       <div class="col-xs-7">

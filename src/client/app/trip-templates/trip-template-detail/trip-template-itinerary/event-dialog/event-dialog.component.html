@@ -1,6 +1,6 @@
 
 <div *ngIf="data.productType == 'DRIVING'">
-  <app-route>
+  <app-tg-routes [selectMode]="true">
       <app-detail-header isDialog="true" class="detail-header-content" title="New route" (backButtonClicked)="closeDialog()"></app-detail-header>
-  </app-route>
+  </app-tg-routes>
 </div>

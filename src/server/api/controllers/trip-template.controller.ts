@@ -4,6 +4,7 @@ import { TripTemplate } from '../entity/TripTemplate';
 
 import {PlaceService} from '../services/place.service';
 import Place from '../entity/Place';
+import {RoutesService} from '../services/routes.service';
 
 
 export class TripTemplateController {
@@ -21,6 +22,15 @@ export class TripTemplateController {
     }
   }
 
+  public static async getEventsFromTripTemplate(request: Request, response: Response, next: NextFunction) {
+    try {
+      const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
+      response.json(answer.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   // public static async glAutocomplete(request: Request, response: Response, next: NextFunction) {
   //   try {
   //     const data = await TripTemplateService.glAutocomplete(decodeURI(request.query.q), request.query.lang);
@@ -29,6 +39,27 @@ export class TripTemplateController {
   //     next(err);
   //   }
   // }
+
+  public static async update(request: Request, response: Response, next: NextFunction) {
+    try {
+      // const data = JSON.parse(request.body.data);
+
+      // data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
+      let resp;
+      if(request.params._id && request.params._id !== 'new' && request.params._id !== '') {
+        Reflect.deleteProperty(request.body, '_id');
+        resp = await TripTemplateService.update(request.params.id, request.body);
+      } else {
+        resp = await TripTemplateService.create(request.body);
+      }
+      response.json(resp.data);
+    } catch (err) {
+      // TODO: Delete uploaded files on error
+      next(err);
+    }
+  }
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
@@ -42,7 +73,6 @@ export class TripTemplateController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      console.log('se rooompeeee', request.params)
       const answer = await TripTemplateService.getDetail(request.params.id, request.query.lang);
       response.json(answer.data);
     } catch (err) {

@@ -15,6 +15,8 @@ export class DetailHeaderComponent implements OnInit {
 
   @Output()
   backButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
 
   iconType: string;
 
@@ -27,6 +29,10 @@ export class DetailHeaderComponent implements OnInit {
   goBack(e){
     e.preventDefault();
     this.backButtonClicked.emit();
+  }
+
+  onSave(e){
+    this.saveButtonClicked.emit();
   }
 
 }

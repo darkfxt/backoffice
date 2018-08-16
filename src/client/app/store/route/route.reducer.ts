@@ -7,6 +7,7 @@ export interface SegmentState {
   loading: boolean;
   segments: Segment[];
   metadata: PaginationOptionsInterface;
+  segmentSelected?: Segment;
 }
 
 export const initialState: SegmentState = {
@@ -24,6 +25,8 @@ export function segmentReducer(state = initialState, action: SegmentActions): Se
   switch (action.type) {
     case SegmentActionTypes.GET_SEGMENTS:
       return {...state, loading: true};
+    case SegmentActionTypes.SEGMENT_SELECTED:
+      return {...state, loading: false, segmentSelected: action.payload};
     case SegmentActionTypes.FILTER_SEGMENTS:
       return {...state, loading: true, metadata: action.payload};
     case SegmentActionTypes.SEGMENTS_RETRIEVED:

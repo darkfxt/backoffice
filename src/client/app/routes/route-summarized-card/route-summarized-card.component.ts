@@ -1,5 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store';
+import {EventSelected} from '../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -9,12 +12,13 @@ import {Router} from '@angular/router';
 export class RouteSummarizedCardComponent implements OnInit {
 
   @Input() data: any;
+  @Input() selectionMode = false;
   imageUrl: string;
   title: string;
   subtitle: string;
   description: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private store: Store<AppState>) {
 
   }
 
@@ -28,6 +32,10 @@ export class RouteSummarizedCardComponent implements OnInit {
   }
 
   editSegment(){
+    if(this.selectionMode) {
+      this.store.dispatch(new EventSelected(this.data));
+      return;
+    }
     this.router.navigate([`/routes/${this.data._id}`]);
   }
 

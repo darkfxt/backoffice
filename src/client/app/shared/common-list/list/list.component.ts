@@ -19,6 +19,7 @@ export class ListComponent implements OnInit {
   @Input() objectList: Observable<any>;
   @Input() drawingComponent: ListItemComponent;
   @Input() storeToWatch: string;
+  @Input() selectionMode? = false;
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
   iterationList: any[];
   loading = false;
@@ -27,10 +28,7 @@ export class ListComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('ListComponent!');
-    console.log(this.objectList)
     this.objectList.subscribe( (data: any) => {
-      console.log('ListComponentSubscribe', data);
       this.loading = data.loading;
       if(!data.loading){
         this.iterationList = data[this.storeToWatch];
@@ -44,11 +42,13 @@ export class ListComponent implements OnInit {
     const componentFactoryInstance = this.componentFactoryResolver.resolveComponentFactory(componentToRender);
     const viewContainerRef = this.appMainListContainer.viewContainerRef;
     viewContainerRef.clear();
-    for(const item of this.iterationList){
-      const componentRef = viewContainerRef.createComponent(componentFactoryInstance);
-      (<ListItemInterface>componentRef.instance).data = item;
+    if(this.iterationList) {
+      this.iterationList.forEach((item, index) => {
+        const componentRef = viewContainerRef.createComponent(componentFactoryInstance);
+        (<ListItemInterface>componentRef.instance).data = Object.assign({}, item, {index});
+        if (this.selectionMode) (<ListItemInterface>componentRef.instance).selectionMode = item;
+      });
     }
-
   }
 
 }

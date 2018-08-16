@@ -48,6 +48,7 @@ import { RouteDetailComponent } from './route-detail/route-detail.component';
   ],
   exports: [
     RouteComponent,
+    RoutesComponent
   ],
   declarations: [
     RoutesComponent,

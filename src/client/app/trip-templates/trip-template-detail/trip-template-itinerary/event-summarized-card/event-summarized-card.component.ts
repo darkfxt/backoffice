@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-event-summarized-card',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventSummarizedCardComponent implements OnInit {
 
+  @Input() data: any;
+
+  @Output() ordinalSelected: number;
+
   constructor() { }
 
   ngOnInit() {
+    console.log('adentro del event', this.data);
   }
 
 }

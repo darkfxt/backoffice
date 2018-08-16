@@ -23,9 +23,16 @@ export class TripTemplateService {
     if(withoutMetadata){
       queryParams += '&simple=true';
     }
-    console.log('pasa por aca')
 
     return this.http.get('/api/trip-templates' + queryParams);
+  }
+
+  upsert(params){
+    return this.http.patch(`/api/trip-templates/${params._id}`, params);
+    // if(params._id && params._id !== 'new' && params._id !== ''){
+    //   return this.update(params);
+    // }
+    // return this.create(params);
   }
 
   create (params): Observable<any> {
@@ -33,11 +40,15 @@ export class TripTemplateService {
   }
 
   update (params): Observable<any> {
-    return this.http.patch(`/api/trip-templates/${params.id}`, params.body);
+    return this.http.patch(`/api/trip-templates/${params._id}`, params);
   }
 
   getDetail (tripTemplate_id: string): Observable<any>{
     return this.http.get(`/api/trip-templates/${tripTemplate_id}?lang=es`);
+  }
+
+  getEventsFromTripTemplate (tripTemplate_id: string): Observable<any>{
+    return this.http.get(`/api/trip-templates/${tripTemplate_id}/events`);
   }
 
   /**

@@ -19,12 +19,16 @@ export class TripTemplateService {
   }
 
   public static async update(id, body): Promise<any> {
+    console.log(`${config.routes.url}/trip-templates/${id}`);
     return axios.patch(`${config.routes.url}/trip-templates/${id}`, body);
   }
 
   public static async getDetail(id: string, lang: string = 'en'): Promise<any> {
-    console.log('se rompió', `${config.routes.url}/trip-templates/${id}?lang=${lang}`);
     return axios.get(`${config.routes.url}/trip-templates/${id}?lang=${lang}`);
+  }
+
+  public static async getEventsFromTripTemplate(id: string): Promise<any> {
+    return axios.get(`${config.routes.url}/trip-templates/${id}/events`);
   }
 
 }

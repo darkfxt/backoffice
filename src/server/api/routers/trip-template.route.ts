@@ -8,7 +8,10 @@ TripTemplateRouter.route('/')
   .post(TripTemplateController.create);
 
 TripTemplateRouter.route('/:id')
-  .get(TripTemplateController.getDetail);
-  // .patch(TripTemplateController.update);
+  .get(TripTemplateController.getDetail)
+  .patch(TripTemplateController.update);
+
+TripTemplateRouter.route('/:id/events')
+  .get(TripTemplateController.getEventsFromTripTemplate);
 
 export default TripTemplateRouter;
