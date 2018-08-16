@@ -4,8 +4,14 @@
       <mat-icon aria-label="Go back">{{iconType}}</mat-icon>
     </button>
     <h1>{{title}}</h1>
-    <div class="save-button">
+    <div class="save-button" *ngIf="!navUrl">
       <button mat-button (click)="onSave($event)">SAVE</button>
+    </div>
+    <div class="float-button" *ngIf="navUrl">
+      <a [routerLink]="navUrl" mat-fab >
+        <mat-icon aria-label="New">add</mat-icon>
+      </a>
+      <span class="save-exit-label">New</span>
     </div>
   </div>
 </div>

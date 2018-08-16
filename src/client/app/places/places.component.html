@@ -1,16 +1,5 @@
-<div class="top-header">
-  <div class="app-container">
-    <h1><span *ngIf="!loading">{{paginationOptions.length}}</span> puntos encontrados</h1>
-  </div>
-</div>
+<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' puntos encontrados'" class="detail-header-content" navUrl="/places/new"></app-detail-header>
 <div class="app-container full-size body-content">
-  <div class="save-button">
-    <a routerLink="/places/new" mat-fab >
-      <mat-icon aria-label="New">add</mat-icon>
-    </a>
-    <span class="save-exit-label">New</span>
-  </div>
-
   <div [hidden]="loading">
     <app-common-list [list]="points$" [component]="drawingComponent" [storeToWatch]="'points'" (pageChanged)="onPageChanged($event)">
       <app-point-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-point-filters>

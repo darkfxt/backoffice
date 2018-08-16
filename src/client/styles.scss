@@ -81,17 +81,3 @@ ul{
 }
 
 
-.float-button{
-  .save-exit-label{
-    display: block;
-    margin-top: 8px;
-    font-weight: 300;
-    color: #666;
-
-    @media only screen and (max-device-width: 736px) {
-      display: none;
-    }
-  }
-}
-
-

@@ -11,12 +11,18 @@ export class DetailHeaderComponent implements OnInit {
   title: string;
 
   @Input()
+  disableBackButton: boolean;
+
+  @Input()
   isDialog: boolean;
 
   @Output()
   backButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   saveButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input()
+  navUrl: string;
 
   iconType: string;
 
