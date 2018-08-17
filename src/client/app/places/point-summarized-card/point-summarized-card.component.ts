@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ListItemInterface } from '../../shared/common-list/common-list-item/list-item.interface';
+import {EventSelected} from '../../store/trip-template/trip-template.actions';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store';
 
 @Component({
   selector: 'app-point-summarized-card',
@@ -16,7 +19,7 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   subtitle: string;
   description: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private store: Store<AppState>) {
 
   }
 
@@ -30,6 +33,10 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   }
 
   editPoint(){
+    if(this.selectionMode) {
+      this.store.dispatch(new EventSelected(this.data));
+      return;
+    }
     this.router.navigate([`/places/${this.data._id}`]);
   }
 }

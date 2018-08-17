@@ -40,9 +40,12 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state, loading: true};
     case TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED:
       return {...state, loading: false, selectedTripTemplate: action.payload};
-    case TripTemplateActionTypes.SAVE_TRIP_TEMPLATE: {
+    case TripTemplateActionTypes.SAVE_TRIP_TEMPLATE:
       return {...state, loading: true};
-    }
+    case TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION:
+      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null};
+    case TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY:
+      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null};
     case TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE:
       return {...state, loading: true};
     case TripTemplateActionTypes.EVENTS_RETRIEVED_FOR_TEMPLATE:
@@ -50,8 +53,7 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.EVENT_SELECTED:
       return {...state, loading: false, selectedEvent: action.payload};
     case TripTemplateActionTypes.ADD_EVENT: {
-      // state.selectedTripTemplateEvents.splice(state.ordinalForEvent,0, action.payload);
-      const array = state.selectedTripTemplateEvents.slice(0);
+      const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
       const indexOfEvent = state.ordinalForEvent === undefined ? array.length : state.ordinalForEvent;
       array.splice(+indexOfEvent,0, action.payload);
       return {...state, loading: false, selectedTripTemplateEvents: array, selectedEvent: null, ordinalForEvent: null};

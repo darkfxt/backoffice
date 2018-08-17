@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
-import { TripTemplate } from '../entity/TripTemplate';
+import {TripTemplate, TripTemplateEmpty} from '../entity/TripTemplate';
 
 import {PlaceService} from '../services/place.service';
 import Place from '../entity/Place';
@@ -24,8 +24,12 @@ export class TripTemplateController {
 
   public static async getEventsFromTripTemplate(request: Request, response: Response, next: NextFunction) {
     try {
-      const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
-      response.json(answer.data);
+      if(request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
+        const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
+        response.json(answer.data);
+      } else if (request.params.id === undefined || request.params.id === 'undefined') {
+        response.json([]);
+      }
     } catch (err) {
       next(err);
     }
@@ -48,7 +52,7 @@ export class TripTemplateController {
 
       // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
       let resp;
-      if(request.params._id && request.params._id !== 'new' && request.params._id !== '') {
+      if(request.params.id && request.params.id !== 'new' && request.params.id !== '' && request.params.id !== 'undefined') {
         Reflect.deleteProperty(request.body, '_id');
         resp = await TripTemplateService.update(request.params.id, request.body);
       } else {

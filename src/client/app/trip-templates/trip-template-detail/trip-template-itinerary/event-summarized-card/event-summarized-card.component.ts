@@ -14,7 +14,6 @@ export class EventSummarizedCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('adentro del event', this.data);
   }
 
 }

@@ -7,7 +7,7 @@ import {
   TripTemplatesRetrieved,
   GetEventsForTripTemplate,
   EventsRetrieved,
-  TripTemplateActions, TripTemplateActionTypes, CreateTripTemplate, SaveTripTemplate
+  TripTemplateActions, TripTemplateActionTypes, CreateTripTemplate, SaveTripTemplate, TripTemplateProcessedSuccesfully, TripTemplateSelected
 } from './trip-template.actions';
 import {TripTemplate, TripTemplateWithMetadata, Event} from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
@@ -46,12 +46,7 @@ export class TripTemplateEffects {
      .ofType(TripTemplateActionTypes.SAVE_TRIP_TEMPLATE)
      .pipe(
        switchMap((tripTemplate: SaveTripTemplate) => this.TripTemplateServiceInstance.upsert(tripTemplate.payload) ),
-       map((serverResponse: any) => new GetTripTemplates({
-         previousPageIndex: 0,
-         pageIndex: 1,
-         pageSize: 10,
-         length: 0
-       }))
+       map((serverResponse: any) => new TripTemplateSelected(serverResponse.data))
      );
 
 }

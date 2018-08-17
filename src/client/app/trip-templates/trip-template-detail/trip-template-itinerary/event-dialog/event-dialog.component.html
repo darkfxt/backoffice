@@ -1,6 +1,11 @@
 
 <div *ngIf="data.productType == 'DRIVING'">
   <app-tg-routes [selectMode]="true">
-      <app-detail-header isDialog="true" class="detail-header-content" title="New route" (backButtonClicked)="closeDialog()"></app-detail-header>
+      <app-detail-header isDialog="true" class="detail-header-content" title="Search Segment" (backButtonClicked)="closeDialog()"></app-detail-header>
   </app-tg-routes>
+</div>
+<div *ngIf="data.productType == 'ACTIVITY'">
+  <app-places [selectMode]="true">
+    <app-detail-header isDialog="true" class="detail-header-content" title="Search Place" (backButtonClicked)="closeDialog()"></app-detail-header>
+  </app-places>
 </div>

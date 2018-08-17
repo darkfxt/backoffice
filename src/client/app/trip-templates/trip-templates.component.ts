@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TripTemplate} from '../shared/models/TripTemplate';
 import {Observable} from 'rxjs';
 import {ListItemComponent} from '../shared/common-list/common-list-item/common-list-item.component';
@@ -50,6 +50,7 @@ export class TripTemplatesComponent implements OnInit {
       this.loading = data.loading;
     });
   }
+
 
   onPageChanged(event) {
     this.paginationOptions = Object.assign({}, this.paginationOptions, event);

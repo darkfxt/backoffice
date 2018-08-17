@@ -8,6 +8,8 @@ export enum TripTemplateActionTypes {
   TRIP_TEMPLATE_SELECTED = '[T.Template] Selected',
   CREATE_TRIP_TEMPLATE = '[T.Template] Posting',
   SAVE_TRIP_TEMPLATE = '[T.Template] Updating',
+  TRIP_TEMPLATE_PROCESSED_SUCCESFULLY = '[T.Template] Processed Succesfully',
+  TRIP_TEMPLATE_LEAVE_EDITION = '[T.Template] Leaving template edition',
   GET_EVENTS_FOR_T_TEMPLATE = '[Events] Retrieving',
   EVENTS_RETRIEVED_FOR_TEMPLATE = '[Events] Retrieved Succesfully',
   EVENT_SELECTED = '[Events] Selected',
@@ -39,6 +41,20 @@ export class SaveTripTemplate implements Action {
 
 export class TripTemplateSelected implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED;
+  constructor (readonly payload: TripTemplate){
+    this.payload = payload;
+  }
+}
+
+export class TripTemplateEditionLeft implements Action {
+  readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION;
+  constructor (readonly payload: string){
+    this.payload = payload;
+  }
+}
+
+export class TripTemplateProcessedSuccesfully implements Action {
+  readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY;
   constructor (readonly payload: TripTemplate){
     this.payload = payload;
   }
@@ -93,4 +109,4 @@ export class OrdinalForEventSetted implements Action {
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate |
   TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | SaveTripTemplate | OrdinalForEventSetted |
-  TripTemplateSelected;
+  TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft;

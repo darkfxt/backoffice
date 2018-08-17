@@ -1,4 +1,4 @@
-import {Component, OnInit, Type} from '@angular/core';
+import {Component, Input, OnInit, Type} from '@angular/core';
 import {PlaceService} from '../shared/services/place.service';
 import {AppState, loadingSelector, metadataSelector, pointSelector} from '../store';
 import {Store} from '@ngrx/store';
@@ -17,6 +17,8 @@ import {PaginationOptionsInterface} from '../shared/common-list/common-list-item
   styleUrls: ['./places.component.scss']
 })
 export class PlacesComponent implements OnInit{
+  @Input() selectMode? = false;
+
   loading = false;
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;

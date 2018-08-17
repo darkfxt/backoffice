@@ -20,6 +20,7 @@ import {RoutesModule} from '../routes/routes.module';
 import {SharedModule} from '../shared/shared.module';
 import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
 import { AddEventComponent } from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
+import {PlacesModule} from '../places/places.module';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { AddEventComponent } from './trip-template-detail/trip-template-itinerar
     MatMenuModule,
     TripTemplatesRoutingModule,
     TranslateModule,
+    PlacesModule,
     RoutesModule,
     SharedModule
   ],

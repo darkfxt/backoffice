@@ -1,10 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector} from '../../store';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TripTemplateService} from '../../shared/services/trip-template.service';
-import {GetEventsForTripTemplate, SaveTripTemplate, TripTemplateSelected} from '../../store/trip-template/trip-template.actions';
+import {
+  GetEventsForTripTemplate,
+  SaveTripTemplate,
+  TripTemplateEditionLeft,
+  TripTemplateSelected
+} from '../../store/trip-template/trip-template.actions';
 import {TripTemplate, Event} from '../../shared/models/TripTemplate';
 
 @Component({
@@ -12,7 +17,7 @@ import {TripTemplate, Event} from '../../shared/models/TripTemplate';
   templateUrl: './trip-template-detail.component.html',
   styleUrls: ['./trip-template-detail.component.scss']
 })
-export class TripTemplateDetailComponent implements OnInit {
+export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   loading = false;
@@ -35,10 +40,11 @@ export class TripTemplateDetailComponent implements OnInit {
 
     this.route.data.subscribe(( data: any ) => {
       if (data) {
-        this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
         this.store.dispatch(new TripTemplateSelected(data.tripTemplate));
+        this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
       } else {
         this.store.dispatch(new TripTemplateSelected(new TripTemplate()));
+        this.store.dispatch(new GetEventsForTripTemplate(undefined));
       }
     });
 
@@ -54,6 +60,10 @@ export class TripTemplateDetailComponent implements OnInit {
     this.form = this.fb.group({
       itinerary: this.fb.array([])
     });
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(new TripTemplateEditionLeft(null));
   }
 
   saveTripTemplate(){

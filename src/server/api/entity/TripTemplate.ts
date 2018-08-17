@@ -1,4 +1,3 @@
-
 export enum event_type {
   'HOTEL',
   'SEGMENT',
@@ -32,5 +31,13 @@ export class TripTemplate {
     this._id = _id;
     this.name = name;
     this.events = events;
+  }
+}
+
+export class TripTemplateEmpty {
+  created_by: string;
+  name: string;
+  events: Event[] = [];
+  constructor() {
   }
 }

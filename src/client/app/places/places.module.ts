@@ -57,6 +57,7 @@ import { PlaceDetailComponent } from './place-detail/place-detail.component';
     PointSummarizedCardComponent,
     PointFiltersComponent
   ],
-  providers: [ ]
+  providers: [ ],
+  exports: [PlacesComponent]
 })
 export class PlacesModule {}
