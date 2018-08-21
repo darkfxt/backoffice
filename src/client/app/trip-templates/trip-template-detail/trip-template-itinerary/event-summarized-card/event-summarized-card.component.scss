@@ -2,7 +2,7 @@
 
 .event-cluster{
   box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.5);
-  padding: 8px;
+  padding: 16px 8px;
   width: 100%;
   box-sizing: border-box;
   border-radius: 2px;
@@ -10,6 +10,7 @@
   position: relative;
   display: flex;
   transition: box-shadow 0.2s ease-in-out;
+  margin-bottom: 8px;
 
   .menu{
     position: absolute;
@@ -17,17 +18,21 @@
     top: 0;
   }
 
-  .summary-ctn{
-
-  }
-
   .icon-ctn{
     width: 72px;
-    margin-right: 16px;
+    margin-right: 24px;
     text-align: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 0 0 auto;
+    align-items: center;
+
+    mat-icon{
+      color: $gray-body;
+      height: 40px;
+      width: 40px;
+      font-size: 34px;
+    }
 
     .bottom-text{
       align-self: flex-end;
@@ -41,8 +46,8 @@
     }
 
     .small-text{
-      font-size: 14px;
-      color: #7E848C;
+      font-size: 12px;
+      color: $gray-body;
     }
   }
 
@@ -63,9 +68,8 @@
 
   p{
     color: $gray-body;
-  }
-
-  .extra-info{
     margin-bottom: 0;
   }
+
 }
+

@@ -9,6 +9,8 @@ export class EventSummarizedCardComponent implements OnInit {
 
   @Input() data: any;
 
+  @Input() showEmptySlot: boolean;
+
   @Output() ordinalSelected: number;
 
   constructor() { }

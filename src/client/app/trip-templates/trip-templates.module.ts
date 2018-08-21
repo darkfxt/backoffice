@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatSelectModule
+  MatSelectModule, MatTooltipModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
@@ -36,6 +36,7 @@ import {PlacesModule} from '../places/places.module';
     MatAutocompleteModule,
     MatSelectModule,
     MatMenuModule,
+    MatTooltipModule,
     TripTemplatesRoutingModule,
     TranslateModule,
     PlacesModule,

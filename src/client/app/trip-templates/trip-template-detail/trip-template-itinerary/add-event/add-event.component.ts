@@ -20,25 +20,17 @@ import {OrdinalForEventSetted} from '../../../../store/trip-template/trip-templa
   styleUrls: ['./add-event.component.scss'],
   animations: [
     trigger('addEventState', [
-      state('out', style({transform: 'translateX(0)'})),
-      state('in', style({transform: 'translateX(-100%)'})),
+      state('out', style({transform: 'translateX(-100%)'})),
+      state('in', style({transform: 'translateX(0)'})),
       state('add-in', style({transform: 'rotate(45deg)'})),
       state('add-out', style({transform: 'rotate(0deg)'})),
       transition('add-in <=> add-out', animate('100ms ease-in')),
       transition('out => in', [
-        animate('0.4s', keyframes([
-          style({transform: 'translateX(0)', offset: 0}),
-          style({transform: 'translateX(20px)',  offset: 0.3}),
-          style({transform: 'translateX(-115%)',     offset: 0.7}),
-          style({transform: 'translateX(-100%)',     offset: 1.0})
-        ]))
-      ]),
-      transition('in => out', [
-        animate('0.4s', keyframes([
-          style({transform: 'translateX(-100%)',     offset: 0}),
-          style({transform: 'translateX(-115%)', offset: 0.3}),
-          style({transform: 'translateX(20px)',  offset: 0.7}),
-          style({transform: 'translateX(0)',  offset: 1.0})
+        animate('0.6s', keyframes([
+          style({transform: 'translateX(-100%)', offset: 0}),
+          style({transform: 'translateX(20px)',  offset: 0.5}),
+          style({transform: 'translateX(-20px)',  offset: 0.7}),
+          style({transform: 'translateX(0)',     offset: 1.0}),
         ]))
       ])
     ])
@@ -49,12 +41,12 @@ export class AddEventComponent implements OnInit {
   @Input() ordinal;
 
   state = 'out';
-  addEventText = {'in': 'close', 'out': 'add'};
+  tooltipMessage = {'in': 'close', 'out': 'Add event here'};
   productTypes = [
-    {value: 'DRIVING', viewValue: 'driving'},
-    {value: 'HOTEL', viewValue: 'hotel'},
-    {value: 'ACTIVITY', viewValue: 'activity'},
-    {value: 'OTHER', viewValue: 'other'}
+    {value: 'DRIVING', viewValue: 'driving', icon:'driving'},
+    {value: 'HOTEL', viewValue: 'hotel', icon:'hotel'},
+    {value: 'ACTIVITY', viewValue: 'activity', icon:'ticket'},
+    {value: 'OTHER', viewValue: 'other', icon:'edit_2'}
   ];
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
@@ -80,7 +72,7 @@ export class AddEventComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.state = 'out';
     });
   }
 

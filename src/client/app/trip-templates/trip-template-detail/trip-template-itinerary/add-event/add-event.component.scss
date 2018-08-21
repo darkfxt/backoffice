@@ -1,5 +1,44 @@
 @import '../../../../../assets/variables';
 
+.event-cluster{
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  height: 0;
+  z-index: 9;
+
+  &.in{
+    height: auto;
+  }
+
+  .add-icon{
+    font-size: 24px;
+    background: #666;
+    height: 30px;
+    width: 30px;
+    border-radius: 20px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .icon-ctn{
+    width: 89px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    height: 30px;
+    align-items: center;
+    margin-top: -20px;
+
+  }
+
+}
+
 .product-event{
   overflow: hidden;
   width: 100%;
@@ -21,6 +60,7 @@
     padding: 0 8px;
     flex: 1 0 100%;
     box-sizing: border-box;
+    margin-bottom: 8px;
 
     li{
       text-align: center;
@@ -28,9 +68,17 @@
       margin: 0;
 
       &:hover{
-        .product-icon div, p{
+        .product-icon mat-icon, p{
           color: $secondary-color;
         }
+      }
+
+      mat-icon{
+        width: 100%;
+        height: 100%;
+        color: $gray-body;
+        font-size: 34px;
+        text-align: center;
       }
 
       p{
