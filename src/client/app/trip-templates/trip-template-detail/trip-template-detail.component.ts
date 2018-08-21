@@ -29,7 +29,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private router: Router,
     private routesService: TripTemplateService,
-    private route: ActivatedRoute,) {
+    private route: ActivatedRoute
+    ) {
     store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
     });
@@ -60,6 +61,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       itinerary: this.fb.array([])
     });
+  }
+
+  goBack(): void{
+    this.router.navigate(['/trip-templates']);
   }
 
   ngOnDestroy() {

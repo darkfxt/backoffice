@@ -12,12 +12,10 @@ export class CustomIconService {
   ) {}
 
   init() {
-    /*
     this.matIconRegistry.addSvgIcon(
-      'driving',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../../../assets/icons/driving.svg')
+      'logo',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../../../assets/icons/logo.svg')
     );
-    */
 
     this.matIconRegistry.registerFontClassAlias(
       'tg', 'tg-'

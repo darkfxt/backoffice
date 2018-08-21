@@ -3,15 +3,6 @@
 header{
   min-height: 54px;
   background: $primary-color;
-
-  @media only screen and (max-device-width: 736px) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 99;
-  }
-
 }
 
 .menu{
@@ -26,10 +17,15 @@ header{
 }
 
 .logo{
-  background: white;
   width: 100px;
   height: 30px;
   margin: 12px 16px 0 0;
+
+  mat-icon{
+    height: 40px;
+    width: 90px;
+    color: white;
+  }
 }
 
 .app-container{

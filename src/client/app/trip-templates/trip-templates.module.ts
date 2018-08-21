@@ -9,7 +9,6 @@ import {TranslateModule} from '@ngx-translate/core';
 import { TripTemplateDetailComponent } from './trip-template-detail/trip-template-detail.component';
 import {TripTemplatesRoutingModule} from './trip-templates-routing.module';
 import {TripTemplatesComponent} from './trip-templates.component';
-import { TripMapsComponent } from './trip-template-detail/trip-maps/trip-maps.component';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from '../store';
 import {CommonListModule} from '../shared/common-list/common-list.module';
@@ -21,6 +20,7 @@ import {SharedModule} from '../shared/shared.module';
 import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
 import { AddEventComponent } from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
 import {PlacesModule} from '../places/places.module';
+import { TripTemplateMapComponent } from './trip-template-detail/trip-template-map/trip-template-map.component';
 
 @NgModule({
   imports: [
@@ -46,12 +46,12 @@ import {PlacesModule} from '../places/places.module';
   declarations: [
     TripTemplatesComponent,
     TripTemplateDetailComponent,
-    TripMapsComponent,
     TripTemplateSummarizedCardComponent,
     TripTemplateItineraryComponent,
     EventDialogComponent,
     EventSummarizedCardComponent,
-    AddEventComponent
+    AddEventComponent,
+    TripTemplateMapComponent
   ],
   providers: [ ],
   entryComponents: [

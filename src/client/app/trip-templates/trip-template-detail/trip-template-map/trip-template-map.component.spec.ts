@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TripMapsComponent } from './trip-maps.component';
+import { TripTemplateMapComponent } from './trip-template-map.component';
 
-describe('TripMapsComponent', () => {
-  let component: TripMapsComponent;
-  let fixture: ComponentFixture<TripMapsComponent>;
+describe('TripTemplateMapComponent', () => {
+  let component: TripTemplateMapComponent;
+  let fixture: ComponentFixture<TripTemplateMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TripMapsComponent ]
+      declarations: [ TripTemplateMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TripMapsComponent);
+    fixture = TestBed.createComponent(TripTemplateMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

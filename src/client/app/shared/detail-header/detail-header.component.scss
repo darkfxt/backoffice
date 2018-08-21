@@ -4,7 +4,7 @@
   background: $primary-color;
   position: sticky;
   top: 0px;
-  z-index: 99;
+  z-index: 9;
 
   &.dialog{
     background: $secondary-color;
@@ -23,6 +23,12 @@
     top: 24px;
     z-index: 9;
     text-align: center;
+
+    @media only screen and (max-device-width: 736px) {
+      position: fixed;
+      bottom: 20px;
+      top: initial;
+    }
 
     .save-exit-label{
       display: block;
@@ -69,12 +75,6 @@
 
 
   @media only screen and (max-device-width: 736px) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 99;
-    height: 55px;
 
     h1{
       font-size: 20px;

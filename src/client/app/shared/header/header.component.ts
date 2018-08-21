@@ -13,10 +13,16 @@ export class HeaderComponent implements OnInit {
 
   currentRoute = 'trips';
   open = false;
-  constructor(router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
+    this.currentRoute = this.router.url === '/'? 'trip-templates' : this.router.url;
+  }
+
+  navigate(page){
+    this.currentRoute = page;
+    this.open = false;
   }
 
 }
