@@ -17,6 +17,7 @@ export interface TripTemplateState {
   selectedTripTemplate?: TripTemplate;
   selectedEvent?: any;
   ordinalForEvent?: number;
+  dayForEvent?: number;
 }
 
 export const initialState: TripTemplateState = {
@@ -43,9 +44,9 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.SAVE_TRIP_TEMPLATE:
       return {...state, loading: true};
     case TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION:
-      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null};
+      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY:
-      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null};
+      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, ordinalForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE:
       return {...state, loading: true};
     case TripTemplateActionTypes.EVENTS_RETRIEVED_FOR_TEMPLATE:
@@ -55,11 +56,16 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.ADD_EVENT: {
       const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
       const indexOfEvent = state.ordinalForEvent === undefined ? array.length : state.ordinalForEvent;
-      array.splice(+indexOfEvent,0, action.payload);
+      console.log('peeepe', state);
+      const dayOfEvent = state.dayForEvent || 1 ;
+      const eventToAdd = Object.assign({}, action.payload, {ordinal: dayOfEvent});
+      array.splice(+indexOfEvent,0, eventToAdd);
       return {...state, loading: false, selectedTripTemplateEvents: array, selectedEvent: null, ordinalForEvent: null};
     }
     case TripTemplateActionTypes.SELECT_ORDINAL_TO_ADD_EVENT:
       return {...state, loading: false, ordinalForEvent: action.payload};
+    case TripTemplateActionTypes.SELECT_DAY_TO_ADD_EVENT:
+      return {...state, loading: false, dayForEvent: action.payload};
     default:
       return state;
   }

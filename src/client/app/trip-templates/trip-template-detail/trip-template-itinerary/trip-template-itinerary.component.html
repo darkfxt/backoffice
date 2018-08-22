@@ -1,4 +1,4 @@
-<div class="day-ctn">
+<!--<div class="day-ctn">
   <div class="day-count">
     <h4>DAY 1 - Salta, Cafayate, Cachi</h4>
     <p>2 Routes, Hotel (1)night</p>
@@ -16,6 +16,28 @@
     <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length"></app-add-event>
   </ul>
 
+</div>-->
+
+<div class="day-ctn">
+
+  <ul class="event-list">
+    <li *ngFor="let day of itineraryEvents, let idx = index">
+      <div class="day-count">
+        <h4>DAY {{day.day}} - Salta, Cafayate, Cachi</h4>
+        <p>2 Routes, Hotel (1)night</p>
+      </div>
+      <ul>
+        <li *ngFor="let events of day.events, let intidx = index">
+          <app-event-summarized-card [data]="events" [day]="day.day"></app-event-summarized-card>
+        </li>
+        <li>
+          <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day"></app-add-event>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+
 </div>
 
-<button mat-stroked-button color="accent" class="new-day">+ ADD NEW DAY</button>
+<button mat-stroked-button (click)="addDay()" color="accent" class="new-day">+ ADD NEW DAY</button>

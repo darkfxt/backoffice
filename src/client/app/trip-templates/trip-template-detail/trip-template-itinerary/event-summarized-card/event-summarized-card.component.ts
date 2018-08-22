@@ -8,7 +8,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 export class EventSummarizedCardComponent implements OnInit {
 
   @Input() data: any;
-
+  @Input() day: any;
   @Input() showEmptySlot: boolean;
 
   @Output() ordinalSelected: number;

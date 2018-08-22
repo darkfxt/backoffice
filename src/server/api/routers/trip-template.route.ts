@@ -14,4 +14,7 @@ TripTemplateRouter.route('/:id')
 TripTemplateRouter.route('/:id/events')
   .get(TripTemplateController.getEventsFromTripTemplate);
 
+TripTemplateRouter.route('/:id/itinerary')
+  .get(TripTemplateController.getItineraryFromTripTemplate);
+
 export default TripTemplateRouter;

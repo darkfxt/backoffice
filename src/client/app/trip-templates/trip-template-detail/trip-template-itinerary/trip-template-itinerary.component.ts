@@ -17,6 +17,7 @@ import {EventSummarizedCardComponent} from './event-summarized-card/event-summar
 import {AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector} from '../../../store';
 import {Store} from '@ngrx/store';
 import {AddEvent} from '../../../store/trip-template/trip-template.actions';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -34,7 +35,9 @@ export class TripTemplateItineraryComponent implements OnInit {
 
   loading = false;
   selectedTemplateEvents$: Observable<any>;
+  itineraryEvents: Array<any> = [];
   drawingComponent: ListItemComponent;
+  dayOfEvent: number;
 
   state = 'out';
   addEventText = {'in': 'close', 'out': 'add'};
@@ -53,6 +56,17 @@ export class TripTemplateItineraryComponent implements OnInit {
   ngOnInit() {
 
     this.store.select(tripTemplateSelector).subscribe((data: any) => {
+      if (data.selectedTripTemplateEvents) {
+        const arrangedEvents = [];
+        data.selectedTripTemplateEvents.forEach((event, index, array) =>
+          arrangedEvents.push(Object.assign({}, event, {index})));
+        const arreglo = [];
+        _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
+          (value, key) => arreglo.push({day: key, events: value}));
+        this.itineraryEvents = arreglo;
+
+      }
+      if(data.dayForEvent) this.dayOfEvent = data.dayForEvent;
       if(data.selectedEvent) {
         this.addEvent(data.selectedEvent);
       }
@@ -84,7 +98,7 @@ export class TripTemplateItineraryComponent implements OnInit {
 
   addEvent(eventToAdd){
     this.dialog.closeAll();
-    const newEvent: Event = this.convertToEvent(eventToAdd, eventType.CUSTOM, 1);
+    const newEvent: Event = this.convertToEvent(eventToAdd, eventType.CUSTOM, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
   }
 
@@ -94,8 +108,13 @@ export class TripTemplateItineraryComponent implements OnInit {
     converted.description = toConvert.description;
     converted.reference_id = toConvert._id;
     converted.event_type = event_type;
-    converted.ordinal = order;
+    converted.ordinal = order || 1;
+    // converted.index = order;
     return converted;
+  }
+
+  addDay(){
+    this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
   }
 
 }

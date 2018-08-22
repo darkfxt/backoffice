@@ -14,7 +14,8 @@ export enum TripTemplateActionTypes {
   EVENTS_RETRIEVED_FOR_TEMPLATE = '[Events] Retrieved Succesfully',
   EVENT_SELECTED = '[Events] Selected',
   ADD_EVENT = '[Events] Adding new Event',
-  SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting Ordinal'
+  SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
+  SELECT_DAY_TO_ADD_EVENT = '[Events] Selecting ordinal day'
 
 }
 
@@ -106,7 +107,15 @@ export class OrdinalForEventSetted implements Action {
   }
 }
 
+export class OrdinalDayForEventSetted implements Action {
+  readonly type = TripTemplateActionTypes.SELECT_DAY_TO_ADD_EVENT;
+  constructor (readonly payload: number){
+    this.payload = payload;
+  }
+}
+
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate |
   TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | SaveTripTemplate | OrdinalForEventSetted |
-  TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft;
+  TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft |
+  OrdinalDayForEventSetted;

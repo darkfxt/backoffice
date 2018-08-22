@@ -51,6 +51,10 @@ export class TripTemplateService {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}/events`);
   }
 
+  getItineraryFromTripTemplate (tripTemplate_id: string): Observable<any>{
+    return this.http.get(`/api/trip-templates/${tripTemplate_id}/itinerary`);
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.

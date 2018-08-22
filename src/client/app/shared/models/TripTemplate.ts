@@ -12,6 +12,7 @@ export class Event {
   _id: string;
   name: string;
   ordinal: number;
+  index: number;
   time: Date;
   description: string;
   reference_id: string;

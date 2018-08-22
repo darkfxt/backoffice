@@ -35,7 +35,7 @@ export class PlaceService {
     return axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?&key=${config.googleApiKey}&placeid=${place_id}&language=${lang}`)
       .then(resp => {
-        return PlaceFactory.getPlaceFromGoogle(<GooglePlace>resp.data.result);
+        return PlaceFactory.getPlaceFromGoogle(<GooglePlace>resp.data.rexsult);
       });
   }
 

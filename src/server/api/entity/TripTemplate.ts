@@ -9,7 +9,7 @@ export class Event {
 
   constructor( public _id: string, public name: string,
                public ordinal: number, public time: Date, public eventType: event_type,
-               public description?: string, public reference_id?: string
+               public description?: string, public reference_id?: string, public index?: number
                ) {
     this._id = _id;
     this.name = name;
@@ -18,6 +18,7 @@ export class Event {
     this.eventType = eventType;
     if(description) this.description = description;
     if(reference_id) this.reference_id = reference_id;
+    if(index) this.index = index;
 
   }
 

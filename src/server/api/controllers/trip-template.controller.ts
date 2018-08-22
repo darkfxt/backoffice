@@ -5,7 +5,7 @@ import {TripTemplate, TripTemplateEmpty} from '../entity/TripTemplate';
 import {PlaceService} from '../services/place.service';
 import Place from '../entity/Place';
 import {RoutesService} from '../services/routes.service';
-
+import * as _ from 'lodash';
 
 export class TripTemplateController {
 
@@ -26,7 +26,24 @@ export class TripTemplateController {
     try {
       if(request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
         const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
+
         response.json(answer.data);
+      } else if (request.params.id === undefined || request.params.id === 'undefined') {
+        response.json([]);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async getItineraryFromTripTemplate(request: Request, response: Response, next: NextFunction) {
+    try {
+      if(request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
+        const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
+        const arreglo = [];
+        _.forEach(_.groupBy(answer.data, 'ordinal'), (value, key) => arreglo.push({day: key, events: value}));
+        console.log('solicitando eventos', arreglo);
+        response.json(arreglo);
       } else if (request.params.id === undefined || request.params.id === 'undefined') {
         response.json([]);
       }

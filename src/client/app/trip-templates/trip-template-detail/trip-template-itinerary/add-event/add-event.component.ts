@@ -12,7 +12,7 @@ import {Event} from '../../../../shared/models/TripTemplate';
 import {MatDialog} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store';
-import {OrdinalForEventSetted} from '../../../../store/trip-template/trip-template.actions';
+import {OrdinalDayForEventSetted, OrdinalForEventSetted} from '../../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-add-event',
@@ -39,6 +39,7 @@ import {OrdinalForEventSetted} from '../../../../store/trip-template/trip-templa
 export class AddEventComponent implements OnInit {
 
   @Input() ordinal;
+  @Input() day: number;
 
   state = 'out';
   tooltipMessage = {'in': 'close', 'out': 'Add event here'};
@@ -52,6 +53,7 @@ export class AddEventComponent implements OnInit {
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
 
   ngOnInit() {
+
   }
 
   showOptions(): void{
@@ -60,6 +62,7 @@ export class AddEventComponent implements OnInit {
 
   openDialog(productType){
     this.store.dispatch(new OrdinalForEventSetted(this.ordinal));
+    this.store.dispatch(new OrdinalDayForEventSetted(this.day));
     const dialogRef = this.dialog.open(EventDialogComponent, {
       width: '80%',
       height: '80%',
