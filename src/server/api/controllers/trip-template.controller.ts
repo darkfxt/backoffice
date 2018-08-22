@@ -26,7 +26,7 @@ export class TripTemplateController {
     try {
       if(request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
         const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
-
+        console.log('respuesta', answer);
         response.json(answer.data);
       } else if (request.params.id === undefined || request.params.id === 'undefined') {
         response.json([]);
@@ -42,7 +42,6 @@ export class TripTemplateController {
         const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
         const arreglo = [];
         _.forEach(_.groupBy(answer.data, 'ordinal'), (value, key) => arreglo.push({day: key, events: value}));
-        console.log('solicitando eventos', arreglo);
         response.json(arreglo);
       } else if (request.params.id === undefined || request.params.id === 'undefined') {
         response.json([]);

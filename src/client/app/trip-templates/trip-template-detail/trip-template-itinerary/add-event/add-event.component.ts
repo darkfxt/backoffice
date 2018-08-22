@@ -8,11 +8,11 @@ import {
 } from '@angular/animations';
 
 import {EventDialogComponent} from '../event-dialog/event-dialog.component';
-import {Event} from '../../../../shared/models/TripTemplate';
+import {Event, eventType} from '../../../../shared/models/TripTemplate';
 import {MatDialog} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store';
-import {OrdinalDayForEventSetted, OrdinalForEventSetted} from '../../../../store/trip-template/trip-template.actions';
+import {OrdinalDayForEventSetted, OrdinalForEventSetted, DayIndexTypeForEventSetted} from '../../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-add-event',
@@ -44,10 +44,10 @@ export class AddEventComponent implements OnInit {
   state = 'out';
   tooltipMessage = {'in': 'close', 'out': 'Add event here'};
   productTypes = [
-    {value: 'DRIVING', viewValue: 'driving', icon:'driving'},
-    {value: 'HOTEL', viewValue: 'hotel', icon:'hotel'},
-    {value: 'ACTIVITY', viewValue: 'activity', icon:'ticket'},
-    {value: 'OTHER', viewValue: 'other', icon:'edit_2'}
+    {value: eventType.DRIVING,/* 'DRIVING', */viewValue: 'driving', icon:'driving'},
+    {value: eventType.HOTEL, viewValue: 'hotel', icon:'hotel'},
+    {value: eventType.ACTIVITY, viewValue: 'activity', icon:'ticket'},
+    {value: eventType.OTHER, viewValue: 'other', icon:'edit_2'}
   ];
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
@@ -61,8 +61,7 @@ export class AddEventComponent implements OnInit {
   }
 
   openDialog(productType){
-    this.store.dispatch(new OrdinalForEventSetted(this.ordinal));
-    this.store.dispatch(new OrdinalDayForEventSetted(this.day));
+    this.store.dispatch(new DayIndexTypeForEventSetted(this.day, this.ordinal, productType ));
     const dialogRef = this.dialog.open(EventDialogComponent, {
       width: '80%',
       height: '80%',

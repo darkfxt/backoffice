@@ -1,4 +1,4 @@
-import {Event, TripTemplate, TripTemplateWithMetadata} from '../../shared/models/TripTemplate';
+import {Event, TripTemplate, TripTemplateWithMetadata, eventType} from '../../shared/models/TripTemplate';
 import {Action} from '@ngrx/store';
 import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
 
@@ -15,8 +15,9 @@ export enum TripTemplateActionTypes {
   EVENT_SELECTED = '[Events] Selected',
   ADD_EVENT = '[Events] Adding new Event',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
-  SELECT_DAY_TO_ADD_EVENT = '[Events] Selecting ordinal day'
-
+  SELECT_DAY_TO_ADD_EVENT = '[Events] Selecting ordinal day',
+  SELECT_TYPE_TO_ADD_EVENT = '[Events] Selecting event type',
+  SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting Type, index & day for event'
 }
 
 export class GetTripTemplates implements Action {
@@ -114,8 +115,22 @@ export class OrdinalDayForEventSetted implements Action {
   }
 }
 
+export class DayIndexTypeForEventSetted implements Action {
+  readonly type = TripTemplateActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL;
+  public payload: dayIndexType;
+  constructor ( day: number,  index: number,  type: eventType){
+    this.payload = {day, index, type};
+  }
+}
+
+interface dayIndexType {
+  day: number;
+  index: number;
+  type: eventType;
+}
+
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate |
   TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | SaveTripTemplate | OrdinalForEventSetted |
   TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft |
-  OrdinalDayForEventSetted;
+  OrdinalDayForEventSetted | DayIndexTypeForEventSetted;

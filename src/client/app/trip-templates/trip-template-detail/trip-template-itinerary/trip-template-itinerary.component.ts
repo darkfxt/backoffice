@@ -30,14 +30,12 @@ export class TripTemplateItineraryComponent implements OnInit {
   @Input()
   itinerary: FormArray;
 
-  // @Input()
-  // events$: Observable<any[]>;
-
   loading = false;
   selectedTemplateEvents$: Observable<any>;
   itineraryEvents: Array<any> = [];
   drawingComponent: ListItemComponent;
   dayOfEvent: number;
+  typeForEvent: string;
 
   state = 'out';
   addEventText = {'in': 'close', 'out': 'add'};
@@ -57,6 +55,7 @@ export class TripTemplateItineraryComponent implements OnInit {
 
     this.store.select(tripTemplateSelector).subscribe((data: any) => {
       if (data.selectedTripTemplateEvents) {
+        /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
         const arrangedEvents = [];
         data.selectedTripTemplateEvents.forEach((event, index, array) =>
           arrangedEvents.push(Object.assign({}, event, {index})));
@@ -67,6 +66,7 @@ export class TripTemplateItineraryComponent implements OnInit {
 
       }
       if(data.dayForEvent) this.dayOfEvent = data.dayForEvent;
+      if(data.typeForEvent) this.typeForEvent = data.typeForEvent;
       if(data.selectedEvent) {
         this.addEvent(data.selectedEvent);
       }
@@ -77,39 +77,19 @@ export class TripTemplateItineraryComponent implements OnInit {
     this.state = this.state === 'out'? 'in': 'out';
   }
 
-  // openDialog(productType){
-//
-  //   this.itinerary.push(this.fb.group(new Event()));
-  //   const dialogRef = this.dialog.open(EventDialogComponent, {
-  //     width: '80%',
-  //     height: '80%',
-  //     maxWidth: '1024px',
-  //     id: 'eventDialog',
-  //     panelClass: 'eventDialogPanel',
-  //     data: {productType: productType},
-  //     disableClose: true,
-  //     closeOnNavigation: true
-  //   });
-//
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //   });
-  // }
-
   addEvent(eventToAdd){
     this.dialog.closeAll();
-    const newEvent: Event = this.convertToEvent(eventToAdd, eventType.CUSTOM, this.dayOfEvent);
+    const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
   }
 
-  convertToEvent(toConvert: any, event_type: eventType, order: number): Event{
+  convertToEvent(toConvert: any, event_type: string, order: number): Event{
     const converted: Event = new Event();
     converted.name = toConvert.name;
     converted.description = toConvert.description;
     converted.reference_id = toConvert._id;
     converted.event_type = event_type;
     converted.ordinal = order || 1;
-    // converted.index = order;
     return converted;
   }
 

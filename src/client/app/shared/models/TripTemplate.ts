@@ -1,10 +1,10 @@
 import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
 
 export enum eventType {
-  'HOTEL',
-  'SEGMENT',
-  'ACTIVITY',
-  'CUSTOM'
+  HOTEL = 'HOTEL',
+  DRIVING = 'DRIVING',
+  ACTIVITY = 'ACTIVITY',
+  OTHER = 'OTHER'
 }
 
 export class Event {
@@ -16,7 +16,7 @@ export class Event {
   time: Date;
   description: string;
   reference_id: string;
-  event_type: eventType;
+  event_type: string;
   created_by: string;
 }
 
