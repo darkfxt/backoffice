@@ -44,6 +44,13 @@ export class PlaceService {
 
   }
 
+  getGoogleDetail (place_id: string): Observable<any>{
+    return this.http.get(`/api/places/google/${place_id}?lang=es`)
+      .pipe(
+        catchError(this.handleError('getGoogleDetail', []))
+      );
+  }
+
   getDetail (place_id: string): Observable<any>{
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(

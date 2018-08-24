@@ -10,6 +10,7 @@ import {GetSegments} from '../store/route/route.actions';
 import Segment from '../shared/models/Segment';
 import Route from '../../../server/api/entity/Route';
 import {PageEvent} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-tg-routes',
@@ -18,7 +19,7 @@ import {PageEvent} from '@angular/material';
 })
 export class RoutesComponent implements OnInit {
   @Input() selectMode? = false;
-
+  @Input() isDialog = false;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
@@ -28,6 +29,8 @@ export class RoutesComponent implements OnInit {
   paginationOptions: PaginationOptionsInterface;
 
   constructor(private SegmentServiceInstance: RoutesService,
+              private route: ActivatedRoute,
+              private router: Router,
               private store: Store<AppState>){
     store.select(segmentLoadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
@@ -59,6 +62,14 @@ export class RoutesComponent implements OnInit {
   onFilterChanged(event) {
     this.paginationOptions = Object.assign({}, this.paginationOptions,{search: event});
     this.store.dispatch(new GetSegments(this.paginationOptions));
+  }
+
+  onButtonClick(){
+    if (this.isDialog){
+      this.router.navigate([{ outlets: { modal: ['modal_route_new'] } }]);
+      return;
+    }
+    this.router.navigate(['/routes/new']);
   }
 
 }

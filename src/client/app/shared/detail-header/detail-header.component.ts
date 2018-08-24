@@ -16,6 +16,9 @@ export class DetailHeaderComponent implements OnInit {
   @Input()
   isDialog: boolean;
 
+  @Input()
+
+
   @Output()
   backButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output()

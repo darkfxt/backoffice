@@ -16,6 +16,11 @@ const rRoutes: Routes = [
         component: RoutesComponent,
       },
       {
+        path: 'modal',
+        component: RouteDetailComponent
+
+      },
+      {
         path: ':id',
         component: RouteDetailComponent,
         canDeactivate: [CanDeactivateGuard],

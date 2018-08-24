@@ -31,11 +31,19 @@ export class PlaceService {
       });
   }
 
-  public static async getDetail(place_id: string, lang: string = 'en'): Promise<Place> {
+  public static async getGoogleDetail(place_id: string, lang: string = 'en'): Promise<Place> {
     return axios
       .get(`https://maps.googleapis.com/maps/api/place/details/json?&key=${config.googleApiKey}&placeid=${place_id}&language=${lang}`)
       .then(resp => {
-        return PlaceFactory.getPlaceFromGoogle(<GooglePlace>resp.data.rexsult);
+        return PlaceFactory.getPlaceFromGoogle(<GooglePlace>resp.data.result);
+      });
+  }
+
+  public static async getDetail(place_id: string, lang: string = 'en'): Promise<Place> {
+    return axios
+      .get(`${config.geo.url}/places/${place_id}`)
+      .then(resp => {
+        return resp.data;
       });
   }
 
@@ -57,7 +65,7 @@ export class PlaceService {
   }
 
   private static async addPoint(placeId, lang): Promise<any>{
-    const place: Place = await this.getDetail(placeId, lang);
+    const place: Place = await this.getGoogleDetail(placeId, lang);
     return this.create(place).then(resp => {
       place._id = resp.data.identifiers[0]._id;
       return {data: [place]};

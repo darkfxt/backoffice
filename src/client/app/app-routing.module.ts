@@ -5,6 +5,7 @@ import { PageNotFoundComponent }    from './not-found.component';
 
 import { CanDeactivateGuard }       from './shared/services/can-deactivate-guard.service';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
+import {RouteDetailComponent} from './routes/route-detail/route-detail.component';
 
 const appRoutes: Routes = [
   {
@@ -18,6 +19,11 @@ const appRoutes: Routes = [
   {
     path: 'trip-templates',
     loadChildren: './trip-templates/trip-templates.module#TripTemplatesModule',
+  },
+  {
+    path: 'modal_route_new',
+    component: RouteDetailComponent,
+    outlet: 'modal'
   },
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

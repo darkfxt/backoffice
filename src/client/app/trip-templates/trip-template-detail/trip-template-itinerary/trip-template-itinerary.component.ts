@@ -61,41 +61,54 @@ export class TripTemplateItineraryComponent implements OnInit {
           arrangedEvents.push(Object.assign({}, event, {index})));
         const arreglo = [];
         _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
-          (value, key) => arreglo.push({day: key, events: value}));
+          (value, key) => {
+            arreglo.push({day: key, events: value});
+          });
         this.itineraryEvents = arreglo;
 
       }
-      if(data.dayForEvent) this.dayOfEvent = data.dayForEvent;
-      if(data.typeForEvent) this.typeForEvent = data.typeForEvent;
-      if(data.selectedEvent) {
+      if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
+      if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
+      if (data.selectedEvent) {
         this.addEvent(data.selectedEvent);
       }
     });
   }
 
-  showOptions(): void{
-    this.state = this.state === 'out'? 'in': 'out';
+  showOptions(): void {
+    this.state = this.state === 'out' ? 'in' : 'out';
   }
 
-  addEvent(eventToAdd){
+  addEvent(eventToAdd) {
     this.dialog.closeAll();
     const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
   }
 
-  convertToEvent(toConvert: any, event_type: string, order: number): Event{
+  convertToEvent(toConvert: any, event_type: string, order: number): Event {
+    console.log(toConvert, eventType);
     const converted: Event = new Event();
     converted.name = toConvert.name;
     converted.description = toConvert.description;
     converted.reference_id = toConvert._id;
-    converted.event_type = event_type;
+    converted.event_type = this.typeForEvent;
     converted.ordinal = order || 1;
+    if (this.typeForEvent === eventType.ACTIVITY) {
+      converted.geo = [toConvert.geo.point];
+    }
+    else {
+      const geo = [];
+      geo.push(toConvert.origin.geo.point);
+      toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
+      geo.push(toConvert.destination.geo.point);
+      converted.geo = geo;
+    }
     return converted;
   }
 
-  addDay(){
+  addDay() {
     this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
   }
 
-}
 
+}

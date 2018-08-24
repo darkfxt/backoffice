@@ -66,7 +66,7 @@ export class RoutesController {
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
       const resp = await RoutesService.getDetail(request.params.id, request.query.lang);
-      response.json(resp.data);
+      response.json(resp);
     } catch (err) {
       next(err);
     }

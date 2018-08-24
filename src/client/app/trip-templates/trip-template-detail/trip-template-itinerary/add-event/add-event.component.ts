@@ -13,6 +13,7 @@ import {MatDialog} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store';
 import {OrdinalDayForEventSetted, OrdinalForEventSetted, DayIndexTypeForEventSetted} from '../../../../store/trip-template/trip-template.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-event',
@@ -50,7 +51,7 @@ export class AddEventComponent implements OnInit {
     {value: eventType.OTHER, viewValue: 'other', icon:'edit_2'}
   ];
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) { }
+  constructor(public dialog: MatDialog, private store: Store<AppState>, private router: Router) { }
 
   ngOnInit() {
 
@@ -72,6 +73,7 @@ export class AddEventComponent implements OnInit {
       disableClose: true,
       closeOnNavigation: true
     });
+    this.router.navigate([{ outlets: { modal: ['modal_route_new'] } }]);
 
     dialogRef.afterClosed().subscribe(result => {
       this.state = 'out';

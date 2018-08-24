@@ -23,7 +23,11 @@ export class RoutesService {
   }
 
   public static async getDetail(id: string, lang: string = 'en'): Promise<any> {
-    return axios.get(`${config.routes.url}/segments/${id}?lang=${lang}`);
+    return axios
+      .get(`${config.routes.url}/segments/${id}?lang=${lang}`)
+      .then(resp => {
+        return resp.data;
+      });
   }
 
 }

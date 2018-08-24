@@ -37,6 +37,15 @@ export class PlaceController {
     }
   }
 
+  public static async getGoogleDetail(request: Request, response: Response, next: NextFunction) {
+    try {
+      const data = await PlaceService.getGoogleDetail(request.params.place_id, request.query.lang);
+      response.json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
       const data = await PlaceService.getDetail(request.params.place_id, request.query.lang);

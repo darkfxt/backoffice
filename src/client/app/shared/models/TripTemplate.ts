@@ -17,6 +17,7 @@ export class Event {
   description: string;
   reference_id: string;
   event_type: string;
+  geo?: any;
   created_by: string;
 }
 

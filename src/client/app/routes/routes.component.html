@@ -1,4 +1,12 @@
-<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' rutas encontradas'" class="detail-header-content" navUrl="/routes/new"></app-detail-header>
+<app-detail-header *ngIf="!loading" [disableBackButton]="true"
+                   [title]="paginationOptions.length + ' rutas encontradas'"
+                   class="detail-header-content" navUrl="/routes/new">
+  <div class="button-container">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">

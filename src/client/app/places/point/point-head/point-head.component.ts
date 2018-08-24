@@ -36,7 +36,7 @@ export class PointHeadComponent implements OnInit, OnDestroy {
 
   onOptionSelected(e) {
     this.placeForm.patchValue({name: e.option.value.name.split(',')[0]});
-    this._subscription = this.placeService.getDetail(e.option.value.place_id).subscribe(resp => {
+    this._subscription = this.placeService.getGoogleDetail(e.option.value.place_id).subscribe(resp => {
       this.placeStore.setLocation(resp);
     });
   }

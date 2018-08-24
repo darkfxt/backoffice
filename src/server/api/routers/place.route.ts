@@ -11,6 +11,9 @@ PlaceRouter.route('/glautocomplete')
 PlaceRouter.route('/search')
   .get(PlaceController.search);
 
+PlaceRouter.route('/google/:place_id')
+  .get(PlaceController.getGoogleDetail);
+
 PlaceRouter.route('/:place_id')
   .get(PlaceController.getDetail);
 
