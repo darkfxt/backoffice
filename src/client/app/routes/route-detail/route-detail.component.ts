@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
   selector: 'app-route-detail',
   template: `
     <app-route>
-      <app-detail-header title="New route" class="detail-header-content" (backButtonClicked)="goBack($event)"></app-detail-header>
+      <app-detail-header title="New route" class="detail-header-content" (backButtonClicked)="goBack()"></app-detail-header>
     </app-route>
   `
 })

@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
   selector: 'app-place-detail',
   template: `
     <app-point>
-      <app-detail-header title="New place" class="detail-header-content" (backButtonClicked)="goBack($event)"></app-detail-header>
+      <app-detail-header title="New place" class="detail-header-content" (backButtonClicked)="goBack()"></app-detail-header>
     </app-point>`,
 })
 export class PlaceDetailComponent implements OnInit {
