@@ -19,7 +19,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class RoutesComponent implements OnInit {
   @Input() selectMode? = false;
-  @Input() isDialog = false;
+  @Input() isDialog? = false;
+  @Input() dialogRef: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
@@ -66,7 +67,9 @@ export class RoutesComponent implements OnInit {
 
   onButtonClick(){
     if (this.isDialog){
-      this.router.navigate([{ outlets: { modal: ['modal_route_new'] } }]);
+      if(this.dialogRef){
+        this.dialogRef.close('OPEN_NEW_ROUTES');
+      }
       return;
     }
     this.router.navigate(['/routes/new']);

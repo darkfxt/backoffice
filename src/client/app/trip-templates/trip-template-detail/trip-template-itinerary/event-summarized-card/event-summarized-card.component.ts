@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-event-summarized-card',
@@ -11,11 +11,15 @@ export class EventSummarizedCardComponent implements OnInit {
   @Input() day: any;
   @Input() showEmptySlot: boolean;
 
-  @Output() ordinalSelected: number;
+  @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  openDialog(event){
+    this.openedDialog.emit(event);
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   trigger,
   state,
@@ -42,6 +42,8 @@ export class AddEventComponent implements OnInit {
   @Input() ordinal;
   @Input() day: number;
 
+  @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
+
   state = 'out';
   tooltipMessage = {'in': 'close', 'out': 'Add event here'};
   productTypes = [
@@ -51,7 +53,7 @@ export class AddEventComponent implements OnInit {
     {value: eventType.OTHER, viewValue: 'other', icon:'edit_2'}
   ];
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>, private router: Router) { }
+  constructor( private store: Store<AppState>, private router: Router) { }
 
   ngOnInit() {
 
@@ -62,22 +64,7 @@ export class AddEventComponent implements OnInit {
   }
 
   openDialog(productType){
-    this.store.dispatch(new DayIndexTypeForEventSetted(this.day, this.ordinal, productType ));
-    const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '80%',
-      height: '80%',
-      maxWidth: '1024px',
-      id: 'eventDialog',
-      panelClass: 'eventDialogPanel',
-      data: {productType: productType},
-      disableClose: true,
-      closeOnNavigation: true
-    });
-    this.router.navigate([{ outlets: { modal: ['modal_route_new'] } }]);
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.state = 'out';
-    });
+    this.openedDialog.emit({productType, day: this.day, ordinal: this.ordinal});
   }
 
 }

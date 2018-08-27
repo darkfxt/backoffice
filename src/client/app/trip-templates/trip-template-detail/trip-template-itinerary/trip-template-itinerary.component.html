@@ -28,10 +28,10 @@
       </div>
       <ul>
         <li *ngFor="let events of day.events, let intidx = index">
-          <app-event-summarized-card [data]="events" [day]="day.day"></app-event-summarized-card>
+          <app-event-summarized-card [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
         </li>
         <li>
-          <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day"></app-add-event>
+          <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day" (openedDialog)="openDialog($event)"></app-add-event>
         </li>
       </ul>
     </li>

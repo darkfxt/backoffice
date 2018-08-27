@@ -20,11 +20,6 @@ const appRoutes: Routes = [
     path: 'trip-templates',
     loadChildren: './trip-templates/trip-templates.module#TripTemplatesModule',
   },
-  {
-    path: 'modal_route_new',
-    component: RouteDetailComponent,
-    outlet: 'modal'
-  },
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

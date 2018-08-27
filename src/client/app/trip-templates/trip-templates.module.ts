@@ -21,6 +21,9 @@ import { EventSummarizedCardComponent } from './trip-template-detail/trip-templa
 import { AddEventComponent } from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
 import {PlacesModule} from '../places/places.module';
 import { TripTemplateMapComponent } from './trip-template-detail/trip-template-map/trip-template-map.component';
+import {RouteComponent} from '../routes/route/route.component';
+import {PlacesComponent} from '../places/places.component';
+import {PointComponent} from '../places/point/point.component';
 
 @NgModule({
   imports: [
@@ -55,7 +58,7 @@ import { TripTemplateMapComponent } from './trip-template-detail/trip-template-m
   ],
   providers: [ ],
   entryComponents: [
-    EventDialogComponent
+    EventDialogComponent, RouteComponent, PointComponent
   ],
 })
 export class TripTemplatesModule { }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Type} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Type} from '@angular/core';
 import {PlaceService} from '../shared/services/place.service';
 import {AppState, loadingSelector, metadataSelector, pointSelector} from '../store';
 import {Store} from '@ngrx/store';
@@ -7,9 +7,10 @@ import {Observable} from 'rxjs';
 import {GetPoints} from '../store/place/place.actions';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PageEvent} from '@angular/material';
 import {PaginationOptionsInterface} from '../shared/common-list/common-list-item/pagination-options.interface';
+import Route from '../../../server/api/entity/Route';
 
 @Component({
   selector: 'app-places',
@@ -18,6 +19,9 @@ import {PaginationOptionsInterface} from '../shared/common-list/common-list-item
 })
 export class PlacesComponent implements OnInit{
   @Input() selectMode? = false;
+  @Input() isDialog? = false;
+  @Input() dialogRef: any;
+  @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
   points$: Observable<Point[]>;
@@ -26,6 +30,8 @@ export class PlacesComponent implements OnInit{
   paginationOptions: PaginationOptionsInterface;
 
   constructor(private placesServiceInstance: PlaceService,
+              private route: ActivatedRoute,
+              private router: Router,
               private store: Store<AppState>){
     store.select(loadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
@@ -57,6 +63,16 @@ export class PlacesComponent implements OnInit{
   onFilterChanged(event) {
     this.paginationOptions = Object.assign({}, this.paginationOptions,{search: event});
     this.store.dispatch(new   GetPoints(this.paginationOptions));
+  }
+
+  onButtonClick(){
+    if (this.isDialog){
+      if(this.dialogRef){
+        this.dialogRef.close('OPEN_NEW_PLACES');
+      }
+      return;
+    }
+    this.router.navigate(['/places/new']);
   }
 
 }

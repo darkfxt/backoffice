@@ -1,4 +1,10 @@
-<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' puntos encontrados'" class="detail-header-content" navUrl="/places/new"></app-detail-header>
+<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' puntos encontrados'" class="detail-header-content" navUrl="/places/new">
+  <div class="button-container">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
 <div class="app-container full-size body-content">
   <div [hidden]="loading">
     <app-common-list [list]="points$" [component]="drawingComponent" [storeToWatch]="'points'" (pageChanged)="onPageChanged($event)">

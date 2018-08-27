@@ -1,6 +1,7 @@
 import {Component, OnInit, Inject, Input} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {EventDialogComponent} from './event-dialog/event-dialog.component';
+import {RouteComponent} from '../../../routes/route/route.component';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {
   trigger,
@@ -16,8 +17,10 @@ import {ListItemComponent} from '../../../shared/common-list/common-list-item/co
 import {EventSummarizedCardComponent} from './event-summarized-card/event-summarized-card.component';
 import {AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector} from '../../../store';
 import {Store} from '@ngrx/store';
-import {AddEvent} from '../../../store/trip-template/trip-template.actions';
+import {AddEvent, DayIndexTypeForEventSetted} from '../../../store/trip-template/trip-template.actions';
 import * as _ from 'lodash';
+import {PlacesComponent} from '../../../places/places.component';
+import {PointComponent} from '../../../places/point/point.component';
 
 
 @Component({
@@ -36,6 +39,10 @@ export class TripTemplateItineraryComponent implements OnInit {
   drawingComponent: ListItemComponent;
   dayOfEvent: number;
   typeForEvent: string;
+  ordinalForEvent: string;
+
+  dialogReference: any;
+
 
   state = 'out';
   addEventText = {'in': 'close', 'out': 'add'};
@@ -67,6 +74,7 @@ export class TripTemplateItineraryComponent implements OnInit {
         this.itineraryEvents = arreglo;
 
       }
+      if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
       if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
       if (data.selectedEvent) {
@@ -80,7 +88,7 @@ export class TripTemplateItineraryComponent implements OnInit {
   }
 
   addEvent(eventToAdd) {
-    this.dialog.closeAll();
+    this.dialogReference.close();
     const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
   }
@@ -108,6 +116,48 @@ export class TripTemplateItineraryComponent implements OnInit {
 
   addDay() {
     this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
+  }
+
+  openDialog(event){
+     this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
+     this.dialogReference = this.dialog.open(EventDialogComponent, {
+       width: '80%',
+       height: '80%',
+       maxWidth: '1024px',
+       id: 'eventDialog',
+       panelClass: 'eventDialogPanel',
+       data: {productType: event.productType},
+       disableClose: true,
+       closeOnNavigation: true
+     });
+
+    this.dialogReference.afterClosed().subscribe(result => {
+       if (result === 'OPEN_NEW_ROUTES'){
+         this.dialogReference = this.dialog.open(RouteComponent, {
+           width: '80%',
+           height: '80%',
+           maxWidth: '1024px',
+           id: 'eventDialog',
+           panelClass: 'eventDialogPanel',
+           data: {},
+           disableClose: true,
+           closeOnNavigation: true
+         });
+       }
+      if (result === 'OPEN_NEW_PLACES'){
+        this.dialogReference = this.dialog.open(PointComponent, {
+          width: '80%',
+          height: '80%',
+          maxWidth: '1024px',
+          id: 'eventDialog',
+          panelClass: 'eventDialogPanel',
+          data: {},
+          disableClose: true,
+          closeOnNavigation: true
+        });
+      }
+       this.state = 'out';
+     });
   }
 
 

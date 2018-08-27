@@ -1,5 +1,5 @@
 <div>
-  <app-add-event [ordinal]="data.index" [day]="day"></app-add-event>
+  <app-add-event [ordinal]="data.index" [day]="day" (openedDialog)="openDialog($event)" > </app-add-event>
 </div>
 <div class="event-cluster">
   <div class="icon-ctn">
