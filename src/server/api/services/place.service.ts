@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {config} from '../../config/env';
+import { config } from '../../config/env';
 import GooglePlace from '../entity/GooglePlace';
-import {Autocomplete} from '../entity/Autocomplete';
-import {until} from 'selenium-webdriver';
+import { Autocomplete } from '../entity/Autocomplete';
+import { until } from 'selenium-webdriver';
 import elementIsSelected = until.elementIsSelected;
-import {PlaceFactory} from '../factories/place.factory';
+import { PlaceFactory } from '../factories/place.factory';
 import Place from '../entity/Place';
 
 
@@ -12,7 +12,7 @@ export class PlaceService {
 
   public static async getAll(query): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
-    if(query.search){
+    if (query.search) {
       queryParams += `&search=${query.search}`;
     }
     return axios
@@ -20,7 +20,13 @@ export class PlaceService {
   }
 
   public static async create(body): Promise<any> {
-    return axios.post(`${config.geo.url}/places`, body);
+    const ret = await axios.post(`${config.geo.url}/places`, body);
+    console.log(ret);
+    return ret;
+  }
+
+  public static async update(id, body): Promise<any> {
+    return axios.patch(`${config.geo.url}/places/${id}`, body);
   }
 
   public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
@@ -51,7 +57,7 @@ export class PlaceService {
     const query: string[] = [];
     Object.entries(params).forEach(
       ([key, value]) => {
-        if(key !== 'lang')
+        if (key !== 'lang')
           query.push(`${key}=${value}`);
       }
     );
@@ -60,11 +66,7 @@ export class PlaceService {
 
   }
 
-  public static async update(id, body): Promise<any>{
-    return axios.patch(`${config.geo.url}/places/${id}`, body);
-  }
-
-  private static async addPoint(placeId, lang): Promise<any>{
+  private static async addPoint(placeId, lang): Promise<any> {
     const place: Place = await this.getGoogleDetail(placeId, lang);
     return this.create(place).then(resp => {
       place._id = resp.data.identifiers[0]._id;

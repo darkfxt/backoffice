@@ -12,7 +12,7 @@ import {Event, eventType} from '../../../../shared/models/TripTemplate';
 import {MatDialog} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store';
-import {OrdinalDayForEventSetted, OrdinalForEventSetted, DayIndexTypeForEventSetted} from '../../../../store/trip-template/trip-template.actions';
+import {SetNameForTemplate, OrdinalForEventSetted, DayIndexTypeForEventSetted} from '../../../../store/trip-template/trip-template.actions';
 import {Router} from '@angular/router';
 
 @Component({

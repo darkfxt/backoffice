@@ -50,7 +50,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
         this.store.dispatch(new TripTemplateSelected(data.tripTemplate));
         this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
       } else {
-        this.store.dispatch(new TripTemplateSelected(new TripTemplate()));
+        this.tripTemplate = new TripTemplate();
+        this.store.dispatch(new TripTemplateSelected(this.tripTemplate));
         this.store.dispatch(new GetEventsForTripTemplate(undefined));
       }
     });
@@ -60,13 +61,17 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     this.store.select(tripTemplateSelector).subscribe( (data: any) => {
       if (data.selectedTripTemplate) {
         this.tripTemplate = data.selectedTripTemplate;
+        this.form = this.fb.group({
+          name: this.fb.control(data.selectedTripTemplate.name),
+          description: this.fb.control(data.selectedTripTemplate.description)
+        });
       }
       if (data.selectedTripTemplateEvents) {
         this.events = data.selectedTripTemplateEvents;
         this.form = this.fb.group({
           itinerary: this.fb.array(data.selectedTripTemplateEvents),
-          name: this.fb.control(''),
-          description: this.fb.control('')
+          name: this.fb.control(data.selectedTripTemplate.name),
+          description: this.fb.control(data.selectedTripTemplate.description)
         });
       }
     });
@@ -83,12 +88,12 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   saveTripTemplate() {
-
-    console.log('aaaaa', this.form.value);
     if (this.form.valid) {
       this.loading = true;
-      const tripTemplateToSave: TripTemplate = Object.assign({}, this.form.value, {events: this.events});
-      console.log('before save', this.prepareToSave());
+      const tripTemplateToSave: TripTemplate = new TripTemplate();
+      tripTemplateToSave.name = this.form.value.name;
+      tripTemplateToSave.description = this.form.value.description;
+      tripTemplateToSave.events = this.form.value.itinerary;
       this.store.dispatch(new SaveTripTemplate(tripTemplateToSave));
     }
   }
@@ -96,8 +101,14 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   prepareToSave() {
     const formData = new FormData();
     const data = Object.assign({}, this.form.value);
-    console.log('miooordaa', data);
+
     this.form = this.fb.group({name: this.tripTemplate.name, description: this.tripTemplate.description});
+  }
+
+  setName(name){
+  }
+
+  setDescription(description) {
   }
 
 }

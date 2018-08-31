@@ -1,6 +1,6 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Route from '../entity/Route';
-import {RoutesService} from '../services/routes.service';
+import { RoutesService } from '../services/routes.service';
 
 
 export class RoutesController {
@@ -8,7 +8,7 @@ export class RoutesController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
       const answer = await RoutesService.getAll(request.query);
-      if(request.query.simple){
+      if (request.query.simple) {
         response.json(answer.data.data);
         return;
       }
@@ -30,10 +30,11 @@ export class RoutesController {
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-      const route = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
-      delete route._id;
-      const resp = await RoutesService.create(route);
-      response.json(resp.data);
+      // const route = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface,
+      // data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
+      // delete route._id;
+      const resp = await RoutesService.create(data);
+      response.json(resp);
     } catch (err) {
       // TODO: Delete uploaded files on error
       next(err);
@@ -44,7 +45,7 @@ export class RoutesController {
     try {
       const data = JSON.parse(request.body.data);
 
-      if((<any>request).files.length > 0){
+      if ((<any>request).files.length > 0) {
         data.images = (<any>request).files.map(value => ({
           key: value.key,
           source: 'S3',

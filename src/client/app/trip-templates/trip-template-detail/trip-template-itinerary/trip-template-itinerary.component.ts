@@ -17,7 +17,12 @@ import { ListItemComponent } from '../../../shared/common-list/common-list-item/
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
 import { AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector } from '../../../store';
 import { Store } from '@ngrx/store';
-import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/trip-template.actions';
+import {
+  AddEvent,
+  DayIndexTypeForEventSetted,
+  SetDescriptionForTemplate,
+  SetNameForTemplate
+} from '../../../store/trip-template/trip-template.actions';
 import * as _ from 'lodash';
 import { PlacesComponent } from '../../../places/places.component';
 import { PointComponent } from '../../../places/point/point.component';
@@ -78,7 +83,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
           });
         this.itineraryEvents.splice(0, this.itineraryEvents.length);
         this.itineraryEvents = arreglo;
-        this.itinerary.patchValue(data.selectedTripTemplateEvents);
+        // this.itinerary.patchValue(data.selectedTripTemplateEvents);
       }
       if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
@@ -147,6 +152,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       disableClose: true,
       closeOnNavigation: true
     };
+     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.name) && new SetDescriptionForTemplate (this.itinerary.value.description));
+     // this.store.dispatch(new SetDescriptionForTemplate (this.itinerary.value.description));
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 

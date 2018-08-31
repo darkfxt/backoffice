@@ -15,10 +15,11 @@ PlaceRouter.route('/google/:place_id')
   .get(PlaceController.getGoogleDetail);
 
 PlaceRouter.route('/:place_id')
-  .get(PlaceController.getDetail);
+  .get(PlaceController.getDetail)
+  .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], PlaceController.create);
 
 PlaceRouter.route('/')
   .get(PlaceController.getAll)
-  .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], PlaceController.create);
+  .post([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], PlaceController.create);
 
 export default PlaceRouter;

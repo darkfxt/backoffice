@@ -68,8 +68,18 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     }
     case TripTemplateActionTypes.SELECT_ORDINAL_TO_ADD_EVENT:
       return {...state, loading: false, indexForEvent: action.payload};
-    case TripTemplateActionTypes.SELECT_DAY_TO_ADD_EVENT:
-      return {...state, loading: false, dayForEvent: action.payload};
+    case TripTemplateActionTypes.SET_NAME_FOR_TEMPLATE:
+      const template: TripTemplate = state.selectedTripTemplate ?
+        Object.assign(state.selectedTripTemplate) :
+        new TripTemplate();
+      template.name = action.payload;
+      return {...state, loading: false, selectedTripTemplate: template};
+    case TripTemplateActionTypes.SET_DESCRIPTION_FOR_TEMPLATE:
+      const temp: TripTemplate = state.selectedTripTemplate ?
+        Object.assign( state.selectedTripTemplate )  :
+        new TripTemplate();
+      template.description = action.payload;
+      return {...state, loading: false, selectedTripTemplate: temp};
     case TripTemplateActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL:
       return {...state, loading: false, dayForEvent: action.payload.day,
         typeForEvent: action.payload.type, indexForEvent: action.payload.index};
