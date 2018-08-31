@@ -1,6 +1,14 @@
-<form [formGroup]="form" #formDir="ngForm" class="" novalidate>
-  <app-detail-header (saveButtonClicked)="saveTripTemplate()" title="New trip template" (backButtonClicked)="goBack()"></app-detail-header>
+<form [formGroup]="form" #formDir="ngForm" novalidate>
+  <app-detail-header title="New trip template"
+                     (backButtonClicked)="goBack()">
+    <div class="button-container">
+      <button (click)="saveTripTemplate()">
+        <mat-icon aria-label="New">save</mat-icon>
+      </button>
+    </div>
+  </app-detail-header>
   <div class="app-container full-size body-content">
+    <app-trip-template-detail-header [form]="form"></app-trip-template-detail-header>
     <div class="row ">
       <div class="col-sm-5 col-xs-12">
         <h3>Itinerary</h3>

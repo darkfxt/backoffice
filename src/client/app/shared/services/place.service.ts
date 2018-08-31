@@ -51,6 +51,14 @@ export class PlaceService {
       );
   }
 
+  upsert (params): Observable<any> {
+    if (params.id && params.id !== '') {
+      return this.http.patch(`/api/places/${params.id}`, params.body);
+    } else {
+      return this.http.post('/api/places', params.body);
+    }
+  }
+
   getDetail (place_id: string): Observable<any>{
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(

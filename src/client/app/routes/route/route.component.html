@@ -1,5 +1,13 @@
-<form [formGroup]="form" #formDir="ngForm" (ngSubmit)="onSubmit()" novalidate>
-  <ng-content select=".detail-header-content"></ng-content>
+<form [formGroup]="form" #formDir="ngForm"  novalidate>
+  <app-detail-header *ngIf="!loading" [disableBackButton]="true"
+                     [title]="'Actualizar segmento'"
+                     class="detail-header-content">
+    <div class="button-container">
+      <button (click)="onSubmit()">
+        <mat-icon aria-label="New">save</mat-icon>
+      </button>
+    </div>
+  </app-detail-header>
   <div class="app-container full-size">
     <div class="box-container">
       <div class="row gallery-container">

@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../store';
-import {EventSelected} from '../../store/trip-template/trip-template.actions';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store';
+import { EventSelected } from '../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -22,7 +22,7 @@ export class RouteSummarizedCardComponent implements OnInit {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
       ? this.data.images[0].url
       : 'https://www.theraband.com/media/catalog/product/cache/18/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/ImageNotFound_3.png';
@@ -31,8 +31,9 @@ export class RouteSummarizedCardComponent implements OnInit {
     this.description = this.data.description;
   }
 
-  editSegment(){
-    if(this.selectionMode) {
+  editSegment() {
+    console.log(this.selectionMode);
+    if (this.selectionMode) {
       this.store.dispatch(new EventSelected(this.data));
       return;
     }

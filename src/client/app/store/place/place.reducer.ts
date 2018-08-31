@@ -1,12 +1,15 @@
-import {PointActions, PointActionTypes} from './place.actions';
+import { PointActions, PointActionTypes } from './place.actions';
 
-import {Point} from '../../shared/models/Place';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { Point } from '../../shared/models/Place';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {pointSelector} from '../index';
 
 export interface PointState {
   loading: boolean;
   points: Point[];
   metadata: PaginationOptionsInterface;
+  pointSelected?: Point;
+  dialog?: boolean;
 }
 
 export const initialState: PointState = {
@@ -28,8 +31,14 @@ export function pointReducer(state = initialState, action: PointActions): PointS
       return {...state, loading: true, metadata: action.payload};
     case PointActionTypes.POINTS_RETRIEVED:
       return {...state, loading: false, points: action.payload, metadata: action.metadata};
-    case PointActionTypes.ADD_POINT:
-      return {...state, loading: true, points: action.payload.data, metadata: action.payload.metadata};
+    case PointActionTypes.SAVE_POINT:
+      return {...state, loading: true};
+    case PointActionTypes.POINT_SELECTED:
+      return {...state, loading: false, pointSelected: action.payload};
+    case PointActionTypes.CLEAR_POINT:
+      return {...state, loading: false, pointSelected: null};
+    case PointActionTypes.SET_DIALOG:
+      return {...state, loading: false, dialog: action.payload};
     default:
       return state;
   }

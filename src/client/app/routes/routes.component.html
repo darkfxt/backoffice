@@ -13,6 +13,7 @@
     <app-common-list
       [list]="routes$"
       [component]="drawingComponent"
+      [activateSelectionMode]="isDialog"
       [storeToWatch]="'segments'"
       (pageChanged)="onPageChanged($event)">
       <app-route-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-route-filters>

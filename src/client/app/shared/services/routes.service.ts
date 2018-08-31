@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {HttpClient} from '@angular/common/http';
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { HttpClient } from '@angular/common/http';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +16,11 @@ export class RoutesService {
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
-      if(paginationMetadata.search){
+      if (paginationMetadata.search) {
         queryParams += `&search=${paginationMetadata.search}`;
       }
     }
-    if(withoutMetadata){
+    if (withoutMetadata) {
       queryParams += '&simple=true';
     }
 
@@ -35,7 +35,16 @@ export class RoutesService {
     return this.http.patch(`/api/routes/${params.id}`, params.body);
   }
 
-  getDetail (route_id: string): Observable<any>{
+  upsert (params): Observable<any> {
+    if (params.id !== '') {
+      return this.http.patch(`/api/routes/${params.id}`, params.body);
+    } else {
+      console.log('en el upsert', params);
+      return this.http.post('/api/routes', params.body);
+    }
+  }
+
+  getDetail (route_id: string): Observable<any> {
     return this.http.get(`/api/routes/${route_id}?lang=es`);
   }
 

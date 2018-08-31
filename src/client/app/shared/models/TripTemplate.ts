@@ -26,6 +26,7 @@ export class TripTemplate {
   _id: string;
   name: string;
   events: Event[];
+  description: string;
   created_by: string;
 }
 

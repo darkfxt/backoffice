@@ -1,8 +1,8 @@
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {EMPTY, Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {Injectable} from '@angular/core';
-import {RoutesService} from '../shared/services/routes.service';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { Injectable } from '@angular/core';
+import { RoutesService } from '../shared/services/routes.service';
 import { default as Segment } from '../shared/models/Segment';
 
 
@@ -21,8 +21,13 @@ export class RoutesResolver implements Resolve<any> {
     state: RouterStateSnapshot
   ): Observable<any> {
     const id = route.paramMap.get('id');
-    if(id === 'new')
+    if (id === 'new') {
       return of(new Segment());
+    }
+
+    if (id === 'popup') {
+      return of(Object.assign({}, new Segment(), {popup: true}));
+    }
 
     return this.service.getDetail(id)
       .pipe(catchError((err)  => {

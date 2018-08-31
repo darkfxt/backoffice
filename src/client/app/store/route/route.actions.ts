@@ -1,13 +1,16 @@
 import { Action } from '@ngrx/store';
 
 import {default as Segment, SegmentWithMetadata} from '../../shared/models/Segment';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',
   FILTER_SEGMENTS = '[Segment] Filtering',
   SEGMENTS_RETRIEVED = '[Segment] Retrieved Succesfully',
-  SEGMENT_SELECTED = '[Segment] Selected'
+  SEGMENT_SELECTED = '[Segment] Selected',
+  CLEAR_SEGMENT = '[Segment] Clear',
+  SAVE_SEGMENT = '[Segment] Saving To DB',
+  SET_DIALOG = '[Segment] Set Dialog ON'
 }
 
 export class GetSegments implements Action {
@@ -31,6 +34,26 @@ export class FilterSegments implements Action {
   }
 }
 
+export class SaveSegment implements Action {
+  readonly type = SegmentActionTypes.SAVE_SEGMENT;
+  constructor(readonly payload: any) {
+    this.payload = payload;
+  }
+}
+
+export class ClearSegment implements Action {
+  readonly type = SegmentActionTypes.CLEAR_SEGMENT;
+  constructor() {
+  }
+}
+
+export class SetSegmentDialog implements Action {
+  readonly type = SegmentActionTypes.SET_DIALOG;
+  constructor(readonly payload: boolean = false) {
+    this.payload = payload;
+  }
+}
+
 export class SegmentsRetrieved implements Action {
   readonly type = SegmentActionTypes.SEGMENTS_RETRIEVED;
   readonly payload: Segment[];
@@ -42,4 +65,6 @@ export class SegmentsRetrieved implements Action {
   }
 }
 
-export type SegmentActions = GetSegments | SegmentsRetrieved | FilterSegments | SegmentSelected;
+export type SegmentActions = GetSegments | SegmentsRetrieved |
+  FilterSegments | SegmentSelected | SaveSegment | ClearSegment |
+  SetSegmentDialog;

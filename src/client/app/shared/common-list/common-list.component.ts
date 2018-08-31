@@ -57,5 +57,3 @@ export class CommonListComponent implements OnInit {
   }
 
 }
-
-// {previousPageIndex: 0, pageIndex: 1, pageSize: 3, length: 21}

@@ -1,8 +1,8 @@
-import {Component, OnInit, Inject, Input} from '@angular/core';
-import {MatDialog} from '@angular/material';
-import {EventDialogComponent} from './event-dialog/event-dialog.component';
-import {RouteComponent} from '../../../routes/route/route.component';
-import {FormArray, FormBuilder} from '@angular/forms';
+import { Component, OnInit, Inject, Input, OnDestroy } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { EventDialogComponent } from './event-dialog/event-dialog.component';
+import { RouteComponent } from '../../../routes/route/route.component';
+import { FormArray, FormBuilder } from '@angular/forms';
 import {
   trigger,
   state,
@@ -10,17 +10,19 @@ import {
   animate,
   transition, keyframes
 } from '@angular/animations';
-import {Event, TripTemplate, eventType} from '../../../shared/models/TripTemplate';
-import {PaginationOptionsInterface} from '../../../shared/common-list/common-list-item/pagination-options.interface';
-import {Observable, of, zip, combineLatest} from 'rxjs';
-import {ListItemComponent} from '../../../shared/common-list/common-list-item/common-list-item.component';
-import {EventSummarizedCardComponent} from './event-summarized-card/event-summarized-card.component';
-import {AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector} from '../../../store';
-import {Store} from '@ngrx/store';
-import {AddEvent, DayIndexTypeForEventSetted} from '../../../store/trip-template/trip-template.actions';
+import { Event, TripTemplate, eventType } from '../../../shared/models/TripTemplate';
+import { PaginationOptionsInterface } from '../../../shared/common-list/common-list-item/pagination-options.interface';
+import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
+import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
+import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
+import { AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector } from '../../../store';
+import { Store } from '@ngrx/store';
+import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/trip-template.actions';
 import * as _ from 'lodash';
-import {PlacesComponent} from '../../../places/places.component';
-import {PointComponent} from '../../../places/point/point.component';
+import { PlacesComponent } from '../../../places/places.component';
+import { PointComponent } from '../../../places/point/point.component';
+import {ClearSegment, SetSegmentDialog} from '../../../store/route/route.actions';
+import {SetDialogPoint} from '../../../store/place/place.actions';
 
 
 @Component({
@@ -29,7 +31,7 @@ import {PointComponent} from '../../../places/point/point.component';
   styleUrls: ['./trip-template-itinerary.component.scss'],
 
 })
-export class TripTemplateItineraryComponent implements OnInit {
+export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   @Input()
   itinerary: FormArray;
 
@@ -42,6 +44,8 @@ export class TripTemplateItineraryComponent implements OnInit {
   ordinalForEvent: string;
 
   dialogReference: any;
+  dialogReferenceSub: any;
+  _subscription: Subscription;
 
 
   state = 'out';
@@ -53,14 +57,15 @@ export class TripTemplateItineraryComponent implements OnInit {
     {value: 'OTHER', viewValue: 'other'}
   ];
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private store: Store<AppState>) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder,
+              private store: Store<AppState>) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
     this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
   }
 
   ngOnInit() {
 
-    this.store.select(tripTemplateSelector).subscribe((data: any) => {
+    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
       if (data.selectedTripTemplateEvents) {
         /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
         const arrangedEvents = [];
@@ -71,16 +76,21 @@ export class TripTemplateItineraryComponent implements OnInit {
           (value, key) => {
             arreglo.push({day: key, events: value});
           });
+        this.itineraryEvents.splice(0, this.itineraryEvents.length);
         this.itineraryEvents = arreglo;
-
+        this.itinerary.patchValue(data.selectedTripTemplateEvents);
       }
       if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
       if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
-      if (data.selectedEvent) {
-        this.addEvent(data.selectedEvent);
-      }
+      if (data.selectedEvent) this.addEvent(data.selectedEvent);
     });
+  }
+
+  ngOnDestroy() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
   }
 
   showOptions(): void {
@@ -88,9 +98,15 @@ export class TripTemplateItineraryComponent implements OnInit {
   }
 
   addEvent(eventToAdd) {
-    this.dialogReference.close();
+    if (this.dialogReference) {
+      this.dialogReference.close();
+    }
+    if (this.dialogReferenceSub) {
+      this.dialogReferenceSub.close();
+    }
     const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
+    // setTimeout(this.store.dispatch(new ClearSegment()), 500);
   }
 
   convertToEvent(toConvert: any, event_type: string, order: number): Event {
@@ -103,8 +119,7 @@ export class TripTemplateItineraryComponent implements OnInit {
     converted.ordinal = order || 1;
     if (this.typeForEvent === eventType.ACTIVITY) {
       converted.geo = [toConvert.geo.point];
-    }
-    else {
+    } else {
       const geo = [];
       geo.push(toConvert.origin.geo.point);
       toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
@@ -118,42 +133,37 @@ export class TripTemplateItineraryComponent implements OnInit {
     this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
   }
 
-  openDialog(event){
+  openDialog(event) {
+    const dialogConfig = {
+      width: '80%',
+      height: '80%',
+      maxWidth: '1024px',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        productType: event.productType,
+        dialog: true
+        },
+      disableClose: true,
+      closeOnNavigation: true
+    };
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
-     this.dialogReference = this.dialog.open(EventDialogComponent, {
-       width: '80%',
-       height: '80%',
-       maxWidth: '1024px',
-       id: 'eventDialog',
-       panelClass: 'eventDialogPanel',
-       data: {productType: event.productType},
-       disableClose: true,
-       closeOnNavigation: true
-     });
+     this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 
     this.dialogReference.afterClosed().subscribe(result => {
-       if (result === 'OPEN_NEW_ROUTES'){
-         this.dialogReference = this.dialog.open(RouteComponent, {
-           width: '80%',
-           height: '80%',
-           maxWidth: '1024px',
-           id: 'eventDialog',
-           panelClass: 'eventDialogPanel',
-           data: {},
-           disableClose: true,
-           closeOnNavigation: true
-         });
+
+      if (result === 'OPEN_NEW_ROUTES') {
+        this.store.dispatch(new SetSegmentDialog(true));
+        this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
+        this.dialogReferenceSub.afterClosed().subscribe(res => {
+          this.store.dispatch(new SetSegmentDialog());
+        });
        }
-      if (result === 'OPEN_NEW_PLACES'){
-        this.dialogReference = this.dialog.open(PointComponent, {
-          width: '80%',
-          height: '80%',
-          maxWidth: '1024px',
-          id: 'eventDialog',
-          panelClass: 'eventDialogPanel',
-          data: {},
-          disableClose: true,
-          closeOnNavigation: true
+      if (result === 'OPEN_NEW_PLACES') {
+        this.store.dispatch(new SetDialogPoint(true));
+        this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
+        this.dialogReferenceSub.afterClosed().subscribe(res => {
+          this.store.dispatch(new SetDialogPoint());
         });
       }
        this.state = 'out';

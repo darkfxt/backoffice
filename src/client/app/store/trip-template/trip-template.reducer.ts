@@ -7,7 +7,7 @@ import {
 } from './trip-template.actions';
 
 import { TripTemplate, Event, eventType } from '../../shared/models/TripTemplate';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export interface TripTemplateState {
   loading: boolean;
@@ -45,9 +45,11 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.SAVE_TRIP_TEMPLATE:
       return {...state, loading: true};
     case TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION:
-      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, indexForEvent: null, dayForEvent: null};
+      return {...state, loading: false, selectedTripTemplateEvents: null, selectedTripTemplate: null,
+        selectedEvent: null, indexForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY:
-      return {...state, loading: false, selectedTripTemplateEvents: null, selectedEvent: null, indexForEvent: null, dayForEvent: null};
+      return {...state, loading: false, selectedTripTemplateEvents: null,
+        selectedEvent: null, indexForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE:
       return {...state, loading: true};
     case TripTemplateActionTypes.EVENTS_RETRIEVED_FOR_TEMPLATE:
@@ -60,7 +62,7 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       const productTypeEvent = state.typeForEvent;
       const dayOfEvent = state.dayForEvent || 1 ;
       const eventToAdd = Object.assign({}, action.payload, {ordinal: dayOfEvent, eventType: productTypeEvent});
-      array.splice(+indexOfEvent,0, eventToAdd);
+      array.splice(+indexOfEvent, 0, eventToAdd);
       return {...state, loading: false, selectedTripTemplateEvents: array,
         selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
     }
@@ -69,7 +71,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     case TripTemplateActionTypes.SELECT_DAY_TO_ADD_EVENT:
       return {...state, loading: false, dayForEvent: action.payload};
     case TripTemplateActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL:
-      return {...state, loading: false, dayForEvent: action.payload.day, typeForEvent: action.payload.type, indexForEvent: action.payload.index};
+      return {...state, loading: false, dayForEvent: action.payload.day,
+        typeForEvent: action.payload.type, indexForEvent: action.payload.index};
     default:
       return state;
   }

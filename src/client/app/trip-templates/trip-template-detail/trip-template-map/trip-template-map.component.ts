@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
-import {AppState, tripTemplateSelector} from '../../../store';
-import {Store} from '@ngrx/store';
+import { AppState, tripTemplateSelector } from '../../../store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-trip-template-map',
   template: `
-    <div #gmap style="width:100%; height:340px"></div> 
+    <div #gmap style="width:100%; height:340px"></div>
   `
 })
 export class TripTemplateMapComponent implements OnInit {
@@ -34,13 +34,20 @@ export class TripTemplateMapComponent implements OnInit {
 
 
     this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplateEvents) {
+      if (data.selectedTripTemplateEvents && data.selectedTripTemplateEvents.length > 0) {
         this.directionsDisplay.setMap(this.map);
-        const waypoints = [];
+
+        console.log('cualquieraaaaa', data.selectedTripTemplateEvents);
+        const waypoints = new Array();
         data.selectedTripTemplateEvents.forEach(
-            event => {
-              event.geo.forEach( point => waypoints.push({location: point, stopover: true}));
+          (event) => {
+            event.geo.forEach( point => {
+              console.log('whyyyy lisaaa', point);
+              waypoints.push({location: point, stopover: true});
+            });
           });
+        console.log('waypoints', waypoints);
+
         this.calculateAndDisplayRoute(waypoints);
       }
     });
@@ -48,9 +55,18 @@ export class TripTemplateMapComponent implements OnInit {
   }
 
   private calculateAndDisplayRoute(waypts: Array<any>) {
-
-    const origin = waypts.shift().location;
-    const destination = waypts.pop().location;
+    console.log('estalla');
+    let origin, destination;
+    if (!waypts.length || waypts.length < 1) {
+      return;
+    } else if (waypts.length === 1) {
+      origin = waypts[0].location;
+      destination = waypts.pop().location;
+    } else {
+      origin = waypts.shift().location;
+      destination = waypts.pop().location;
+    }
+    console.log('estalló');
 
     // TODO: Optimize waypoints
     this.directionsService.route(<any>{
@@ -60,7 +76,7 @@ export class TripTemplateMapComponent implements OnInit {
       optimizeWaypoints: false,
       travelMode: 'DRIVING'
     }, (response, status: any) => {
-      if(status === 'OK'){
+      if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
         const legs = response.routes[0].legs
           .map(value => (

@@ -1,13 +1,14 @@
-import {SegmentActions, SegmentActionTypes} from './route.actions';
+import { SegmentActions, SegmentActionTypes } from './route.actions';
 
-import {default as Segment} from '../../shared/models/Segment';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {default as Segment } from '../../shared/models/Segment';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export interface SegmentState {
   loading: boolean;
   segments: Segment[];
   metadata: PaginationOptionsInterface;
   segmentSelected?: Segment;
+  dialog?: boolean;
 }
 
 export const initialState: SegmentState = {
@@ -31,6 +32,12 @@ export function segmentReducer(state = initialState, action: SegmentActions): Se
       return {...state, loading: true, metadata: action.payload};
     case SegmentActionTypes.SEGMENTS_RETRIEVED:
       return {...state, loading: false, segments: action.payload, metadata: action.metadata};
+    case SegmentActionTypes.SAVE_SEGMENT:
+      return {...state, loading: true};
+    case SegmentActionTypes.CLEAR_SEGMENT:
+      return {...state, loading: false, segmentSelected: null};
+    case SegmentActionTypes.SET_DIALOG:
+      return {...state, loading: false, dialog: action.payload};
     default:
       return state;
   }

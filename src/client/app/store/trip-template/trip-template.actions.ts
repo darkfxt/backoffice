@@ -1,6 +1,6 @@
-import {Event, TripTemplate, TripTemplateWithMetadata, eventType} from '../../shared/models/TripTemplate';
-import {Action} from '@ngrx/store';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { Event, TripTemplate, TripTemplateWithMetadata, eventType } from '../../shared/models/TripTemplate';
+import { Action } from '@ngrx/store';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export enum TripTemplateActionTypes {
   GET_TRIP_TEMPLATES = '[T.Template] Retrieving',
@@ -22,42 +22,42 @@ export enum TripTemplateActionTypes {
 
 export class GetTripTemplates implements Action {
   readonly type = TripTemplateActionTypes.GET_TRIP_TEMPLATES;
-  constructor (readonly payload: PaginationOptionsInterface){
+  constructor (readonly payload: PaginationOptionsInterface) {
     this.payload = payload;
   }
 }
 
 export class CreateTripTemplate implements Action {
   readonly type = TripTemplateActionTypes.CREATE_TRIP_TEMPLATE;
-  constructor (readonly payload: TripTemplate){
+  constructor (readonly payload: TripTemplate) {
     this.payload = payload;
   }
 }
 
 export class SaveTripTemplate implements Action {
   readonly type = TripTemplateActionTypes.SAVE_TRIP_TEMPLATE;
-  constructor (readonly payload: TripTemplate){
+  constructor (readonly payload: TripTemplate) {
     this.payload = payload;
   }
 }
 
 export class TripTemplateSelected implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED;
-  constructor (readonly payload: TripTemplate){
+  constructor (readonly payload: TripTemplate) {
     this.payload = payload;
   }
 }
 
 export class TripTemplateEditionLeft implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION;
-  constructor (readonly payload: string){
+  constructor (readonly payload: string) {
     this.payload = payload;
   }
 }
 
 export class TripTemplateProcessedSuccesfully implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY;
-  constructor (readonly payload: TripTemplate){
+  constructor (readonly payload: TripTemplate) {
     this.payload = payload;
   }
 }
@@ -74,7 +74,7 @@ export class TripTemplatesRetrieved implements Action {
 
 export class GetEventsForTripTemplate implements Action {
   readonly type = TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE;
-  constructor (readonly payload: string){
+  constructor (readonly payload: string) {
     this.payload = payload;
   }
 }
@@ -96,21 +96,21 @@ export class AddEvent implements Action {
 
 export class EventSelected implements Action {
   readonly type = TripTemplateActionTypes.EVENT_SELECTED;
-  constructor (readonly payload: any){
+  constructor (readonly payload: any) {
     this.payload = payload;
   }
 }
 
 export class OrdinalForEventSetted implements Action {
   readonly type = TripTemplateActionTypes.SELECT_ORDINAL_TO_ADD_EVENT;
-  constructor (readonly payload: number){
+  constructor (readonly payload: number) {
     this.payload = payload;
   }
 }
 
 export class OrdinalDayForEventSetted implements Action {
   readonly type = TripTemplateActionTypes.SELECT_DAY_TO_ADD_EVENT;
-  constructor (readonly payload: number){
+  constructor (readonly payload: number) {
     this.payload = payload;
   }
 }
@@ -118,7 +118,7 @@ export class OrdinalDayForEventSetted implements Action {
 export class DayIndexTypeForEventSetted implements Action {
   readonly type = TripTemplateActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL;
   public payload: dayIndexType;
-  constructor ( day: number,  index: number,  type: eventType){
+  constructor ( day: number,  index: number,  type: eventType) {
     this.payload = {day, index, type};
   }
 }

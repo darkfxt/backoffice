@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { eventType } from '../../../../shared/models/TripTemplate';
 
 @Component({
@@ -13,8 +13,8 @@ export class EventDialogComponent implements OnInit {
   eventGroup: FormGroup;
 
   eventTypes = [
-    {value: 'DRIVING', viewValue:'Driving'},
-    {value: 'OTHER', viewValue:'Other'}
+    {value: 'DRIVING', viewValue: 'Driving'},
+    {value: 'OTHER', viewValue: 'Other'}
   ];
 
   constructor(
@@ -26,8 +26,12 @@ export class EventDialogComponent implements OnInit {
     console.log('pocho', this.data);
   }
 
-  closeDialog(){
+  closeDialog() {
     this.dialogRef.close();
+  }
+
+  onButtonClick() {
+    // this.router.navigate(['/trip-templates/new']);
   }
 
 

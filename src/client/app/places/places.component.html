@@ -7,7 +7,11 @@
 </app-detail-header>
 <div class="app-container full-size body-content">
   <div [hidden]="loading">
-    <app-common-list [list]="points$" [component]="drawingComponent" [storeToWatch]="'points'" (pageChanged)="onPageChanged($event)">
+    <app-common-list [list]="points$"
+                     [component]="drawingComponent"
+                     [activateSelectionMode]="isDialog"
+                     [storeToWatch]="'points'"
+                     (pageChanged)="onPageChanged($event)">
       <app-point-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-point-filters>
     </app-common-list>
   </div>

@@ -1,14 +1,14 @@
-import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { CommonListDirective } from '../common-list.directive';
-import {ListItemComponent} from '../common-list-item/common-list-item.component';
-import {ListItemInterface} from '../common-list-item/list-item.interface';
-import {PointSummarizedCardComponent} from '../../../places/point-summarized-card/point-summarized-card.component';
-import {LoadingComponent} from '../../loading/loading.component';
-import {loadConfigurationFromPath} from 'tslint/lib/configuration';
-import {AppState, loadingSelector} from '../../../store';
-import {Store} from '@ngrx/store';
+import { ListItemComponent } from '../common-list-item/common-list-item.component';
+import { ListItemInterface } from '../common-list-item/list-item.interface';
+import { PointSummarizedCardComponent } from '../../../places/point-summarized-card/point-summarized-card.component';
+import { LoadingComponent } from '../../loading/loading.component';
+import { loadConfigurationFromPath } from 'tslint/lib/configuration';
+import { AppState, loadingSelector } from '../../../store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-list',
@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   @Input() objectList: Observable<any>;
   @Input() drawingComponent: ListItemComponent;
   @Input() storeToWatch: string;
-  @Input() selectionMode? = false;
+  @Input() selectionMode ? = false;
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
   iterationList: any[];
   loading = false;
@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.objectList.subscribe( (data: any) => {
       this.loading = data.loading;
-      if(!data.loading){
+      if (!data.loading) {
         this.iterationList = data[this.storeToWatch];
         this.loadComponent(this.drawingComponent.component);
       }
@@ -42,11 +42,11 @@ export class ListComponent implements OnInit {
     const componentFactoryInstance = this.componentFactoryResolver.resolveComponentFactory(componentToRender);
     const viewContainerRef = this.appMainListContainer.viewContainerRef;
     viewContainerRef.clear();
-    if(this.iterationList) {
+    if (this.iterationList) {
       this.iterationList.forEach((item, index) => {
         const componentRef = viewContainerRef.createComponent(componentFactoryInstance);
         (<ListItemInterface>componentRef.instance).data = Object.assign({}, item, {index});
-        if (this.selectionMode) (<ListItemInterface>componentRef.instance).selectionMode = item;
+        if (this.selectionMode) { (<ListItemInterface>componentRef.instance).selectionMode = this.selectionMode; }
       });
     }
   }
