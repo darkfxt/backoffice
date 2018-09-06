@@ -1,7 +1,8 @@
 <form [formGroup]="form" #formDir="ngForm"  novalidate>
-  <app-detail-header     [disableBackButton]="true"
+  <app-detail-header [isDialog]="amIDialog"
                      [title]="'Actualizar segmento'"
-                     class="detail-header-content">
+                     class="detail-header-content"
+                     (backButtonClicked)="goBack()">
     <div class="button-container save-button">
       <button (click)="onSubmit()">
         <mat-icon aria-label="New">save</mat-icon>

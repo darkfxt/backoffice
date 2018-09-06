@@ -13,8 +13,10 @@ import { EventDialogComponent } from '../../trip-templates/trip-template-detail/
 import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { AppState, segmentSelector } from '../../store';
-import {ClearSegment, SaveSegment} from '../../store/route/route.actions';
+import {ClearSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
 import {SegmentState} from '../../store/route/route.reducer';
+import {ToggleDialogPoint} from '../../store/place/place.actions';
+import {DialogActions} from '../../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-route',
@@ -28,6 +30,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   bussy: boolean;
   _subscription: Subscription;
   segment = new Segment();
+  amIDialog = false;
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +48,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     this._subscription = this.store.select(segmentSelector).subscribe((storeSegment: any) => {
       if (storeSegment && storeSegment.dialog) {
+        this.amIDialog = true;
         if (storeSegment.segmentSelected )
           this.store.dispatch(new EventSelected(storeSegment.segmentSelected));
       }
@@ -128,6 +132,13 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       formData.append('files[]', image, image.name);
     }
     return formData;
+  }
+
+  goBack() {
+    if (this.amIDialog)
+      this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
+    else
+      this.router.navigate(['/routes']);
   }
 
 }

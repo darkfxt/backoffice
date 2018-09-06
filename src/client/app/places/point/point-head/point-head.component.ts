@@ -16,6 +16,11 @@ export class PointHeadComponent implements OnInit, OnDestroy {
   placeForm: FormGroup;
 
   _subscription: Subscription;
+  pointTypes = [
+    {value: 'POI', viewValue: 'Point of interest'},
+    {value: 'HOTEL', viewValue: 'Hotel'},
+    {value: 'ACTIVITY', viewValue: 'Activity'}
+  ];
 
   @Output()
   optionSelected: EventEmitter<string> = new EventEmitter<string>();

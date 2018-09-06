@@ -3,13 +3,14 @@ import { PointActions, PointActionTypes } from './place.actions';
 import { Point } from '../../shared/models/Place';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import {pointSelector} from '../index';
+import {DialogActions} from '../dialog-actions.enum';
 
 export interface PointState {
   loading: boolean;
   points: Point[];
   metadata: PaginationOptionsInterface;
   pointSelected?: Point;
-  dialog?: boolean;
+  dialog?: DialogActions;
 }
 
 export const initialState: PointState = {

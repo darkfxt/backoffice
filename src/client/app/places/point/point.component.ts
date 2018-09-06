@@ -11,6 +11,7 @@ import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
+import {DialogActions} from '../../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-point',
@@ -62,7 +63,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
       description: [this.place.description, Validators.required],
-      is_terminal: false,
+      is_terminal: this.place.is_terminal,
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
@@ -128,7 +129,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   goBack() {
     if (this.amIDialog)
-      this.store.dispatch(new ToggleDialogPoint(false));
+      this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     else
       this.router.navigate(['/places']);
   }

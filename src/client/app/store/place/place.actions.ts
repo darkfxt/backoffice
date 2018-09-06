@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { Point, PointWithMetadata } from '../../shared/models/Place';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {DialogActions} from '../dialog-actions.enum';
 
 export enum PointActionTypes {
   GET_POINTS = '[Point] Retrieving',
@@ -60,7 +61,7 @@ export class ClearPoint implements Action {
 
 export class ToggleDialogPoint implements Action {
   readonly type = PointActionTypes.TOGGLE_DIALOG;
-  constructor(readonly payload: boolean = false) {
+  constructor(readonly payload: DialogActions = DialogActions.FALSE) {
     this.payload = payload;
   }
 }

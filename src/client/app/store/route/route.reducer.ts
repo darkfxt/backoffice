@@ -2,13 +2,14 @@ import { SegmentActions, SegmentActionTypes } from './route.actions';
 
 import {default as Segment } from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {DialogActions} from '../dialog-actions.enum';
 
 export interface SegmentState {
   loading: boolean;
   segments: Segment[];
   metadata: PaginationOptionsInterface;
   segmentSelected?: Segment;
-  dialog?: boolean;
+  dialog?: DialogActions;
 }
 
 export const initialState: SegmentState = {

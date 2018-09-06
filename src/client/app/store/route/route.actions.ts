@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import {default as Segment, SegmentWithMetadata} from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {DialogActions} from '../dialog-actions.enum';
 
 export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',
@@ -49,7 +50,7 @@ export class ClearSegment implements Action {
 
 export class ToggleSegmentDialog implements Action {
   readonly type = SegmentActionTypes.TOGGLE_DIALOG;
-  constructor(readonly payload: boolean = false) {
+  constructor(readonly payload: DialogActions = DialogActions.FALSE) {
     this.payload = payload;
   }
 }
