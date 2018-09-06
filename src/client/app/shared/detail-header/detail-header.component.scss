@@ -4,7 +4,7 @@
   background: $primary-color;
   position: sticky;
   top: 0px;
-  z-index: 9;
+  z-index: 99;
 
   &.dialog{
     background: $secondary-color;
@@ -59,18 +59,24 @@
     }
   }
 
-  .save-button{
-    display: flex;
-    flex: auto;
-    justify-content: flex-end;
+  /deep/.save-button{
+    position: absolute;
+    right: 16px;
+    top: 29px;
 
-    .mat-button{
-      margin-right: -24px;
-    }
-
-    /deep/.mat-button-wrapper{
+    .mat-icon{
       color: #fff;
     }
+
+    button{
+      cursor: pointer;
+      height: 50px;
+      width: 50px;
+      border-radius: 50px;
+      border: none;
+      background: $secondary-color;
+    }
+
   }
 
 

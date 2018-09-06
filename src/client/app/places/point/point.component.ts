@@ -62,6 +62,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
       description: [this.place.description, Validators.required],
+      is_terminal: false,
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
