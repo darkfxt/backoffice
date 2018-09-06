@@ -15,7 +15,14 @@ import { PaginationOptionsInterface } from '../../../shared/common-list/common-l
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
-import { AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector } from '../../../store';
+import {
+  AppState,
+  eventsFromTemplateSelector,
+  pointSelector,
+  segmentSelector,
+  tripTemplateLoadingSelector,
+  tripTemplateSelector
+} from '../../../store';
 import { Store } from '@ngrx/store';
 import {
   AddEvent,
@@ -26,8 +33,9 @@ import {
 import * as _ from 'lodash';
 import { PlacesComponent } from '../../../places/places.component';
 import { PointComponent } from '../../../places/point/point.component';
-import {ClearSegment, ToggleSegmentDialog} from '../../../store/route/route.actions';
-import {ToggleDialogPoint} from '../../../store/place/place.actions';
+import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.actions';
+import { ToggleDialogPoint } from '../../../store/place/place.actions';
+import { DialogActions } from '../../../store/dialog-actions.enum';
 
 
 @Component({
@@ -69,6 +77,17 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.store.select(segmentSelector).subscribe( (data: any) => {
+      if (data && data.dialog === DialogActions.CLOSE)
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
+    });
+    this.store.select(pointSelector).subscribe( (data: any) => {
+      if (data && data.dialog === DialogActions.CLOSE)
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
+    });
 
     this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
       if (data.selectedTripTemplateEvents) {
@@ -159,14 +178,14 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.dialogReference.afterClosed().subscribe(result => {
 
       if (result === 'OPEN_NEW_ROUTES') {
-        this.store.dispatch(new ToggleSegmentDialog(true));
+        this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
           this.store.dispatch(new ToggleSegmentDialog());
         });
        }
       if (result === 'OPEN_NEW_PLACES') {
-        this.store.dispatch(new ToggleDialogPoint(true));
+        this.store.dispatch(new ToggleDialogPoint(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
           this.store.dispatch(new ToggleDialogPoint());
