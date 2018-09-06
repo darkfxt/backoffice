@@ -26,8 +26,8 @@ import {
 import * as _ from 'lodash';
 import { PlacesComponent } from '../../../places/places.component';
 import { PointComponent } from '../../../places/point/point.component';
-import {ClearSegment, SetSegmentDialog} from '../../../store/route/route.actions';
-import {SetDialogPoint} from '../../../store/place/place.actions';
+import {ClearSegment, ToggleSegmentDialog} from '../../../store/route/route.actions';
+import {ToggleDialogPoint} from '../../../store/place/place.actions';
 
 
 @Component({
@@ -115,7 +115,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   }
 
   convertToEvent(toConvert: any, event_type: string, order: number): Event {
-    console.log(toConvert, eventType);
     const converted: Event = new Event();
     converted.name = toConvert.name;
     converted.description = toConvert.description;
@@ -160,17 +159,17 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.dialogReference.afterClosed().subscribe(result => {
 
       if (result === 'OPEN_NEW_ROUTES') {
-        this.store.dispatch(new SetSegmentDialog(true));
+        this.store.dispatch(new ToggleSegmentDialog(true));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new SetSegmentDialog());
+          this.store.dispatch(new ToggleSegmentDialog());
         });
        }
       if (result === 'OPEN_NEW_PLACES') {
-        this.store.dispatch(new SetDialogPoint(true));
+        this.store.dispatch(new ToggleDialogPoint(true));
         this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new SetDialogPoint());
+          this.store.dispatch(new ToggleDialogPoint());
         });
       }
        this.state = 'out';

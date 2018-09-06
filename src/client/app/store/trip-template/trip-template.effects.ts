@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+  import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
 import {switchMap, map} from 'rxjs/internal/operators';
 
@@ -46,7 +46,7 @@ export class TripTemplateEffects {
      .ofType(TripTemplateActionTypes.SAVE_TRIP_TEMPLATE)
      .pipe(
        switchMap((tripTemplate: SaveTripTemplate) => this.TripTemplateServiceInstance.upsert(tripTemplate.payload) ),
-       map((serverResponse: any) => new TripTemplateSelected(serverResponse.data))
+       map((serverResponse: any) => new TripTemplateSelected(Object.assign(new TripTemplate(), serverResponse.data[0])))
      );
 
 }

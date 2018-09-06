@@ -1,8 +1,9 @@
 
 <form [formGroup]="placeForm" #formDir="ngForm" novalidate>
-  <app-detail-header [disableBackButton]="true"
+  <app-detail-header [isDialog]="amIDialog"
                      [title]="'Actualizar Punto'"
-                     class="detail-header-content">
+                     class="detail-header-content"
+                     (backButtonClicked)="goBack()">
     <div class="button-container">
       <button (click)="onSubmit()">
         <mat-icon aria-label="New">save</mat-icon>

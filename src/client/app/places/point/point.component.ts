@@ -10,7 +10,7 @@ import { ModalService } from '../../shared/modal/modal.service';
 import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
-import { SavePoint } from '../../store/place/place.actions';
+import { SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 
 @Component({
   selector: 'app-point',
@@ -24,6 +24,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _subscription: Subscription;
   _resolverSubscription: Subscription;
   bussy: boolean;
+  amIDialog = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,11 +41,14 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnInit() {
     let isUpdate = false;
     this._subscription = this.store.select(pointSelector).subscribe((storePoint: any) => {
-      console.log('ya caaasiii', storePoint)
-      if (storePoint.dialog) {
+      if (storePoint && storePoint.dialog) {
+        this.amIDialog = true;
         if (storePoint.pointSelected)
           this.store.dispatch(new EventSelected(storePoint.pointSelected));
-      }});
+      }
+      this.bussy = (storePoint && storePoint.loading) ? storePoint.loading : false;
+    });
+
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
       if (point && point._id !== '' && point._id !== 'new') {
         this.place = point[0];
@@ -94,7 +98,6 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     if (this.placeForm.valid) {
       this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
-      console.log('before saaaave', this.place._id)
       this.store.dispatch(new SavePoint({id: this.place._id, body: formData}));
       // this._subscription = this.placeService.addPlace(formData).subscribe((resp) => {
       //   this.placeForm.reset();
@@ -120,6 +123,13 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       }
     }
     return formData;
+  }
+
+  goBack() {
+    if (this.amIDialog)
+      this.store.dispatch(new ToggleDialogPoint(false));
+    else
+      this.router.navigate(['/places']);
   }
 
 }

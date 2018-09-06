@@ -10,7 +10,7 @@ export enum PointActionTypes {
   SAVE_POINT = '[Point] Adding Point',
   POINT_SELECTED = '[Point] Selected',
   CLEAR_POINT = '[Point] Clear',
-  SET_DIALOG = '[Point] Setting Point Dialog'
+  TOGGLE_DIALOG = '[Point] Setting Point Dialog'
 }
 
 export class GetPoints implements Action {
@@ -58,12 +58,12 @@ export class ClearPoint implements Action {
   }
 }
 
-export class SetDialogPoint implements Action {
-  readonly type = PointActionTypes.SET_DIALOG;
+export class ToggleDialogPoint implements Action {
+  readonly type = PointActionTypes.TOGGLE_DIALOG;
   constructor(readonly payload: boolean = false) {
     this.payload = payload;
   }
 }
 
 export type PointActions = GetPoints | SavePoint | PointsRetrieved |
-  FilterPoints | ClearPoint | PointSelected | SetDialogPoint;
+  FilterPoints | ClearPoint | PointSelected | ToggleDialogPoint;

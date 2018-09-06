@@ -37,7 +37,7 @@ export function pointReducer(state = initialState, action: PointActions): PointS
       return {...state, loading: false, pointSelected: action.payload};
     case PointActionTypes.CLEAR_POINT:
       return {...state, loading: false, pointSelected: null};
-    case PointActionTypes.SET_DIALOG:
+    case PointActionTypes.TOGGLE_DIALOG:
       return {...state, loading: false, dialog: action.payload};
     default:
       return state;

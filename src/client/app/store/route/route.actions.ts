@@ -10,7 +10,7 @@ export enum SegmentActionTypes {
   SEGMENT_SELECTED = '[Segment] Selected',
   CLEAR_SEGMENT = '[Segment] Clear',
   SAVE_SEGMENT = '[Segment] Saving To DB',
-  SET_DIALOG = '[Segment] Set Dialog ON'
+  TOGGLE_DIALOG = '[Segment] Set Dialog ON'
 }
 
 export class GetSegments implements Action {
@@ -47,8 +47,8 @@ export class ClearSegment implements Action {
   }
 }
 
-export class SetSegmentDialog implements Action {
-  readonly type = SegmentActionTypes.SET_DIALOG;
+export class ToggleSegmentDialog implements Action {
+  readonly type = SegmentActionTypes.TOGGLE_DIALOG;
   constructor(readonly payload: boolean = false) {
     this.payload = payload;
   }
@@ -67,4 +67,4 @@ export class SegmentsRetrieved implements Action {
 
 export type SegmentActions = GetSegments | SegmentsRetrieved |
   FilterSegments | SegmentSelected | SaveSegment | ClearSegment |
-  SetSegmentDialog;
+  ToggleSegmentDialog;

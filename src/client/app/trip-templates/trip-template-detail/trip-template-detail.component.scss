@@ -1,9 +1,42 @@
 @import '../../../assets/variables';
 
 .body-content{
-  margin-top: 74px;
+  margin-top: 0;
 
   h3{
     color: $secondary-color;
   }
 }
+
+.top-header{
+  z-index: 99;
+  .app-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    mat-icon{
+      color: white;
+      margin-right: 24px;
+      display: none;
+
+      @media only screen and (max-device-width: 736px) {
+        display: block;
+      }
+    }
+  }
+}
+
+.box-container{
+  background: white;
+  margin-top: 74px;
+  border: 1px solid #DEDEDE;
+  margin-bottom: 24px;
+}
+
+
+.gallery-container{
+  margin-top: 24px;
+}
+
+

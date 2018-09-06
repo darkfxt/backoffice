@@ -39,7 +39,6 @@ export class RoutesService {
     if (params.id !== '') {
       return this.http.patch(`/api/routes/${params.id}`, params.body);
     } else {
-      console.log('en el upsert', params);
       return this.http.post('/api/routes', params.body);
     }
   }

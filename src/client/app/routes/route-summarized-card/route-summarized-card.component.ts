@@ -32,7 +32,6 @@ export class RouteSummarizedCardComponent implements OnInit {
   }
 
   editSegment() {
-    console.log(this.selectionMode);
     if (this.selectionMode) {
       this.store.dispatch(new EventSelected(this.data));
       return;

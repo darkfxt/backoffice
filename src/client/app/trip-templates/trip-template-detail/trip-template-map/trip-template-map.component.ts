@@ -37,16 +37,13 @@ export class TripTemplateMapComponent implements OnInit {
       if (data.selectedTripTemplateEvents && data.selectedTripTemplateEvents.length > 0) {
         this.directionsDisplay.setMap(this.map);
 
-        console.log('cualquieraaaaa', data.selectedTripTemplateEvents);
         const waypoints = new Array();
         data.selectedTripTemplateEvents.forEach(
           (event) => {
             event.geo.forEach( point => {
-              console.log('whyyyy lisaaa', point);
               waypoints.push({location: point, stopover: true});
             });
           });
-        console.log('waypoints', waypoints);
 
         this.calculateAndDisplayRoute(waypoints);
       }
@@ -55,7 +52,6 @@ export class TripTemplateMapComponent implements OnInit {
   }
 
   private calculateAndDisplayRoute(waypts: Array<any>) {
-    console.log('estalla');
     let origin, destination;
     if (!waypts.length || waypts.length < 1) {
       return;
@@ -66,7 +62,6 @@ export class TripTemplateMapComponent implements OnInit {
       origin = waypts.shift().location;
       destination = waypts.pop().location;
     }
-    console.log('estalló');
 
     // TODO: Optimize waypoints
     this.directionsService.route(<any>{

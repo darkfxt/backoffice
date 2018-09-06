@@ -23,7 +23,6 @@ export class EventDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('pocho', this.data);
   }
 
   closeDialog() {

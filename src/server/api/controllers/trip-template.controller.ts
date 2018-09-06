@@ -71,6 +71,7 @@ export class TripTemplateController {
       } else {
         resp = await TripTemplateService.create(request.body);
       }
+      console.log('da fucking response', resp.data);
       response.json(resp.data);
     } catch (err) {
       // TODO: Delete uploaded files on error

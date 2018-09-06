@@ -24,6 +24,7 @@ import {reducers} from '../store';
 import {DetailHeaderComponent} from '../shared/detail-header/detail-header.component';
 import {SharedModule} from '../shared/shared.module';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
+import {LoadingModule} from '../shared/loading/loading.module';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { RouteDetailComponent } from './route-detail/route-detail.component';
     CommonListModule,
     UploaderModule,
     ModalModule,
+    LoadingModule,
     FormsModule,
     ReactiveFormsModule,
     RoutesRoutingModule,

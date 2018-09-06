@@ -19,11 +19,11 @@ export class TripTemplateDetailHeaderComponent implements OnInit {
   }
 
   setDescription(event) {
-    this.settingDescription.emit(event);
+    this.settingDescription.emit(event.value);
   }
 
   setName(event) {
-    this.settingName.emit(event);
+    this.settingName.emit(event.value);
   }
 
 }

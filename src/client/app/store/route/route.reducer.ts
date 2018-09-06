@@ -36,7 +36,7 @@ export function segmentReducer(state = initialState, action: SegmentActions): Se
       return {...state, loading: true};
     case SegmentActionTypes.CLEAR_SEGMENT:
       return {...state, loading: false, segmentSelected: null};
-    case SegmentActionTypes.SET_DIALOG:
+    case SegmentActionTypes.TOGGLE_DIALOG:
       return {...state, loading: false, dialog: action.payload};
     default:
       return state;

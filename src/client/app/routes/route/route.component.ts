@@ -44,11 +44,12 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnInit() {
 
     this._subscription = this.store.select(segmentSelector).subscribe((storeSegment: any) => {
-      console.log('noooooooo estamos en la b', storeSegment)
-      if (storeSegment.dialog) {
+      if (storeSegment && storeSegment.dialog) {
         if (storeSegment.segmentSelected )
           this.store.dispatch(new EventSelected(storeSegment.segmentSelected));
-      }});
+      }
+      this.bussy = (storeSegment && storeSegment.loading) ? storeSegment.loading : false;
+    });
     this.route.data.subscribe(({segment}) => {
       if (segment) {
         this.segment = segment;
