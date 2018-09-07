@@ -18,17 +18,9 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>dialpad</mat-icon>
-        <span>Redial</span>
-      </button>
-      <button mat-menu-item disabled>
-        <mat-icon>voicemail</mat-icon>
-        <span>Check voicemail</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
+      <button (click)="onRemoveEvent(data.index)" mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>Remove</span>
       </button>
     </mat-menu>
   </div>

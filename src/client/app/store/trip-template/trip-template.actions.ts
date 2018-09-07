@@ -14,6 +14,7 @@ export enum TripTemplateActionTypes {
   EVENTS_RETRIEVED_FOR_TEMPLATE = '[Events] Retrieved Succesfully',
   EVENT_SELECTED = '[Events] Selected',
   ADD_EVENT = '[Events] Adding new Event',
+  REMOVE_EVENT = '[Events] Removing Event',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
   SET_NAME_FOR_TEMPLATE = '[Events] Set name',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
@@ -94,6 +95,13 @@ export class AddEvent implements Action {
   }
 }
 
+export class RemoveEvent implements Action {
+  readonly type = TripTemplateActionTypes.REMOVE_EVENT;
+  constructor (readonly payload: number) {
+    this.payload = payload;
+  }
+}
+
 export class EventSelected implements Action {
   readonly type = TripTemplateActionTypes.EVENT_SELECTED;
   constructor (readonly payload: any) {
@@ -140,4 +148,4 @@ export type TripTemplateActions = GetTripTemplates | CreateTripTemplate |
   TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | SaveTripTemplate | OrdinalForEventSetted |
   TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft |
-  SetNameForTemplate | DayIndexTypeForEventSetted | SetDescriptionForTemplate;
+  SetNameForTemplate | DayIndexTypeForEventSetted | SetDescriptionForTemplate | RemoveEvent;
