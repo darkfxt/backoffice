@@ -66,6 +66,12 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state, loading: false, selectedTripTemplateEvents: array,
         selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
     }
+    case TripTemplateActionTypes.REMOVE_EVENT: {
+      const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
+      array.splice(+action.payload, 1);
+      return {...state, loading: false, selectedTripTemplateEvents: array,
+        selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
+    }
     case TripTemplateActionTypes.SELECT_ORDINAL_TO_ADD_EVENT:
       return {...state, loading: false, indexForEvent: action.payload};
     case TripTemplateActionTypes.SET_NAME_FOR_TEMPLATE:

@@ -135,19 +135,28 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   convertToEvent(toConvert: any, event_type: string, order: number): Event {
     const converted: Event = new Event();
+    console.log('*************************')
+    console.log(toConvert);
     converted.name = toConvert.name;
     converted.description = toConvert.description;
     converted.reference_id = toConvert._id;
     converted.event_type = this.typeForEvent;
     converted.ordinal = order || 1;
-    if (this.typeForEvent === eventType.ACTIVITY) {
-      converted.geo = [toConvert.geo.point];
-    } else {
-      const geo = [];
-      geo.push(toConvert.origin.geo.point);
-      toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
-      geo.push(toConvert.destination.geo.point);
-      converted.geo = geo;
+    switch (this.typeForEvent) {
+      case eventType.ACTIVITY:
+      case eventType.HOTEL:
+        converted.geo = [toConvert.geo.point];
+        break;
+      case eventType.DRIVING:
+        const geo = [];
+        // geo.push(toConvert.origin.geo.point);
+        // toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
+        // geo.push(toConvert.destination.geo.point);
+        geo.push({origin: toConvert.origin, middle_points: toConvert['middle_points'], destination: toConvert.destination});
+        converted.geo = geo;
+        break;
+      default:
+        converted.geo = [];
     }
     return converted;
   }

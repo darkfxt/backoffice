@@ -1,4 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AppState} from '../../../../store';
+import {Store} from '@ngrx/store';
+import {RemoveEvent} from '../../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-event-summarized-card',
@@ -13,13 +16,18 @@ export class EventSummarizedCardComponent implements OnInit {
 
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
   }
 
   openDialog(event){
     this.openedDialog.emit(event);
+  }
+
+  onRemoveEvent(index) {
+    console.log('se va a remover el índice:', index);
+    this.store.dispatch(new RemoveEvent(index));
   }
 
 }

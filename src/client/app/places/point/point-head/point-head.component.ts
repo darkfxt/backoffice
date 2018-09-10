@@ -19,7 +19,8 @@ export class PointHeadComponent implements OnInit, OnDestroy {
   pointTypes = [
     {value: 'POI', viewValue: 'Point of interest'},
     {value: 'HOTEL', viewValue: 'Hotel'},
-    {value: 'ACTIVITY', viewValue: 'Activity'}
+    {value: 'ACTIVITY', viewValue: 'Activity'},
+    {value: 'REFERENCE', viewValue: 'Guide mark'}
   ];
 
   @Output()
