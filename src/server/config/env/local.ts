@@ -13,7 +13,7 @@ export const config = {
     url: 'http://localhost:6002/geo'
   },
   routes: {
-    url: 'http://dev.api.taylorgps.com/routes'
+    url: 'http://localhost:6001/routes'
   }
 
 };
