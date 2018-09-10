@@ -158,7 +158,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   openDialog(event) {
     const dialogConfig = {
-      width: '80%',
       height: '80%',
       maxWidth: '1024px',
       id: 'eventDialog',

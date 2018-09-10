@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesService } from '../../shared/services/routes.service';
 import { FormGuard, IFormGuard } from '../../shared/form-guard/form-guard';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import Segment from '../../shared/models/Segment';
 import { PlaceStore } from '../../shared/services/place-store.services';
@@ -40,7 +40,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private placeStore: PlaceStore,
     daDialog: MatDialog,
-    modalService: ModalService
+    modalService: ModalService,
+    public snackBar: MatSnackBar
   ) {
     super(daDialog, modalService);
   }
@@ -95,6 +96,11 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       //   this.router.navigate(['/routes']);
       // });
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
+      this.snackBar.open('Route saved', undefined, {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      });
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);

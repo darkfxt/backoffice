@@ -4,11 +4,11 @@ import {RoutesRoutingModule} from './routes-routing.module';
 import {RoutesComponent} from './routes.component';
 import {RouteComponent} from './route/route.component';
 import {
-  MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatSelectModule
+  MatAutocompleteModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+  MatSelectModule, MatSnackBarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouteMapComponent} from './route/route-map/route-map.component';
+import { RouteMapComponent } from './route/route-map/route-map.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {RoutePointsComponent} from './route/route-points/route-points.component';
 import {RouteHeadComponent} from './route/route-head/route-head.component';
@@ -44,8 +44,9 @@ import {LoadingModule} from '../shared/loading/loading.module';
     MatAutocompleteModule,
     MatSelectModule,
     MatMenuModule,
+    MatSnackBarModule,
     TranslateModule,
-    ModalModule,
+    MatDialogModule,
     SharedModule
   ],
   exports: [

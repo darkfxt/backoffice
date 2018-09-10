@@ -12,6 +12,7 @@
       </app-detail-header>
   </app-tg-routes>
 </div>
+
 <div *ngIf="data.productType == 'ACTIVITY'">
   <app-places [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef">
     <app-detail-header isDialog="true"
@@ -25,4 +26,19 @@
       </div>
     </app-detail-header>
   </app-places>
+</div>
+
+<div *ngIf="data.productType == 'OTHER'">
+  <app-custom-event>
+    <app-detail-header isDialog="true"
+                       class="detail-header-content"
+                       title="Search Place"
+                       (backButtonClicked)="closeDialog()">
+      <div class="button-container save-button">
+        <button (click)="onButtonClick()">
+          <mat-icon aria-label="New">add</mat-icon>
+        </button>
+      </div>
+    </app-detail-header>
+  </app-custom-event>
 </div>

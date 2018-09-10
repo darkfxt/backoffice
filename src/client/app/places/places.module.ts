@@ -13,7 +13,7 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
 import {PlacesRoutingModule} from './places-routing.module';
 import {
   MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatMenuModule, MatOptionModule, MatSelectModule
+  MatMenuModule, MatOptionModule, MatSelectModule, MatSnackBarModule
 } from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
 import {LoadingModule} from '../shared/loading/loading.module';
@@ -46,6 +46,7 @@ import { PlaceDetailComponent } from './place-detail/place-detail.component';
     MatMenuModule,
     TranslateModule,
     MatIconModule,
+    MatSnackBarModule,
     SharedModule
   ],
   declarations: [

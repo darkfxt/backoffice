@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
 import { Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
@@ -34,7 +34,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppState>,
     matDialog: MatDialog,
-    modalService: ModalService
+    modalService: ModalService,
+    public snackBar: MatSnackBar
   ) {
     super(matDialog, modalService);
   }
@@ -101,6 +102,11 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
       this.store.dispatch(new SavePoint({id: this.place._id, body: formData}));
+      this.snackBar.open('Place saved', undefined, {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      });
       // this._subscription = this.placeService.addPlace(formData).subscribe((resp) => {
       //   this.placeForm.reset();
       //   this.router.navigate(['/places']);
