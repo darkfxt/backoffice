@@ -1,31 +1,9 @@
 <div *ngIf="data.productType == 'DRIVING'">
-  <app-tg-routes [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef">
-      <app-detail-header isDialog="true"
-                         class="detail-header-content"
-                         title="Search Segment"
-                         (backButtonClicked)="closeDialog()">
-        <div class="button-container">
-          <button (click)="onButtonClick()">
-            <mat-icon aria-label="New">add</mat-icon>
-          </button>
-        </div>
-      </app-detail-header>
-  </app-tg-routes>
+  <app-tg-routes [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef"></app-tg-routes>
 </div>
 
 <div *ngIf="data.productType == 'ACTIVITY'">
-  <app-places [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef">
-    <app-detail-header isDialog="true"
-                       class="detail-header-content"
-                       title="Search Place"
-                       (backButtonClicked)="closeDialog()">
-      <div class="button-container">
-        <button (click)="onButtonClick()">
-          <mat-icon aria-label="New">add</mat-icon>
-        </button>
-      </div>
-    </app-detail-header>
-  </app-places>
+  <app-places [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef"></app-places>
 </div>
 
 <div *ngIf="data.productType == 'OTHER'">

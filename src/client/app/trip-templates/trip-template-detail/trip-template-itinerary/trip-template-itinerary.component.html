@@ -28,12 +28,13 @@
         <h4>Day {{day.day}}</h4>
       </div>
       <ul>
-        <app-add-event (openedDialog)="openDialog($event)" [ordinal]="0" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="!day.events || day.events.length === 0"></app-add-event>
 
         <li *ngFor="let events of day.events, let intidx = index">
+          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="events.index" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
           <app-event-summarized-card [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
-          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="events.index +1" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
         </li>
+        <app-add-event (openedDialog)="openDialog($event)" [ordinal]="day.events.length" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="!day.events || day.events.length === 0"></app-add-event>
+        <div *ngIf="showEmptySlot">{{day.day}}  {{day.events.length}}</div>
 
         <li (click)="openEmptySlot()" class="add-event-ctn">
           <div class="icon-ctn" >
