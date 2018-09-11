@@ -16,9 +16,10 @@ export class CustomEventComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       name: '',
-      description: ''
+      description: '',
+      hours: '',
+      minutes: ''
     });
-
   }
 
 }

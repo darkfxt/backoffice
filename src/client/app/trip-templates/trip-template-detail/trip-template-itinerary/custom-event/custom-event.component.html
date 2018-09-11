@@ -22,12 +22,12 @@
       </div>
       <div class="row ">
         <mat-form-field class="col-xs-3">
-          <mat-select placeholder="HH">
+          <mat-select placeholder="HH" name="hours" formControlName="hours">
             <mat-option value="index" *ngFor="let hour of hours; let index = index">{{(index < 10)? '0' + index : index}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="col-xs-3">
-          <mat-select placeholder="MM">
+          <mat-select placeholder="MM" name="minutes" formControlName="minutes">
             <mat-option value="index" *ngFor="let minute of minutes; let index = index">{{(index < 10)? '0' + index : index}}</mat-option>
           </mat-select>
         </mat-form-field>
