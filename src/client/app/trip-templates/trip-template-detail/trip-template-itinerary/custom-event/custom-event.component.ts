@@ -3,7 +3,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {AddEvent} from '../../../../store/trip-template/trip-template.actions';
 import {Event, eventType} from '../../../../shared/models/TripTemplate';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../../../store';
+import {AppState, tripTemplateSelector} from '../../../../store';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-custom-event',
@@ -17,6 +18,8 @@ export class CustomEventComponent implements OnInit {
   form: FormGroup;
   hours = new Array(24);
   minutes = new Array(60);
+  _subscription: Subscription;
+  dayOfEvent: number;
   constructor(private fb: FormBuilder,
               private store: Store<AppState>) { }
 
@@ -27,10 +30,13 @@ export class CustomEventComponent implements OnInit {
       hours: '',
       minutes: ''
     });
+    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
+      if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
+    });
   }
 
   onButtonClick() {
-    const newEvent: Event = this.convertToEvent(eventType.OTHER, 1);
+    const newEvent: Event = this.convertToEvent(eventType.OTHER, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
     this.closeDialog();
   }
