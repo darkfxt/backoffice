@@ -31,7 +31,6 @@
         <app-add-event (openedDialog)="openDialog($event)" [ordinal]="0" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="!day.events || day.events.length === 0"></app-add-event>
 
         <li *ngFor="let events of day.events, let intidx = index">
-          <div>{{events | json}}</div>
           <app-event-summarized-card [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
           <app-add-event (openedDialog)="openDialog($event)" [ordinal]="events.index +1" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
         </li>
