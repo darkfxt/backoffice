@@ -13,6 +13,7 @@ export class EventSummarizedCardComponent implements OnInit {
   @Input() data: any;
   @Input() day: any;
   @Input() showEmptySlot: boolean;
+  @Input() editMode: boolean;
 
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
 

@@ -1,7 +1,4 @@
-<div hidden>
-  <app-add-event [ordinal]="data.index" [day]="day" (openedDialog)="openDialog($event)"> </app-add-event>
-</div>
-<div class="event-cluster">
+<div class="event-cluster" [class.edit-mode]="editMode">
   <div class="icon-ctn">
   </div>
   <div class="summary-ctn">

@@ -8,7 +8,6 @@
   position: sticky;
   background: #fff;
   margin: 34px 0;
-  z-index: 9;
 
   .horizontal-divisor{
     border-bottom: 1px solid #ccc;
@@ -40,15 +39,12 @@
   left: 0;
   top: 0;
   background: rgba(0,0,0,0.288);
-  z-index: 99;
+  z-index: 9;
 }
 
 .event-list {
 
   margin-top: 34px;
-  li {
-    margin-bottom: 8px;
-  }
 
   /deep/ .common-list {
     margin-top: 0;

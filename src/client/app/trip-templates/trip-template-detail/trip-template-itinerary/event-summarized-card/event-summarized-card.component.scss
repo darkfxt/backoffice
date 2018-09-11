@@ -1,5 +1,7 @@
 @import '../../../../../assets/variables';
 
+
+
 .event-cluster{
   padding: 16px 0;
   width: 100%;
@@ -7,8 +9,22 @@
   border-radius: 2px;
   position: relative;
   display: flex;
-  transition: box-shadow 0.2s ease-in-out;
-  margin-bottom: 8px;
+  transition: all .3s ease-in-out;
+
+  &.edit-mode{
+    align-items: center;
+    padding: 0;
+
+    .summary-ctn{
+      p{
+        height: 0px;
+        overflow: hidden;
+      }
+    }
+    .menu{
+      display: none;
+    }
+  }
 
   .menu{
     position: absolute;
@@ -71,6 +87,7 @@
   p{
     color: $gray-body;
     margin-bottom: 0;
+    transition: height 0.2s ease;
   }
 
 }

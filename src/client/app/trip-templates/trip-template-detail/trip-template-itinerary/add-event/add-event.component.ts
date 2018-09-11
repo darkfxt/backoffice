@@ -39,6 +39,7 @@ export class AddEventComponent implements OnInit {
   @Input() firstEvent: boolean;
   @Input() ordinal;
   @Input() day: number;
+  @Input() editMode: boolean;
 
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
 

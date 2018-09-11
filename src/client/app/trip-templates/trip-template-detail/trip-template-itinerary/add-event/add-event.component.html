@@ -16,6 +16,6 @@
   </div>
 </div-->
 
-<div class="empty-slot" (click)="showOptions()">
+<div class="empty-slot" (click)="showOptions()" [hidden]="!editMode">
   <p>Add event here</p>
 </div>
