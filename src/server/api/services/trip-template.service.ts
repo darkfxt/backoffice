@@ -42,9 +42,10 @@ export class TripTemplateService {
         }
         if(event['event_type'] === event_type.DRIVING) {
           eventData =  await RoutesService.getDetail(event.reference_id);
-          geo.push(eventData.origin.geo.point);
-          eventData['middle_points'].forEach(point => geo.push(point.geo.point));
-          geo.push(eventData.destination.geo.point);
+          geo.push({origin: eventData.origin, middle_points: eventData['middle_points'], destination: eventData.destination});
+          // geo.push(eventData.origin.geo.point);
+          // eventData['middle_points'].forEach(point => geo.push(point.geo.point));
+          // geo.push(eventData.destination.geo.point);
         }
         return Object.assign({}, event, {geo});
       }))).filter( event => event !== undefined);

@@ -1,6 +1,9 @@
-<app-detail-header *ngIf="!loading" [disableBackButton]="true"
+<app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
                    [title]="paginationOptions.length + ' rutas encontradas'"
-                   class="detail-header-content" navUrl="/routes/new">
+                   [isDialog]="isDialog"
+                   class="detail-header-content"
+                   (backButtonClicked)="goBack()"
+                   navUrl="/routes/new">
   <div class="button-container save-button">
     <button (click)="onButtonClick()">
       <mat-icon aria-label="New">add</mat-icon>

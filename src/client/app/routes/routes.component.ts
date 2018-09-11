@@ -82,4 +82,13 @@ export class RoutesComponent implements OnInit, OnDestroy {
     this.router.navigate(['/routes/new']);
   }
 
+  goBack() {
+    if (this.isDialog) {
+      if (this.dialogRef)
+        this.dialogRef.close('CLOSE');
+      return;
+    } else
+      this.router.navigate(['/routes']);
+  }
+
 }

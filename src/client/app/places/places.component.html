@@ -1,4 +1,9 @@
-<app-detail-header *ngIf="!loading" [disableBackButton]="true" [title]="paginationOptions.length + ' puntos encontrados'" class="detail-header-content" navUrl="/places/new">
+<app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
+                   [title]="paginationOptions.length + ' puntos encontrados'"
+                   [isDialog]="isDialog"
+                   class="detail-header-content"
+                   (backButtonClicked)="goBack()"
+                   navUrl="/places/new">
   <div class="button-container save-button">
     <button (click)="onButtonClick()">
       <mat-icon aria-label="New">add</mat-icon>
