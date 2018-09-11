@@ -10,7 +10,7 @@ import { ModalService } from '../../shared/modal/modal.service';
 import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
-import { SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
+import {ClearPoint, SavePoint, ToggleDialogPoint} from '../../store/place/place.actions';
 import {DialogActions} from '../../store/dialog-actions.enum';
 
 @Component({
@@ -91,6 +91,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._resolverSubscription.unsubscribe();
     if (this._subscription) {
+      this.store.dispatch(new ClearPoint());
       this._subscription.unsubscribe();
     }
   }

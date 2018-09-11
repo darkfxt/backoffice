@@ -4,13 +4,14 @@ import {AppState, loadingSelector, metadataSelector, pointSelector} from '../sto
 import {Store} from '@ngrx/store';
 import {Point} from '../shared/models/Place';
 import {Observable} from 'rxjs';
-import {GetPoints} from '../store/place/place.actions';
+import {GetPoints, ToggleDialogPoint} from '../store/place/place.actions';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PageEvent} from '@angular/material';
 import {PaginationOptionsInterface} from '../shared/common-list/common-list-item/pagination-options.interface';
 import Route from '../../../server/api/entity/Route';
+import {DialogActions} from '../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-places',
@@ -73,6 +74,15 @@ export class PlacesComponent implements OnInit{
       return;
     }
     this.router.navigate(['/places/new']);
+  }
+
+  goBack() {
+    if (this.isDialog) {
+      if (this.dialogRef)
+        this.dialogRef.close('CLOSE');
+      return;
+    } else
+      this.router.navigate(['/places']);
   }
 
 }

@@ -16,6 +16,7 @@ export class TripTemplateMapComponent implements OnInit {
 
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
+  directions: Array<any> = [];
   _self: any;
 
   private stepDisplay = new google.maps.InfoWindow;
@@ -36,12 +37,24 @@ export class TripTemplateMapComponent implements OnInit {
 
 
     this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplate && data.selectedTripTemplate.events && data.selectedTripTemplate.events.length > 0) {
+      if (data.selectedTripTemplate && data.selectedTripTemplateEvents && data.selectedTripTemplateEvents.length > 0) {
+
+        console.log('**************************')
+        console.log(this.directions);
+        this.directions.forEach(bla => bla.setMap(null))
+
+        this.directionsDisplay.setMap(null); // clear direction from the map
+        this.directionsDisplay.setPanel(null);
+
         this.directionsDisplay.setMap(this.map);
 
         const waypoints = new Array();
-        this._self = this;
-        data.selectedTripTemplate.events.forEach(this.drawerPicker);
+
+        setTimeout(() => {}, 1000);
+        this.markers.forEach(marker => marker.setMap(null));
+        data.selectedTripTemplateEvents.forEach((element, index, array) => {
+          this.drawerPicker(element, index, array);
+          }, this);
 
         // this.calculateAndDisplayRoute(waypoints);
       }
@@ -51,35 +64,38 @@ export class TripTemplateMapComponent implements OnInit {
 
   private drawerPicker(element, index, array) {
     /// MIRAR::: al estar ejecutandose dentro del iterador, el this queda como undefined.
-    console.log(this);
+    console.log('chinga', element);
     switch (element.eventType) {
       case eventType.DRIVING:
-        let origin = element.geo[0].origin.geo, destination = element.geo[0].destination.geo;
-        if (element.geo[0].origin.type === 'REFERENCE' && index > 1 && array[index - 1].eventType !== eventType.DRIVING)
-          origin = array[index - 1].geo;
+        let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
+        if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== eventType.DRIVING)
+          origin = array[index - 1].geo[0];
         if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== eventType.DRIVING)
-          destination = array[index + 1].geo;
-
-        this.directionsService.route({
-          origin: origin,
-          destination: destination,
-          waypoints: element.geo[0].middle_points,
-          travelMode: google.maps.TravelMode.DRIVING
-        }, result => {
-          // this.renderDirections(result);
-          const directionsRender = new google.maps.DirectionsRenderer();
-          directionsRender.setMap(this.map);
-          directionsRender.setDirections(result);
-        });
-        // this.traceRoutes(origin, element.geo[0].middle_points, destination);
+          destination = array[index + 1].geo[0];
+        console.log('*****origin*****?', origin);
+        // this.directionsService.route({
+        //   origin: origin,
+        //   destination: destination,
+        //   waypoints: element.geo[0].middle_points,
+        //   travelMode: google.maps.TravelMode.DRIVING
+        // }, result => {
+        //   this.renderDirections(result);
+        //   // const directionsRender = new google.maps.DirectionsRenderer();
+        //   // directionsRender.setMap(this.map);
+        //   // directionsRender.setDirections(result);
+        // });
+        this.traceRoutes(origin, element.geo[0].middle_points, destination);
         break;
       case eventType.HOTEL:
       case eventType.ACTIVITY:
+        console.log('pppp', array[index + 1]);
         if (index + 1 === array.length ||
-          array[index + 1].geo[0].origin.type !== 'REFERENCE' ||
-          (index > 0 && array[index - 1].geo[0].destination.type !== 'REFERENCE'))
+          // array[index + 1].geo[0].origin.type !== 'REFERENCE' ||
+          ( array[index + 1].eventType !== 'DRIVING' && array[index - 1].eventType !== 'DRIVING' )
+          // || (index > 0 && array[index - 1].geo[0].destination.type !== 'REFERENCE')
+        )
           this.markers.push(new google.maps.Marker({
-            position: element.geo,
+            position: element.geo[0],
             map: this.map,
             title: ''
           }));
@@ -144,9 +160,12 @@ export class TripTemplateMapComponent implements OnInit {
   }
 
   private renderDirections (directions) {
+
     const directionsRender = new google.maps.DirectionsRenderer();
     directionsRender.setMap(this.map);
     directionsRender.setDirections(directions);
+
+    this.directions.push(directionsRender);
   }
 
 }
