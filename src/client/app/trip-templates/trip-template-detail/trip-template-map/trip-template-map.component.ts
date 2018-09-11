@@ -17,6 +17,7 @@ export class TripTemplateMapComponent implements OnInit {
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
   directions: Array<any> = [];
+  _referencesRenderer: Array<any> = [];
   _self: any;
 
   private stepDisplay = new google.maps.InfoWindow;
@@ -37,24 +38,29 @@ export class TripTemplateMapComponent implements OnInit {
 
 
     this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplate && data.selectedTripTemplateEvents && data.selectedTripTemplateEvents.length > 0) {
-
-        console.log('**************************')
-        console.log(this.directions);
-        this.directions.forEach(bla => bla.setMap(null))
-
-        this.directionsDisplay.setMap(null); // clear direction from the map
-        this.directionsDisplay.setPanel(null);
+      if (data.selectedTripTemplate &&
+        data.selectedTripTemplateEvents &&
+        data.selectedTripTemplateEvents.length > 0) {
 
         this.directionsDisplay.setMap(this.map);
 
-        const waypoints = new Array();
+        // const waypoints = new Array();
+//
 
-        setTimeout(() => {}, 1000);
-        this.markers.forEach(marker => marker.setMap(null));
+        // this.markers.forEach(marker => marker.setMap(null));
+        this.directions = [];
+        this._referencesRenderer.forEach(element => {
+          element.setMap(null);
+
+        });
         data.selectedTripTemplateEvents.forEach((element, index, array) => {
           this.drawerPicker(element, index, array);
-          }, this);
+        }, this);
+         setTimeout(() => {
+            this.directions.forEach(element => this.traceRoutes(element.origin, [], element.destination));
+         }, 100);
+
+
 
         // this.calculateAndDisplayRoute(waypoints);
       }
@@ -64,7 +70,6 @@ export class TripTemplateMapComponent implements OnInit {
 
   private drawerPicker(element, index, array) {
     /// MIRAR::: al estar ejecutandose dentro del iterador, el this queda como undefined.
-    console.log('chinga', element);
     switch (element.eventType) {
       case eventType.DRIVING:
         let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
@@ -72,27 +77,13 @@ export class TripTemplateMapComponent implements OnInit {
           origin = array[index - 1].geo[0];
         if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== eventType.DRIVING)
           destination = array[index + 1].geo[0];
-        console.log('*****origin*****?', origin);
-        // this.directionsService.route({
-        //   origin: origin,
-        //   destination: destination,
-        //   waypoints: element.geo[0].middle_points,
-        //   travelMode: google.maps.TravelMode.DRIVING
-        // }, result => {
-        //   this.renderDirections(result);
-        //   // const directionsRender = new google.maps.DirectionsRenderer();
-        //   // directionsRender.setMap(this.map);
-        //   // directionsRender.setDirections(result);
-        // });
-        this.traceRoutes(origin, element.geo[0].middle_points, destination);
+        this.directions.push({origin, middle_points: element.geo[0].middle_points, destination});
+        // this.traceRoutes(origin, element.geo[0].middle_points, destination);
         break;
       case eventType.HOTEL:
       case eventType.ACTIVITY:
-        console.log('pppp', array[index + 1]);
         if (index + 1 === array.length ||
-          // array[index + 1].geo[0].origin.type !== 'REFERENCE' ||
           ( array[index + 1].eventType !== 'DRIVING' && array[index - 1].eventType !== 'DRIVING' )
-          // || (index > 0 && array[index - 1].geo[0].destination.type !== 'REFERENCE')
         )
           this.markers.push(new google.maps.Marker({
             position: element.geo[0],
@@ -104,48 +95,6 @@ export class TripTemplateMapComponent implements OnInit {
         break;
 
     }
-  }
-
-  private calculateAndDisplayRoute(waypts: Array<any>) {
-    let origin, destination;
-    if (!waypts.length || waypts.length < 1) {
-      return;
-    } else if (waypts.length === 1) {
-      origin = waypts[0].location;
-      destination = waypts.pop().location;
-    } else {
-      origin = waypts.shift().location;
-      destination = waypts.pop().location;
-    }
-
-    // TODO: Optimize waypoints
-    this.directionsService.route(<any>{
-      origin,
-      destination,
-      waypoints: waypts,
-      optimizeWaypoints: false,
-      travelMode: 'DRIVING'
-    }, (response, status: any) => {
-      if (status === 'OK') {
-        this.directionsDisplay.setDirections(response);
-        const legs = response.routes[0].legs
-          .map(value => (
-            {
-              distance: value.distance,
-              duration: value.duration
-            })
-          );
-      }
-    });
-  }
-
-  private centerMap(markers) {
-    const bounds = new google.maps.LatLngBounds();
-    for (let j = 0; j < markers.length; j++) {
-      bounds.extend(markers[j].getPosition());
-    }
-    this.map.setCenter(bounds.getCenter());
-    this.map.fitBounds(bounds);
   }
 
   private traceRoutes (start, waypts, end): void {
@@ -161,11 +110,14 @@ export class TripTemplateMapComponent implements OnInit {
 
   private renderDirections (directions) {
 
-    const directionsRender = new google.maps.DirectionsRenderer();
-    directionsRender.setMap(this.map);
-    directionsRender.setDirections(directions);
+    this._referencesRenderer.push( new google.maps.DirectionsRenderer({
+      directions: directions,
+      map: this.map
+    }));
+    // directionsRender.setMap(this.map);
+    // directionsRender.setDirections(directions);
+    // console.log('jotaaaaaaa', directionsRender.getRouteIndex());
 
-    this.directions.push(directionsRender);
   }
 
 }
