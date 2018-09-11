@@ -47,7 +47,7 @@ export class TripTemplateMapComponent implements OnInit {
         // const waypoints = new Array();
 //
 
-        // this.markers.forEach(marker => marker.setMap(null));
+        this.markers.forEach(marker => marker.setMap(null));
         this.directions = [];
         this._referencesRenderer.forEach(element => {
           element.setMap(null);
@@ -70,30 +70,20 @@ export class TripTemplateMapComponent implements OnInit {
 
   private drawerPicker(element, index, array) {
     /// MIRAR::: al estar ejecutandose dentro del iterador, el this queda como undefined.
-    switch (element.eventType) {
-      case eventType.DRIVING:
-        let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
-        if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== eventType.DRIVING)
-          origin = array[index - 1].geo[0];
-        if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== eventType.DRIVING)
-          destination = array[index + 1].geo[0];
-        this.directions.push({origin, middle_points: element.geo[0].middle_points, destination});
-        // this.traceRoutes(origin, element.geo[0].middle_points, destination);
-        break;
-      case eventType.HOTEL:
-      case eventType.ACTIVITY:
-        if (index + 1 === array.length ||
-          ( array[index + 1].eventType !== 'DRIVING' && array[index - 1].eventType !== 'DRIVING' )
-        )
-          this.markers.push(new google.maps.Marker({
-            position: element.geo[0],
-            map: this.map,
-            title: ''
-          }));
-        break;
-      default:
-        break;
-
+    if (element.eventType === eventType.DRIVING){
+      let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
+      if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== eventType.DRIVING)
+        origin = array[index - 1].geo[0];
+      if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== eventType.DRIVING)
+        destination = array[index + 1].geo[0];
+      this.directions.push({origin, middle_points: element.geo[0].middle_points, destination});
+      // this.traceRoutes(origin, element.geo[0].middle_points, destination);
+    } else{
+      this.markers.push(new google.maps.Marker({
+        position: element.geo[0],
+        map: this.map,
+        title: ''
+      }));
     }
   }
 
@@ -112,7 +102,8 @@ export class TripTemplateMapComponent implements OnInit {
 
     this._referencesRenderer.push( new google.maps.DirectionsRenderer({
       directions: directions,
-      map: this.map
+      map: this.map,
+      suppressMarkers: true
     }));
     // directionsRender.setMap(this.map);
     // directionsRender.setDirections(directions);
