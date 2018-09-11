@@ -1,20 +1,36 @@
 <form [formGroup]="form" #formDir="ngForm" novalidate class="custom-event">
-  <ng-content selector=".detail-header-content"></ng-content>
+  <app-detail-header isDialog="true"
+                     class="detail-header-content"
+                     title="New custom event"
+                     (backButtonClicked)="closeDialog()">
+    <div class="button-container save-button">
+      <button (click)="onButtonClick()">
+        <mat-icon aria-label="New">add</mat-icon>
+      </button>
+    </div>
+  </app-detail-header>
 
   <div class="app-container full-size body-content">
     <div class="box-container">
       <div class="row ">
-        <div class="col-xs-12">
-          <mat-form-field color="accent" class="">
-            <input type="text" #name matInput placeholder="Name" name="name" formControlName="name"  />
-          </mat-form-field>
-
-          <mat-form-field color="accent" class="">
-            <textarea matInput #description placeholder="Description" name="description" formControlName="description"></textarea>
-          </mat-form-field>
-
-        </div>
-
+        <mat-form-field color="accent" class="col-xs-12">
+          <input type="text" #name matInput placeholder="Name" name="name" formControlName="name"  />
+        </mat-form-field>
+        <mat-form-field color="accent" class="col-xs-12">
+          <textarea matInput #description placeholder="Description" name="description" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row ">
+        <mat-form-field class="col-xs-3">
+          <mat-select placeholder="HH">
+            <mat-option value="index" *ngFor="let hour of hours; let index = index">{{(index < 10)? '0' + index : index}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-xs-3">
+          <mat-select placeholder="MM">
+            <mat-option value="index" *ngFor="let minute of minutes; let index = index">{{(index < 10)? '0' + index : index}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>

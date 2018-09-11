@@ -1,14 +1,9 @@
-<div>
-  <app-add-event [ordinal]="data.index" [day]="day" (openedDialog)="openDialog($event)" > </app-add-event>
+<div hidden>
+  <app-add-event [ordinal]="data.index" [day]="day" (openedDialog)="openDialog($event)"> </app-add-event>
 </div>
 <div class="event-cluster">
   <div class="icon-ctn">
-    <mat-icon fontSet="tg">driving</mat-icon>
-    <div class="bottom-text">
-      <span class="small-text">driving</span>
-    </div>
   </div>
-  <div class="divisor"></div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
     <p>{{data.description}}</p>

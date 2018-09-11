@@ -9,7 +9,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 export class CustomEventComponent implements OnInit {
 
   form: FormGroup;
-
+  hours = new Array(24);
+  minutes = new Array(60);
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -17,6 +18,7 @@ export class CustomEventComponent implements OnInit {
       name: '',
       description: ''
     });
+
   }
 
 }

@@ -1,14 +1,46 @@
 @import '../../../../assets/variables';
 
+.day-ctn{
+  position: relative;
+}
+
 .day-count {
+  position: sticky;
+  background: #fff;
+  margin: 34px 0;
+  z-index: 9;
+
+  .horizontal-divisor{
+    border-bottom: 1px solid #ccc;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 12px;
+  }
+
   h4 {
-    color: #7F848C;
+    color: $gray-title;
     font-weight: 500;
     margin-bottom: 0;
+    position: relative;
+    background: #fff;
+    display: inline-block;
+    padding-right: 8px;
+    font-size: 16px;
   }
   p {
     color: #7F848C;
   }
+}
+
+.event-overlay{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.288);
+  z-index: 99;
 }
 
 .event-list {
@@ -34,9 +66,43 @@
   }
 }
 
-.new-day {
+.add-event-ctn{
+  display: flex;
+  position: relative;
+  z-index: 9;
+  align-items: center;
+  cursor: pointer;
+}
+
+.add-icon{
+  font-size: 24px;
+  background: #666;
+  height: 30px;
+  width: 30px;
+  border-radius: 30px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.add-label{
+  margin-left: 16px;
+}
+
+.new-day, .new-event {
   width: 100%;
   margin-top: 24px;
+}
+
+.vertical-line{
+  height: 100%;
+  border-left: 1px dashed #ccc;
+  width: 1px;
+  position: absolute;
+  top: 0;
+  left: 15px;
 }
 
 .event-cluster {
@@ -53,7 +119,7 @@
   .menu {
     position: absolute;
     right: -4px;
-    top: 0;
+    top: 6;
   }
 
   .summary-ctn {

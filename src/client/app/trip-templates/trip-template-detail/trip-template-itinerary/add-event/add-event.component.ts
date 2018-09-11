@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
   trigger,
   state,
@@ -9,7 +9,7 @@ import {
 
 import {EventDialogComponent} from '../event-dialog/event-dialog.component';
 import {Event, eventType} from '../../../../shared/models/TripTemplate';
-import {MatDialog} from '@angular/material';
+import {MatBottomSheet, MatBottomSheetRef, MatDialog} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../store';
 import {SetNameForTemplate, OrdinalForEventSetted, DayIndexTypeForEventSetted} from '../../../../store/trip-template/trip-template.actions';
@@ -38,7 +38,7 @@ import {Router} from '@angular/router';
   ]
 })
 export class AddEventComponent implements OnInit {
-
+  @Input() firstEvent: boolean;
   @Input() ordinal;
   @Input() day: number;
 
@@ -46,25 +46,75 @@ export class AddEventComponent implements OnInit {
 
   state = 'out';
   tooltipMessage = {'in': 'close', 'out': 'Add event here'};
+
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private bottomSheet: MatBottomSheet
+  ) { }
+
+  ngOnInit() {
+    if (this.firstEvent)
+      this.showOptions();
+  }
+
+  showOptions(): void {
+    setTimeout(() => {
+      const bottomSheetRef = this.bottomSheet.open(BottomSheetEventComponent, {
+        panelClass: 'event-bottom-sheet'
+      });
+
+      bottomSheetRef.afterDismissed().subscribe((result) => {
+        this.openedDialog.emit({productType: result, day: this.day, ordinal: this.ordinal});
+      });
+    }, 100);
+  }
+
+  /*showOptions(): void{
+    this.state = this.state === 'out' ? 'in' : 'out';
+  }*/
+
+
+
+}
+
+@Component({
+  selector: 'app-bottom-sheet-event',
+  template: `
+    <ul>
+      <li *ngFor="let productType of productTypes" (click)="openDialog(productType.value)">
+        <div class="product-icon">
+          <mat-icon fontSet="tg">{{productType.icon}}</mat-icon>
+        </div>
+        <div class="product-label">{{productType.viewValue}}</div>
+      </li>
+    </ul>
+  `,
+  styles: [
+    `.event-bottom-sheet{ padding: 8px 0 !important;}`,
+    `.event-bottom-sheet:hover{ background: #ccc;}`,
+    `li {display: flex; align-items: center; padding: 8px 16px}`,
+    `.product-icon{ height: 40px;
+      width: 40px;
+      font-size: 24px;
+      text-align: center;
+      display: flex;
+      align-items: center;}`,
+    `.product-label{ margin-left: 16px; text-transform: capitalize; font-size: 16px}`
+  ]
+})
+export class BottomSheetEventComponent {
   productTypes = [
-    {value: eventType.DRIVING,/* 'DRIVING', */viewValue: 'driving', icon:'driving'},
+    {value: eventType.DRIVING, viewValue: 'driving', icon:'driving'},
     {value: eventType.HOTEL, viewValue: 'hotel', icon:'hotel'},
     {value: eventType.ACTIVITY, viewValue: 'activity', icon:'ticket'},
     {value: eventType.OTHER, viewValue: 'other', icon:'edit_2'}
   ];
 
-  constructor( private store: Store<AppState>, private router: Router) { }
+  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>) {}
 
-  ngOnInit() {
-
+  openDialog(productType): void {
+    this.bottomSheetRef.dismiss(productType);
+    event.preventDefault();
   }
-
-  showOptions(): void{
-    this.state = this.state === 'out'? 'in': 'out';
-  }
-
-  openDialog(productType){
-    this.openedDialog.emit({productType, day: this.day, ordinal: this.ordinal});
-  }
-
 }

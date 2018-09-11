@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import {MAT_DIALOG_DATA, MatBottomSheet, MatDialog} from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
 import { RouteComponent } from '../../../routes/route/route.component';
 import { FormArray, FormBuilder } from '@angular/forms';
@@ -36,6 +36,7 @@ import { PointComponent } from '../../../places/point/point.component';
 import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.actions';
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
+import {BottomSheetEventComponent} from './add-event/add-event.component';
 
 
 @Component({
@@ -47,7 +48,8 @@ import { DialogActions } from '../../../store/dialog-actions.enum';
 export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   @Input()
   itinerary: FormArray;
-
+  showOverlay: boolean;
+  showEmptySlot: boolean;
   loading = false;
   selectedTemplateEvents$: Observable<any>;
   itineraryEvents: Array<any> = [];
@@ -70,11 +72,16 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     {value: 'OTHER', viewValue: 'other'}
   ];
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder,
-              private store: Store<AppState>) {
+  constructor(
+    public dialog: MatDialog,
+    private fb: FormBuilder,
+    private store: Store<AppState>
+  ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
     this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
+
   }
+
 
   ngOnInit() {
 
@@ -117,8 +124,14 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     }
   }
 
-  showOptions(): void {
-    this.state = this.state === 'out' ? 'in' : 'out';
+  openEmptySlot(): void {
+    this.showOverlay = true;
+    this.showEmptySlot = true;
+  }
+
+  hideEmptySlot(): void{
+    this.showOverlay = false;
+    this.showEmptySlot = false;
   }
 
   addEvent(eventToAdd) {
@@ -166,6 +179,10 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   }
 
   openDialog(event) {
+    if (!event.productType){
+      this.hideEmptySlot();
+      return false;
+    }
     const dialogConfig = {
       height: '80%',
       maxWidth: '1024px',
@@ -184,7 +201,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 
     this.dialogReference.afterClosed().subscribe(result => {
-
+      this.showEmptySlot = false;
+      this.showOverlay = false;
       if (result === 'OPEN_NEW_ROUTES') {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);

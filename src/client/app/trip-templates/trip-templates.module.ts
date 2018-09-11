@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+  MatAutocompleteModule, MatBottomSheetModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatSelectModule, MatTooltipModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import { TripTemplateItineraryComponent } from './trip-template-detail/trip-temp
 import { RoutesModule } from '../routes/routes.module';
 import { SharedModule } from '../shared/shared.module';
 import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
-import { AddEventComponent } from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
+import {AddEventComponent, BottomSheetEventComponent} from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
 import { PlacesModule } from '../places/places.module';
 import { TripTemplateMapComponent } from './trip-template-detail/trip-template-map/trip-template-map.component';
 import { RouteComponent } from '../routes/route/route.component';
@@ -46,7 +46,8 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
     TranslateModule,
     PlacesModule,
     RoutesModule,
-    SharedModule
+    SharedModule,
+    MatBottomSheetModule
   ],
   declarations: [
     TripTemplatesComponent,
@@ -58,11 +59,12 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
     AddEventComponent,
     TripTemplateMapComponent,
     TripTemplateDetailHeaderComponent,
-    CustomEventComponent
+    CustomEventComponent,
+    BottomSheetEventComponent
   ],
   providers: [ ],
   entryComponents: [
-    EventDialogComponent, RouteComponent, PointComponent
+    EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent
   ],
 })
 export class TripTemplatesModule { }

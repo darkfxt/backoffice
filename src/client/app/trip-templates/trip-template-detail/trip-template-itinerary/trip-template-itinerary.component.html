@@ -18,21 +18,30 @@
 
 </div>-->
 
-<div class="day-ctn">
-
+<div class="days-list">
+  <div class="event-overlay" *ngIf="showOverlay" (click)="hideEmptySlot()"></div>
   <ul class="event-list">
-    <li *ngFor="let day of itineraryEvents, let idx = index">
+    <li *ngFor="let day of itineraryEvents, let idx = index" class="day-ctn">
+      <div class="vertical-line"></div>
       <div class="day-count">
-        <h4>DAY {{day.day}} - Salta, Cafayate, Cachi</h4>
-        <p>2 Routes, Hotel (1)night</p>
+        <div class="horizontal-divisor"></div>
+        <h4>Day {{day.day}}</h4>
       </div>
       <ul>
+        <app-add-event (openedDialog)="openDialog($event)" ordinal="0" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="day.events.length === 0"></app-add-event>
+
         <li *ngFor="let events of day.events, let intidx = index">
           <app-event-summarized-card [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
+          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
         </li>
-        <li>
-          <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day" (openedDialog)="openDialog($event)"></app-add-event>
+
+        <li (click)="openEmptySlot()" class="add-event-ctn">
+          <div class="icon-ctn" >
+            <div class="add-icon">+</div>
+          </div>
+          <div class="add-label">Añadir nuevo evento</div>
         </li>
+
       </ul>
     </li>
 
@@ -41,3 +50,4 @@
 </div>
 
 <button mat-stroked-button (click)="addDay()" color="accent" class="new-day">+ ADD NEW DAY</button>
+

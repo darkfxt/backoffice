@@ -1,4 +1,4 @@
-<div class="event-cluster" [class.in]="state === 'in'" >
+<!--div class="event-cluster" [class.in]="state === 'in'" >
   <div class="icon-ctn" (click)="showOptions()">
     <div class="add-icon" [@addEventState]="'add-'+state" [matTooltip]="tooltipMessage[state]" matTooltipPosition="right">+</div>
   </div>
@@ -14,4 +14,8 @@
       </ul>
     </div>
   </div>
+</div-->
+
+<div class="empty-slot" (click)="showOptions()">
+  <p>Add event here</p>
 </div>

@@ -29,16 +29,5 @@
 </div>
 
 <div *ngIf="data.productType == 'OTHER'">
-  <app-custom-event>
-    <app-detail-header isDialog="true"
-                       class="detail-header-content"
-                       title="Search Place"
-                       (backButtonClicked)="closeDialog()">
-      <div class="button-container save-button">
-        <button (click)="onButtonClick()">
-          <mat-icon aria-label="New">add</mat-icon>
-        </button>
-      </div>
-    </app-detail-header>
-  </app-custom-event>
+  <app-custom-event></app-custom-event>
 </div>

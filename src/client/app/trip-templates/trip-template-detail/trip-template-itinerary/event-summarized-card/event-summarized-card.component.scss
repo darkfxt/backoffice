@@ -1,12 +1,10 @@
 @import '../../../../../assets/variables';
 
 .event-cluster{
-  box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.5);
-  padding: 16px 8px;
+  padding: 16px 0;
   width: 100%;
   box-sizing: border-box;
   border-radius: 2px;
-  background: #fff;
   position: relative;
   display: flex;
   transition: box-shadow 0.2s ease-in-out;
@@ -14,24 +12,28 @@
 
   .menu{
     position: absolute;
-    right: -4px;
-    top: 0;
+    right: -14px;
+    top: 6px;
   }
 
   .icon-ctn{
-    width: 72px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #999;
     margin-right: 24px;
     text-align: center;
     display: flex;
     flex-direction: column;
     flex: 0 0 auto;
     align-items: center;
+    border-radius: 40px;
+    background: #fff;
 
     mat-icon{
       color: $gray-body;
       height: 40px;
       width: 40px;
-      font-size: 34px;
+      font-size: 17px;
     }
 
     .bottom-text{
