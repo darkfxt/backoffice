@@ -7,5 +7,5 @@
 </div>
 
 <div *ngIf="data.productType == 'OTHER'">
-  <app-custom-event></app-custom-event>
+  <app-custom-event [isDialog]="true" [dialogRef]="dialogRef"></app-custom-event>
 </div>
