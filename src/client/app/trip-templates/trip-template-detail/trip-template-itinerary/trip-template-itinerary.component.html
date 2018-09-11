@@ -21,18 +21,19 @@
 <div class="days-list">
   <div class="event-overlay" *ngIf="showOverlay" (click)="hideEmptySlot()"></div>
   <ul class="event-list">
-    <li *ngFor="let day of itineraryEvents, let idx = index" class="day-ctn">
+    <li *ngFor="let day of itineraryEvents; let idx = index;" class="day-ctn">
       <div class="vertical-line"></div>
       <div class="day-count">
         <div class="horizontal-divisor"></div>
         <h4>Day {{day.day}}</h4>
       </div>
       <ul>
-        <app-add-event (openedDialog)="openDialog($event)" ordinal="0" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="day.events.length === 0"></app-add-event>
+        <app-add-event (openedDialog)="openDialog($event)" [ordinal]="0" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="!day.events || day.events.length === 0"></app-add-event>
 
         <li *ngFor="let events of day.events, let intidx = index">
+          <div>{{events | json}}</div>
           <app-event-summarized-card [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
-          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="selectedTemplateEvents$.subscribe().length" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
+          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="events.index +1" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
         </li>
 
         <li (click)="openEmptySlot()" class="add-event-ctn">
