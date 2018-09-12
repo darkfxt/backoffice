@@ -13,6 +13,7 @@ import {
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event } from '../../shared/models/TripTemplate';
 import { SaveSegment } from '../../store/route/route.actions';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -33,7 +34,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private router: Router,
     private routesService: TripTemplateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
     ) {
     store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
@@ -111,6 +113,12 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       if (this._selectedRouteTemplateId !== 'new')
         tripTemplateToSave._id = this._selectedRouteTemplateId;
       this.store.dispatch(new SaveTripTemplate(tripTemplateToSave));
+
+      this.snackBar.open('Trip saved', undefined, {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      });
     }
   }
 
