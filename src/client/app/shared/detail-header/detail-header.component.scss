@@ -4,7 +4,7 @@
   background: $primary-color;
   position: sticky;
   top: 0px;
-  z-index: 99;
+  z-index: 97;
 
   &.dialog{
     background: $secondary-color;
@@ -63,6 +63,13 @@
     position: absolute;
     right: 16px;
     top: 29px;
+
+    @media only screen and (max-device-width: 736px) {
+      position: fixed;
+      right: 16px;
+      top: auto;
+      bottom: 16px;
+    }
 
     .mat-icon{
       color: #fff;

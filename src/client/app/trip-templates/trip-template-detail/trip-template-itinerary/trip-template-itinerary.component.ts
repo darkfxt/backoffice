@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, OnDestroy } from '@angular/core';
+import {Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef} from '@angular/core';
 import {MAT_DIALOG_DATA, MatBottomSheet, MatDialog} from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
 import { RouteComponent } from '../../../routes/route/route.component';
@@ -57,10 +57,12 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   dayOfEvent: number;
   typeForEvent: string;
   ordinalForEvent: string;
-
+  headerCollapsed: boolean;
   dialogReference: any;
   dialogReferenceSub: any;
   _subscription: Subscription;
+
+  @ViewChild('dayList') dayList: ElementRef;
 
 
   state = 'out';
@@ -75,7 +77,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private render: Renderer2
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
     this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
@@ -176,6 +179,13 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   addDay() {
     this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
+    setTimeout(() => {
+      this.dayList.nativeElement.scrollTop = this.dayList.nativeElement.scrollHeight;
+    }, 100);
+  }
+
+  toggleHeader(): void{
+    this.headerCollapsed = !this.headerCollapsed;
   }
 
   openDialog(event) {

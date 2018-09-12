@@ -7,7 +7,7 @@ import { eventType } from '../../../shared/models/TripTemplate';
 @Component({
   selector: 'app-trip-template-map',
   template: `
-    <div #gmap style="width:100%; height:340px"></div>
+    <div #gmap style="width:100%; height:590px"></div>
   `
 })
 export class TripTemplateMapComponent implements OnInit {

@@ -3,13 +3,17 @@
 
 
 .event-cluster{
-  padding: 16px 0;
+  padding: 16px 16px 16px 0;
   width: 100%;
   box-sizing: border-box;
   border-radius: 2px;
   position: relative;
   display: flex;
   transition: all .3s ease-in-out;
+
+  @media only screen and (max-device-width: 736px) {
+    padding: 16px 0;
+  }
 
   &.edit-mode{
     align-items: center;
@@ -28,8 +32,20 @@
 
   .menu{
     position: absolute;
-    right: -14px;
+    right: -7px;
     top: 6px;
+    display: none;
+
+    @media only screen and (max-device-width: 736px) {
+      display: block;
+    }
+  }
+
+  &:hover{
+    background: rgba(0,0,0,0.05);
+    .menu{
+      display: block;
+    }
   }
 
   .icon-ctn{

@@ -1,20 +1,51 @@
 @import '../../../../assets/variables';
 
+.days-list{
+
+  @media only screen and (min-width: 736px) {
+    height: 500px;
+    overflow-y: auto;
+  }
+}
+
 .day-ctn{
   position: relative;
+}
+
+.itinerary-header{
+  padding-top: 8px;
+  display: flex;
+  align-items: baseline;
+  background: #fff;
+
+  @media only screen and (max-device-width: 736px) {
+    position: sticky;
+    top: 50px;
+    z-index: 9;
+  }
+}
+
+.itinerary-buttons{
+  display: flex;
+  align-items: center;
+  flex: auto;
+  justify-content: flex-end;
 }
 
 .day-count {
   position: sticky;
   background: #fff;
-  margin: 34px 0;
+  margin: 34px 0 24px 0;
+  top:0;
+  z-index: 8;
+  padding: 8px 0;
 
   .horizontal-divisor{
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
     position: absolute;
     left: 0;
     width: 100%;
-    top: 12px;
+    top: 19px;
   }
 
   h4 {
@@ -44,7 +75,11 @@
 
 .event-list {
 
-  margin-top: 34px;
+  li:first-child{
+    .day-count{
+      margin-top: 0px;
+    }
+  }
 
   /deep/ .common-list {
     margin-top: 0;
@@ -65,7 +100,7 @@
 .add-event-ctn{
   display: flex;
   position: relative;
-  z-index: 9;
+  z-index: 8;
   align-items: center;
   cursor: pointer;
 }
@@ -88,8 +123,6 @@
 }
 
 .new-day, .new-event {
-  width: 100%;
-  margin-top: 24px;
 }
 
 .vertical-line{

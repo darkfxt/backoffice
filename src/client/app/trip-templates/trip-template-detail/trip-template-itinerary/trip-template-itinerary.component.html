@@ -17,8 +17,16 @@
   </ul>
 
 </div>-->
-
-<div class="days-list">
+<div class="itinerary-header">
+  <h3>Itinerary</h3>
+  <div class="itinerary-buttons">
+    <button mat-button (click)="addDay()" color="accent" class="new-day">+ Add day</button>
+    <button mat-icon-button (click)="toggleHeader()">
+      <mat-icon aria-label="Collapse">{{headerCollapsed? 'expand_more' : 'expand_less'}}</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="days-list" #dayList [hidden]="headerCollapsed">
   <div class="event-overlay" *ngIf="showOverlay" (click)="hideEmptySlot()"></div>
   <ul class="event-list">
     <li *ngFor="let day of itineraryEvents; let idx = index;" class="day-ctn">
@@ -49,5 +57,4 @@
 
 </div>
 
-<button mat-stroked-button (click)="addDay()" color="accent" class="new-day">+ ADD NEW DAY</button>
 

@@ -3,6 +3,8 @@
 header{
   min-height: 54px;
   background: $primary-color;
+  position: relative;
+  z-index: 97;
 }
 
 .menu{
