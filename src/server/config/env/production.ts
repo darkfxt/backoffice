@@ -1,24 +1,19 @@
 export const config = {
-  env: 'production',
-  logger: {
-    console: true,
-    remote: {
-      host: 'logstash01dv.almundo.it',
-      port: 5515,
-    },
+  env: 'development',
+  aws: {
+    s3: {
+      'accessKeyId': 'AKIAIWKWSV2WVMSW4STA',
+      'secretAccessKey': '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',
+      'region': 'us-east-1',
+      'apiVersion': '2006-03-01'
+    }
   },
-  apiBasePath: 'https://apist.almundo.com/api/',
-  absBasePath: 'http://absdv.almundo.it:8080/abs/',
-  db: {
-    'type': 'mssql',
-    'host': '184.168.194.77',
-    'port': 1433,
-    'username': 'Taylor',
-    'password': 'TaylorAB2015',
-    'database': 'TaylorGPS_prueba',
-    'synchronize': false,
-    'entities': [
-      'build/server/api/**/*.entity.js'
-    ]
+  googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
+  geo: {
+    url: 'http://gl-apibe-production:6002/geo'
+  },
+  routes: {
+    url: 'http://gl-routes-production:6001/routes'
   }
+
 };
