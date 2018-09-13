@@ -3,8 +3,9 @@
     <img class="point-thumbnail" src="{{imageUrl}}" />
   </div>
   <div class="info-container">
-    <h3 class="summarized-card-title">{{title}} <a class="link"> - created by</a></h3>
-    <p class="summarized-card-subtitle">{{subtitle}}</p>
+    <h3 class="summarized-card-title">{{title}} <a class="link" hidden> - created by</a></h3>
+    <p class="summarized-card-caption">{{subtitle}}</p>
+    <p class="summarized-card-description">{{description | slice:0:150}}...</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

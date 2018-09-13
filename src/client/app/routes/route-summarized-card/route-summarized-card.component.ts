@@ -25,10 +25,24 @@ export class RouteSummarizedCardComponent implements OnInit {
   ngOnInit() {
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
       ? this.data.images[0].url
-      : 'https://www.theraband.com/media/catalog/product/cache/18/image/9df78eab33525d08d6e5fb8d27136e95/placeholder/default/ImageNotFound_3.png';
+      : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
-    this.subtitle = this.data.route_type;
     this.description = this.data.description;
+    const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
+    this.subtitle = `${this.data.route_type} ${distanceAndTime.distance} km. Estimated time ${distanceAndTime.duration} hours`;
+  }
+
+  calculateDistanceAndTime(legs: any[]): any{
+    let distance = 0;
+    let duration = 0;
+    legs.forEach((element) => {
+      distance += element.distance.value;
+      duration += element.duration.value;
+    });
+
+    return {
+      distance: distance / 1000, duration: (duration / (60 * 60 )).toFixed(2)
+    };
   }
 
   editSegment() {

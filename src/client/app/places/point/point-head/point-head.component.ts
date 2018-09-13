@@ -17,10 +17,10 @@ export class PointHeadComponent implements OnInit, OnDestroy {
 
   _subscription: Subscription;
   pointTypes = [
-    {value: 'POI', viewValue: 'Point of interest'},
+    {value: 'POI', viewValue: 'Highlight'},
     {value: 'HOTEL', viewValue: 'Hotel'},
     {value: 'ACTIVITY', viewValue: 'Activity'},
-    {value: 'REFERENCE', viewValue: 'Guide mark'}
+    {value: 'REFERENCE', viewValue: 'Destination'}
   ];
 
   @Output()
