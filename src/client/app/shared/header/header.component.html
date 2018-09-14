@@ -7,9 +7,10 @@
     <div class="nav-overlay" [class.open]="open" (click)="open=false"></div>
     <nav class="main-nav" [class.open]="open">
       <ul>
-        <li [class.current]="currentRoute == 'trip-templates'" routerLink="/trip-templates" (click)="navigate('trip-templates')">TRIPS</li>
-        <li [class.current]="currentRoute == 'routes'" routerLink="/routes" (click)="navigate('routes')">ROUTES</li>
-        <li [class.current]="currentRoute == 'places'" routerLink="/places" (click)="navigate('places')">PLACES</li>
+        <li [class.current]="currentRoute == 'trips'" routerLink="/trip-templates" (click)="navigate('trips')">{{'VIAJES' | translate}}</li>
+        <li [class.current]="currentRoute == 'trip-templates'" routerLink="/trip-templates" (click)="navigate('trip-templates')">{{'TEMPLATES' | translate}}</li>
+        <li [class.current]="currentRoute == 'routes'" routerLink="/routes" (click)="navigate('routes')">{{'RUTAS' | translate}}</li>
+        <li [class.current]="currentRoute == 'places'" routerLink="/places" (click)="navigate('places')">{{'LUGARES' | translate}}</li>
       </ul>
     </nav>
     <nav class="user-nav">

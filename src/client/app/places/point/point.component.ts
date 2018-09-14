@@ -1,17 +1,17 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlaceService } from '../../shared/services/place.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
 import { Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
-import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
-import {ClearPoint, SavePoint, ToggleDialogPoint} from '../../store/place/place.actions';
-import {DialogActions} from '../../store/dialog-actions.enum';
+import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
+import { DialogActions } from '../../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-point',

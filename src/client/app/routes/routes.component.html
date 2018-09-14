@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
-                   [title]="paginationOptions.length + ' rutas encontradas'"
+                   [title]="'{value} rutas encontradas' | translate: {value: paginationOptions.length}"
                    [isDialog]="isDialog"
                    class="detail-header-content"
                    (backButtonClicked)="goBack()"

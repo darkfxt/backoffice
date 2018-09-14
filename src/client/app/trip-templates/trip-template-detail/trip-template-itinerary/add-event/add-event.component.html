@@ -1,21 +1,4 @@
-<!--div class="event-cluster" [class.in]="state === 'in'" >
-  <div class="icon-ctn" (click)="showOptions()">
-    <div class="add-icon" [@addEventState]="'add-'+state" [matTooltip]="tooltipMessage[state]" matTooltipPosition="right">+</div>
-  </div>
-  <div class="product-event">
-    <div [@addEventState]="state" class="option-ctn">
-      <ul>
-        <li (click)="openDialog(producType.value)" *ngFor="let producType of productTypes">
-          <div class="product-icon">
-            <mat-icon fontSet="tg">{{producType.icon}}</mat-icon>
-          </div>
-          <p>{{producType.viewValue}}</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div-->
 
 <div class="empty-slot" (click)="showOptions()" [hidden]="!editMode">
-  <p>Add event here</p>
+  <p>{{'Agregar evento aquí' | translate}}</p>
 </div>

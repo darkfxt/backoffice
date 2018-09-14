@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
-                   [title]="paginationOptions.length + ' puntos encontrados'"
+                   [title]="'puntos encontrados' | translate: {value: paginationOptions.length}"
                    [isDialog]="isDialog"
                    class="detail-header-content"
                    (backButtonClicked)="goBack()"

@@ -18,11 +18,10 @@ import { TripTemplateItineraryComponent } from './trip-template-detail/trip-temp
 import { RoutesModule } from '../routes/routes.module';
 import { SharedModule } from '../shared/shared.module';
 import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
-import {AddEventComponent, BottomSheetEventComponent} from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
+import { AddEventComponent, BottomSheetEventComponent } from './trip-template-detail/trip-template-itinerary/add-event/add-event.component';
 import { PlacesModule } from '../places/places.module';
 import { TripTemplateMapComponent } from './trip-template-detail/trip-template-map/trip-template-map.component';
 import { RouteComponent } from '../routes/route/route.component';
-import { PlacesComponent } from '../places/places.component';
 import { PointComponent } from '../places/point/point.component';
 import { TripTemplateDetailHeaderComponent } from './trip-template-detail/trip-template-detail-header/trip-template-detail-header.component';
 import { CustomEventComponent } from './trip-template-detail/trip-template-itinerary/custom-event/custom-event.component';

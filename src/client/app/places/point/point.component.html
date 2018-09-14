@@ -1,7 +1,7 @@
 
 <form [formGroup]="placeForm" #formDir="ngForm" novalidate>
   <app-detail-header [isDialog]="amIDialog"
-                     [title]="'Actualizar Punto'"
+                     [title]="'Actualizar lugar' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
     <div class="button-container save-button">
@@ -20,7 +20,7 @@
 
       <div class="row gallery-container">
         <div class="col-xs-12">
-          <h3>Gallery</h3>
+          <h3>{{'Galería' | translate}}</h3>
           <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
         </div>
       </div>

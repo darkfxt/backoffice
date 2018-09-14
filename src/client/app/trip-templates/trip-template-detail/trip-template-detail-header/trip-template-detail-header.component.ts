@@ -10,20 +10,10 @@ import Route from '../../../../../server/api/entity/Route';
 export class TripTemplateDetailHeaderComponent implements OnInit {
 
   @Input() form: FormGroup;
-  @Output() settingDescription: EventEmitter<String> = new EventEmitter<String>();
-  @Output() settingName: EventEmitter<String> = new EventEmitter<String>();
 
   constructor() { }
 
   ngOnInit() {
-  }
-
-  setDescription(event) {
-    this.settingDescription.emit(event.value);
-  }
-
-  setName(event) {
-    this.settingName.emit(event.value);
   }
 
 }

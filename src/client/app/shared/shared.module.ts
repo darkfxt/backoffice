@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import {DetailHeaderComponent} from './detail-header/detail-header.component';
-import {MatButtonModule, MatIconModule} from '@angular/material';
-import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
+import { DetailHeaderComponent } from './detail-header/detail-header.component';
+import { MatButtonModule, MatIconModule } from '@angular/material';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [

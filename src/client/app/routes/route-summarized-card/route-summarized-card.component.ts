@@ -15,7 +15,7 @@ export class RouteSummarizedCardComponent implements OnInit {
   @Input() selectionMode = false;
   imageUrl: string;
   title: string;
-  subtitle: string;
+  subtitleData: any;
   description: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
@@ -29,7 +29,11 @@ export class RouteSummarizedCardComponent implements OnInit {
     this.title = this.data.name;
     this.description = this.data.description;
     const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
-    this.subtitle = `${this.data.route_type} ${distanceAndTime.distance} km. Estimated time ${distanceAndTime.duration} hours`;
+    this.subtitleData = {
+      routeType: this.data.route_type,
+      distance: distanceAndTime.distance,
+      duration: distanceAndTime.duration
+    };
   }
 
   calculateDistanceAndTime(legs: any[]): any{

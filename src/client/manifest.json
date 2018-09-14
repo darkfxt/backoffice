@@ -1,7 +1,7 @@
 {
   "name": "tg-backoffice",
   "short_name": "tg-backoffice",
-  "theme_color": "#1976d2",
+  "theme_color": "#e54e50",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",

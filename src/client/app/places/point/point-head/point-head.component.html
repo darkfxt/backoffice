@@ -1,27 +1,27 @@
 <div class="location-desc" [formGroup]="placeForm">
-  <h3>Description and coordinates</h3>
+  <h3>{{'Descripción y coordenadas' | translate}}</h3>
 
   <mat-form-field color="accent" >
-    <input #location type="text" matInput placeholder="Name" required [matAutocomplete]="autoGroup" (keyup)="search($event)" name="name" formControlName="name"/>
+    <input #location type="text" matInput placeholder="{{'Nombre del lugar' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)" name="name" formControlName="name"/>
     <mat-icon matSuffix>search</mat-icon>
     <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
       <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
     </mat-autocomplete>
-    <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">Error</mat-error>
+    <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
   <mat-form-field color="accent">
-    <mat-select placeholder="Point Type" name="type" required formControlName="type">
+    <mat-select placeholder="{{'Tipo de punto' | translate}}" name="type" required formControlName="type">
       <mat-option [value]="pointType.value" *ngFor="let pointType of pointTypes">
         {{pointType.viewValue}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="placeForm.get('type').invalid && (placeForm.get('type').dirty || placeForm.get('type').touched)">Error</mat-error>
+    <mat-error *ngIf="placeForm.get('type').invalid && (placeForm.get('type').dirty || placeForm.get('type').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
   <mat-form-field color="accent">
-    <textarea matInput placeholder="Description" required name="description" formControlName="description"></textarea>
-    <mat-error *ngIf="placeForm.get('description').invalid && (placeForm.get('description').dirty || placeForm.get('description').touched)">Error</mat-error>
+    <textarea matInput placeholder="{{'Descripción' | translate}}" required name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="placeForm.get('description').invalid && (placeForm.get('description').dirty || placeForm.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
   <mat-checkbox formControlName="is_terminal" color="primary" hidden>Is terminal? </mat-checkbox>

@@ -3,9 +3,8 @@
   <div *ngIf="mode == 'DRAG_DROP'" class="dd-container" (drop)="onDrag($event)" (dragenter)="onDrag($event)" (dragleave)="onDrag($event)"  (dragover)="onDrag($event)">
     <mat-icon class="upload-icon" color="primary">cloud_upload</mat-icon>
     <div class="instruction-content">
-      <p>Drag and Drop files here</p>
-      <p>or</p>
-      <button type="button" mat-raised-button color="accent" (click)="fileInput.click()" >Browse file</button>
+      <p>{{'Arrastrar las imágenes aquí ó' | translate}}</p>
+      <button type="button" mat-raised-button color="accent" (click)="fileInput.click()" >{{'Buscar archivo' | translate}}</button>
     </div>
   </div>
   <div *ngIf="mode == 'BOX'" class="add-more" (click)="fileInput.click()">

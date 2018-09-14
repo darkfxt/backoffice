@@ -44,7 +44,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       itinerary: this.fb.array([
         this.fb.control('')
       ]),
-      name: this.fb.control(''),
+      name: ['', Validators.required],
       description: this.fb.control('')
     });
     // this.tripTemplate$ = store.select(tripTemplateSelector);
@@ -56,7 +56,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       if (data) {
         this.tripTemplate = data.selectedTripTemplate;
         this.form = this.fb.group({
-          name: this.fb.control(data.tripTemplate.name),
+          name: [data.tripTemplate.name, Validators.required],
           description: this.fb.control(data.tripTemplate.description)
         });
         this.store.dispatch(new TripTemplateSelected(data.tripTemplate));
@@ -71,13 +71,6 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
 
     this.store.select(tripTemplateSelector).subscribe( (data: any) => {
-      // if (data.selectedTripTemplate) {
-      //   this.tripTemplate = data.selectedTripTemplate;
-      //   this.form = this.fb.group({
-      //     name: this.fb.control(data.selectedTripTemplate.name),
-      //     description: this.fb.control(data.selectedTripTemplate.description)
-      //   });
-      // }
       if (data.selectedTripTemplate && data.selectedTripTemplate._id &&
         data.selectedTripTemplate._id !== 'new' && this._selectedRouteTemplateId === 'new') {
         this.router.navigate([`/trip-templates/${data.selectedTripTemplate._id}`]);
@@ -86,7 +79,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
         this.events = data.selectedTripTemplateEvents;
         this.form = this.fb.group({
           itinerary: this.fb.array(data.selectedTripTemplateEvents),
-          name: this.fb.control(this.form.value.name),
+          name: [this.form.value.name, Validators.required],
           description: this.fb.control(this.form.value.description)
         });
       }
@@ -119,6 +112,11 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
+    } else{
+      Object.keys(this.form.controls).forEach(field => {
+        const control = this.form.get(field);
+        control.markAsTouched({onlySelf: true});
+      });
     }
   }
 
@@ -129,16 +127,5 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({name: this.tripTemplate.name, description: this.tripTemplate.description});
   }
 
-  setName(name) {
-    // console.log('este es el fucking nombre', name);
-    // this.tripTemplate.name = name;
-    // this.store.dispatch(new SetNameForTemplate(name));
-  }
-
-  setDescription(description) {
-    // // console.log('esta es la fucking descripcion', description);
-    // // this.tripTemplate.description = description;
-    // this.store.dispatch(new SetDescriptionForTemplate(description));
-  }
 
 }

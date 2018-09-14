@@ -1,26 +1,24 @@
-import {Component, EventEmitter, Input, OnInit, Output, Type} from '@angular/core';
-import {PlaceService} from '../shared/services/place.service';
-import {AppState, loadingSelector, metadataSelector, pointSelector} from '../store';
-import {Store} from '@ngrx/store';
-import {Point} from '../shared/models/Place';
-import {Observable} from 'rxjs';
-import {GetPoints, ToggleDialogPoint} from '../store/place/place.actions';
+import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
+import { PlaceService } from '../shared/services/place.service';
+import { AppState, loadingSelector, metadataSelector, pointSelector } from '../store';
+import { Store } from '@ngrx/store';
+import { Point } from '../shared/models/Place';
+import { Observable } from 'rxjs';
+import { GetPoints } from '../store/place/place.actions';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PageEvent} from '@angular/material';
-import {PaginationOptionsInterface} from '../shared/common-list/common-list-item/pagination-options.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PaginationOptionsInterface } from '../shared/common-list/common-list-item/pagination-options.interface';
 import Route from '../../../server/api/entity/Route';
-import {DialogActions} from '../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-places',
   templateUrl: './places.component.html',
   styleUrls: ['./places.component.scss']
 })
-export class PlacesComponent implements OnInit{
-  @Input() selectMode? = false;
-  @Input() isDialog? = false;
+export class PlacesComponent implements OnInit {
+  @Input() selectMode ? = false;
+  @Input() isDialog ? = false;
   @Input() dialogRef: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
@@ -33,7 +31,7 @@ export class PlacesComponent implements OnInit{
   constructor(private placesServiceInstance: PlaceService,
               private route: ActivatedRoute,
               private router: Router,
-              private store: Store<AppState>){
+              private store: Store<AppState>) {
     store.select(loadingSelector).subscribe((isLoading) => {
       this.loading = isLoading;
     });
@@ -62,13 +60,13 @@ export class PlacesComponent implements OnInit{
   }
 
   onFilterChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions,{search: event});
+    this.paginationOptions = Object.assign({}, this.paginationOptions, {search: event});
     this.store.dispatch(new   GetPoints(this.paginationOptions));
   }
 
-  onButtonClick(){
-    if (this.isDialog){
-      if(this.dialogRef){
+  onButtonClick() {
+    if (this.isDialog) {
+      if (this.dialogRef) {
         this.dialogRef.close('OPEN_NEW_PLACES');
       }
       return;

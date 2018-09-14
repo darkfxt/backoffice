@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {PlaceService} from '../../../shared/services/place.service';
-import {Observable, Subscription} from 'rxjs';
-import {PlaceStore} from '../../../shared/services/place-store.services';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { PlaceService } from '../../../shared/services/place.service';
+import { Observable, Subscription } from 'rxjs';
+import { PlaceStore } from '../../../shared/services/place-store.services';
+import {TRANSLATE} from '../../../translate-marker';
 
 
 @Component({
@@ -17,11 +18,11 @@ export class PointHeadComponent implements OnInit, OnDestroy {
 
   _subscription: Subscription;
   pointTypes = [
-    {value: 'POI', viewValue: 'Highlight'},
-    {value: 'HOTEL', viewValue: 'Hotel'},
-    {value: 'ACTIVITY', viewValue: 'Activity'},
-    {value: 'TERMINAL', viewValue: 'Terminal'},
-    {value: 'REFERENCE', viewValue: 'Destination'}
+    {value: 'POI', viewValue: TRANSLATE('POI')},
+    {value: 'HOTEL', viewValue: TRANSLATE('HOTEL')},
+    {value: 'ACTIVITY', viewValue: TRANSLATE('ACTIVITY')},
+    {value: 'TERMINAL', viewValue: TRANSLATE('TERMINAL')},
+    {value: 'REFERENCE', viewValue: TRANSLATE('REFERENCE')}
   ];
 
   @Output()
@@ -36,8 +37,8 @@ export class PointHeadComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  ngOnDestroy(){
-    if(this._subscription)
+  ngOnDestroy() {
+    if (this._subscription)
       this._subscription.unsubscribe();
   }
 
@@ -53,7 +54,7 @@ export class PointHeadComponent implements OnInit, OnDestroy {
   }
 
   search(event) {
-    if (this.placeForm.value.name.length < 3 || this.placeForm.value.name === this.lastSearch){
+    if (this.placeForm.value.name.length < 3 || this.placeForm.value.name === this.lastSearch) {
       return false;
     }
 

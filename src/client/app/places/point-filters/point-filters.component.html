@@ -1,7 +1,7 @@
 <div class="point-filter-container" >
     <mat-form-field color="accent">
       <input #location
-             type="text" matInput placeholder="Search" required
+             type="text" matInput placeholder="{{'Buscar' | translate}}" required
              name="name" (keyup)="onSearch(location.value)"
              [matAutocomplete]="autoGroup"
              (keyup.enter)="onEnter(location.value)" [(ngModel)]="searchString"/>

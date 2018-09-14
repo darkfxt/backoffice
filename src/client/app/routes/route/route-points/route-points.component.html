@@ -14,7 +14,7 @@
 
   <div class="inputs-content">
     <mat-form-field color="accent" floatLabel="never">
-      <input type="text" matInput placeholder="Elije un origen"
+      <input type="text" matInput placeholder="{{'Elije un origen' | translate}}"
              required [matAutocomplete]="autoGroupO" name="origin"
              formControlName="origin" (keyup)="search($event)"
       />
@@ -26,7 +26,7 @@
     <div formArrayName="middle_points">
       <div *ngFor="let point of middlePoints.controls; let i=index" class="middle-point" [formGroupName]="i">
         <mat-form-field color="accent" floatLabel="never">
-          <input type="text" matInput placeholder="Elije un punto"
+          <input type="text" matInput placeholder="{{'Elije un punto' | translate}}"
                  [matAutocomplete]="autoGroup" name="name" formControlName="name"
                  [id]="'input-'+i" (keyup)="search($event)"
           />
@@ -39,11 +39,11 @@
     </div>
 
     <div (click)="addPoint()" class="add-point" *ngIf="routeGroup.value.origin.name && routeGroup.value.destination.name">
-      <span>Añade un lugar o haz click en el mapa</span>
+      <span>{{'Añade un lugar o haz click en el mapa' | translate}}</span>
     </div>
 
     <mat-form-field color="accent" floatLabel="never">
-      <input type="text" matInput placeholder="Elije un destino" required
+      <input type="text" matInput placeholder="{{'Elije un destino' | translate}}" required
              [matAutocomplete]="autoGroupD" name="destination"
              formControlName="destination" (keyup)="search($event)"
       />

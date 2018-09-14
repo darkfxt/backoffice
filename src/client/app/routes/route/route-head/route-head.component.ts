@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { TRANSLATE } from '../../../translate-marker';
 
 @Component({
   selector: 'app-route-head',
@@ -13,25 +14,25 @@ export class RouteHeadComponent implements OnInit {
 
   routeTypes = [
     {
-      value: 'DRIVING',
+      value: TRANSLATE('DRIVING'),
       viewValue: 'Driving'
     },
     {
-      value: 'WALKING',
+      value: TRANSLATE('WALKING'),
       viewValue: 'Walking'
     }
   ];
   roadSurfaces = [
     {
-      value: 'PAVED',
+      value: TRANSLATE('PAVED'),
       viewValue: 'Paved'
     },
     {
-      value: 'GRAVEL',
+      value: TRANSLATE('GRAVEL'),
       viewValue: 'Gravel'
     },
     {
-      value: 'MIXED',
+      value: TRANSLATE('MIXED'),
       viewValue: 'Mixed'
     }
   ];

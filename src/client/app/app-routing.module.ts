@@ -1,11 +1,10 @@
-import { NgModule }             from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageNotFoundComponent }    from './not-found.component';
+import { PageNotFoundComponent } from './not-found.component';
 
-import { CanDeactivateGuard }       from './shared/services/can-deactivate-guard.service';
+import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
-import {RouteDetailComponent} from './routes/route-detail/route-detail.component';
 
 const appRoutes: Routes = [
   {

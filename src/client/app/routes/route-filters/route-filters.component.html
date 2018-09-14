@@ -1,7 +1,7 @@
 <div class="route-filter-container" >
   <mat-form-field color="accent">
     <input #route
-           type="text" matInput placeholder="Search" required
+           type="text" matInput placeholder="{{'Buscar' | translate}}" required
            name="name" (keyup)="onSearch(route.value)"
            [matAutocomplete]="autoGroup"
            (keyup.enter)="onEnter(route.value)" [(ngModel)]="searchString"/>

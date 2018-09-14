@@ -1,26 +1,7 @@
-<!--<div class="day-ctn">
-  <div class="day-count">
-    <h4>DAY 1 - Salta, Cafayate, Cachi</h4>
-    <p>2 Routes, Hotel (1)night</p>
-  </div>
-
-  <ul class="event-list">
-    <app-common-list
-      [list]="selectedTemplateEvents$"
-      [component]="drawingComponent"
-      [storeToWatch]="'selectedTripTemplateEvents'"
-      [hideFilter]="true"
-      [hidePagination]="true"
-      (pageChanged)="onPageChanged($event)">
-    </app-common-list>
-    <app-add-event [ordinal]="selectedTemplateEvents$.subscribe().length"></app-add-event>
-  </ul>
-
-</div>-->
 <div class="itinerary-header">
-  <h3>Itinerary</h3>
+  <h3>{{'Itinerario'}}</h3>
   <div class="itinerary-buttons">
-    <button mat-button (click)="addDay()" color="accent" class="new-day">+ Add day</button>
+    <button mat-button (click)="addDay()" color="accent" class="new-day">{{'+ Añadir día'}}</button>
     <button mat-icon-button (click)="toggleHeader()">
       <mat-icon aria-label="Collapse">{{headerCollapsed? 'expand_more' : 'expand_less'}}</mat-icon>
     </button>
@@ -33,7 +14,7 @@
       <div class="vertical-line"></div>
       <div class="day-count">
         <div class="horizontal-divisor"></div>
-        <h4>Day {{day.day}}</h4>
+        <h4>{{'Day' | translate: {day: day.day} }}</h4>
       </div>
       <ul>
 
@@ -47,7 +28,7 @@
           <div class="icon-ctn" >
             <div class="add-icon">+</div>
           </div>
-          <div class="add-label">Añadir nuevo evento</div>
+          <div class="add-label">{{'Añadir nuevo evento' | translate}}</div>
         </li>
 
       </ul>

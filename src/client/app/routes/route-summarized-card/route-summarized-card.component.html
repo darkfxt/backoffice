@@ -4,7 +4,7 @@
   </div>
   <div class="info-container">
     <h3 class="summarized-card-title">{{title}} <a class="link" hidden> - created by</a></h3>
-    <span class="summarized-card-caption">{{subtitle}}</span>
+    <span class="summarized-card-caption">{{'{routeType} {distance} km. Tiempo estimado {hours} hours' | translate: subtitleData}}</span>
     <p class="summarized-card-subtitle">{{description | slice:0:150}}...</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>

@@ -9,11 +9,8 @@
       <div class="close">
         <mat-icon [matMenuTriggerFor]="menu" color="accent">more_vert</mat-icon>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <span>Set as default</span>
-          </button>
           <button mat-menu-item (click)="deleteUploadedItem(i)">
-            <span>Delete</span>
+            <span>{{'Eliminar' | translate}}</span>
           </button>
         </mat-menu>
       </div>
@@ -27,7 +24,7 @@
             <span>Set as default</span>
           </button>
           <button mat-menu-item (click)="deleteStoredItem(i)">
-            <span>Delete</span>
+            <span>{{'Eliminar' | translate}}</span>
           </button>
         </mat-menu>
       </div>

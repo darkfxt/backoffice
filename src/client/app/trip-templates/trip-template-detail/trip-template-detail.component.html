@@ -1,5 +1,5 @@
 <form [formGroup]="form" #formDir="ngForm" novalidate>
-  <app-detail-header title="New trip template"
+  <app-detail-header title="{{'Nuevo template'}}"
                      (backButtonClicked)="goBack()">
     <div class="button-container save-button">
       <button (click)="saveTripTemplate()">
@@ -9,7 +9,7 @@
   </app-detail-header>
   <div class="app-container full-size body-content">
     <div class="box-container">
-      <app-trip-template-detail-header [form]="form" (settingName)="setName($event)" (settingDescription)="setDescription($event)"></app-trip-template-detail-header>
+      <app-trip-template-detail-header [form]="form"></app-trip-template-detail-header>
     </div>
     <div class="box-container">
       <div class="row ">

@@ -1,7 +1,7 @@
 <form [formGroup]="form" #formDir="ngForm" novalidate class="custom-event">
   <app-detail-header isDialog="true"
                      class="detail-header-content"
-                     title="New custom event"
+                     title="{{'Nuevo evento personalizado' | translate}}"
                      (backButtonClicked)="closeDialog()">
     <div class="button-container save-button">
       <button (click)="onButtonClick()">
@@ -14,10 +14,10 @@
     <div class="box-container">
       <div class="row ">
         <mat-form-field color="accent" class="col-xs-12">
-          <input type="text" #name matInput placeholder="Name" name="name" formControlName="name"  />
+          <input type="text" #name matInput placeholder="{{'Titulo' | translate}}" name="name" formControlName="name"  />
         </mat-form-field>
         <mat-form-field color="accent" class="col-xs-12">
-          <textarea matInput #description placeholder="Description" name="description" formControlName="description"></textarea>
+          <textarea matInput #description placeholder="{{'Descripción' | translate}}" name="description" formControlName="description"></textarea>
         </mat-form-field>
       </div>
       <div class="row ">
