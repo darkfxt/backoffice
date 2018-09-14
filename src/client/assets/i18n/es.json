@@ -51,7 +51,7 @@
 	"Via (opcional)": "Via (opcional)",
 	"WALKING": "Para caminar",
 	"puntos encontrados": "{{value}} lugares encontrados",
-	"{routeType} {distance} km. Tiempo estimado {hours} hours": "{{routeType}} {{distance}} km. Tiempo estimado {{hours}} hours",
+	"{routeType} {distance} km. Tiempo estimado {hours} hours": "{{routeType}} {{distance}} km. Tiempo estimado {{duration}} hours",
 	"{trip length} trips encontrados": "{{value}} templates encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas"
 }
