@@ -1,7 +1,7 @@
 version: '3'
 services:
-  bo-proxy-dev:
-    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/nginx:dv_${TAG}
+  bo-proxy-prod:
+    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/nginx:pr_${TAG}
     environment:
       - NGINX_BACKEND_PORT=5000
       - STATIC_DIR=/opt/app/dist/client
@@ -10,12 +10,12 @@ services:
     depends_on:
       - bo-api-node
   bo-api-node:
-    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/node:dv_${TAG}
+    image: 564094729738.dkr.ecr.us-east-1.amazonaws.com/tg-bo/node:pr_${TAG}
     environment:
-      - "NODE_ENV=development"
+      - "NODE_ENV=production"
     ports:
       - "5000:5000"
 networks:
   default:
     external:
-      name: tg-oln-mongodb
+      name: tg-internal-overlay
