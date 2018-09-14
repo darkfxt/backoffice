@@ -21,7 +21,6 @@ export class PlaceService {
 
   public static async create(body): Promise<any> {
     const ret = await axios.post(`${config.geo.url}/places`, body);
-    console.log(ret);
     return ret;
   }
 

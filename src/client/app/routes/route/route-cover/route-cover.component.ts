@@ -21,7 +21,6 @@ export class RouteCoverComponent implements OnInit {
 
   // Images control
   async onFilesLoaded(file) {
-    console.log(file);
     const image = await this.preview(file[0]);
     this.previewImage = image;
     this.form.patchValue({file: file[0]});

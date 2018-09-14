@@ -24,6 +24,6 @@
     <mat-error *ngIf="placeForm.get('description').invalid && (placeForm.get('description').dirty || placeForm.get('description').touched)">Error</mat-error>
   </mat-form-field>
 
-  <mat-checkbox formControlName="is_terminal" color="primary">Is terminal? </mat-checkbox>
+  <mat-checkbox formControlName="is_terminal" color="primary" hidden>Is terminal? </mat-checkbox>
 
 </div>

@@ -43,6 +43,11 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnInit() {
     let isUpdate = false;
     this._subscription = this.store.select(pointSelector).subscribe((storePoint: any) => {
+
+      if (storePoint && storePoint.pointSelected && storePoint.pointSelected._id
+        && storePoint.pointSelected._id !== 'new' && !this.place._id)
+        this.router.navigate([`/places/${storePoint.pointSelected._id}`]);
+
       if (storePoint && storePoint.dialog) {
         this.amIDialog = true;
         if (storePoint.pointSelected)

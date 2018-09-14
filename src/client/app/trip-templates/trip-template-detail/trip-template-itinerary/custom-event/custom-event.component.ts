@@ -44,7 +44,6 @@ export class CustomEventComponent implements OnInit {
   convertToEvent(event_type: string, order: number): Event {
     const converted: Event = new Event();
     const data = this.form.value;
-    console.log('blabalbalbala', data);
     converted.name = data.name;
     converted.description = data.description;
     converted.geo = [];

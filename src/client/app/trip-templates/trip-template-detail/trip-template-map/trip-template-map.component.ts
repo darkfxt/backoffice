@@ -105,9 +105,6 @@ export class TripTemplateMapComponent implements OnInit {
       map: this.map,
       suppressMarkers: true
     }));
-    // directionsRender.setMap(this.map);
-    // directionsRender.setDirections(directions);
-    // console.log('jotaaaaaaa', directionsRender.getRouteIndex());
 
   }
 

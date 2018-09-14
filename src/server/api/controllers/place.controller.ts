@@ -70,8 +70,8 @@ export class PlaceController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const oPlace = new Place(data);
       let place;
-      if(data._id)
-        place = await PlaceService.update(data._id, oPlace);
+      if(request.params.place_id)
+        place = await PlaceService.update(request.params.place_id, oPlace);
       else{
         delete oPlace._id;
         place = await PlaceService.create(oPlace);

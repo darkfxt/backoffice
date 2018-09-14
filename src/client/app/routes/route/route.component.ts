@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesService } from '../../shared/services/routes.service';
 import { FormGuard, IFormGuard } from '../../shared/form-guard/form-guard';
-import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import Segment from '../../shared/models/Segment';
 import { PlaceStore } from '../../shared/services/place-store.services';
@@ -13,10 +13,10 @@ import { EventDialogComponent } from '../../trip-templates/trip-template-detail/
 import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { AppState, segmentSelector } from '../../store';
-import {ClearSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
-import {SegmentState} from '../../store/route/route.reducer';
-import {ToggleDialogPoint} from '../../store/place/place.actions';
-import {DialogActions} from '../../store/dialog-actions.enum';
+import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
+import { SegmentState } from '../../store/route/route.reducer';
+import { ToggleDialogPoint } from '../../store/place/place.actions';
+import { DialogActions } from '../../store/dialog-actions.enum';
 
 @Component({
   selector: 'app-route',
@@ -48,6 +48,10 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnInit() {
 
     this._subscription = this.store.select(segmentSelector).subscribe((storeSegment: any) => {
+      if (storeSegment && storeSegment.segmentSelected && storeSegment.segmentSelected._id
+        && storeSegment.segmentSelected._id !== 'new' && this.segment._id === '')
+        this.router.navigate([`/routes/${storeSegment.segmentSelected._id}`]);
+
       if (storeSegment && storeSegment.dialog) {
         this.amIDialog = true;
         if (storeSegment.segmentSelected )

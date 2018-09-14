@@ -27,7 +27,6 @@ export class EventSummarizedCardComponent implements OnInit {
   }
 
   onRemoveEvent(index) {
-    console.log('se va a remover el índice:', index);
     this.store.dispatch(new RemoveEvent(index));
   }
 

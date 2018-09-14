@@ -13,11 +13,8 @@ export class RoutesService {
   }
 
   public static async create(route): Promise<any> {
-    console.log('lalala', `${config.routes.url}/segments`);
     if (route._id) Reflect.deleteProperty(route, '_id');
     const ret = await axios.post(`${config.routes.url}/segments`, route);
-    console.log('jojooooooooo');
-    console.log(ret.data);
     return ret.data;
   }
 

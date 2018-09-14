@@ -20,6 +20,7 @@ export class PointHeadComponent implements OnInit, OnDestroy {
     {value: 'POI', viewValue: 'Highlight'},
     {value: 'HOTEL', viewValue: 'Hotel'},
     {value: 'ACTIVITY', viewValue: 'Activity'},
+    {value: 'TERMINAL', viewValue: 'Terminal'},
     {value: 'REFERENCE', viewValue: 'Destination'}
   ];
 

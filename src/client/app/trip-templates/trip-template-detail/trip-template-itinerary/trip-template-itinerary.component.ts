@@ -151,8 +151,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   convertToEvent(toConvert: any, event_type: string, order: number): Event {
     const converted: Event = new Event();
-    console.log('*************************')
-    console.log(toConvert);
     converted.name = toConvert.name;
     converted.description = toConvert.description;
     converted.reference_id = toConvert._id;
