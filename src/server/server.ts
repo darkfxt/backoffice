@@ -20,7 +20,7 @@ if (env === 'development' || env === 'local') {
   server.use(morgan('dev'));
 }
 
-server.use(compression());
+server.use(compression({ threshold: 0 }));
 server.use(cors());
 
 // Add healthcheck endpoint
