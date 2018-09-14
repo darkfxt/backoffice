@@ -7,7 +7,9 @@
              (keyup.enter)="onEnter(location.value)" [(ngModel)]="searchString"/>
       <mat-icon (click)="onSearch(location.value)" matSuffix>search</mat-icon>
       <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
-        <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+        <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+          <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+        </mat-optgroup>
       </mat-autocomplete>
       </mat-form-field>
   </div>

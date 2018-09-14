@@ -15,7 +15,7 @@ export class RoutePointsComponent implements OnInit {
   routeGroup: FormGroup;
 
   autocompleteTimeout;
-  options: Place[];
+  options: any[];
   lastSearch = '';
 
   constructor(private fb: FormBuilder,
@@ -85,10 +85,18 @@ export class RoutePointsComponent implements OnInit {
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.search(`q=${event.target.value}`).subscribe(resp => {
-        this.options = resp;
+        this.options = this.createGroups(resp);
       });
     }, 300);
 
   }
 
+  private createGroups(list: any[]): any[] {
+    const pointsByType = {};
+    list.forEach((item) => {
+      pointsByType[item.type] = pointsByType[item.type] || [];
+      pointsByType[item.type].push(item);
+    });
+    return Object.keys(pointsByType).map(key => ({type: key, points: pointsByType[key]}));
+  }
 }

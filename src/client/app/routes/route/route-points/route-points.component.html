@@ -18,8 +18,10 @@
              required [matAutocomplete]="autoGroupO" name="origin"
              formControlName="origin" (keyup)="search($event)"
       />
-      <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')">
-        <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
+      <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="points-autocomplete">
+        <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+          <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+        </mat-optgroup>
       </mat-autocomplete>
     </mat-form-field>
 
@@ -32,7 +34,9 @@
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)">
-            <mat-option *ngFor="let option of options " [value]="option">{{option.name}}</mat-option>
+            <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+              <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+            </mat-optgroup>
           </mat-autocomplete>
         </mat-form-field>
       </div>
@@ -48,7 +52,9 @@
              formControlName="destination" (keyup)="search($event)"
       />
       <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')">
-        <mat-option *ngFor="let option of options" [value]="option">{{option.name}}</mat-option>
+        <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+          <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+        </mat-optgroup>
       </mat-autocomplete>
     </mat-form-field>
 
