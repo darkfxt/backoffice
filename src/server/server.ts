@@ -4,7 +4,7 @@ const PORT = 5000;
 
 import * as express from 'express';
 import * as cors from 'cors';
-import * as compression from 'compression';
+// import * as compression from 'compression';
 import api from './api';
 import * as httpStatus from 'http-status';
 import * as morgan from 'morgan';
@@ -20,7 +20,7 @@ if (env === 'development' || env === 'local') {
   server.use(morgan('dev'));
 }
 
-server.use(compression());
+// server.use(compression({ threshold: 0 }));
 server.use(cors());
 
 // Add healthcheck endpoint

@@ -3,9 +3,12 @@
     {
       "name": "tg-backoffice",
       "script": "/opt/app/dist/server/server.js",
-      "instances": "2",
+      "instances": "1",
       "exec_mode": "cluster",
-      "max_memory_restart": "2G"
+      "max_memory_restart": "2G",
+      "env": {
+        "DEBUG": "*"
+      }
     }
   ]
 }
