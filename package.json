@@ -8,7 +8,7 @@
     "dev:client": "ng serve --disable-host-check --open --serve-path / --proxy-config proxy.conf.json --host 0.0.0.0",
     "build": "npm-run-all -p build:*",
     "build:server": "tsc -p ./src/server",
-    "build:client": "ng build --prod --build-optimizer --progress=false --stats-json --output-path=dist/client --aot",
+    "build:client": "ng build --prod --build-optimizer --stats-json --output-path=dist/client --aot",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
