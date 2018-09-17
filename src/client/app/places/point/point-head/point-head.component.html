@@ -13,7 +13,7 @@
   <mat-form-field color="accent">
     <mat-select placeholder="{{'Tipo de punto' | translate}}" name="type" required formControlName="type">
       <mat-option [value]="pointType.value" *ngFor="let pointType of pointTypes">
-        {{pointType.viewValue}}
+        {{pointType.value | translate}}
       </mat-option>
     </mat-select>
     <mat-error *ngIf="placeForm.get('type').invalid && (placeForm.get('type').dirty || placeForm.get('type').touched)">{{'Campo requerido' | translate}}</mat-error>
