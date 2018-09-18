@@ -215,14 +215,14 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleSegmentDialog());
+          this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
         });
        }
       if (result === 'OPEN_NEW_PLACES') {
         this.store.dispatch(new ToggleDialogPoint(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleDialogPoint());
+          this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
         });
       }
        this.state = 'out';
