@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Observable} from 'rxjs';
-import {RoutesService} from '../../shared/services/routes.service';
-import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {SearchOptions} from '../../shared/common-list/common-list-item/search-options';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RoutesService } from '../../shared/services/routes.service';
+import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { SearchOptions } from '../../shared/common-list/common-list-item/search-options';
 
 @Component({
   selector: 'app-route-filters',
@@ -26,7 +26,7 @@ export class RouteFiltersComponent implements OnInit {
   }
 
   onSearch(event) {
-    if (this.searchString.length < 3){
+    if (this.searchString.length < 3) {
       return false;
     }
 

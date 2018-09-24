@@ -1,21 +1,21 @@
 
-export class Leg{
+export class Leg {
   distance: any;
   duration: any;
 }
 
-export class ThingToKnow{
+export class ThingToKnow {
   title: string;
   description: string;
 
 }
 
-export class Point{
+export class Point {
   lat: number;
   lng: number;
 }
 
-export default class Route{
+export default class Route {
 
   constructor(
     public _id: string,
@@ -31,7 +31,7 @@ export default class Route{
     public middle_points: Point[],
     public things_to_know: ThingToKnow[],
     public legs: Leg[]
-  ){
+  ) {
 
   }
 }

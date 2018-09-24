@@ -1,6 +1,6 @@
-  import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {switchMap, map} from 'rxjs/internal/operators';
+  import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { switchMap, map } from 'rxjs/internal/operators';
 
 import {
   GetTripTemplates,
@@ -9,7 +9,7 @@ import {
   EventsRetrieved,
   TripTemplateActions, TripTemplateActionTypes, CreateTripTemplate, SaveTripTemplate, TripTemplateProcessedSuccesfully, TripTemplateSelected
 } from './trip-template.actions';
-import {TripTemplate, TripTemplateWithMetadata, Event} from '../../shared/models/TripTemplate';
+import { TripTemplate, TripTemplateWithMetadata, Event } from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-detail-header',
@@ -32,15 +32,15 @@ export class DetailHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.iconType = this.isDialog? 'close' : 'arrow_back';
+    this.iconType = this.isDialog ? 'close' : 'arrow_back';
   }
 
-  goBack(e){
+  goBack(e) {
     e.preventDefault();
     this.backButtonClicked.emit();
   }
 
-  onSave(e){
+  onSave(e) {
     this.saveButtonClicked.emit();
   }
 

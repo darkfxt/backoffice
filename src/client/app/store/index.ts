@@ -13,18 +13,21 @@ import { pointReducer, PointState } from './place/place.reducer';
 import { environment } from '../../environments/environment';
 import { segmentReducer, SegmentState } from './route/route.reducer';
 import { tripTemplateReducer, TripTemplateState } from './trip-template/trip-template.reducer';
-import {Event} from '../shared/models/TripTemplate';
+import { Event } from '../shared/models/TripTemplate';
+import { userReducer, UserState } from './user/user.reducer';
 
 export interface AppState {
   points: PointState;
   segments: SegmentState;
   tripTemplates: TripTemplateState;
+  users: UserState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   points: pointReducer,
   segments: segmentReducer,
-  tripTemplates: tripTemplateReducer
+  tripTemplates: tripTemplateReducer,
+  users: userReducer
 };
 
 export function logger(reducer: ActionReducer<AppState>) {
@@ -89,6 +92,27 @@ export const eventsFromTemplateSelector = createSelector(
 export const tripTemplateMetadataSelector = createSelector(
   TripTemplateStateSelector,
   (state: TripTemplateState) => state.metadata
+);
+
+
+/**
+ * User Section
+ */
+const UserStateSelector = createFeatureSelector('users');
+
+export const userLoadingSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.loading,
+);
+
+export const userSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.users,
+);
+
+export const userMetadataSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.metadata,
 );
 
 export { PointsRetrieved } from './place/place.actions';

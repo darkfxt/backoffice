@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, Input, OnInit, Renderer2} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import Place from '../../../../../server/api/entity/Place';
-import {PlaceService} from '../../../shared/services/place.service';
-import {PlaceStore} from '../../../shared/services/place-store.services';
+import { PlaceService } from '../../../shared/services/place.service';
+import { PlaceStore } from '../../../shared/services/place-store.services';
 
 @Component({
   selector: 'app-route-points',
@@ -26,13 +26,13 @@ export class RoutePointsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.placeStore.getLocation().subscribe((place)=>{
-      if(!place)
+    this.placeStore.getLocation().subscribe((place) => {
+      if (!place)
         return false;
 
       this.addPoint(place, false);
       this.ref.detectChanges();
-      const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length -1}`);
+      const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`);
       setTimeout(() => {
         this.renderer.setProperty($elem, 'value', place.name);
         this.ref.detectChanges();
@@ -46,9 +46,9 @@ export class RoutePointsComponent implements OnInit {
 
   addPoint(place, focusIn = true) {
     this.middlePoints.push(this.fb.group(new Place(place)));
-    if(focusIn){
+    if (focusIn) {
       setTimeout(() => {
-        this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length -1}`).focus();
+        this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`).focus();
       }, 100);
     }
   }
@@ -72,7 +72,7 @@ export class RoutePointsComponent implements OnInit {
     const place = event.option.value;
     this.placeStore.setPlace(inputName, place);
     this.options = [];
-    if(this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
+    if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
       this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
   }
 

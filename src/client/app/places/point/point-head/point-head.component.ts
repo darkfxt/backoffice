@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { PlaceService } from '../../../shared/services/place.service';
 import { Observable, Subscription } from 'rxjs';
 import { PlaceStore } from '../../../shared/services/place-store.services';
-import {TRANSLATE} from '../../../translate-marker';
+import { TRANSLATE } from '../../../translate-marker';
 
 
 @Component({

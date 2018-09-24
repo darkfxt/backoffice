@@ -2,8 +2,8 @@ import { PointActions, PointActionTypes } from './place.actions';
 
 import { Point } from '../../shared/models/Place';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {pointSelector} from '../index';
-import {DialogActions} from '../dialog-actions.enum';
+import { pointSelector } from '../index';
+import { DialogActions } from '../dialog-actions.enum';
 
 export interface PointState {
   loading: boolean;

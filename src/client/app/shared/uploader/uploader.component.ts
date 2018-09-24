@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-uploader',

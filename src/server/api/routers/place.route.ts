@@ -1,6 +1,6 @@
-import {Router} from 'express';
-import {PlaceController} from '../controllers/place.controller';
-import {S3Middleware} from '../../middlewares/s3.middleware';
+import { Router } from 'express';
+import { PlaceController } from '../controllers/place.controller';
+import { S3Middleware } from '../../middlewares/s3.middleware';
 
 const PlaceRouter: Router = Router();
 const s3Middleware: S3Middleware = new S3Middleware({bucket: 'places'});

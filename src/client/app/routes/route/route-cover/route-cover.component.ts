@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-route-cover',
@@ -26,7 +26,7 @@ export class RouteCoverComponent implements OnInit {
     this.form.patchValue({file: file[0]});
   }
 
-  private preview(file){
+  private preview(file) {
     return new Promise((resolve, reject) => {
       try {
         const reader = new FileReader();
@@ -40,8 +40,8 @@ export class RouteCoverComponent implements OnInit {
     });
   }
 
-  deleteUploadedItem(){
-    const deletedImage = (<FormArray>this.form.get('images')).controls.length > 0? this.form.get('images').value : [];
+  deleteUploadedItem() {
+    const deletedImage = (<FormArray>this.form.get('images')).controls.length > 0 ? this.form.get('images').value : [];
     this.form.patchValue({file: undefined});
     this.form.setControl('images', this.fb.array([]));
     this.form.setControl('deleted_images', this.fb.array(deletedImage));

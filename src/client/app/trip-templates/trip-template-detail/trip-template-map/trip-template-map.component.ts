@@ -70,7 +70,7 @@ export class TripTemplateMapComponent implements OnInit {
 
   private drawerPicker(element, index, array) {
     /// MIRAR::: al estar ejecutandose dentro del iterador, el this queda como undefined.
-    if (element.eventType === eventType.DRIVING){
+    if (element.eventType === eventType.DRIVING) {
       let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
       if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== eventType.DRIVING)
         origin = array[index - 1].geo[0];
@@ -78,7 +78,7 @@ export class TripTemplateMapComponent implements OnInit {
         destination = array[index + 1].geo[0];
       this.directions.push({origin, middle_points: element.geo[0].middle_points, destination});
       // this.traceRoutes(origin, element.geo[0].middle_points, destination);
-    } else{
+    } else {
       this.markers.push(new google.maps.Marker({
         position: element.geo[0],
         map: this.map,

@@ -1,6 +1,6 @@
-import {Router} from 'express';
-import {S3Middleware} from '../../middlewares/s3.middleware';
-import {RoutesController} from '../controllers/routes.controller';
+import { Router } from 'express';
+import { S3Middleware } from '../../middlewares/s3.middleware';
+import { RoutesController } from '../controllers/routes.controller';
 
 const RoutesRouter: Router = Router();
 const s3Middleware: S3Middleware = new S3Middleware({bucket: 'routes'});

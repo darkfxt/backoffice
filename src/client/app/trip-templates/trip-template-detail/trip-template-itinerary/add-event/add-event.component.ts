@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import {
   trigger,
   state,
@@ -7,11 +7,11 @@ import {
   transition, keyframes
 } from '@angular/animations';
 
-import { eventType} from '../../../../shared/models/TripTemplate';
-import { MatBottomSheet, MatBottomSheetRef} from '@angular/material';
-import { Store} from '@ngrx/store';
-import {AppState} from '../../../../store';
-import {Router} from '@angular/router';
+import { eventType } from '../../../../shared/models/TripTemplate';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-event',

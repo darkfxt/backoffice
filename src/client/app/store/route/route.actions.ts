@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 
-import {default as Segment, SegmentWithMetadata} from '../../shared/models/Segment';
+import {default as Segment, SegmentWithMetadata } from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {DialogActions} from '../dialog-actions.enum';
+import { DialogActions } from '../dialog-actions.enum';
 
 export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',

@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from 'express';
-import {PlaceService} from '../services/place.service';
+import { Request, Response, NextFunction } from 'express';
+import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
 
 
@@ -8,7 +8,7 @@ export class PlaceController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
       const answer = await PlaceService.getAll(request.query);
-      if(request.query.simple){
+      if (request.query.simple) {
         response.json(answer.data.data);
         return;
       }
@@ -70,9 +70,9 @@ export class PlaceController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const oPlace = new Place(data);
       let place;
-      if(request.params.place_id)
+      if (request.params.place_id)
         place = await PlaceService.update(request.params.place_id, oPlace);
-      else{
+      else {
         delete oPlace._id;
         place = await PlaceService.create(oPlace);
       }

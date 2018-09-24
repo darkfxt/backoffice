@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +17,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentRoute = this.router.url === '/'? 'trip-templates' : this.router.url;
+    this.currentRoute = this.router.url === '/' ? 'trip-templates' : this.router.url;
   }
 
-  navigate(page){
+  navigate(page) {
     this.currentRoute = page;
     this.open = false;
   }

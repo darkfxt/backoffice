@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {HttpClient} from '@angular/common/http';
-import {Point} from '../models/Place';
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { HttpClient } from '@angular/common/http';
+import { Point } from '../models/Place';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,11 @@ export class PlaceService {
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
-      if(paginationMetadata.search){
+      if (paginationMetadata.search) {
         queryParams += `&search=${paginationMetadata.search}`;
       }
     }
-    if(withoutMetadata){
+    if (withoutMetadata) {
       queryParams += '&simple=true';
     }
 
@@ -32,19 +32,19 @@ export class PlaceService {
     return this.http.patch('api/places/', place);
   }
 
-  autocomplete (query: string): Observable<any>{
+  autocomplete (query: string): Observable<any> {
     return this.http.get(`/api/places/glautocomplete/?q=${query}&lang=es`)
       .pipe(
         catchError(this.handleError('autocomplete'))
       );
   }
 
-  search (query: string): Observable<any>{
+  search (query: string): Observable<any> {
     return this.http.get(`/api/places/search/?${query}&lang=es`);
 
   }
 
-  getGoogleDetail (place_id: string): Observable<any>{
+  getGoogleDetail (place_id: string): Observable<any> {
     return this.http.get(`/api/places/google/${place_id}?lang=es`)
       .pipe(
         catchError(this.handleError('getGoogleDetail', []))
@@ -59,7 +59,7 @@ export class PlaceService {
     }
   }
 
-  getDetail (place_id: string): Observable<any>{
+  getDetail (place_id: string): Observable<any> {
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(
         catchError(this.handleError('getDetail', []))

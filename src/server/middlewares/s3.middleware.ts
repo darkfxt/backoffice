@@ -2,7 +2,7 @@ import * as multer from 'multer';
 import * as multerS3 from 'multer-s3';
 import * as S3 from 'aws-sdk/clients/s3';
 import * as config from '../config';
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as httpStatus from 'http-status';
 
 const s3 = new S3(config.get().aws.s3);
@@ -13,7 +13,7 @@ class Options {
 
 export class S3Middleware {
 
-  constructor(private options: Options){}
+  constructor(private options: Options) {}
 
   uploader() {
     return multer({

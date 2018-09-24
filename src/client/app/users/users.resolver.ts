@@ -2,17 +2,17 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { Injectable } from '@angular/core';
-import { TripTemplate } from '../shared/models/TripTemplate';
-import { TripTemplateService } from '../shared/services/trip-template.service';
+import { User } from '../shared/models/User';
+import { UserService } from '../shared/services/user.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TripTemplatesResolver implements Resolve<any> {
+export class UserResolver implements Resolve<any> {
 
   constructor(
-    private service: TripTemplateService,
+    private service: UserService,
     private router: Router
   ) {}
 
@@ -22,7 +22,7 @@ export class TripTemplatesResolver implements Resolve<any> {
   ): Observable<any> {
     const id = route.paramMap.get('id');
     if (id === 'new')
-      return of(new TripTemplate());
+      return of(new User());
 
     return this.service.getDetail(id)
       .pipe(catchError((err)  => {

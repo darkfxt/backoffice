@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trip-template-summarized-card',
@@ -24,7 +24,7 @@ export class TripTemplateSummarizedCardComponent implements OnInit {
     this.description = this.data.description;
   }
 
-  editSegment(){
+  editSegment() {
     this.router.navigate([`/trip-templates/${this.data._id}`]);
   }
 

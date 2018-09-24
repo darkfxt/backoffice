@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {switchMap, map} from 'rxjs/internal/operators';
-import {Observable} from 'rxjs/index';
-import {Action} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { switchMap, map } from 'rxjs/internal/operators';
+import { Observable } from 'rxjs/index';
+import { Action } from '@ngrx/store';
 
-import {PointActionTypes, GetPoints, FilterPoints, PointsRetrieved, PointSelected} from './place.actions';
-import {Point, PointWithMetadata} from '../../shared/models/Place';
-import {PlaceService} from '../../shared/services/place.service';
-import {PageEvent} from '@angular/material';
-import {default as Segment} from '../../shared/models/Segment';
-import {SegmentActionTypes, SegmentSelected} from '../route/route.actions';
+import { PointActionTypes, GetPoints, FilterPoints, PointsRetrieved, PointSelected } from './place.actions';
+import { Point, PointWithMetadata } from '../../shared/models/Place';
+import { PlaceService } from '../../shared/services/place.service';
+import { PageEvent } from '@angular/material';
+import {default as Segment } from '../../shared/models/Segment';
+import { SegmentActionTypes, SegmentSelected } from '../route/route.actions';
 
 @Injectable()
 export class PointEffects {

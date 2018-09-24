@@ -13,7 +13,7 @@ import {
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event } from '../../shared/models/TripTemplate';
 import { SaveSegment } from '../../store/route/route.actions';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -112,7 +112,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
-    } else{
+    } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
         control.markAsTouched({onlySelf: true});

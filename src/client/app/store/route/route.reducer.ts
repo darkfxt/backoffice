@@ -2,7 +2,7 @@ import { SegmentActions, SegmentActionTypes } from './route.actions';
 
 import {default as Segment } from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {DialogActions} from '../dialog-actions.enum';
+import { DialogActions } from '../dialog-actions.enum';
 
 export interface SegmentState {
   loading: boolean;

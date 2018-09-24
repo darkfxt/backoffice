@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild, Input, OnDestroy} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import {} from '@types/googlemaps';
-import {PlaceStore} from '../../../shared/services/place-store.services';
-import {AddressComponent} from '../../../../../server/api/entity/GooglePlace';
-import {Subscription} from 'rxjs';
+import { PlaceStore } from '../../../shared/services/place-store.services';
+import { AddressComponent } from '../../../../../server/api/entity/GooglePlace';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-point-map',
@@ -30,7 +30,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const mapProp = {
       center: this.placeForm.value.geo.point,
-      zoom: (this.placeForm.value.geo.point.lat === 0)? 1 : 17,
+      zoom: (this.placeForm.value.geo.point.lat === 0) ? 1 : 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -58,7 +58,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
     });
 
     this._subscription = this.placeStore.getLocation().subscribe(location => {
-      if(!location)
+      if (!location)
         return false;
       if (location.geo.point.lat === 0 && location.geo.point.lng === 0)
         return false;
@@ -68,7 +68,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.placeStore.clearAll();
     this._subscription.unsubscribe();
   }
@@ -109,7 +109,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getAddress(resp){
+  private getAddress(resp) {
     return {address:
       {
         country_code: getAddressName(resp.address_components, 'country', 'short_name'),
@@ -121,11 +121,11 @@ export class PointMapComponent implements OnInit, OnDestroy {
         street_number: getAddressName(resp.address_components, 'street_number'),
         formatted_address: resp.formatted_address
       }
-    }
+    };
 
-    function getAddressName(componentList: AddressComponent[], type: string, label = 'long_name'): string{
+    function getAddressName(componentList: AddressComponent[], type: string, label = 'long_name'): string {
       const component = componentList.filter(value  => value.types.indexOf(type) > -1)[0];
-      return component? component[label] : '';
+      return component ? component[label] : '';
     }
   }
 

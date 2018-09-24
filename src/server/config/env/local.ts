@@ -14,6 +14,9 @@ export const config = {
   },
   routes: {
     url: 'http://localhost:6001/routes'
+  },
+  idm: {
+    url: 'http://localhost:6001/idm'
   }
 
 };

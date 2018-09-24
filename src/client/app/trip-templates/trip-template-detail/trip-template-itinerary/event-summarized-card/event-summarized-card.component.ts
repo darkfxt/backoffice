@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AppState} from '../../../../store';
-import {Store} from '@ngrx/store';
-import {RemoveEvent} from '../../../../store/trip-template/trip-template.actions';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AppState } from '../../../../store';
+import { Store } from '@ngrx/store';
+import { RemoveEvent } from '../../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-event-summarized-card',
@@ -22,7 +22,7 @@ export class EventSummarizedCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(event){
+  openDialog(event) {
     this.openedDialog.emit(event);
   }
 

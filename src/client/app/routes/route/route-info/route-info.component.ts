@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-route-info',
@@ -16,18 +16,18 @@ export class RouteInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  get thingsToKnow(): FormArray{
+  get thingsToKnow(): FormArray {
     return this.form.get('things_to_know') as FormArray;
   }
 
-  addTTK(){
+  addTTK() {
     this.thingsToKnow.push(this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required]
     }));
   }
 
-  deleteTTK(event, index){
+  deleteTTK(event, index) {
     this.thingsToKnow.removeAt(index);
   }
 

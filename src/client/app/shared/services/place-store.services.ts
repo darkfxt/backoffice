@@ -16,31 +16,31 @@ export class PlaceStore {
   constructor() {
   }
 
-  setLocation(location){
+  setLocation(location) {
     this.location.next(location);
   }
 
-  getLocation(){
+  getLocation() {
     return this.location.asObservable();
   }
 
-  getPlace(location:string){
+  getPlace(location: string) {
     return (this[location] as BehaviorSubject<Place>).asObservable();
   }
 
-  setPlace(location:string, place: Place){
+  setPlace(location: string, place: Place) {
     (this[location] as BehaviorSubject<Place>).next(place);
   }
 
-  getWaypoints(){
+  getWaypoints() {
     return this.waypoints.asObservable();
   }
 
-  setWaypoints(waypoints){
+  setWaypoints(waypoints) {
     this.waypoints.next(waypoints);
   }
 
-  clearAll(){
+  clearAll() {
     this.origin = new BehaviorSubject(undefined);
     this.destination = new BehaviorSubject(undefined);
     this.location = new BehaviorSubject(undefined);

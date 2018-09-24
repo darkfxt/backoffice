@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef} from '@angular/core';
-import {MAT_DIALOG_DATA, MatBottomSheet, MatDialog} from '@angular/material';
+import { Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatBottomSheet, MatDialog } from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
 import { RouteComponent } from '../../../routes/route/route.component';
 import { FormArray, FormBuilder } from '@angular/forms';
@@ -36,7 +36,7 @@ import { PointComponent } from '../../../places/point/point.component';
 import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.actions';
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
-import {BottomSheetEventComponent} from './add-event/add-event.component';
+import { BottomSheetEventComponent } from './add-event/add-event.component';
 
 
 @Component({
@@ -132,7 +132,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.showEmptySlot = true;
   }
 
-  hideEmptySlot(): void{
+  hideEmptySlot(): void {
     this.showOverlay = false;
     this.showEmptySlot = false;
   }
@@ -182,12 +182,12 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  toggleHeader(): void{
+  toggleHeader(): void {
     this.headerCollapsed = !this.headerCollapsed;
   }
 
   openDialog(event) {
-    if (!event.productType){
+    if (!event.productType) {
       this.hideEmptySlot();
       return false;
     }

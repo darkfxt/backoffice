@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-gallery',
@@ -33,7 +33,7 @@ export class GalleryComponent implements OnInit {
     this.form.patchValue({files: fileList});
   }
 
-  private preview(file){
+  private preview(file) {
     return new Promise((resolve, reject) => {
       try {
         const reader = new FileReader();
@@ -47,14 +47,14 @@ export class GalleryComponent implements OnInit {
     });
   }
 
-  deleteUploadedItem(index){
+  deleteUploadedItem(index) {
     const files = this.form.get('files').value;
     files.splice(index, 1);
     this.previewImages.splice(index, 1);
     this.form.patchValue({files: files});
   }
 
-  deleteStoredItem(index){
+  deleteStoredItem(index) {
     const item = this.preloadedImages[index];
     const deletedImages = this.form.get('deleted_images').value;
     this.preloadedImages.splice(index, 1);

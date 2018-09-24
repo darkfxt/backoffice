@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {AddEvent} from '../../../../store/trip-template/trip-template.actions';
-import {Event, eventType} from '../../../../shared/models/TripTemplate';
-import {Store} from '@ngrx/store';
-import {AppState, tripTemplateSelector} from '../../../../store';
-import {Subscription} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEvent } from '../../../../store/trip-template/trip-template.actions';
+import { Event, eventType } from '../../../../shared/models/TripTemplate';
+import { Store } from '@ngrx/store';
+import { AppState, tripTemplateSelector } from '../../../../store';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-custom-event',
@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs';
 })
 export class CustomEventComponent implements OnInit {
 
-  @Input() isDialog? = false;
+  @Input() isDialog ? = false;
   @Input() dialogRef: any;
   form: FormGroup;
   hours = new Array(24);

@@ -31,6 +31,7 @@ import { PointEffects } from './store/place/place.effects';
 import { environment } from '../environments/environment';
 import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
 import { UsersModule } from './users/users.module';
+import { UserEffects } from './store/user/user.effects';
 
 
 
@@ -55,7 +56,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects]),
+    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects]),
     StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,

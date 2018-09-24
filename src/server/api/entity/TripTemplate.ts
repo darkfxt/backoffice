@@ -17,10 +17,10 @@ export class Event {
     this.ordinal = ordinal;
     this.time = time;
     this.eventType = eventType;
-    if(description) this.description = description;
-    if(reference_id) this.reference_id = reference_id;
-    if(index) this.index = index;
-    if(geo) this.geo = geo;
+    if (description) this.description = description;
+    if (reference_id) this.reference_id = reference_id;
+    if (index) this.index = index;
+    if (geo) this.geo = geo;
 
   }
 

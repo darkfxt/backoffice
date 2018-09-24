@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { switchMap, map } from 'rxjs/internal/operators';
 
-import {SegmentActionTypes, GetSegments, FilterSegments, SegmentsRetrieved, SegmentSelected} from './route.actions';
+import { SegmentActionTypes, GetSegments, FilterSegments, SegmentsRetrieved, SegmentSelected } from './route.actions';
 import { SegmentWithMetadata, default as Segment } from '../../shared/models/Segment';
 import { RoutesService } from '../../shared/services/routes.service';
 

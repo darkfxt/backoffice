@@ -20,10 +20,10 @@ export class Photo {
 }
 
 
-export default class GooglePlace{
+export default class GooglePlace {
   address_components: AddressComponent[];
   formatted_address: string;
-  geometry: Geometry
+  geometry: Geometry;
   name: string;
   photos: Photo[];
   place_id: string;

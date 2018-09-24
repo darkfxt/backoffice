@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output, Type} from '@angular/core';
-import {Observable} from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ListItemComponent } from './common-list-item/common-list-item.component';
-import {PageEvent} from '@angular/material';
-import {OuterSubscriber} from 'rxjs/internal/OuterSubscriber';
-import {PaginationOptionsInterface} from './common-list-item/pagination-options.interface';
+import { PageEvent } from '@angular/material';
+import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
+import { PaginationOptionsInterface } from './common-list-item/pagination-options.interface';
 
 @Component({
   selector: 'app-common-list',

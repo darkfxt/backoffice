@@ -1,17 +1,17 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
-import {TripTemplate, TripTemplateEmpty} from '../entity/TripTemplate';
+import { TripTemplate, TripTemplateEmpty } from '../entity/TripTemplate';
 
-import {PlaceService} from '../services/place.service';
+import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
-import {RoutesService} from '../services/routes.service';
+import { RoutesService } from '../services/routes.service';
 
 export class TripTemplateController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
       const answer = await TripTemplateService.getAll(request.query);
-      if(request.query.simple){
+      if (request.query.simple) {
         response.json(answer.data.data);
         return;
       }
@@ -65,7 +65,7 @@ export class TripTemplateController {
 
       // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
       let resp;
-      if(request.params.id && request.params.id !== 'new' && request.params.id !== '' && request.params.id !== 'undefined') {
+      if (request.params.id && request.params.id !== 'new' && request.params.id !== '' && request.params.id !== 'undefined') {
         Reflect.deleteProperty(request.body, '_id');
         resp = await TripTemplateService.update(request.params.id, request.body);
       } else {
@@ -112,9 +112,9 @@ export class TripTemplateController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const oPlace = new Place(data);
       let place;
-      if(data._id)
+      if (data._id)
         place = await TripTemplateService.update(data._id, oPlace);
-      else{
+      else {
         delete oPlace._id;
         place = await TripTemplateService.create(oPlace);
       }
