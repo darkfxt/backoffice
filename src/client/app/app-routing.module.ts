@@ -19,6 +19,10 @@ const appRoutes: Routes = [
     path: 'trip-templates',
     loadChildren: './trip-templates/trip-templates.module#TripTemplatesModule',
   },
+  {
+    path: 'users',
+    loadChildren: './users/users.module#UsersModule',
+  },
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

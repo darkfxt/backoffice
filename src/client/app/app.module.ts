@@ -30,6 +30,7 @@ import { PointEffects } from './store/place/place.effects';
 // Config
 import { environment } from '../environments/environment';
 import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
+import { UsersModule } from './users/users.module';
 
 
 
@@ -61,6 +62,7 @@ registerLocaleData(localeEs, 'es');
     PlacesModule,
     RoutesModule,
     TripTemplatesModule,
+    UsersModule,
     LoginRoutingModule,
     AppRoutingModule,
     MatIconModule,
