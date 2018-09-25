@@ -27,6 +27,8 @@ export function userReducer(state = initialState, action: UserActions): UserStat
       return {...state, loading: true};
     case UserActionTypes.USER_SELECTED:
       return {...state, loading: false, userSelected: action.payload};
+    case UserActionTypes.SAVE_USER_SUCCESS:
+      return {...state, loading: false};
     default:
       return state;
   }

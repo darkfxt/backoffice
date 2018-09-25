@@ -1,56 +1,47 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TRANSLATE } from '../../translate-marker';
-import { SavePoint } from '../../store/place/place.actions';
-import { Store } from '@ngrx/store';
-import { AppState, userSelector } from '../../store';
-import { SaveUser } from '../../store/user/user.actions';
-import { User } from '../../shared/models/User';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { UserService } from '../../shared/services/user.service';
+import { Account } from '../../shared/models/Account';
+import { AccountsService } from '../../shared/services/accounts.service';
 
 @Component({
-  selector: 'app-user-detail',
-  templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss']
+  selector: 'app-account-detail',
+  templateUrl: './account-detail.component.html',
+  styleUrls: ['./account-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit, OnDestroy {
+export class AccountDetailComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   bussy: boolean;
-  user = new User();
-  roles = [
-    TRANSLATE('OWNER'),
-    TRANSLATE('ADMIN'),
-    TRANSLATE('USER_NAVIGATION')
-  ];
-  organizations = [
-    {name: 'culo', id: '1'}
-  ];
+  account = new Account();
   resolverSubscription: Subscription;
+  primary_color_toogle: boolean;
+  secondary_color_toogle: boolean;
 
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private userService: UserService,
+    private accountsService: AccountsService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
       if (resp)
-        this.user = resp.user;
+        this.account = resp.account;
     });
 
     this.form = this.fb.group({
-      name: [this.user.name, [Validators.required, Validators.maxLength(50)]],
-      last_name: [this.user.last_name, [Validators.required, Validators.maxLength(50)]],
-      email: [this.user.email, [Validators.required, Validators.email]],
-      organization: [this.user.organization, Validators.required],
-      role: [this.user.role, Validators.required]
+      name: [this.account.name, [Validators.required, Validators.maxLength(50)]],
+      primary_color: [this.account.primary_color, Validators.required],
+      secondary_color: [this.account.secondary_color, Validators.required],
+      logo: [this.account.logo, Validators.required],
+      file: undefined,
+      deleted_images: this.fb.array([])
     });
 
   }
@@ -68,8 +59,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.bussy = true;
       let responseMessage: string;
       // this.store.dispatch(new SaveUser({id: this.user.id, body: this.form.value}));
-      this.userService.upsert({id: this.user.id, body: this.form.value}).subscribe(resp => {
-        responseMessage = 'Usuario guardado con exito';
+      const body = this.prepareToSave();
+      this.accountsService.upsert({id: this.account.id, body: body}).subscribe(resp => {
+        responseMessage = 'Cuenta guardada con exito';
       }, err => {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
       }, () => {
@@ -85,6 +77,16 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         const control = this.form.get(field);
         control.markAsTouched({ onlySelf: true });
       });
+  }
+
+  private prepareToSave(): FormData {
+    const formData = new FormData();
+    const data = Object.assign({}, this.form.value);
+    formData.append('data', JSON.stringify(data));
+    const image = data.file;
+    if (image)
+      formData.append('files[]', image, image.name);
+    return formData;
   }
 
 }

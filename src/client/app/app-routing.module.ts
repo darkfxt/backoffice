@@ -23,6 +23,10 @@ const appRoutes: Routes = [
     path: 'users',
     loadChildren: './users/users.module#UsersModule',
   },
+  {
+    path: 'accounts',
+    loadChildren: './accounts/accounts.module#AccountsModule',
+  },
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

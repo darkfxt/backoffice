@@ -23,5 +23,9 @@ export class SaveUser implements Action {
   }
 }
 
+export class SaveUserSuccess implements Action {
+  readonly type = UserActionTypes.SAVE_USER_SUCCESS;
+}
 
-export type UserActions = SaveUser | UserSelected;
+
+export type UserActions = SaveUser | UserSelected | SaveUserSuccess;

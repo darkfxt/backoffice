@@ -32,6 +32,7 @@ import { environment } from '../environments/environment';
 import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
 import { UsersModule } from './users/users.module';
 import { UserEffects } from './store/user/user.effects';
+import {AccountsModule} from './accounts/accounts.module';
 
 
 
@@ -64,6 +65,7 @@ registerLocaleData(localeEs, 'es');
     RoutesModule,
     TripTemplatesModule,
     UsersModule,
+    AccountsModule,
     LoginRoutingModule,
     AppRoutingModule,
     MatIconModule,
