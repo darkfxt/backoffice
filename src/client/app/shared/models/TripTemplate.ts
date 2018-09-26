@@ -18,14 +18,19 @@ export class Event {
   reference_id: string;
   event_type: string;
   geo?: any;
+  referencedObject?: any;
   created_by: string;
+}
+
+export class DayOfTrip {
+  events: Event[];
 }
 
 export class TripTemplate {
 
   _id: string;
   name: string;
-  events: Event[];
+  days: DayOfTrip[];
   description: string;
   created_by: string;
 }

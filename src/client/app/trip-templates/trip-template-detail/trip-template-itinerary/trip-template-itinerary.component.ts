@@ -52,7 +52,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   showEmptySlot: boolean;
   loading = false;
   selectedTemplateEvents$: Observable<any>;
-  itineraryEvents: Array<any> = [];
+  itineraryDays: Array<any> = [];
   drawingComponent: ListItemComponent;
   dayOfEvent: number;
   typeForEvent: string;
@@ -100,19 +100,20 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     });
 
     this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplateEvents) {
+      if (data.selectedTripTemplate) {
         /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
-        const arrangedEvents = [];
-        data.selectedTripTemplateEvents.forEach((event, index, array) =>
-          arrangedEvents.push(Object.assign({}, event, {index})));
-        const arreglo = [];
-        _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
-          (value, key) => {
-            arreglo.push({day: key, events: value});
-          });
-        this.itineraryEvents.splice(0, this.itineraryEvents.length);
-        this.itineraryEvents = arreglo;
+        // const arrangedEvents = [];
+        // data.selectedTripTemplateEvents.forEach((event, index, array) =>
+        //   arrangedEvents.push(Object.assign({}, event, {index})));
+        // const arreglo = [];
+        // _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
+        //   (value, key) => {
+        //     arreglo.push({day: key, events: value});
+        //   });
+        // this.itineraryDays.splice(0, this.itineraryDays.length);
+        // this.itineraryDays = arreglo;
         // this.itinerary.patchValue(data.selectedTripTemplateEvents);
+        this.itineraryDays = data.selectedTripTemplate.days.slice(0);
       }
       if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
@@ -176,7 +177,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   }
 
   addDay() {
-    this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
+    this.itineraryDays.push([]);
     setTimeout(() => {
       this.dayList.nativeElement.scrollTop = this.dayList.nativeElement.scrollHeight;
     }, 100);

@@ -1,0 +1,21 @@
+<div class="event-cluster" [class.edit-mode]="editMode">
+  <div class="icon-ctn">
+  </div>
+  <div>Agregar Origen</div>
+  <div class="summary-ctn">
+    <h5>{{data.name}}</h5>
+    <p>{{data.description}}</p>
+  </div>
+  <div>Agregar Destino</div>
+  <div class="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="onRemoveEvent(data.index)" mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>{{'Eliminar' | translate}}</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

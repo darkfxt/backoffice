@@ -10,19 +10,24 @@
 <div class="days-list" #dayList [hidden]="headerCollapsed">
   <div class="event-overlay" *ngIf="showOverlay" (click)="hideEmptySlot()"></div>
   <ul class="event-list">
-    <li *ngFor="let day of itineraryEvents; let idx = index;" class="day-ctn">
+    <li *ngFor="let day of itineraryDays; let idx = index;" class="day-ctn">
       <div class="vertical-line"></div>
       <div class="day-count">
         <div class="horizontal-divisor"></div>
-        <h4>{{'Day' | translate: {day: day.day} }}</h4>
+        <h4>{{idx + 1}} </h4>
       </div>
       <ul>
 
-        <li *ngFor="let events of day.events, let intidx = index">
-          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="events.index" [day]="day.day" *ngIf="showEmptySlot"></app-add-event>
-          <app-event-summarized-card [editMode]="showEmptySlot" [data]="events" [day]="day.day" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
+        <li *ngFor="let events of day, let intidx = index">
+          <app-add-event (openedDialog)="openDialog($event)" [ordinal]="intidx" [day]="idx" *ngIf="showEmptySlot"></app-add-event>
+          <app-event-summarized-card [editMode]="showEmptySlot" [data]="events" [day]="idx" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
         </li>
-        <app-add-event [editMode]="showEmptySlot" (openedDialog)="openDialog($event)" [ordinal]="day.events.length" [day]="day.day" *ngIf="showEmptySlot" [firstEvent]="!day.events || day.events.length === 0"></app-add-event>
+        <div>{{'day ' + itineraryDays[0] + ' idx ' + idx | json}}</div>
+        <app-add-event [editMode]="showEmptySlot"
+                       (openedDialog)="openDialog($event)"
+                       [ordinal]="day[idx].length || 0"
+                       [day]="idx" *ngIf="showEmptySlot"
+                       [firstEvent]="(day[idx].length || 0) === 0"></app-add-event>
 
         <li (click)="openEmptySlot()" class="add-event-ctn">
           <div class="icon-ctn" >

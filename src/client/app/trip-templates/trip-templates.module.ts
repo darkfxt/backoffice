@@ -25,6 +25,8 @@ import { RouteComponent } from '../routes/route/route.component';
 import { PointComponent } from '../places/point/point.component';
 import { TripTemplateDetailHeaderComponent } from './trip-template-detail/trip-template-detail-header/trip-template-detail-header.component';
 import { CustomEventComponent } from './trip-template-detail/trip-template-itinerary/custom-event/custom-event.component';
+import { SummarizedDrivingComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/summarized-driving/summarized-driving.component';
+import { EventSummarizedCardDirective } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.directive';
 
 @NgModule({
   imports: [
@@ -59,7 +61,9 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
     TripTemplateMapComponent,
     TripTemplateDetailHeaderComponent,
     CustomEventComponent,
-    BottomSheetEventComponent
+    BottomSheetEventComponent,
+    SummarizedDrivingComponent,
+    EventSummarizedCardDirective
   ],
   providers: [ ],
   entryComponents: [

@@ -54,6 +54,9 @@ export class AddEventComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('this.firstEvent', this.firstEvent);
+    console.log('this.ordinal', this.ordinal);
+    console.log('this.day', this.day);
   }
 
   showOptions(): void {

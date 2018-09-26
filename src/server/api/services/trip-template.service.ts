@@ -5,6 +5,7 @@ import { RoutesService } from './routes.service';
 import { PlaceService } from './place.service';
 import PlacesService = google.maps.places.PlacesService;
 import {event_type} from '../entity/TripTemplate';
+import event = google.maps.event;
 
 export class TripTemplateService {
 
@@ -47,8 +48,8 @@ export class TripTemplateService {
           // eventData['middle_points'].forEach(point => geo.push(point.geo.point));
           // geo.push(eventData.destination.geo.point);
         }
-        return Object.assign({}, event, {geo});
-      }))).filter( event => event !== undefined);
+        return Object.assign({}, event, {geo}, {referencedObject: eventData});
+      }))).filter( event => event !== undefined); // tslint:disable-line
       return inflatedData;
     }
     return [];

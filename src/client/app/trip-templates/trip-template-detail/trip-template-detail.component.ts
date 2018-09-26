@@ -102,7 +102,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       const tripTemplateToSave: TripTemplate = new TripTemplate();
       tripTemplateToSave.name = this.form.value.name;
       tripTemplateToSave.description = this.form.value.description;
-      tripTemplateToSave.events = this.form.value.itinerary;
+      tripTemplateToSave.days = this.form.value.itinerary;
       if (this._selectedRouteTemplateId !== 'new')
         tripTemplateToSave._id = this._selectedRouteTemplateId;
       this.store.dispatch(new SaveTripTemplate(tripTemplateToSave));
