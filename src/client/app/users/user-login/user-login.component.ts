@@ -36,15 +36,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(userSelector).subscribe(
-      data => {
-        // this.router.navigate([this.returnUrl]);
-      },
-      err => {
-        this.bussy = false;
-        this.errorLogin = err.toString();
-        console.log(err);
-      });
+
     this.form = this.fb.group({
       email: [this.email, [Validators.required, Validators.email]],
       password: [this.password, [Validators.required]]
@@ -55,7 +47,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.user$.unsubscribe();
+
   }
 
   // convenience getter for easy access to form fields
@@ -68,6 +60,16 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       this.email = this.f.email.value;
       this.password = this.f.password.value;
       this.store.dispatch(new SignInUser(this.email, this.password));
+      this.user$ = this.store.select(userSelector).subscribe(
+        data => {
+          this.router.navigate([this.returnUrl]);
+        },
+        err => {
+          this.bussy = false;
+          this.errorLogin = err.toString();
+          console.log(err);
+        });
+      this.user$.unsubscribe();
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);

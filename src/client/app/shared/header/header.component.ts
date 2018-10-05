@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { LoggedUserInterface } from '../models/User';
 import {AppState, userSelector} from '../../store';
 import { Store } from '@ngrx/store';
-import { SignOutUser } from '../../store/user/user.actions';
+import {SignOutUser, UserSignedIn} from '../../store/user/user.actions';
 
 @Component({
   selector: 'app-header',
@@ -14,19 +14,26 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('header')
   header: any;
+  isLogged = false;
   loggedUser: any = {username: 'Usuario'};
   currentRoute = 'trips';
   open = false;
   constructor(private router: Router, private store: Store<AppState>) {
+    if (localStorage.getItem('currentUser')) {
+      this.store.dispatch(new UserSignedIn(JSON.parse(localStorage.getItem('currentUser'))));
+    }
   }
 
   ngOnInit() {
     this.currentRoute = this.router.url === '/' ? 'trip-templates' : this.router.url;
     this.store.select(userSelector).subscribe((data: any) => {
-      if (data && data.loggedUser)
+      if (data && data.loggedUser) {
         this.loggedUser = data.loggedUser;
-      else
+        this.isLogged = true;
+      } else {
         this.loggedUser = {username: 'Usuario'};
+        this.isLogged = false;
+      }
     });
   }
 
@@ -37,6 +44,18 @@ export class HeaderComponent implements OnInit {
 
   onSignOut() {
     this.store.dispatch(new SignOutUser());
+  }
+
+  goToAccounts() {
+    this.router.navigate(['/accounts']);
+  }
+
+  goToUsers() {
+    this.router.navigate(['/users']);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/users/login']);
   }
 
 }

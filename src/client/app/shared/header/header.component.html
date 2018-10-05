@@ -20,11 +20,24 @@
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #options="matMenu">
-          <button (click)="onSignOut()" mat-menu-item>
+          <button *ngIf="!isLogged" (click)="goToLogin()" mat-menu-item>
+            <mat-icon>move_to_inbox</mat-icon>
+            <span>{{'Iniciar sesión' | translate}}</span>
+          </button>
+          <button *ngIf="isLogged" (click)="goToUsers() " mat-menu-item>
+            <mat-icon>person</mat-icon>
+            <span>{{'Usuarios' | translate}}</span>
+          </button>
+          <button *ngIf="isLogged" (click)="goToAccounts()" mat-menu-item>
+            <mat-icon>style</mat-icon>
+            <span>{{'Cuentas' | translate}}</span>
+          </button>
+          <button *ngIf="isLogged" (click)="onSignOut()" mat-menu-item>
             <mat-icon>exit_to_app</mat-icon>
             <span>{{'Cerrar sesión' | translate}}</span>
           </button>
         </mat-menu>
+
       </div>
     </nav>
   </div>
