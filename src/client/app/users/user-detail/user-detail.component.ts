@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../shared/services/user.service';
+import { CompanyService } from '../../shared/services/company.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -37,7 +38,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-  ) { }
+    private companyService: CompanyService
+  ) {
+    this.companyService.getAll().subscribe( (response: any) => {
+      console.log('chingaaa', response);
+      this.organizations = response;
+    });
+  }
 
   ngOnInit() {
     this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
@@ -46,10 +53,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     });
 
     this.form = this.fb.group({
-      name: [this.user.name, [Validators.required, Validators.maxLength(50)]],
+      username: [this.user.username, [Validators.required, Validators.maxLength(50)]],
       last_name: [this.user.last_name, [Validators.required, Validators.maxLength(50)]],
       email: [this.user.email, [Validators.required, Validators.email]],
-      organization: [this.user.organization, Validators.required],
+      company_id: [this.user.company_id, Validators.required],
       role: [this.user.role, Validators.required]
     });
 

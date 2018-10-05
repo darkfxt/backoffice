@@ -203,7 +203,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       disableClose: true,
       closeOnNavigation: true
     };
-     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.name) && new SetDescriptionForTemplate (this.itinerary.value.description));
+     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.username) && new SetDescriptionForTemplate (this.itinerary.value.description));
      // this.store.dispatch(new SetDescriptionForTemplate (this.itinerary.value.description));
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);

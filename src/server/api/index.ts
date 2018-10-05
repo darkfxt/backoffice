@@ -9,6 +9,7 @@ import RoutesRouter from './routers/routes.route';
 import TripTemplateRouter from './routers/trip-template.route';
 import UserRouter from './routers/user.route';
 import AccountsRouter from './routers/accounts.route';
+import CompanyRouter from './routers/company.route';
 
 class Api {
 
@@ -28,6 +29,7 @@ class Api {
         this.api.use('/trip-templates', TripTemplateRouter);
         this.api.use('/users', UserRouter);
         this.api.use('/accounts', AccountsRouter);
+        this.api.use('/companies', CompanyRouter);
         this.api.use(fourOFour);
         this.api.use((req, res) => {
           if (res.statusCode === httpStatus.NOT_FOUND) {

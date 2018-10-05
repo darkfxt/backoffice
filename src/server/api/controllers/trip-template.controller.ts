@@ -61,9 +61,9 @@ export class TripTemplateController {
     try {
       // const data = JSON.parse(request.body.data);
 
-      // data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      // data.search_name = data.username.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-      // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
+      // const body = new Route(data._id, data.username, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
       let resp;
       if (request.params.id && request.params.id !== 'new' && request.params.id !== '' && request.params.id !== 'undefined') {
         Reflect.deleteProperty(request.body, '_id');

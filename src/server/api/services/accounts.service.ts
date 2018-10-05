@@ -4,6 +4,15 @@ import { config } from '../../config/env';
 
 export class AccountsService {
 
+  public static async getAll(query, headers): Promise<any> {
+    let queryParams = `?size=${query.size}&page=${query.page}`;
+    if (query.search) {
+      queryParams += `&search=${query.search}`;
+    }
+    return axios
+      .get(`${config.core.url}/accounts`, {headers});
+  }
+
   public static async create(body): Promise<any> {
     const resp = await axios.post(`${config.core.url}/accounts`, body);
     return resp;

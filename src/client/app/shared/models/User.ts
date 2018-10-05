@@ -4,10 +4,10 @@ export class User {
 
   constructor(
     public id: string = '',
-    public name: string = '',
+    public username: string = '',
     public last_name: string = '',
     public email: string = '',
-    public organization: any = '',
+    public company_id: any = '',
     public role: string = ''
   ) {}
 
@@ -20,4 +20,30 @@ export class UserWithMetadata {
     this.data = users;
     this.metadata = metadata;
   }
+}
+
+export interface LoginServerResponse {
+  code: number;
+  token: string;
+  expire: string;
+  user: any;
+}
+
+class Role {
+  username: string;
+  resource: Array<ResourcePermission>;
+}
+
+class ResourcePermission {
+  name: string;
+  view: boolean;
+  create: boolean;
+  edit: boolean;
+  delete: boolean;
+}
+
+export interface LoggedUserInterface {
+  id: number;
+  username: string;
+  role: Role;
 }

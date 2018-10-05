@@ -14,6 +14,12 @@ export const config = {
   },
   routes: {
     url: 'http://gl-routes-development:6001/routes'
+  },
+  idm: {
+    url: 'http://tg-idm-development:6003/idm',
+  },
+  core: {
+    url: 'http://tg-core-development:6004/core'
   }
 
 };

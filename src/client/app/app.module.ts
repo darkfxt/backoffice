@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
 import { PlacesModule } from './places/places.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginRoutingModule } from './login/login-routing.module';
 import { RoutesModule } from './routes/routes.module';
@@ -32,7 +32,9 @@ import { environment } from '../environments/environment';
 import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
 import { UsersModule } from './users/users.module';
 import { UserEffects } from './store/user/user.effects';
-import {AccountsModule} from './accounts/accounts.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { ErrorInterceptor } from './shared/helpers/error.interceptor';
+import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
 
 
 
@@ -68,7 +70,7 @@ registerLocaleData(localeEs, 'es');
     AccountsModule,
     LoginRoutingModule,
     AppRoutingModule,
-    MatIconModule,
+    MatButtonModule, MatIconModule, MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -77,7 +79,10 @@ registerLocaleData(localeEs, 'es');
       }
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

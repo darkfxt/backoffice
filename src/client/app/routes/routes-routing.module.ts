@@ -6,6 +6,7 @@ import { CanDeactivateGuard } from '../shared/services/can-deactivate-guard.serv
 import { RoutesComponent } from './routes.component';
 import { RoutesResolver } from './routes.resolver';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
+import {AuthGuard} from '../shared/services/auth-guard.service';
 
 const rRoutes: Routes = [
   {
@@ -14,6 +15,7 @@ const rRoutes: Routes = [
       {
         path: '',
         component: RoutesComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'modal',
@@ -26,7 +28,8 @@ const rRoutes: Routes = [
         canDeactivate: [CanDeactivateGuard],
         resolve: {
           segment: RoutesResolver
-        }
+        },
+        canActivate: [AuthGuard]
       }
     ]
   }

@@ -1,0 +1,13 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 320px;
+  .image-container {
+    flex: 1;
+  }
+  .login-form-container, .login-inputs-container, .login-buttons-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

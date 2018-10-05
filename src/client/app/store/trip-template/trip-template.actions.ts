@@ -16,7 +16,7 @@ export enum TripTemplateActionTypes {
   ADD_EVENT = '[Events] Adding new Event',
   REMOVE_EVENT = '[Events] Removing Event',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
-  SET_NAME_FOR_TEMPLATE = '[Events] Set name',
+  SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
   SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting Type, index & day for event'
 }

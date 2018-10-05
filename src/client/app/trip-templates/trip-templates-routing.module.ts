@@ -6,6 +6,7 @@ import { CanDeactivateGuard } from '../shared/services/can-deactivate-guard.serv
 import { TripTemplatesResolver } from './trip-templates.resolver';
 import { TripTemplateDetailComponent } from './trip-template-detail/trip-template-detail.component';
 import { TripTemplatesComponent } from './trip-templates.component';
+import {AuthGuard} from '../shared/services/auth-guard.service';
 
 const tripTemplatesRoutes: Routes = [
   {
@@ -14,6 +15,7 @@ const tripTemplatesRoutes: Routes = [
       {
         path: '',
         component: TripTemplatesComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: ':id',
@@ -21,7 +23,8 @@ const tripTemplatesRoutes: Routes = [
         canDeactivate: [CanDeactivateGuard],
         resolve: {
           tripTemplate: TripTemplatesResolver
-        }
+        },
+        canActivate: [AuthGuard]
       }
     ]
   }

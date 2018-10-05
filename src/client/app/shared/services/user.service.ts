@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,25 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
   constructor(private http: HttpClient) {
+  }
+
+  getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
+    let queryParams = '';
+    if (paginationMetadata) {
+      queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
+      if (paginationMetadata.search) {
+        queryParams += `&search=${paginationMetadata.search}`;
+      }
+    }
+    if (withoutMetadata) {
+      queryParams += '&simple=true';
+    }
+
+    return this.http.get('/api/users' + queryParams);
+  }
+
+  signin(params): Observable<any> {
+    return this.http.post(`/api/users/signin`, params);
   }
 
   upsert (params): Observable<any> {
@@ -25,7 +45,7 @@ export class UserService {
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
+   * @param operation - username of the operation that failed
    * @param result - optional value to return as the observable result
    */
   private handleError<T> (operation = 'operation', result?: T) {

@@ -15,21 +15,21 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent">
-            <mat-select placeholder="{{'Organización' | translate}}" name="organization" required formControlName="organization">
+            <mat-select placeholder="{{'Organización' | translate}}" name="company_id" required formControlName="company_id">
               <mat-option [value]="organization.id" *ngFor="let organization of organizations">
                 {{organization.name}}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="form.get('organization').invalid && (form.get('organization').dirty || form.get('organization').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('company_id').invalid && (form.get('company_id').dirty || form.get('company_id').touched)">{{'Campo requerido' | translate}}</mat-error>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent" >
-            <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="name" formControlName="name"/>
-            <mat-error *ngIf="form.get('name').hasError('required') && (form.get('name').dirty || form.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
-            <mat-error *ngIf="form.get('name').hasError('maxlength') && (form.get('name').dirty || form.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="username" formControlName="username"/>
+            <mat-error *ngIf="form.get('username').hasError('required') && (form.get('username').dirty || form.get('username').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('username').hasError('maxlength') && (form.get('username').dirty || form.get('username').touched)">{{'Campo requerido' | translate}}</mat-error>
           </mat-form-field>
         </div>
         <div class="col-xs-12 col-sm-6">

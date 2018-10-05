@@ -8,8 +8,10 @@ import { PointSummarizedCardComponent } from '../../places/point-summarized-card
 import { LoadingModule } from '../loading/loading.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { RouteSummarizedCardComponent } from '../../routes/route-summarized-card/route-summarized-card.component';
-import { TripTemplateSummarizedCardComponent } from '../../trip-templates/trip-template-summarized-card/trip-template-summarized-card.component';
-import { EventSummarizedCardComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
+import { TripTemplateSummarizedCardComponent } from '../../trip-templates/trip-template-summarized-card/trip-template-summarized-card.component'; // tslint:disable-line
+import { EventSummarizedCardComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component'; // tslint:disable-line
+import { UserSummarizedCardComponent } from '../../users/users-list/user-summarized-card/user-summarized-card.component'; // tslint:disable-line
+import { AccountSummarizedCardComponent } from '../../accounts/accounts-list/account-summarized-card/account-summarized-card.component'; // tslint:disable-line
 
 
 @NgModule({
@@ -25,6 +27,7 @@ import { EventSummarizedCardComponent } from '../../trip-templates/trip-template
     CommonListComponent
   ],
   entryComponents: [PointSummarizedCardComponent, RouteSummarizedCardComponent,
-    TripTemplateSummarizedCardComponent, EventSummarizedCardComponent]
+    TripTemplateSummarizedCardComponent, EventSummarizedCardComponent, UserSummarizedCardComponent,
+    AccountSummarizedCardComponent]
 })
 export class CommonListModule { }

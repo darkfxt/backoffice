@@ -4,12 +4,24 @@ import { UserService } from '../services/user.service';
 
 export class UserController {
 
+  public static async getAll(request: Request, response: Response, next: NextFunction) {
+    try {
+      const answer = await UserService.getAll(request.query, request.headers);
+      if (request.query.simple) {
+        response.json(answer.data.data);
+        return;
+      }
+      response.json(answer.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({id: 1, name: 'Pepe', last_name: 'mujica', organization: '1', role: 'OWNER', email: 'asd@asd.com'});
 
-      const data = await UserService.getDetail(request.params.id, request.query.lang);
-      response.json(data);
+      const answer = await UserService.getDetail(request.params.id, request.query.lang, request.headers);
+      response.json(answer.data);
     } catch (err) {
       next(err);
     }
@@ -17,9 +29,8 @@ export class UserController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({data: [{id: 1, name: 'Pepe', last_name: 'mujica', organization: '1', role: 'OWNER', email: 'asd@asd.com'}]});
       const data = JSON.parse(request.body.data);
-      const user = await UserService.create(data);
+      const user = await UserService.create(data, request.headers);
 
       response.json(user.data);
     } catch (err) {
@@ -29,9 +40,19 @@ export class UserController {
 
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({data: [{id: 1, name: 'Pepe', last_name: 'mujica', organization: '1', role: 'OWNER', email: 'asd@asd.com'}]});
       const data = JSON.parse(request.body.data);
-      const user = await UserService.update(request.params.id, data);
+      const user = await UserService.update(request.params.id, data, request.headers);
+
+      response.json(user.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async signInUser (request: Request, response: Response, next: NextFunction) {
+    try {
+      const {username, password} = request.body;
+      const user = await UserService.signInUser(username, password, request.headers);
 
       response.json(user.data);
     } catch (err) {

@@ -11,6 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { LogoComponent } from './account-detail/logo/logo.component';
 import { UploaderModule } from '../shared/uploader/uploader.module';
+import { AccountSummarizedCardComponent } from './accounts-list/account-summarized-card/account-summarized-card.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { UploaderModule } from '../shared/uploader/uploader.module';
     UploaderModule,
     AccountsRoutingModule
   ],
-  declarations: [AccountsListComponent, AccountDetailComponent, LogoComponent]
+  declarations: [AccountsListComponent, AccountDetailComponent, LogoComponent, AccountSummarizedCardComponent],
+  exports: [AccountSummarizedCardComponent]
 })
 export class AccountsModule { }

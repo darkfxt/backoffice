@@ -12,11 +12,15 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from '../store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from '../store/user/user.effects';
+import { UserSummarizedCardComponent } from './users-list/user-summarized-card/user-summarized-card.component';
+import { CommonListModule } from '../shared/common-list/common-list.module';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   imports: [
     StoreModule.forFeature('users', reducers),
     CommonModule,
+    CommonListModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
@@ -29,6 +33,7 @@ import { UserEffects } from '../store/user/user.effects';
     TranslateModule,
     UsersRoutingModule
   ],
-  declarations: [UsersListComponent, UserDetailComponent]
+  declarations: [UsersListComponent, UserDetailComponent, UserSummarizedCardComponent, UserLoginComponent],
+  exports: [UserSummarizedCardComponent, UserLoginComponent]
 })
 export class UsersModule { }
