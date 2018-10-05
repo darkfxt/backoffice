@@ -19,10 +19,9 @@ export class AccountsController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({id: 1, name: 'Pepe', last_name: 'mujica', company_id: '1', role: 'OWNER', email: 'asd@asd.com'});
 
-      const data = await AccountsService.getDetail(request.params.id, request.query.lang);
-      response.json(data);
+      const answer = await AccountsService.getDetail(request.params.id, request.query.lang, request.headers);
+      response.json(answer.data);
     } catch (err) {
       next(err);
     }
@@ -30,9 +29,15 @@ export class AccountsController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({data: [{id: 1, name: 'Pepe', last_name: 'mujica', company_id: '1', role: 'OWNER', email: 'asd@asd.com'}]});
       const data = JSON.parse(request.body.data);
-      const user = await AccountsService.create(data);
+
+      data.logo = (<any>request).files.map(value => ({
+        key: value.key,
+        source: 'S3',
+        url: value.location
+      }))[0];
+
+      const user = await AccountsService.create(data, request.headers);
 
       response.json(user.data);
     } catch (err) {
@@ -42,9 +47,8 @@ export class AccountsController {
 
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({data: [{id: 1, name: 'Pepe', last_name: 'mujica', company_id: '1', role: 'OWNER', email: 'asd@asd.com'}]});
       const data = JSON.parse(request.body.data);
-      const user = await AccountsService.update(request.params.id, data);
+      const user = await AccountsService.update(request.params.id, data, request.headers);
 
       response.json(user.data);
     } catch (err) {

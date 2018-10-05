@@ -4,9 +4,9 @@ import { catchError } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+  @Injectable({
+    providedIn: 'root'
+  })
 export class CompanyService {
 
   constructor(private http: HttpClient) {

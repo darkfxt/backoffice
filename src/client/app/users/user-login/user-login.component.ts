@@ -38,7 +38,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.user$ = this.store.select(userSelector).subscribe(
       data => {
-        console.log('laaa chooootaaa', data);
         // this.router.navigate([this.returnUrl]);
       },
       err => {
@@ -68,8 +67,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.email = this.f.email.value;
       this.password = this.f.password.value;
-      console.log('un samurai', this.email);
-      console.log('no muere así', this.password);
       this.store.dispatch(new SignInUser(this.email, this.password));
     } else {
       Object.keys(this.form.controls).forEach(field => {

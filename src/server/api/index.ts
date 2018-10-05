@@ -11,6 +11,7 @@ import UserRouter from './routers/user.route';
 import AccountsRouter from './routers/accounts.route';
 import CompanyRouter from './routers/company.route';
 import { errorConverter } from '../core/errors/error-converter-middleware';
+import RolesRouter from './routers/roles.route';
 
 class Api {
 
@@ -31,6 +32,7 @@ class Api {
         this.api.use('/users', UserRouter);
         this.api.use('/accounts', AccountsRouter);
         this.api.use('/companies', CompanyRouter);
+        this.api.use('/roles', RolesRouter);
 
       // try to convert all error to common interface
       this.api.use(errorConverter);

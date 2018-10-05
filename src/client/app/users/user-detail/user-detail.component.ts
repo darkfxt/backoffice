@@ -1,16 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TRANSLATE } from '../../translate-marker';
-import { SavePoint } from '../../store/place/place.actions';
-import { Store } from '@ngrx/store';
-import { AppState, userSelector } from '../../store';
-import { SaveUser } from '../../store/user/user.actions';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { User } from '../../shared/models/User';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../shared/services/user.service';
 import { CompanyService } from '../../shared/services/company.service';
+import { RolesService } from '../../shared/services/roles.service';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+export class ComparePasswordValidator implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
+    const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
+
+    return (invalidCtrl || invalidParent);
+  }
+}
 
 @Component({
   selector: 'app-user-detail',
@@ -22,15 +28,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   form: FormGroup;
   bussy: boolean;
   user = new User();
-  roles = [
-    TRANSLATE('OWNER'),
-    TRANSLATE('ADMIN'),
-    TRANSLATE('USER_NAVIGATION')
-  ];
-  organizations = [
-    {name: 'culo', id: '1'}
-  ];
+  roles = [];
+  organizations = [];
   resolverSubscription: Subscription;
+
+  matcher = new ComparePasswordValidator();
 
   constructor(
     private fb: FormBuilder,
@@ -38,11 +40,14 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private rolesService: RolesService
   ) {
     this.companyService.getAll().subscribe( (response: any) => {
-      console.log('chingaaa', response);
       this.organizations = response;
+    });
+    this.rolesService.getAll().subscribe( (response: any) => {
+      this.roles = response;
     });
   }
 
@@ -51,14 +56,19 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (resp)
         this.user = resp.user;
     });
+    const passwords = this.fb.group({
+      password: ['', [Validators.required]],
+      confirmPassword: ['']
+    }, { validator: this.checkPasswords });
 
     this.form = this.fb.group({
       username: [this.user.username, [Validators.required, Validators.maxLength(50)]],
-      last_name: [this.user.last_name, [Validators.required, Validators.maxLength(50)]],
+      password: ['', [Validators.required]],
+      confirmPassword: [''],
       email: [this.user.email, [Validators.required, Validators.email]],
       company_id: [this.user.company_id, Validators.required],
       role: [this.user.role, Validators.required]
-    });
+    }, { validator: this.checkPasswords });
 
   }
 
@@ -92,6 +102,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         const control = this.form.get(field);
         control.markAsTouched({ onlySelf: true });
       });
+  }
+
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    const pass = group.controls.password.value;
+    const confirmPass = group.controls.confirmPassword.value;
+
+    return pass === confirmPass ? null : { notSame: true };
   }
 
 }

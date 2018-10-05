@@ -35,6 +35,7 @@ import { UserEffects } from './store/user/user.effects';
 import { AccountsModule } from './accounts/accounts.module';
 import { ErrorInterceptor } from './shared/helpers/error.interceptor';
 import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
+import {AccountEffects} from './store/account/account.effects';
 
 
 
@@ -59,7 +60,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects]),
+    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
     StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,

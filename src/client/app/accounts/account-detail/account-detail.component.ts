@@ -51,7 +51,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/users']);
+    this.router.navigate(['/accounts']);
   }
 
   onSubmit() {

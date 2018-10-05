@@ -10,7 +10,8 @@ export enum UserActionTypes {
   RETRIEVED_USERS = '[User] Retrieved Users',
   SIGNIN_USER = '[User] Signing In',
   USER_SIGNED = '[User] Signed In Succesfully',
-  SIGNOUT_USER = '[User] Signing Out'
+  SIGNOUT_USER = '[User] Signing Out',
+  USER_SIGNED_OUT = '[User] Signed Out'
 }
 
 
@@ -66,5 +67,9 @@ export class SignOutUser implements Action {
   readonly type = UserActionTypes.SIGNOUT_USER;
 }
 
-export type UserActions = SaveUser | UserSelected | SaveUserSuccess
+export class UserSignedOut implements Action {
+  readonly type = UserActionTypes.USER_SIGNED_OUT;
+}
+
+export type UserActions = SaveUser | UserSelected | SaveUserSuccess | UserSignedOut
   | RetrievedUsersSuccess | GetUsers | SignInUser | UserSignedIn | SignOutUser;

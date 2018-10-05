@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountsService {
+export class RolesService {
 
   constructor(private http: HttpClient) {
   }
@@ -24,18 +24,11 @@ export class AccountsService {
       queryParams += '&simple=true';
     }
 
-    return this.http.get('/api/accounts' + queryParams);
-  }
-
-  upsert (params): Observable<any> {
-    if (params.id && params.id !== '')
-      return this.http.patch(`/api/accounts/${params.id}`, params.body);
-    else
-      return this.http.post('/api/accounts', params.body);
+    return this.http.get('/api/roles' + queryParams);
   }
 
   getDetail(id): Observable<any> {
-    return this.http.get(`/api/accounts/${id}`);
+    return this.http.get(`/api/roles/${id}`);
   }
 
   /**
