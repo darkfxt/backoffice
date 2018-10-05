@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.currentRoute = this.router.url === '/' ? 'trip-templates' : this.router.url;
     this.store.select(userSelector).subscribe((data: any) => {
-      if (data && !data.loading && data.loggedUser)
+      if (data && data.loggedUser)
         this.loggedUser = data.loggedUser;
       else
         this.loggedUser = {username: 'Usuario'};
