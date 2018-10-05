@@ -3,13 +3,8 @@ import { Router, NavigationExtras } from '@angular/router';
 import { AuthService }      from '../shared/services/auth.service';
 
 @Component({
-  template: `
-    <h2>LOGIN</h2>
-    <p>{{message}}</p>
-    <p>
-      <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
-      <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
-    </p>`
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   message: string;

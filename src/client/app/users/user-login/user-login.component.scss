@@ -1,13 +1,31 @@
-.login-container {
+.app-container{
+  max-width: 360px;
+}
+
+.body-content{
+
+  @media only screen and (max-device-width: 736px) {
+    margin-top: 0px;
+  }
+}
+
+mat-form-field{
+  width: 100%;
+}
+
+.box-container{
+  background: white;
+  margin-top: 74px;
+  border: 1px solid #DEDEDE;
+  margin-bottom: 24px;
+}
+
+.login-buttons-container{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 320px;
-  .image-container {
-    flex: 1;
-  }
-  .login-form-container, .login-inputs-container, .login-buttons-container {
-    display: flex;
-    flex-direction: column;
+
+  button{
+    width: 100%;
+    margin: 8px 0;
   }
 }

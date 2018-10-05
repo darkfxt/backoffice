@@ -40,8 +40,11 @@ export class UserEffects {
   signinUser$ = this.actions$
     .ofType(UserActionTypes.SIGNIN_USER)
     .pipe(
-      switchMap((userData: SignInUser) => this.authenticationServiceInstance.login(
-        userData.payload.email, userData.payload.password)),
-      map((serverResponse: LoginServerResponse) => new UserSignedIn(serverResponse))
+      switchMap((userData: SignInUser) => {
+        return this.authenticationServiceInstance.login(userData.payload.email, userData.payload.password);
+      }),
+      map((serverResponse: LoginServerResponse) => {
+        return new UserSignedIn(serverResponse);
+      })
     );
 }
