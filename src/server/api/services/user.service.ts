@@ -14,11 +14,14 @@ export class UserService {
   }
 
   public static async create(body, headers: any): Promise<any> {
-    const resp = await axios.post(`${config.idm.url}/users`, body, {headers});
+    body.role = body.role.id;
+
+    const resp = await axios.post(`${config.idm.url}/signup`, body, {headers});
     return resp;
   }
 
   public static async update(id, body, headers: any): Promise<any> {
+    body.role = body.role.id;
     return axios.patch(`${config.idm.url}/users/${id}`, body, {headers});
   }
 

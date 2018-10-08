@@ -29,8 +29,8 @@ export class UserController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = JSON.parse(request.body.data);
-      const user = await UserService.create(data, request.headers);
+      // const data = JSON.parse(request.body);
+      const user = await UserService.create(request.body, request.headers);
 
       response.json(user.data);
     } catch (err) {
@@ -40,8 +40,8 @@ export class UserController {
 
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = JSON.parse(request.body.data);
-      const user = await UserService.update(request.params.id, data, request.headers);
+      // const data = JSON.parse(request.body);
+      const user = await UserService.update(request.params.id, request.body, request.headers);
 
       response.json(user.data);
     } catch (err) {

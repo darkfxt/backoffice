@@ -1,3 +1,27 @@
-<p>
-  accounts-list works!
-</p>
+<app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
+                   [title]="'cuentas encontradas'"
+                   [isDialog]="isDialog"
+                   class="detail-header-content"
+                   (backButtonClicked)="goBack()"
+                   navUrl="/accounts/new">
+  <div class="button-container save-button">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
+<div class="app-container full-size body-content">
+
+  <div [hidden]="loading">
+    <app-common-list
+      [list]="accounts$"
+      [component]="drawingComponent"
+      [hideFilter]="true"
+      [paginationMetadata]="paginationOptions"
+      [activateSelectionMode]="isDialog"
+      [storeToWatch]="'accounts'"
+      (pageChanged)="onPageChanged($event)">
+
+    </app-common-list>
+  </div>
+</div>

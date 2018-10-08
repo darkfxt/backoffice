@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AppState} from '../../../store';
-import {Store} from '@ngrx/store';
-import {EventSelected} from '../../../store/trip-template/trip-template.actions';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppState } from '../../../store';
+import { Store } from '@ngrx/store';
+import { EventSelected } from '../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-user-summarized-card',
@@ -26,8 +26,6 @@ export class UserSummarizedCardComponent implements OnInit {
       : '/assets/images/imageNotFound.png';
     this.title = this.data.username;
     this.description = this.data.role.name;
-    console.log('---------------------------------');
-    console.log(this.data);
   }
 
   editUser() {

@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { switchMap, map, catchError } from 'rxjs/internal/operators';
 
-import { GetUsers, RetrievedUsersSuccess, SaveUserSuccess,
-  UserActionTypes, UserSelected, UserSignedIn, SignInUser } from './user.actions';
-import {LoginServerResponse, User} from '../../shared/models/User';
+import {
+  GetUsers, RetrievedUsersSuccess, SaveUserSuccess,
+  UserActionTypes, UserSelected, UserSignedIn, SignInUser, SignOutUser, UserSignedOut
+} from './user.actions';
+import { LoginServerResponse, User } from '../../shared/models/User';
 import { UserService } from '../../shared/services/user.service';
 import {
   GetTripTemplates,
@@ -12,7 +14,8 @@ import {
   TripTemplatesRetrieved
 } from '../trip-template/trip-template.actions';
 import { TripTemplateWithMetadata } from '../../shared/models/TripTemplate';
-import {AuthService} from '../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { of } from 'rxjs';
 
 @Injectable()
 export class UserEffects {
@@ -46,5 +49,16 @@ export class UserEffects {
       map((serverResponse: LoginServerResponse) => {
         return new UserSignedIn(serverResponse);
       })
+    );
+
+  @Effect()
+  signoutUser$ = this.actions$
+    .ofType(UserActionTypes.SIGNOUT_USER)
+    .pipe(
+      switchMap((userData: SignOutUser) => {
+        this.authenticationServiceInstance.logout();
+        return of(null);
+      }),
+      map(() => new UserSignedOut())
     );
 }

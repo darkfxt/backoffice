@@ -2,16 +2,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItemComponent } from '../../shared/common-list/common-list-item/common-list-item.component';
 import { User } from '../../shared/models/User';
 import { UserSummarizedCardComponent } from './user-summarized-card/user-summarized-card.component';
-import {Observable, Subscription} from 'rxjs';
-import {AppState, segmentSelector, userSelector} from '../../store';
-import {Store} from '@ngrx/store';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from '../../shared/services/user.service';
+import { Observable, Subscription } from 'rxjs';
+import { AppState, segmentSelector, userSelector } from '../../store';
+import { Store } from '@ngrx/store';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../shared/services/user.service';
 import {
   PaginationOptions,
   PaginationOptionsInterface
 } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {GetUsers} from '../../store/user/user.actions';
+import { GetUsers } from '../../store/user/user.actions';
 
 @Component({
   selector: 'app-users-list',
@@ -45,6 +45,25 @@ export class UsersListComponent implements OnInit {
       console.log('**********************');
       console.log(data);
     });
+  }
+
+  onButtonClick() {
+    if (this.isDialog) {
+      if (this.dialogRef) {
+        this.dialogRef.close('OPEN_NEW_USERS');
+      }
+      return;
+    }
+    this.router.navigate(['/users/new']);
+  }
+
+  goBack() {
+    if (this.isDialog) {
+      if (this.dialogRef)
+        this.dialogRef.close('CLOSE');
+      return;
+    } else
+      this.router.navigate(['/users']);
   }
 
 }
