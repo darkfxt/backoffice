@@ -1,9 +1,9 @@
 export const config = {
-  env: 'development',
+  env: 'production',
   aws: {
     s3: {
-      'accessKeyId': 'AKIAIWKWSV2WVMSW4STA',
-      'secretAccessKey': '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',
+      'accessKeyId': 'AKIAIDY3Y2IKYIQ22HIA',
+      'secretAccessKey': '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',
       'region': 'us-east-1',
       'apiVersion': '2006-03-01'
     }

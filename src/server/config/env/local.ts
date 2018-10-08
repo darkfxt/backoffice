@@ -2,8 +2,8 @@ export const config = {
   env: 'local',
   aws: {
     s3: {
-      'accessKeyId': 'AKIAIWKWSV2WVMSW4STA',
-      'secretAccessKey': '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',
+      'accessKeyId': 'AKIAIKKMPF54FK7QZMUA',
+      'secretAccessKey': '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',
       'region': 'us-east-1',
       'apiVersion': '2006-03-01'
     }

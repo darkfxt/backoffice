@@ -61,7 +61,7 @@ export class PlaceController {
       const uploadedImages = (<any>request).files
         .map(image => {
           return {
-            key: image.key,
+            key: image.key.split('/')[0],
             source: 'S3',
             url: image.location
           };
