@@ -1,12 +1,7 @@
 <div class="location-desc" [formGroup]="placeForm">
-  <h3>{{'Descripción y coordenadas' | translate}}</h3>
 
   <mat-form-field color="accent" >
-    <input #location type="text" matInput placeholder="{{'Nombre del lugar' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)" name="name" formControlName="name"/>
-    <mat-icon matSuffix>search</mat-icon>
-    <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
-      <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
-    </mat-autocomplete>
+    <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="name" formControlName="name"/>
     <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 

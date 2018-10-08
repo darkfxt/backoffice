@@ -33,6 +33,19 @@
   margin-bottom: 24px;
 }
 
+mat-form-field{
+  width: 100%;
+}
+
+.header-ctn{
+  padding-bottom: 16px;
+  border-bottom: 1px solid $gray-line;
+  margin-bottom: 24px;
+
+  p{
+    color: $gray-body;
+  }
+}
 
 .gallery-container{
   margin-top: 24px;

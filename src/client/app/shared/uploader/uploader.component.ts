@@ -17,6 +17,9 @@ export class UploaderComponent implements OnInit {
   @Output()
   filesLoaded: EventEmitter<File[]> = new EventEmitter<File[]>();
 
+  @Input()
+  multiple: boolean;
+
   constructor(private renderer: Renderer2) {
   }
 

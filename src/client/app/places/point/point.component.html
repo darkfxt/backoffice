@@ -1,5 +1,5 @@
 
-<form [formGroup]="placeForm" #formDir="ngForm" novalidate>
+<form [formGroup]="placeForm" #formDir="ngForm" novalidate autocomplete="none|false|no|off">
   <app-detail-header [isDialog]="amIDialog"
                      [title]="'Actualizar lugar' | translate"
                      class="detail-header-content"
@@ -12,6 +12,20 @@
   </app-detail-header>
   <div class="app-container full-size body-content">
     <div class="box-container">
+      <div class="row header-ctn">
+        <div class="col-xs-12 col-sm-4">
+          <mat-form-field color="accent" >
+            <input type="text" matInput placeholder="{{'Ingresa el nombre o dirección del lugar' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)"/>
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <p>Puedes utilizar nuestro buscador de lugares para conseguir las coordenadas, dirección o fotos del lugar o simplemente completa los campos manualmente.</p>
+        </div>
+      </div>
       <div class="row">
         <app-point-head class="col-sm-4 col-xs-12" [headGroup]="placeForm"></app-point-head>
 

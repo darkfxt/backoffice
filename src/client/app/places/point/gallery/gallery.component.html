@@ -1,5 +1,5 @@
 
-<app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="previewImages.length == 0 && preloadedImages.length == 0"></app-uploader>
+<app-uploader [multiple]="true" (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="previewImages.length == 0 && preloadedImages.length == 0"></app-uploader>
 <div class="preview-content" *ngIf="previewImages.length > 0 || preloadedImages.length > 0">
   <ul>
     <li>

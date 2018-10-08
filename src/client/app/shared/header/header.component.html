@@ -14,9 +14,9 @@
       </ul>
     </nav>
     <nav class="user-nav">
-      <div class="options">
+      <div class="options" [matMenuTriggerFor]="options">
         <span>{{loggedUser.username}}</span>
-        <button mat-icon-button [matMenuTriggerFor]="options">
+        <button mat-icon-button >
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #options="matMenu">
