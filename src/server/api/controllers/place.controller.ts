@@ -68,6 +68,7 @@ export class PlaceController {
         });
       data.images = [...data.images, ...uploadedImages];
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      data.company_id = (request as any).loggedUser.CompanyID;
       const oPlace = new Place(data);
       let place;
       if (request.params.place_id)

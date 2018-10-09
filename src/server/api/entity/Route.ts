@@ -30,7 +30,8 @@ export default class Route {
     public destination: Point,
     public middle_points: Point[],
     public things_to_know: ThingToKnow[],
-    public legs: Leg[]
+    public legs: Leg[],
+    public company_id: number
   ) {
 
   }

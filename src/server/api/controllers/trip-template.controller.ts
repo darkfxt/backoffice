@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
-import { TripTemplate, TripTemplateEmpty } from '../entity/TripTemplate';
-
-import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
-import { RoutesService } from '../services/routes.service';
 
 export class TripTemplateController {
 
@@ -35,36 +31,18 @@ export class TripTemplateController {
 
       const resp = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
       response.json(resp);
-      // if(request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
-      //   const answer = await TripTemplateService.getEventsFromTripTemplate(request.params.id);
-      //   const arreglo = [];
-      //   _.forEach(_.groupBy(answer.data, 'ordinal'), (value, key) => arreglo.push({day: key, events: value}));
-      //   response.json(arreglo);
-      // } else if (request.params.id === undefined || request.params.id === 'undefined') {
-      //   response.json([]);
-      // }
     } catch (err) {
       next(err);
     }
   }
 
-  // public static async glAutocomplete(request: Request, response: Response, next: NextFunction) {
-  //   try {
-  //     const data = await TripTemplateService.glAutocomplete(decodeURI(request.query.q), request.query.lang);
-  //     response.json(data);
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
-
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
-      // const data = JSON.parse(request.body.data);
 
       // data.search_name = data.username.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-      // const body = new Route(data._id, data.username, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
       let resp;
+      request.body.company_id = (request as any).loggedUser.CompanyID;
       if (request.params.id && request.params.id !== 'new' && request.params.id !== '' && request.params.id !== 'undefined') {
         Reflect.deleteProperty(request.body, '_id');
         resp = await TripTemplateService.update(request.params.id, request.body);

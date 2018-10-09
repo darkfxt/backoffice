@@ -36,6 +36,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { ErrorInterceptor } from './shared/helpers/error.interceptor';
 import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
 import {AccountEffects} from './store/account/account.effects';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -54,6 +55,7 @@ registerLocaleData(localeEs, 'es');
     PageNotFoundComponent,
     LoginComponent,
     TagsComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

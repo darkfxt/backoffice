@@ -31,6 +31,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   roles = [];
   organizations = [];
   resolverSubscription: Subscription;
+  updatePassword = true;
 
   matcher = new ComparePasswordValidator();
 
@@ -55,16 +56,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
       if (resp)
         this.user = resp.user;
+      this.user.password = '.......';
     });
-    const passwords = this.fb.group({
-      password: ['', [Validators.required]],
-      confirmPassword: ['']
-    }, { validator: this.checkPasswords });
 
     this.form = this.fb.group({
-      username: [this.user.username, [Validators.required, Validators.maxLength(50)]],
-      password: ['', [Validators.required]],
-      confirmPassword: [''],
+      username: [this.user.username],
+      password: [this.user.password, [Validators.required]],
+      confirmPassword: [this.user.password],
       email: [this.user.email, [Validators.required, Validators.email]],
       company_id: [this.user.company_id, Validators.required],
       role: [this.user.role, Validators.required]
@@ -85,6 +83,14 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       this.bussy = true;
       let responseMessage: string;
       // this.store.dispatch(new SaveUser({id: this.user.id, body: this.form.value}));
+
+      // Wheter is an update and password did not modified, we remove it.
+      if (this.user.id && this.user.password === this.form.get('password').value) {
+        this.form.removeControl('password');
+        this.form.removeControl('confirmPassword');
+      }
+
+      this.form.patchValue({username: this.form.get('email').value});
       this.userService.upsert({id: this.user.id, body: this.form.value}).subscribe(resp => {
         responseMessage = 'Usuario guardado con exito';
       }, err => {
@@ -105,6 +111,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    if (!group.controls.password)
+      return null;
     const pass = group.controls.password.value;
     const confirmPass = group.controls.confirmPassword.value;
 
