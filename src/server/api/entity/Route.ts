@@ -31,7 +31,8 @@ export default class Route {
     public middle_points: Point[],
     public things_to_know: ThingToKnow[],
     public legs: Leg[],
-    public company_id: number
+    public company_id: number,
+    public created_by: string
   ) {
 
   }

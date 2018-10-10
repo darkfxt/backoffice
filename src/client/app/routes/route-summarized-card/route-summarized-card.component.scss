@@ -37,13 +37,14 @@
 
     .summarized-card-caption{
       font-size: 12px;
+      line-height: 12px;
       color: $gray-body;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       display: block;
     }
 
     .summarized-card-subtitle {
-      color: $gray-title;
+      color: $gray-body;
       font-size: 14px;
       line-height: 20px;
       margin: 0;
