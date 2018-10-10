@@ -13,13 +13,13 @@
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
-    <app-common-list
-      [list]="users$"
+    <app-common-list *ngIf="!loading"
+      [list]="users$ | async"
+      [paginationMetadata]="metadata"
       [component]="drawingComponent"
       [hideFilter]="true"
       [activateSelectionMode]="isDialog"
-      [storeToWatch]="'users'"
-      (pageChanged)="onPageChanged($event)">
+      [storeToWatch]="'users'">
 
     </app-common-list>
   </div>

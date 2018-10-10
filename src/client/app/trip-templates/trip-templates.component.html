@@ -10,7 +10,9 @@
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
-    <app-common-list [list]="tripTemplates$"
+    <app-common-list *ngIf="!loading"
+                     [list]="tripTemplates$ | async"
+                     [paginationMetadata]="metadata$ | async"
                      [component]="drawingComponent"
                      [storeToWatch]="'tripTemplates'"
                      (pageChanged)="onPageChanged($event)">

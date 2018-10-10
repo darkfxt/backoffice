@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import {LoginServerResponse, User} from '../../shared/models/User';
+import { LoginServerResponse, User } from '../../shared/models/User';
 
 export enum UserActionTypes {
   SAVE_USER = '[User] Adding User',
@@ -70,6 +70,24 @@ export class SignOutUser implements Action {
 export class UserSignedOut implements Action {
   readonly type = UserActionTypes.USER_SIGNED_OUT;
 }
+
+export type showLoaderTypes = GetUsers | SignInUser | SignOutUser | SaveUser;
+export type hideLoaderTypes = UserSelected | SaveUserSuccess | UserSignedOut
+  | RetrievedUsersSuccess | UserSignedIn;
+
+export const showLoaderActions = [
+  UserActionTypes.GET_USERS,
+  UserActionTypes.SIGNIN_USER,
+  UserActionTypes.SIGNOUT_USER,
+  UserActionTypes.SAVE_USER
+];
+export const hideLoaderActions = [
+  UserActionTypes.USER_SIGNED,
+  UserActionTypes.USER_SELECTED,
+  UserActionTypes.USER_SIGNED_OUT,
+  UserActionTypes.SAVE_USER_SUCCESS,
+  UserActionTypes.RETRIEVED_USERS
+];
 
 export type UserActions = SaveUser | UserSelected | SaveUserSuccess | UserSignedOut
   | RetrievedUsersSuccess | GetUsers | SignInUser | UserSignedIn | SignOutUser;

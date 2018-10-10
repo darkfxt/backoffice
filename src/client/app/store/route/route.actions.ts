@@ -11,7 +11,8 @@ export enum SegmentActionTypes {
   SEGMENT_SELECTED = '[Segment] Selected',
   CLEAR_SEGMENT = '[Segment] Clear',
   SAVE_SEGMENT = '[Segment] Saving To DB',
-  TOGGLE_DIALOG = '[Segment] Set Dialog ON'
+  TOGGLE_DIALOG = '[Segment] Set Dialog ON',
+  SEGMENTS_METADATA_RETRIEVED = '[Segment] Metadata Retrieved'
 }
 
 export class GetSegments implements Action {
@@ -57,15 +58,28 @@ export class ToggleSegmentDialog implements Action {
 
 export class SegmentsRetrieved implements Action {
   readonly type = SegmentActionTypes.SEGMENTS_RETRIEVED;
-  readonly payload: Segment[];
-  readonly metadata: PaginationOptionsInterface;
-  constructor(response: SegmentWithMetadata) {
-    this.payload = response.data;
-    this.metadata = response.metadata;
-
+  constructor(public payload: Array<Segment>) {
   }
 }
 
+export class SegmentsMetadataRetrieved implements Action {
+  readonly type = SegmentActionTypes.SEGMENTS_METADATA_RETRIEVED;
+  constructor(public payload: PaginationOptionsInterface) { }
+}
+
+export type showLoaderTypes = GetSegments | FilterSegments | SaveSegment;
+export const showLoaderActions = [
+  SegmentActionTypes.GET_SEGMENTS,
+  SegmentActionTypes.FILTER_SEGMENTS,
+  SegmentActionTypes.SAVE_SEGMENT
+];
+export type hideLoaderTypes = SegmentSelected | SegmentsRetrieved | ClearSegment;
+export const hideLoaderActions = [
+  SegmentActionTypes.CLEAR_SEGMENT,
+  SegmentActionTypes.SEGMENT_SELECTED,
+  SegmentActionTypes.SEGMENTS_RETRIEVED
+];
+
 export type SegmentActions = GetSegments | SegmentsRetrieved |
   FilterSegments | SegmentSelected | SaveSegment | ClearSegment |
-  ToggleSegmentDialog;
+  ToggleSegmentDialog | SegmentsMetadataRetrieved;

@@ -13,12 +13,10 @@ import { LogoComponent } from './account-detail/logo/logo.component';
 import { UploaderModule } from '../shared/uploader/uploader.module';
 import { AccountSummarizedCardComponent } from './accounts-list/account-summarized-card/account-summarized-card.component';
 import { CommonListModule } from '../shared/common-list/common-list.module';
-import {reducers} from '../store';
-import {StoreModule} from '@ngrx/store';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('accounts', reducers),
+    // StoreModule.forFeature('accounts', reducers),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

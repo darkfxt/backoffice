@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ListItemInterface } from '../../shared/common-list/common-list-item/list-item.interface';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store';
+import { AppState } from '../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-point-summarized-card',

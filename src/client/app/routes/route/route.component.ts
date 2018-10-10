@@ -12,11 +12,12 @@ import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
-import { AppState, segmentSelector } from '../../store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getSegmentsEntityState } from '../../store/route';
 
 @Component({
   selector: 'app-route',
@@ -47,7 +48,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
   ngOnInit() {
 
-    this._subscription = this.store.select(segmentSelector).subscribe((storeSegment: any) => {
+    this._subscription = this.store.select(getSegmentsEntityState).subscribe((storeSegment: any) => {
       if (storeSegment && storeSegment.segmentSelected && storeSegment.segmentSelected._id
         && storeSegment.segmentSelected._id !== 'new' && this.segment._id === '' &&
         storeSegment.dialog !== DialogActions.TRUE)

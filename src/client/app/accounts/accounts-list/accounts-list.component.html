@@ -13,8 +13,8 @@
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
-    <app-common-list
-      [list]="accounts$"
+    <app-common-list *ngIf="!loading"
+      [list]="accounts$ | async"
       [component]="drawingComponent"
       [hideFilter]="true"
       [paginationMetadata]="paginationOptions"

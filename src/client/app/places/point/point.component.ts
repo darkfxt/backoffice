@@ -7,11 +7,12 @@ import { Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
-import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getPointsEntity } from '../../store/place';
 
 @Component({
   selector: 'app-point',
@@ -42,7 +43,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   ngOnInit() {
     let isUpdate = false;
-    this._subscription = this.store.select(pointSelector).subscribe((storePoint: any) => {
+    this._subscription = this.store.select(getPointsEntity).subscribe((storePoint: any) => {
 
       if (storePoint && storePoint.pointSelected && storePoint.pointSelected._id
         && storePoint.pointSelected._id !== 'new' && !this.place._id && storePoint.dialog !== DialogActions.TRUE)

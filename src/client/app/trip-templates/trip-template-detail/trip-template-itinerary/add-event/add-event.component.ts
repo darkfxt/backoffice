@@ -10,8 +10,8 @@ import {
 import { eventType } from '../../../../shared/models/TripTemplate';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../store';
 import { Router } from '@angular/router';
+import {AppState} from '../../../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-add-event',

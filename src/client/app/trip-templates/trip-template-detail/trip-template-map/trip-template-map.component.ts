@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
-import { AppState, tripTemplateSelector } from '../../../store';
 import { Store } from '@ngrx/store';
 import { eventType } from '../../../shared/models/TripTemplate';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { getTripTemplatesEntities } from '../../../store/trip-template';
 
 @Component({
   selector: 'app-trip-template-map',
@@ -37,7 +38,7 @@ export class TripTemplateMapComponent implements OnInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
 
-    this.store.select(tripTemplateSelector).subscribe((data: any) => {
+    this.store.select(getTripTemplatesEntities).subscribe((data: any) => {
       if (data.selectedTripTemplate &&
         data.selectedTripTemplateEvents &&
         data.selectedTripTemplateEvents.length > 0) {

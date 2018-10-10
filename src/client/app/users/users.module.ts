@@ -9,7 +9,6 @@ import { LoadingModule } from '../shared/loading/loading.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from '../store/user/user.effects';
 import { UserSummarizedCardComponent } from './users-list/user-summarized-card/user-summarized-card.component';
@@ -18,7 +17,6 @@ import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('users', reducers),
     CommonModule,
     CommonListModule,
     FormsModule,

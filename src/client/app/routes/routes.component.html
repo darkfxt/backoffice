@@ -13,9 +13,10 @@
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
-    <app-common-list
-      [list]="routes$"
+    <app-common-list *ngIf="!loading"
+      [list]="routes$ | async"
       [component]="drawingComponent"
+      [paginationMetadata]="metadata$ | async"
       [activateSelectionMode]="isDialog"
       [storeToWatch]="'segments'"
       (pageChanged)="onPageChanged($event)">

@@ -44,5 +44,18 @@ export class RetrievedAccountsSuccess implements Action {
   }
 }
 
+export type showLoaderTypes = SaveAccount | GetAccounts;
+export const showLoaderActions = [
+  AccountActionTypes.SAVE_ACCOUNT,
+  AccountActionTypes.GET_ACCOUNTS
+];
+export type hideLoaderTypes = AccountSelected | SaveAccountSuccess | RetrievedAccountsSuccess;
+export const hideLoaderActions = [
+  AccountActionTypes.ACCOUNT_SELECTED,
+  AccountActionTypes.SAVE_ACCOUNT_SUCCESS,
+  AccountActionTypes.RETRIEVED_ACCOUNTS
+];
+
+
 export type AccountActions = SaveAccount | AccountSelected | SaveAccountSuccess
   | RetrievedAccountsSuccess | GetAccounts ;

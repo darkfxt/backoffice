@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store';
 
 @Component({
   selector: 'app-account-summarized-card',
@@ -17,7 +15,7 @@ export class AccountSummarizedCardComponent implements OnInit {
   subtitleData: any;
   description: string;
 
-  constructor(private router: Router, private store: Store<AppState>) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.imageUrl = ( this.data.logo && this.data.logo.url )

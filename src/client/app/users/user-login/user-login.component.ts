@@ -6,9 +6,10 @@ import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { SignInUser } from '../../store/user/user.actions';
-import { AppState, userSelector } from '../../store';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/internal/operators';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getUserEntities } from '../../store/user';
 
 @Component({
   selector: 'app-user-login',
@@ -60,7 +61,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       this.email = this.f.email.value;
       this.password = this.f.password.value;
       this.store.dispatch(new SignInUser(this.email, this.password));
-      this.user$ = this.store.select(userSelector).subscribe(
+      this.user$ = this.store.select(getUserEntities).subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
         },

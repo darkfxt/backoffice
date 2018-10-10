@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LoggedUserInterface } from '../models/User';
-import {AppState, userSelector} from '../../store';
 import { Store } from '@ngrx/store';
-import {SignOutUser, UserSignedIn} from '../../store/user/user.actions';
+import { SignOutUser, UserSignedIn } from '../../store/user/user.actions';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getUserEntities } from '../../store/user';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.currentRoute = this.router.url === '/' ? 'trip-templates' : this.router.url;
-    this.store.select(userSelector).subscribe((data: any) => {
+    this.store.select(getUserEntities).subscribe((data: any) => {
       if (data && data.loggedUser) {
         this.loggedUser = data.loggedUser;
         this.isLogged = true;

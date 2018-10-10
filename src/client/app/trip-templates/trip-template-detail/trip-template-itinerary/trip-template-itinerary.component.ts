@@ -15,14 +15,6 @@ import { PaginationOptionsInterface } from '../../../shared/common-list/common-l
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
-import {
-  AppState,
-  eventsFromTemplateSelector,
-  pointSelector,
-  segmentSelector,
-  tripTemplateLoadingSelector,
-  tripTemplateSelector
-} from '../../../store';
 import { Store } from '@ngrx/store';
 import {
   AddEvent,
@@ -37,6 +29,10 @@ import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.ac
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
 import { BottomSheetEventComponent } from './add-event/add-event.component';
+import {AppState} from '../../../store/shared/app.interfaces';
+import {getTripTemplatesEntities} from '../../../store/trip-template';
+import {getSegmentsEntityState} from '../../../store/route';
+import { getPointsEntity } from '../../../store/place';
 
 
 @Component({
@@ -81,25 +77,25 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     private render: Renderer2
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
-    this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
+    this.selectedTemplateEvents$ = store.select(getTripTemplatesEntities);
 
   }
 
 
   ngOnInit() {
 
-    this.store.select(segmentSelector).subscribe( (data: any) => {
+    this.store.select(getSegmentsEntityState).subscribe( (data: any) => {
       if (data && data.dialog === DialogActions.CLOSE)
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
     });
-    this.store.select(pointSelector).subscribe( (data: any) => {
+    this.store.select(getPointsEntity).subscribe( (data: any) => {
       if (data && data.dialog === DialogActions.CLOSE)
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
     });
 
-    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
+    this._subscription = this.store.select(getTripTemplatesEntities).subscribe((data: any) => {
       if (data.selectedTripTemplateEvents) {
         /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
         const arrangedEvents = [];

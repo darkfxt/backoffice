@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AppState } from '../../../../store';
 import { Store } from '@ngrx/store';
 import { RemoveEvent } from '../../../../store/trip-template/trip-template.actions';
+import { AppState } from '../../../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-event-summarized-card',

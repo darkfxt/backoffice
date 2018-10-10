@@ -16,7 +16,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { TripTemplatesModule } from './trip-templates/trip-templates.module';
-import { reducers, metaReducers } from './store';
 import { SegmentEffects } from './store/route/route.effects';
 
 // Components
@@ -35,7 +34,9 @@ import { UserEffects } from './store/user/user.effects';
 import { AccountsModule } from './accounts/accounts.module';
 import { ErrorInterceptor } from './shared/helpers/error.interceptor';
 import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
-import {AccountEffects} from './store/account/account.effects';
+import { AccountEffects } from './store/account/account.effects';
+import { LoadingModule } from './shared/loading/loading.module';
+import { StateModule } from './store/state.module';
 
 
 
@@ -59,11 +60,13 @@ registerLocaleData(localeEs, 'es');
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
-    StoreDevtoolsModule,
+    StateModule.forRoot(),
+    // StoreModule.forRoot(reducers, {metaReducers}),
+    // EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
+    // StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
+    LoadingModule,
     PlacesModule,
     RoutesModule,
     TripTemplatesModule,

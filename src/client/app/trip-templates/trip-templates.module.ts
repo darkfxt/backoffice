@@ -10,7 +10,7 @@ import { TripTemplateDetailComponent } from './trip-template-detail/trip-templat
 import { TripTemplatesRoutingModule } from './trip-templates-routing.module';
 import { TripTemplatesComponent } from './trip-templates.component';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../store';
+// import { reducers } from '../store';
 import { CommonListModule } from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
@@ -28,7 +28,7 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('tripTemplates', reducers),
+    // StoreModule.forFeature('tripTemplates', reducers),
     CommonModule,
     CommonListModule,
     FormsModule,
