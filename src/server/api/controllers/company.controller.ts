@@ -7,6 +7,8 @@ export class CompanyController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
       const answer = await CompanyService.getAll(request.query, request.headers);
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        answer.data = answer.data.filter(company => company.id === (<any>request).loggedUser.CompanyID);
       if (request.query.simple) {
         response.json(answer.data.data);
         return;

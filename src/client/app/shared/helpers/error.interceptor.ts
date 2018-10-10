@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth.service';
@@ -24,8 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (err.status === 403)
             this.router.navigate(['/error', {message: err.error, code: err.status}]);
 
-            // const error = err.error.message || err.statusText;
-            // return throwError(error);
+          return of(err);
         }));
     }
 }
