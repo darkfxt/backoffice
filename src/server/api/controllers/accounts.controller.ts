@@ -36,7 +36,7 @@ export class AccountsController {
         source: 'S3',
         url: value.location
       }))[0];
-
+      data.company_id = (<any>request).loggedUser.CompanyID;
       const user = await AccountsService.create(data, request.headers);
 
       response.json(user.data);
