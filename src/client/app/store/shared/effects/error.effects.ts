@@ -15,7 +15,6 @@ export class ErrorEffects {
     .pipe(
       tap(action => console.error(action.payload)),
       map((action: HttpError) => {
-        console.log('lachota', action);
         if (action.payload.status !== undefined && action.payload.status === 0) {
           return `This is embarrassing, we're having an issue.`;
         }

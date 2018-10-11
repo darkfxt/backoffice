@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { LoggedUserInterface } from '../models/User';
 import { Store } from '@ngrx/store';
-import {SignOutUser, UserSignedIn} from '../../store/user/user.actions';
+import { SignOutUser, UserSignedIn } from '../../store/user/user.actions';
 import { Location } from '@angular/common';
 import { AppState } from '../../store/shared/app.interfaces';
-import { getUserEntities } from '../../store/user';
+import { getUserEntities, getUserLogged } from '../../store/user';
+import {LoggedUserInterface} from '../models/User';
 
 @Component({
   selector: 'app-header',
@@ -21,16 +21,18 @@ export class HeaderComponent implements OnInit {
   currentRoute;
   open = false;
   path: string;
-  constructor(private router: Router, private store: Store<AppState>, private location: Location) {
+  constructor(private router: Router,
+              private store: Store<AppState>,
+              private location: Location) {
     if (localStorage.getItem('currentUser'))
       this.store.dispatch(new UserSignedIn(JSON.parse(localStorage.getItem('currentUser'))));
   }
 
   ngOnInit() {
     this.currentRoute = this.router.url;
-    this.store.select(getUserEntities).subscribe((data: any) => {
-      if (data && data.loggedUser) {
-        this.loggedUser = data.loggedUser;
+    this.store.select(getUserLogged).subscribe((loggedUser: LoggedUserInterface) => {
+      if (loggedUser && loggedUser.username) {
+        this.loggedUser = loggedUser;
         this.isLogged = true;
       } else {
         this.loggedUser = {username: 'Usuario'};

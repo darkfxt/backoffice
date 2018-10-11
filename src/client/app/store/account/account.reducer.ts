@@ -9,7 +9,7 @@ import { DialogActions } from '../dialog-actions.enum';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface State extends EntityState<Account> {
-  metadata: PaginationOptionsInterface;
+  metadata?: PaginationOptionsInterface;
   accountSelected?: Account;
   dialog?: DialogActions;
 }

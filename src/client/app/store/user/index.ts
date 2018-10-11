@@ -31,4 +31,4 @@ export const getAllUsers = createSelector(
   entities => {
     return Object.keys(entities).map(id => entities[id]);
   }
-)
+);

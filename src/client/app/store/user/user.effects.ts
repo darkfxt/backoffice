@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import {switchMap, map, catchError, mergeMap} from 'rxjs/internal/operators';
+import { switchMap, map, catchError, mergeMap } from 'rxjs/internal/operators';
 
 import {
   GetUsers, RetrievedUsersSuccess, SaveUserSuccess,
@@ -17,9 +17,9 @@ import { TripTemplateWithMetadata } from '../../shared/models/TripTemplate';
 import { AuthService } from '../../shared/services/auth.service';
 import { of } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import {HttpError} from '../shared/actions/error.actions';
-import {HttpErrorResponse} from '@angular/common/http';
-import {SnackbarOpen} from '../shared/actions/snackbar.actions';
+import { HttpError } from '../shared/actions/error.actions';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarOpen } from '../shared/actions/snackbar.actions';
 
 @Injectable()
 export class UserEffects {
@@ -34,7 +34,13 @@ export class UserEffects {
     .ofType(UserActionTypes.SAVE_USER)
     .pipe(
       switchMap((query: any) => this.userServiceInstance.upsert({id: query.payload.id, body: query.payload.body})),
-      map(res => new SaveUserSuccess()),
+      mergeMap(res => [
+        new SaveUserSuccess(),
+        new SnackbarOpen({
+          message: 'Usuario salvado',
+          action: 'Success'
+        })
+      ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
