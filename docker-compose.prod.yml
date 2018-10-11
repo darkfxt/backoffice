@@ -8,6 +8,10 @@ services:
     ports:
       - 80:80
       - 443:80
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
     depends_on:
       - bo-api-node
   bo-api-node:
