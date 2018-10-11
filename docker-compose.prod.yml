@@ -16,6 +16,10 @@ services:
       - "NODE_ENV=production"
     ports:
       - "5000:5000"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 networks:
   default:
     external:
