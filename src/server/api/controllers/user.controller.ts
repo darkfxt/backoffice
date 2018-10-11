@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/user.service';
+import {AuthService} from '../../auth/auth.service';
 
 
 export class UserController {
@@ -53,7 +54,6 @@ export class UserController {
     try {
       const {username, password} = request.body;
       const user = await UserService.signInUser(username, password, request.headers);
-
       response.json(user.data);
     } catch (err) {
       next(err);

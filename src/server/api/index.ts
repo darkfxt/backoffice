@@ -12,6 +12,9 @@ import AccountsRouter from './routers/accounts.route';
 import CompanyRouter from './routers/company.route';
 import { errorConverter } from '../core/errors/error-converter-middleware';
 import RolesRouter from './routers/roles.route';
+import * as cookieParser from 'cookie-parser';
+import SignRouter from './routers/sign.route';
+import { authentication, authorization } from '../auth/auth.middleware';
 
 class Api {
 
@@ -26,13 +29,15 @@ class Api {
     private middleware(): void {
         this.api.use(bodyParser.json());
         this.api.use(bodyParser.urlencoded({ extended: false }));
-        this.api.use('/places', PlaceRouter);
-        this.api.use('/routes', RoutesRouter);
-        this.api.use('/trip-templates', TripTemplateRouter);
-        this.api.use('/users', UserRouter);
-        this.api.use('/accounts', AccountsRouter);
-        this.api.use('/companies', CompanyRouter);
-        this.api.use('/roles', RolesRouter);
+        this.api.use(cookieParser());
+        this.api.use('/places', [authentication, authorization('PLACE')], PlaceRouter);
+        this.api.use('/routes', [authentication, authorization('ROUTE')], RoutesRouter);
+        this.api.use('/trip-templates', [authentication, authorization('TEMPLATE')], TripTemplateRouter);
+        this.api.use('/users', SignRouter);
+        this.api.use('/users', [authentication, authorization('USER')], UserRouter);
+        this.api.use('/accounts', [authentication, authorization('ACCOUNT')], AccountsRouter);
+        this.api.use('/companies', [authentication, authorization('COMPANY')], CompanyRouter);
+        this.api.use('/roles', [authentication], RolesRouter);
 
       // try to convert all error to common interface
       this.api.use(errorConverter);

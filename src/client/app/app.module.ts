@@ -37,7 +37,7 @@ import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
 import { AccountEffects } from './store/account/account.effects';
 import { LoadingModule } from './shared/loading/loading.module';
 import { StateModule } from './store/state.module';
-
+import { ErrorComponent } from './error/error.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -55,6 +55,7 @@ registerLocaleData(localeEs, 'es');
     PageNotFoundComponent,
     LoginComponent,
     TagsComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

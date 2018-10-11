@@ -3,11 +3,12 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { User } from '../../shared/models/User';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { UserService } from '../../shared/services/user.service';
 import { CompanyService } from '../../shared/services/company.service';
 import { RolesService } from '../../shared/services/roles.service';
 import { ErrorStateMatcher } from '@angular/material/core';
+import {share} from 'rxjs/operators';
 
 export class ComparePasswordValidator implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -28,9 +29,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   form: FormGroup;
   bussy: boolean;
   user = new User();
-  roles = [];
-  organizations = [];
+  roles: Observable<any>;
+  organizations: Observable<any>;
   resolverSubscription: Subscription;
+  updatePassword = true;
 
   matcher = new ComparePasswordValidator();
 
@@ -42,29 +44,25 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private companyService: CompanyService,
     private rolesService: RolesService
-  ) {
-    this.companyService.getAll().subscribe( (response: any) => {
-      this.organizations = response;
-    });
-    this.rolesService.getAll().subscribe( (response: any) => {
-      this.roles = response;
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.organizations = this.companyService.getAll();
+    this.roles = this.rolesService.getAll();
+
     this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
       if (resp)
         this.user = resp.user;
+
+      if (this.user.id)
+        this.user.password = '.......';
+
     });
-    const passwords = this.fb.group({
-      password: ['', [Validators.required]],
-      confirmPassword: ['']
-    }, { validator: this.checkPasswords });
 
     this.form = this.fb.group({
-      username: [this.user.username, [Validators.required, Validators.maxLength(50)]],
-      password: ['', [Validators.required]],
-      confirmPassword: [''],
+      username: [this.user.username],
+      password: [this.user.password, [Validators.required]],
+      confirmPassword: [this.user.password],
       email: [this.user.email, [Validators.required, Validators.email]],
       company_id: [this.user.company_id, Validators.required],
       role: [this.user.role, Validators.required]
@@ -84,8 +82,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.bussy = true;
       let responseMessage: string;
-      // this.store.dispatch(new SaveUser({id: this.user.id, body: this.form.value}));
-      this.userService.upsert({id: this.user.id, body: this.form.value}).subscribe(resp => {
+
+      this.userService.upsert({id: this.user.id, body: this.prepareToSave()}).subscribe(resp => {
         responseMessage = 'Usuario guardado con exito';
       }, err => {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
@@ -104,7 +102,20 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  prepareToSave() {
+    const body = this.form.value;
+    body.username = body.email;
+    if (this.user.id && this.user.password === this.form.get('password').value) {
+      Reflect.deleteProperty(body, 'password');
+      Reflect.deleteProperty(body, 'confirmPassword');
+    }
+
+    return body;
+  }
+
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    if (!group.controls.password)
+      return null;
     const pass = group.controls.password.value;
     const confirmPass = group.controls.confirmPassword.value;
 

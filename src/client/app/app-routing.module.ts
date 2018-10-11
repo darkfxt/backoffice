@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from './not-found.component';
 import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 import { AuthGuard } from './shared/services/auth-guard.service';
+import { ErrorComponent } from './error/error.component';
 
 const appRoutes: Routes = [
   {
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     loadChildren: './accounts/accounts.module#AccountsModule',
     canActivate: [AuthGuard]
   },
+  { path: 'error', component: ErrorComponent},
   { path: '',   redirectTo: '/routes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

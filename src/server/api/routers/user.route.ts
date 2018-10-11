@@ -1,12 +1,7 @@
 import { Router } from 'express';
-import {UserController} from '../controllers/user.controller';
+import { UserController } from '../controllers/user.controller';
 
 const UserRouter: Router = Router();
-
-
-
-UserRouter.route('/signin')
-  .post(UserController.signInUser);
 
 UserRouter.route('/:id')
   .get(UserController.getDetail)
@@ -17,3 +12,4 @@ UserRouter.route('/')
   .post(UserController.create);
 
 export default UserRouter;
+

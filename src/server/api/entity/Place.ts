@@ -50,6 +50,7 @@ export default class Place {
   status: number;
   geo: Geo;
   images: any[];
+  company_id: number;
 
   constructor(params: any = {}) {
     this._id = params._id;
@@ -61,5 +62,6 @@ export default class Place {
     this.status = params.status || 1;
     this.geo = params.geo || new Geo();
     this.images = params.images || [];
+    this.company_id = params.company_id;
   }
 }

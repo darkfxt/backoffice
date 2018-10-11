@@ -30,11 +30,12 @@ export class Event {
 export class TripTemplate {
 
   created_by: string;
-  constructor(public _id: string, public name: string, public events: Event[]) {
-    this._id = _id;
-    this.name = name;
-    this.events = events;
-  }
+  constructor(
+    public _id: string,
+    public name: string,
+    public events: Event[],
+    public company_id: number
+  ) {}
 }
 
 export class TripTemplateEmpty {

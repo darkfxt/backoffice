@@ -26,7 +26,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
-  loading$: Observable<boolean>;
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;
   drawingComponent: ListItemComponent;

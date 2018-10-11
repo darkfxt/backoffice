@@ -1,0 +1,19 @@
+@import '../../assets/variables';
+
+.body-content{
+
+  @media only screen and (max-device-width: 736px) {
+    margin-top: 0px;
+  }
+}
+
+.box-container{
+  background: white;
+  margin-top: 74px;
+  border: 1px solid #DEDEDE;
+  margin-bottom: 24px;
+}
+
+p{
+  color: $gray-body;
+}

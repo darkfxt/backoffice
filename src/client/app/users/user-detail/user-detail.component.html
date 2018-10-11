@@ -16,7 +16,7 @@
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent">
             <mat-select placeholder="{{'Organización' | translate}}" name="company_id" required formControlName="company_id">
-              <mat-option [value]="organization.id" *ngFor="let organization of organizations">
+              <mat-option [value]="organization.id" *ngFor="let organization of (organizations | async)">
                 {{organization.name}}
               </mat-option>
             </mat-select>
@@ -27,9 +27,19 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent" >
-            <input #location type="text" matInput placeholder="{{'Nombre de usuario' | translate}}" required name="username" formControlName="username"/>
-            <mat-error *ngIf="form.get('username').hasError('required') && (form.get('username').dirty || form.get('username').touched)">{{'Campo requerido' | translate}}</mat-error>
-            <mat-error *ngIf="form.get('username').hasError('maxlength') && (form.get('username').dirty || form.get('username').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <input #location type="text" matInput placeholder="{{'Email' | translate}}" required name="email" formControlName="email"/>
+            <mat-error *ngIf="form.get('email').hasError('required') && (form.get('email').dirty || form.get('email').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email') && (form.get('email').dirty || form.get('email').touched)">{{'Formato incorrecto' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent">
+            <mat-select placeholder="{{'Rol' | translate}}" name="role" required formControlName="role">
+              <mat-option [value]="role" *ngFor="let role of (roles | async)">
+                {{role.name | translate}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('role').invalid && (form.get('role').dirty || form.get('role').touched)">{{'Campo requerido' | translate}}</mat-error>
           </mat-form-field>
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -45,23 +55,6 @@
             <!--<mat-error *ngIf="form.get('confirmPassword').hasError('required') && (form.get('confirmPassword').dirty || form.get('confirmPassword').touched)">{{'Campo requerido' | translate}}</mat-error>
             <mat-error *ngIf="form.get('confirmPassword').hasError('maxlength') && (form.get('confirmPassword').dirty || form.get('confirmPassword').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>-->
             <mat-error *ngIf="form.hasError('notSame')">Passwords do not match</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-          <mat-form-field color="accent" >
-            <input #location type="text" matInput placeholder="{{'Email' | translate}}" required name="email" formControlName="email"/>
-            <mat-error *ngIf="form.get('email').hasError('required') && (form.get('email').dirty || form.get('email').touched)">{{'Campo requerido' | translate}}</mat-error>
-            <mat-error *ngIf="form.get('email').hasError('email') && (form.get('email').dirty || form.get('email').touched)">{{'Formato incorrecto' | translate}}</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-          <mat-form-field color="accent">
-            <mat-select placeholder="{{'Rol' | translate}}" name="role" required formControlName="role">
-              <mat-option [value]="role" *ngFor="let role of roles">
-                {{role.name | translate}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('role').invalid && (form.get('role').dirty || form.get('role').touched)">{{'Campo requerido' | translate}}</mat-error>
           </mat-form-field>
         </div>
       </div>

@@ -29,10 +29,8 @@ export class RoutesController {
       }));
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      data.company_id = (request as any).loggedUser.CompanyID;
 
-      // const route = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface,
-      // data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
-      // delete route._id;
       const resp = await RoutesService.create(data);
       response.json(resp);
     } catch (err) {
@@ -54,8 +52,7 @@ export class RoutesController {
       }
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-      // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
+      data.company_id = (request as any).loggedUser.CompanyID;
       const resp = await RoutesService.update(request.params.id, data);
       response.json(resp.data);
     } catch (err) {
