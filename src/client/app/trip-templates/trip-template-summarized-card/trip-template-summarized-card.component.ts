@@ -10,8 +10,8 @@ export class TripTemplateSummarizedCardComponent implements OnInit {
   @Input() data: any;
   imageUrl: string;
   title: string;
-  subtitle: string;
   description: string;
+  created_by: string;
 
   constructor(private router: Router) { }
 
@@ -20,8 +20,8 @@ export class TripTemplateSummarizedCardComponent implements OnInit {
       ? this.data.images[0].url
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
-    this.subtitle = this.data.route_type;
-    this.description = this.data.description;
+    this.description = this.data.description || '';
+    this.created_by = this.data.created_by;
   }
 
   editSegment() {

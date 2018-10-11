@@ -51,6 +51,7 @@ export default class Place {
   geo: Geo;
   images: any[];
   company_id: number;
+  created_by: string;
 
   constructor(params: any = {}) {
     this._id = params._id;
@@ -63,5 +64,6 @@ export default class Place {
     this.geo = params.geo || new Geo();
     this.images = params.images || [];
     this.company_id = params.company_id;
+    this.created_by = params.created_by;
   }
 }

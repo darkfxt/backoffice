@@ -7,6 +7,8 @@ export class RoutesController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await RoutesService.getAll(request.query);
       if (request.query.simple) {
         response.json(answer.data.data);
@@ -30,6 +32,7 @@ export class RoutesController {
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       data.company_id = (request as any).loggedUser.CompanyID;
+      data.created_by = (request as any).loggedUser.Username;
 
       const resp = await RoutesService.create(data);
       response.json(resp);

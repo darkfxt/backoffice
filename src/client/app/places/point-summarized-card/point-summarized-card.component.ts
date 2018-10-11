@@ -18,6 +18,7 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   title: string;
   subtitle: string;
   description: string;
+  created_by: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
 
@@ -29,7 +30,8 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.subtitle = this.data.type;
-    this.description = this.data.description;
+    this.description = this.data.description || '';
+    this.created_by = this.data.created_by;
   }
 
   editPoint() {

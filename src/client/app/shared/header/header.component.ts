@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LoggedUserInterface } from '../models/User';
 import { Store } from '@ngrx/store';
-import { SignOutUser, UserSignedIn } from '../../store/user/user.actions';
+import {SignOutUser, UserSignedIn} from '../../store/user/user.actions';
+import { Location } from '@angular/common';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getUserEntities } from '../../store/user';
 
@@ -17,16 +18,16 @@ export class HeaderComponent implements OnInit {
   header: any;
   isLogged = false;
   loggedUser: any = {username: 'Usuario'};
-  currentRoute = 'trips';
+  currentRoute;
   open = false;
-  constructor(private router: Router, private store: Store<AppState>) {
-    if (localStorage.getItem('currentUser')) {
+  path: string;
+  constructor(private router: Router, private store: Store<AppState>, private location: Location) {
+    if (localStorage.getItem('currentUser'))
       this.store.dispatch(new UserSignedIn(JSON.parse(localStorage.getItem('currentUser'))));
-    }
   }
 
   ngOnInit() {
-    this.currentRoute = this.router.url === '/' ? 'trip-templates' : this.router.url;
+    this.currentRoute = this.router.url;
     this.store.select(getUserEntities).subscribe((data: any) => {
       if (data && data.loggedUser) {
         this.loggedUser = data.loggedUser;

@@ -17,6 +17,8 @@ export class RouteSummarizedCardComponent implements OnInit {
   title: string;
   subtitleData: any;
   description: string;
+  created_by: string;
+  route_type: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
 
@@ -28,6 +30,8 @@ export class RouteSummarizedCardComponent implements OnInit {
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.description = this.data.description;
+    this.route_type = this.data.route_type;
+    this.created_by = this.data.created_by;
     const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
     this.subtitleData = {
       routeType: this.data.route_type,
