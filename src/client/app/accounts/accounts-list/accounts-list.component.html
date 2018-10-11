@@ -16,7 +16,6 @@
     <app-common-list *ngIf="!loading"
       [list]="accounts$ | async"
       [component]="drawingComponent"
-      [hideFilter]="true"
       [paginationMetadata]="paginationOptions"
       [activateSelectionMode]="isDialog"
       [storeToWatch]="'accounts'"
