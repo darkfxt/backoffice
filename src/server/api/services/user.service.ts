@@ -10,7 +10,7 @@ export class UserService {
       queryParams += `&search=${query.search}`;
     }
     return axios
-      .get(`${config.idm.url}/users`, {headers});
+      .get(`${config.idm.url}/users`, {params: query, headers});
   }
 
   public static async create(body, headers: any): Promise<any> {

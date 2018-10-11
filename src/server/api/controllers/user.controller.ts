@@ -7,6 +7,8 @@ export class UserController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await UserService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
