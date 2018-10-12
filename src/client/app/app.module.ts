@@ -64,7 +64,7 @@ registerLocaleData(localeEs, 'es');
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
     StoreDevtoolsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: false}),
     BrowserAnimationsModule,
     PlacesModule,
     RoutesModule,

@@ -1,5 +1,11 @@
 export const config = {
   env: 'production',
+  newrelic: {
+    app_name: 'API-FE-BACKOFFICE-PROD',
+    license_key: '106a7812da3b90a948d8acb3a35bf8947c5e372b',
+    log_level: 'error',
+    agent_enabled: true
+  },
   aws: {
     s3: {
       'accessKeyId': 'AKIAIDY3Y2IKYIQ22HIA',

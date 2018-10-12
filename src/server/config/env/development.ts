@@ -1,5 +1,11 @@
 export const config = {
   env: 'development',
+  newrelic: {
+    app_name: 'API-FE-BACKOFICCE-DEV',
+    license_key: 'fa39f2a5d23d346f07edace94a3a8d547c9e0c31',
+    log_level: 'info',
+    agent_enabled: true
+  },
   aws: {
     s3: {
       'accessKeyId': 'AKIAIKKMPF54FK7QZMUA',
