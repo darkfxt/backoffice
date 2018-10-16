@@ -1,3 +1,4 @@
+require('newrelic');
 import { fourOFour } from './middlewares/404-middleware';
 
 const PORT = 5000;
