@@ -17,10 +17,14 @@
       [list]="users$ | async"
       [paginationMetadata]="metadata"
       [component]="drawingComponent"
-      [hideFilter]="true"
       [activateSelectionMode]="isDialog"
       [storeToWatch]="'users'">
 
+      <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Aun no has creado usuarios!!!</h2>
+        <p>Crea diferentes usuarios dependiendo su rol</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo usuario</button>
+      </div>
     </app-common-list>
   </div>
 </div>

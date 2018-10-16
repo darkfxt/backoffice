@@ -18,7 +18,6 @@ export class AccountsService {
     body.secondary_color = body.secondary_color.replace('#', '');
     Reflect.deleteProperty(body, 'file');
     Reflect.deleteProperty(body, 'deleted_images');
-    body.company_id = 1;
     const resp = await axios.post(`${config.core.url}/accounts`, body);
     return resp;
   }

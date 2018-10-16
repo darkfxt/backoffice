@@ -13,3 +13,17 @@
   }
 }
 
+.empty-state{
+  text-align: center;
+
+  h2{
+    color: $gray-title;
+  }
+
+  p{
+    color: $gray-body;
+    margin-bottom: 46px;
+    font-size: 16px;
+  }
+}
+
