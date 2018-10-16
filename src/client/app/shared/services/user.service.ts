@@ -24,7 +24,7 @@ export class UserService {
       queryParams += '&simple=true';
     }
 
-    return this.http.get('/apii/users' + queryParams);
+    return this.http.get('/api/users' + queryParams);
   }
 
   signin(params): Observable<any> {

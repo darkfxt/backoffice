@@ -13,12 +13,11 @@ export class ErrorEffects {
   @Effect()
   showError: Observable<any> = this.actions.ofType<HttpError>(HTTP_ERROR)
     .pipe(
-      tap(action => console.error(action.payload)),
-      map((action: HttpError) => {
+      map((action: any) => {
         if (action.payload.status !== undefined && action.payload.status === 0) {
           return `This is embarrassing, we're having an issue.`;
         }
-        return 'Ha ocurrido un error';
+        return action.message; //action.payload.message;
       }),
       mergeMap((message) => [
         new SnackbarOpen({ message: message }),

@@ -89,11 +89,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
       }, () => {
         this.bussy = false;
-        this.snackBar.open(responseMessage, undefined, {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'left'
-        });
+        // this.snackBar.open(responseMessage, undefined, {
+        //   duration: 3000,
+        //   verticalPosition: 'bottom',
+        //   horizontalPosition: 'left'
+        // });
       });
     } else
       Object.keys(this.form.controls).forEach(field => {
