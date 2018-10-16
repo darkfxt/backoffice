@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 import { AppState, segmentSelector } from '../../store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
-import { ToggleDialogPoint } from '../../store/place/place.actions';
+import {ClearPoint, ToggleDialogPoint} from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 
 @Component({
@@ -89,6 +89,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._subscription)
       this._subscription.unsubscribe();
+
+    this.store.dispatch(new ClearSegment());
   }
 
   // Form control
