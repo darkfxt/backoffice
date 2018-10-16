@@ -5,6 +5,7 @@ import { PaginationOptionsInterface } from '../../shared/common-list/common-list
 export enum TripTemplateActionTypes {
   GET_TRIP_TEMPLATES = '[T.Template] Retrieving',
   TRIP_TEMPLATES_RETRIEVED = '[T.Template] Retrieved Succesfully',
+  TRIP_TEMPLATES_METADATA_RETRIEVED = '[T.Template] Retrieved Metadata',
   TRIP_TEMPLATE_SELECTED = '[T.Template] Selected',
   CREATE_TRIP_TEMPLATE = '[T.Template] Posting',
   SAVE_TRIP_TEMPLATE = '[T.Template] Updating',
@@ -16,7 +17,7 @@ export enum TripTemplateActionTypes {
   ADD_EVENT = '[Events] Adding new Event',
   REMOVE_EVENT = '[Events] Removing Event',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
-  SET_NAME_FOR_TEMPLATE = '[Events] Set name',
+  SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
   SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting Type, index & day for event'
 }
@@ -65,12 +66,12 @@ export class TripTemplateProcessedSuccesfully implements Action {
 
 export class TripTemplatesRetrieved implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATES_RETRIEVED;
-  readonly payload: TripTemplate[];
-  readonly metadata: PaginationOptionsInterface;
-  constructor (readonly  response: TripTemplateWithMetadata) {
-    this.payload = response.data;
-    this.metadata = response.metadata;
-  }
+  constructor (public payload: TripTemplate[]) { }
+}
+
+export class TripTemplatesMetadataRetrieved implements Action {
+  readonly type = TripTemplateActionTypes.TRIP_TEMPLATES_METADATA_RETRIEVED;
+  constructor(public payload: PaginationOptionsInterface) { }
 }
 
 export class GetEventsForTripTemplate implements Action {
@@ -138,6 +139,25 @@ export class DayIndexTypeForEventSetted implements Action {
   }
 }
 
+export type showLoaderTypes = GetTripTemplates | CreateTripTemplate |
+   GetEventsForTripTemplate | AddEvent | SaveTripTemplate;
+export const showLoaderActions = [
+  TripTemplateActionTypes.GET_TRIP_TEMPLATES,
+  TripTemplateActionTypes.CREATE_TRIP_TEMPLATE,
+  TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE,
+  TripTemplateActionTypes.ADD_EVENT,
+  TripTemplateActionTypes.SAVE_TRIP_TEMPLATE
+];
+export type hideLoaderTypes = TripTemplatesRetrieved | EventsRetrieved |
+  EventSelected  | TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft ;
+export const hideLoaderActions = [
+  TripTemplateActionTypes.TRIP_TEMPLATES_RETRIEVED,
+  TripTemplateActionTypes.EVENTS_RETRIEVED_FOR_TEMPLATE,
+  TripTemplateActionTypes.EVENT_SELECTED,
+  TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED,
+  TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY,
+  TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION
+];
 interface dayIndexType {
   day: number;
   index: number;
@@ -148,4 +168,5 @@ export type TripTemplateActions = GetTripTemplates | CreateTripTemplate |
   TripTemplatesRetrieved | GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | SaveTripTemplate | OrdinalForEventSetted |
   TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft |
-  SetNameForTemplate | DayIndexTypeForEventSetted | SetDescriptionForTemplate | RemoveEvent;
+  SetNameForTemplate | DayIndexTypeForEventSetted | SetDescriptionForTemplate | RemoveEvent |
+  TripTemplatesMetadataRetrieved;

@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {AddEvent} from '../../../../store/trip-template/trip-template.actions';
-import {Event, eventType} from '../../../../shared/models/TripTemplate';
-import {Store} from '@ngrx/store';
-import {AppState, tripTemplateSelector} from '../../../../store';
-import {Subscription} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEvent } from '../../../../store/trip-template/trip-template.actions';
+import { Event, eventType } from '../../../../shared/models/TripTemplate';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { AppState } from '../../../../store/shared/app.interfaces';
+import { getTripTemplatesEntities } from '../../../../store/trip-template';
 
 @Component({
   selector: 'app-custom-event',
@@ -13,7 +14,7 @@ import {Subscription} from 'rxjs';
 })
 export class CustomEventComponent implements OnInit {
 
-  @Input() isDialog? = false;
+  @Input() isDialog ? = false;
   @Input() dialogRef: any;
   form: FormGroup;
   hours = new Array(24);
@@ -30,7 +31,7 @@ export class CustomEventComponent implements OnInit {
       hours: '',
       minutes: ''
     });
-    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
+    this._subscription = this.store.select(getTripTemplatesEntities).subscribe((data: any) => {
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
     });
   }

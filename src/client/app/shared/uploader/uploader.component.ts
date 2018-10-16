@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-uploader',
@@ -16,6 +16,9 @@ export class UploaderComponent implements OnInit {
 
   @Output()
   filesLoaded: EventEmitter<File[]> = new EventEmitter<File[]>();
+
+  @Input()
+  multiple: boolean;
 
   constructor(private renderer: Renderer2) {
   }

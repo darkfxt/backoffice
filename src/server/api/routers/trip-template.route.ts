@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { TripTemplateController } from '../controllers/trip-template.controller';
 
 const TripTemplateRouter: Router = Router();

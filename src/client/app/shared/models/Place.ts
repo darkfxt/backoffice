@@ -1,4 +1,4 @@
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 export class Point {
 

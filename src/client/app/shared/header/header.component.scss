@@ -97,11 +97,19 @@ header{
   }
 }
 
+.user-menu{
+  min-width: 200px;
+
+  button{
+  }
+}
+
 .user-nav{
   right: 16px;
   position: absolute;
   color: white;
-  top: 16px;
+  top: 5px;
+  cursor: pointer;
 
   span, mat-icon{
     vertical-align: middle;

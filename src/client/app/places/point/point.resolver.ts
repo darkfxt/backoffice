@@ -1,9 +1,9 @@
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {PlaceService} from '../../shared/services/place.service';
-import {EMPTY, Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {Injectable} from '@angular/core';
-import {Point} from '../../shared/models/Place';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { PlaceService } from '../../shared/services/place.service';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { Injectable } from '@angular/core';
+import { Point } from '../../shared/models/Place';
 
 
 @Injectable({
@@ -21,7 +21,7 @@ export class PointResolver implements Resolve<any> {
     state: RouterStateSnapshot
   ): Observable<any> {
     const id = route.paramMap.get('id');
-    if(id === 'new')
+    if (id === 'new')
       return of(new Point());
 
     return this.service.search(`_id=${id}`)

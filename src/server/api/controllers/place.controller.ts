@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from 'express';
-import {PlaceService} from '../services/place.service';
+import { Request, Response, NextFunction } from 'express';
+import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
 
 
@@ -7,8 +7,10 @@ export class PlaceController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await PlaceService.getAll(request.query);
-      if(request.query.simple){
+      if (request.query.simple) {
         response.json(answer.data.data);
         return;
       }
@@ -29,7 +31,8 @@ export class PlaceController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const resp = await PlaceService.search(request.query, request.query.lang);
       response.json(resp.data);
     } catch (err) {
@@ -61,18 +64,20 @@ export class PlaceController {
       const uploadedImages = (<any>request).files
         .map(image => {
           return {
-            key: image.key,
+            key: image.key.split('/')[0],
             source: 'S3',
             url: image.location
           };
         });
       data.images = [...data.images, ...uploadedImages];
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      data.company_id = (request as any).loggedUser.CompanyID;
+      data.created_by = (request as any).loggedUser.Username;
       const oPlace = new Place(data);
       let place;
-      if(request.params.place_id)
+      if (request.params.place_id){
         place = await PlaceService.update(request.params.place_id, oPlace);
-      else{
+      } else {
         delete oPlace._id;
         place = await PlaceService.create(oPlace);
       }

@@ -7,16 +7,33 @@
     <div class="nav-overlay" [class.open]="open" (click)="open=false"></div>
     <nav class="main-nav" [class.open]="open">
       <ul>
-        <li [class.current]="currentRoute == 'trips'" routerLink="/trip-templates" (click)="navigate('trips')">{{'VIAJES' | translate}}</li>
+        <!--li [class.current]="currentRoute == 'bookings'" routerLink="/bookings" (click)="navigate('bookings')">{{'RESERVAS' | translate}}</li-->
         <li [class.current]="currentRoute == 'trip-templates'" routerLink="/trip-templates" (click)="navigate('trip-templates')">{{'TEMPLATES' | translate}}</li>
         <li [class.current]="currentRoute == 'routes'" routerLink="/routes" (click)="navigate('routes')">{{'RUTAS' | translate}}</li>
         <li [class.current]="currentRoute == 'places'" routerLink="/places" (click)="navigate('places')">{{'LUGARES' | translate}}</li>
       </ul>
     </nav>
     <nav class="user-nav">
-      <div>
-        <span>Enrico</span>
-        <mat-icon>arrow_drop_down</mat-icon>
+      <div (click)="goToLogin()" *ngIf="!isLogged" style="margin-top: 10px"><span>{{'Iniciar sesión' | translate}}</span></div>
+      <div class="options" [matMenuTriggerFor]="options" *ngIf="isLogged">
+        <span>{{loggedUser.username}}</span>
+        <button mat-icon-button >
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #options="matMenu" overlapTrigger="false">
+          <div class="user-menu">
+            <button (click)="goToUsers() " mat-menu-item>
+              <span>{{'Usuarios' | translate}}</span>
+            </button>
+            <button (click)="goToAccounts()" mat-menu-item>
+              <span>{{'Cuentas' | translate}}</span>
+            </button>
+            <button (click)="onSignOut()" mat-menu-item>
+              <span>{{'Cerrar sesión' | translate}}</span>
+            </button>
+          </div>
+        </mat-menu>
+
       </div>
     </nav>
   </div>

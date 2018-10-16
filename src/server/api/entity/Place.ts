@@ -1,4 +1,4 @@
-export class Address{
+export class Address {
   country_code: string;
   country: string;
   locality: string;
@@ -8,7 +8,7 @@ export class Address{
   street_number: string;
   formatted_address: string;
 
-  constructor(params: any = {}){
+  constructor(params: any = {}) {
     this.country_code = params.country_code || '';
     this.country = params.country || '';
     this.locality = params.locality || '';
@@ -20,27 +20,27 @@ export class Address{
   }
 }
 
-export class Geo{
+export class Geo {
   point: Point;
   address: Address;
 
-  constructor(params: any = {}){
+  constructor(params: any = {}) {
     this.point = params.point || new Point();
     this.address = params.address || new Address();
   }
 }
 
-export class Point{
+export class Point {
   lat: number;
   lng: number;
 
-  constructor(params: any = {}){
+  constructor(params: any = {}) {
     this.lat = params.lat || 0;
     this.lng = params.lng || 0;
   }
 }
 
-export default class Place{
+export default class Place {
   _id: string;
   place_id: string;
   name: string;
@@ -50,8 +50,10 @@ export default class Place{
   status: number;
   geo: Geo;
   images: any[];
+  company_id: number;
+  created_by: string;
 
-  constructor(params: any = {}){
+  constructor(params: any = {}) {
     this._id = params._id;
     this.place_id = params.place_id || '';
     this.name = params.name || '';
@@ -61,5 +63,7 @@ export default class Place{
     this.status = params.status || 1;
     this.geo = params.geo || new Geo();
     this.images = params.images || [];
+    this.company_id = params.company_id;
+    this.created_by = params.created_by;
   }
 }

@@ -3,15 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlaceService } from '../../shared/services/place.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
-import { AppState, pointSelector } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getPointsEntity } from '../../store/place';
+import { PlaceStore } from '../../shared/services/place-store.services';
 
 @Component({
   selector: 'app-point',
@@ -24,8 +26,12 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   place: Place = new Place();
   _subscription: Subscription;
   _resolverSubscription: Subscription;
+  _getDetailSubscription: Subscription;
   bussy: boolean;
   amIDialog = false;
+  private autocompleteTimeout;
+  private lastSearch;
+  options: Observable<any[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -35,14 +41,15 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private store: Store<AppState>,
     matDialog: MatDialog,
     modalService: ModalService,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private placeStore: PlaceStore
   ) {
     super(matDialog, modalService);
   }
 
   ngOnInit() {
     let isUpdate = false;
-    this._subscription = this.store.select(pointSelector).subscribe((storePoint: any) => {
+    this._subscription = this.store.select(getPointsEntity).subscribe((storePoint: any) => {
 
       if (storePoint && storePoint.pointSelected && storePoint.pointSelected._id
         && storePoint.pointSelected._id !== 'new' && !this.place._id && storePoint.dialog !== DialogActions.TRUE)
@@ -99,6 +106,32 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.store.dispatch(new ClearPoint());
       this._subscription.unsubscribe();
     }
+
+    if (this._getDetailSubscription)
+      this._getDetailSubscription.unsubscribe();
+  }
+
+  onOptionSelected(e) {
+    this.placeForm.patchValue({name: e.option.value.name.split(',')[0]});
+    this._getDetailSubscription = this.placeService.getGoogleDetail(e.option.value.place_id).subscribe(resp => {
+      this.placeStore.setLocation(resp);
+    });
+  }
+
+  displayFn(value) {
+    return value.name;
+  }
+
+  search(event) {
+    if (event.code === 'Backspace' || event.target.value.length < 3 || event.target.value === this.lastSearch)
+      return false;
+
+    clearTimeout(this.autocompleteTimeout);
+    this.autocompleteTimeout = setTimeout(() => {
+      this.lastSearch = event.target.value;
+      this.options = this.placeService.autocomplete(event.target.value);
+    }, 300);
+
   }
 
   // Form control

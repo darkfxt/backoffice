@@ -31,9 +31,11 @@
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
+newrelic_agent.log
 testem.log
 /typings
 
 # System Files
 .DS_Store
 Thumbs.db
+

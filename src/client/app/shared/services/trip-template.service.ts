@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {HttpClient} from '@angular/common/http';
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { HttpClient } from '@angular/common/http';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +16,18 @@ export class TripTemplateService {
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
-      if(paginationMetadata.search){
+      if (paginationMetadata.search) {
         queryParams += `&search=${paginationMetadata.search}`;
       }
     }
-    if(withoutMetadata){
+    if (withoutMetadata) {
       queryParams += '&simple=true';
     }
 
     return this.http.get('/api/trip-templates' + queryParams);
   }
 
-  upsert(params){
+  upsert(params) {
     return this.http.patch(`/api/trip-templates/${params._id}`, params);
     // if(params._id && params._id !== 'new' && params._id !== ''){
     //   return this.update(params);
@@ -43,22 +43,22 @@ export class TripTemplateService {
     return this.http.patch(`/api/trip-templates/${params._id}`, params);
   }
 
-  getDetail (tripTemplate_id: string): Observable<any>{
+  getDetail (tripTemplate_id: string): Observable<any> {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}?lang=es`);
   }
 
-  getEventsFromTripTemplate (tripTemplate_id: string): Observable<any>{
+  getEventsFromTripTemplate (tripTemplate_id: string): Observable<any> {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}/events`);
   }
 
-  getItineraryFromTripTemplate (tripTemplate_id: string): Observable<any>{
+  getItineraryFromTripTemplate (tripTemplate_id: string): Observable<any> {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}/itinerary`);
   }
 
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
+   * @param operation - username of the operation that failed
    * @param result - optional value to return as the observable result
    */
   private handleError<T> (operation = 'operation', result?: T) {

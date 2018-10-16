@@ -15,6 +15,9 @@ export class PlaceService {
     if (query.search) {
       queryParams += `&search=${query.search}`;
     }
+    if (query.company_id) {
+      queryParams += `&company_id=${query.company_id}`;
+    }
     return axios
       .get(`${config.geo.url}/places${queryParams}`);
   }

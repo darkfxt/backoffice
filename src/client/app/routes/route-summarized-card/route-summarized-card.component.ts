@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store';
 import { EventSelected } from '../../store/trip-template/trip-template.actions';
+import { AppState } from '../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -17,6 +17,8 @@ export class RouteSummarizedCardComponent implements OnInit {
   title: string;
   subtitleData: any;
   description: string;
+  created_by: string;
+  route_type: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
 
@@ -28,6 +30,8 @@ export class RouteSummarizedCardComponent implements OnInit {
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.description = this.data.description;
+    this.route_type = this.data.route_type;
+    this.created_by = this.data.created_by;
     const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
     this.subtitleData = {
       routeType: this.data.route_type,
@@ -36,7 +40,7 @@ export class RouteSummarizedCardComponent implements OnInit {
     };
   }
 
-  calculateDistanceAndTime(legs: any[]): any{
+  calculateDistanceAndTime(legs: any[]): any {
     let distance = 0;
     let duration = 0;
     legs.forEach((element) => {

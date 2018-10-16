@@ -7,6 +7,8 @@ export class RoutesController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await RoutesService.getAll(request.query);
       if (request.query.simple) {
         response.json(answer.data.data);
@@ -29,10 +31,9 @@ export class RoutesController {
       }));
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      data.company_id = (request as any).loggedUser.CompanyID;
+      data.created_by = (request as any).loggedUser.Username;
 
-      // const route = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface,
-      // data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
-      // delete route._id;
       const resp = await RoutesService.create(data);
       response.json(resp);
     } catch (err) {
@@ -54,8 +55,7 @@ export class RoutesController {
       }
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-      // const body = new Route(data._id, data.name, data.search_name, data.route_type, data.road_surface, data.via, data.description, data.images, data.origin, data.destination, data.middle_points, data.things_to_know, data.legs);
+      data.company_id = (request as any).loggedUser.CompanyID;
       const resp = await RoutesService.update(request.params.id, data);
       response.json(resp.data);
     } catch (err) {

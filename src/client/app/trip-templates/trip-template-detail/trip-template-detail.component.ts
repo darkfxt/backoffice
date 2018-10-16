@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector } from '../../store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
 import {
@@ -13,7 +12,9 @@ import {
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event } from '../../shared/models/TripTemplate';
 import { SaveSegment } from '../../store/route/route.actions';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { AppState } from '../../store/shared/app.interfaces';
+import {getTripTemplatesEntities} from '../../store/trip-template';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -37,9 +38,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar
     ) {
-    store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
-      this.loading = isLoading;
-    });
+    // store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
+    //   this.loading = isLoading;
+    // });
     this.form = this.fb.group({
       itinerary: this.fb.array([
         this.fb.control('')
@@ -70,7 +71,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
 
-    this.store.select(tripTemplateSelector).subscribe( (data: any) => {
+    this.store.select(getTripTemplatesEntities).subscribe( (data: any) => {
       if (data.selectedTripTemplate && data.selectedTripTemplate._id &&
         data.selectedTripTemplate._id !== 'new' && this._selectedRouteTemplateId === 'new') {
         this.router.navigate([`/trip-templates/${data.selectedTripTemplate._id}`]);
@@ -112,7 +113,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
-    } else{
+    } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
         control.markAsTouched({onlySelf: true});

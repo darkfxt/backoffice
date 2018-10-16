@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {ModalService} from './modal.service';
+import { Component } from '@angular/core';
+import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-guard-modal',

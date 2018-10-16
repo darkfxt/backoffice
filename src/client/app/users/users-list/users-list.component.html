@@ -1,0 +1,30 @@
+<app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
+                    [title]="'usuarios encontrados'"
+                    [isDialog]="isDialog"
+                    class="detail-header-content"
+                    (backButtonClicked)="goBack()"
+                    navUrl="/users/new">
+  <div class="button-container save-button">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
+<div class="app-container full-size body-content">
+
+  <div [hidden]="loading">
+    <app-common-list *ngIf="!loading"
+      [list]="users$ | async"
+      [paginationMetadata]="metadata"
+      [component]="drawingComponent"
+      [activateSelectionMode]="isDialog"
+      [storeToWatch]="'users'">
+
+      <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Aun no has creado usuarios!!!</h2>
+        <p>Crea diferentes usuarios dependiendo su rol</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo usuario</button>
+      </div>
+    </app-common-list>
+  </div>
+</div>

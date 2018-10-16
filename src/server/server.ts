@@ -1,4 +1,5 @@
-import {fourOFour} from './middlewares/404-middleware';
+require('newrelic');
+import { fourOFour } from './middlewares/404-middleware';
 
 const PORT = 5000;
 
@@ -12,7 +13,7 @@ import * as healthcheck from 'express-healthcheck';
 
 const env = process.env.NODE_ENV;
 const server: express.Application = express();
-console.log(env)
+console.log(env);
 server.disable('x-powered-by');
 // logs to console minimal information
 // :method :url :statusCode :time :content length

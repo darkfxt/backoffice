@@ -13,7 +13,7 @@ if (config.logger.console) {
 
 // if (config.logger.remote) {
 //   logger.addStream({
-//     name: 'tg-backoffice',
+//     username: 'tg-backoffice',
 //     type: 'raw',
 //     stream: require('bunyan-logstash-tcp').createStream(config.logger.remote)
 //   });

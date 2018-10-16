@@ -1,5 +1,5 @@
-import {Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef} from '@angular/core';
-import {MAT_DIALOG_DATA, MatBottomSheet, MatDialog} from '@angular/material';
+import { Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatBottomSheet, MatDialog } from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
 import { RouteComponent } from '../../../routes/route/route.component';
 import { FormArray, FormBuilder } from '@angular/forms';
@@ -15,14 +15,6 @@ import { PaginationOptionsInterface } from '../../../shared/common-list/common-l
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
-import {
-  AppState,
-  eventsFromTemplateSelector,
-  pointSelector,
-  segmentSelector,
-  tripTemplateLoadingSelector,
-  tripTemplateSelector
-} from '../../../store';
 import { Store } from '@ngrx/store';
 import {
   AddEvent,
@@ -36,7 +28,11 @@ import { PointComponent } from '../../../places/point/point.component';
 import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.actions';
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
-import {BottomSheetEventComponent} from './add-event/add-event.component';
+import { BottomSheetEventComponent } from './add-event/add-event.component';
+import {AppState} from '../../../store/shared/app.interfaces';
+import {getTripTemplatesEntities} from '../../../store/trip-template';
+import {getSegmentsEntityState} from '../../../store/route';
+import { getPointsEntity } from '../../../store/place';
 
 
 @Component({
@@ -81,26 +77,26 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     private render: Renderer2
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
-    this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
+    this.selectedTemplateEvents$ = store.select(getTripTemplatesEntities);
 
   }
 
 
   ngOnInit() {
 
-    this.store.select(segmentSelector).subscribe( (data: any) => {
+    this.store.select(getSegmentsEntityState).subscribe( (data: any) => {
       if (data && data.dialog === DialogActions.CLOSE)
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
     });
-    this.store.select(pointSelector).subscribe( (data: any) => {
+    this.store.select(getPointsEntity).subscribe( (data: any) => {
       if (data && data.dialog === DialogActions.CLOSE)
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
     });
 
-    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplate) {
+    this._subscription = this.store.select(getTripTemplatesEntities).subscribe((data: any) => {
+      if (data.selectedTripTemplateEvents) {
         /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
         // const arrangedEvents = [];
         // data.selectedTripTemplateEvents.forEach((event, index, array) =>
@@ -133,7 +129,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.showEmptySlot = true;
   }
 
-  hideEmptySlot(): void{
+  hideEmptySlot(): void {
     this.showOverlay = false;
     this.showEmptySlot = false;
   }
@@ -183,12 +179,12 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  toggleHeader(): void{
+  toggleHeader(): void {
     this.headerCollapsed = !this.headerCollapsed;
   }
 
   openDialog(event) {
-    if (!event.productType){
+    if (!event.productType) {
       this.hideEmptySlot();
       return false;
     }
@@ -204,7 +200,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       disableClose: true,
       closeOnNavigation: true
     };
-     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.name) && new SetDescriptionForTemplate (this.itinerary.value.description));
+     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.username) && new SetDescriptionForTemplate (this.itinerary.value.description));
      // this.store.dispatch(new SetDescriptionForTemplate (this.itinerary.value.description));
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);

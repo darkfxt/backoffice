@@ -13,13 +13,19 @@
 <div class="app-container full-size body-content">
 
   <div [hidden]="loading">
-    <app-common-list
-      [list]="routes$"
+    <app-common-list *ngIf="!loading"
+      [list]="routes$ | async"
       [component]="drawingComponent"
+      [paginationMetadata]="metadata$ | async"
       [activateSelectionMode]="isDialog"
       [storeToWatch]="'segments'"
       (pageChanged)="onPageChanged($event)">
       <app-route-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-route-filters>
+      <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Aun no has creado rutas!!!</h2>
+        <p>Las rutas te permiten unir destinos. Agregar waypoints y puntos de interes en el camino para hacerlas más atractivas</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nueva ruta</button>
+      </div>
     </app-common-list>
   </div>
 </div>

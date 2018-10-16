@@ -1,0 +1,8 @@
+<h3>{{'Imagen de portada' | translate}}</h3>
+<app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="!previewImage"></app-uploader>
+
+<div *ngIf="previewImage">
+  <div class="image" [style.background-image]="'url('+previewImage.url+')'"></div>
+  <a class="link" (click)="deleteUploadedItem()">{{'Eliminar imagen' | translate}}</a>
+</div>
+

@@ -1,10 +1,10 @@
 import Place from '../entity/Place';
-import GooglePlace, {AddressComponent} from '../entity/GooglePlace';
-import {config} from '../../config/env';
+import GooglePlace, { AddressComponent } from '../entity/GooglePlace';
+import { config } from '../../config/env';
 
-export class PlaceFactory{
+export class PlaceFactory {
 
-  static getPlaceFromGoogle(glPlace: GooglePlace): Place{
+  static getPlaceFromGoogle(glPlace: GooglePlace): Place {
     const place: Place = new Place();
     place.place_id = glPlace.place_id;
     place.name = glPlace.name;
@@ -35,9 +35,9 @@ export class PlaceFactory{
 
     return place;
 
-  function getAddressName(componentList: AddressComponent[], type: string, label = 'long_name'): string{
+  function getAddressName(componentList: AddressComponent[], type: string, label = 'long_name'): string {
       const component = componentList.filter(value  => value.types.indexOf(type) > -1)[0];
-      return component? component[label] : '';
+      return component ? component[label] : '';
     }
   }
 }

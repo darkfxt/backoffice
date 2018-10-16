@@ -1,9 +1,9 @@
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {EMPTY, Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/internal/operators';
-import {Injectable} from '@angular/core';
-import {TripTemplate} from '../shared/models/TripTemplate';
-import {TripTemplateService} from '../shared/services/trip-template.service';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators';
+import { Injectable } from '@angular/core';
+import { TripTemplate } from '../shared/models/TripTemplate';
+import { TripTemplateService } from '../shared/services/trip-template.service';
 
 
 @Injectable({
@@ -21,7 +21,7 @@ export class TripTemplatesResolver implements Resolve<any> {
     state: RouterStateSnapshot
   ): Observable<any> {
     const id = route.paramMap.get('id');
-    if(id === 'new')
+    if (id === 'new')
       return of(new TripTemplate());
 
     return this.service.getDetail(id)

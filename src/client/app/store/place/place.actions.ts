@@ -2,12 +2,13 @@ import { Action } from '@ngrx/store';
 
 import { Point, PointWithMetadata } from '../../shared/models/Place';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {DialogActions} from '../dialog-actions.enum';
+import { DialogActions } from '../dialog-actions.enum';
 
 export enum PointActionTypes {
   GET_POINTS = '[Point] Retrieving',
   FILTER_POINTS = '[Point] Filtering',
   POINTS_RETRIEVED = '[Point] Retrieved Succesfully',
+  POINTS_METADATA_RETRIEVED = '[Point] Metadata Retrieved',
   SAVE_POINT = '[Point] Adding Point',
   POINT_SELECTED = '[Point] Selected',
   CLEAR_POINT = '[Point] Clear',
@@ -28,6 +29,11 @@ export class PointSelected implements Action {
   }
 }
 
+export class PointMetadataRetrieved implements Action {
+  readonly type = PointActionTypes.POINTS_METADATA_RETRIEVED;
+  constructor(public payload: PaginationOptionsInterface) { }
+}
+
 export class FilterPoints implements Action {
   readonly type = PointActionTypes.FILTER_POINTS;
   constructor(readonly payload: PaginationOptionsInterface) {
@@ -37,13 +43,7 @@ export class FilterPoints implements Action {
 
 export class PointsRetrieved implements Action {
   readonly type = PointActionTypes.POINTS_RETRIEVED;
-  readonly payload: Point[];
-  readonly metadata: PaginationOptionsInterface;
-  constructor(response: PointWithMetadata) {
-    this.payload = response.data;
-    this.metadata = response.metadata;
-
-  }
+  constructor(public payload: Array<Point>) { }
 }
 
 export class SavePoint implements Action {
@@ -66,5 +66,18 @@ export class ToggleDialogPoint implements Action {
   }
 }
 
+export type showLoaderTypes = GetPoints | SavePoint | FilterPoints;
+export const showLoaderActions = [
+  PointActionTypes.GET_POINTS,
+  PointActionTypes.SAVE_POINT,
+  PointActionTypes.FILTER_POINTS
+];
+export type hideLoaderTypes = PointSelected | PointsRetrieved | ClearPoint;
+export const hideLoaderActions = [
+  PointActionTypes.POINT_SELECTED,
+  PointActionTypes.CLEAR_POINT,
+  PointActionTypes.POINTS_RETRIEVED
+];
+
 export type PointActions = GetPoints | SavePoint | PointsRetrieved |
-  FilterPoints | ClearPoint | PointSelected | ToggleDialogPoint;
+  FilterPoints | ClearPoint | PointSelected | ToggleDialogPoint | PointMetadataRetrieved;

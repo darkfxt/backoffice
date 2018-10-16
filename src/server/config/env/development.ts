@@ -1,9 +1,15 @@
 export const config = {
   env: 'development',
+  newrelic: {
+    app_name: 'API-FE-BACKOFICCE-DEV',
+    license_key: 'fa39f2a5d23d346f07edace94a3a8d547c9e0c31',
+    log_level: 'info',
+    agent_enabled: true
+  },
   aws: {
     s3: {
-      'accessKeyId': 'AKIAIWKWSV2WVMSW4STA',
-      'secretAccessKey': '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',
+      'accessKeyId': 'AKIAIKKMPF54FK7QZMUA',
+      'secretAccessKey': '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',
       'region': 'us-east-1',
       'apiVersion': '2006-03-01'
     }
@@ -14,6 +20,12 @@ export const config = {
   },
   routes: {
     url: 'http://gl-routes-development:6001/routes'
+  },
+  idm: {
+    url: 'http://tg-idm-development:6003/idm',
+  },
+  core: {
+    url: 'http://tg-core-development:6004/core'
   }
 
 };

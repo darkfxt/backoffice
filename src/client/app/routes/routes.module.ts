@@ -19,15 +19,13 @@ import { ModalModule } from '../shared/modal/modal.module';
 import { RouteSummarizedCardComponent } from './route-summarized-card/route-summarized-card.component';
 import { RouteFiltersComponent } from './route-filters/route-filters.component';
 import { CommonListModule } from '../shared/common-list/common-list.module';
-import { StoreModule } from '@ngrx/store';
-import { reducers } from '../store';
 import { SharedModule } from '../shared/shared.module';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
 import { LoadingModule } from '../shared/loading/loading.module';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('segments', reducers),
+    // StoreModule.forFeature('segments', reducers),
     CommonModule,
     CommonListModule,
     UploaderModule,

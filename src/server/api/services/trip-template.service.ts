@@ -11,8 +11,11 @@ export class TripTemplateService {
 
   public static async getAll(query): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
-    if(query.search){
+    if (query.search) {
       queryParams += `&search=${query.search}`;
+    }
+    if (query.company_id) {
+      queryParams += `&company_id=${query.company_id}`;
     }
     return axios
       .get(`${config.routes.url}/trip-templates${queryParams}`);

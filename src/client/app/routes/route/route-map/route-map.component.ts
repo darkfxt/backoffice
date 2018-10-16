@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
-import {PlaceStore} from '../../../shared/services/place-store.services';
+import { PlaceStore } from '../../../shared/services/place-store.services';
 import Place from '../../../../../server/api/entity/Place';
-import {FormGroup} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-route-map',
@@ -54,21 +54,21 @@ export class RouteMapComponent implements OnInit {
     });
 
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
-      if(!waypoints)
+      if (!waypoints)
         return false;
       this.waypoints = waypoints;
       this.addMarker();
     });
 
     this.placeStore.getPlace('origin').subscribe((place) => {
-      if(!place)
+      if (!place)
         return false;
       this.origin = place;
       this.addMarker();
     });
 
     this.placeStore.getPlace('destination').subscribe((place) => {
-      if(!place)
+      if (!place)
         return false;
       this.destination = place;
       this.addMarker();
@@ -79,7 +79,7 @@ export class RouteMapComponent implements OnInit {
     this.markers.forEach(marker => marker.setMap(null));
     this.markers = [];
 
-    if(this.origin)
+    if (this.origin)
       this.markers.push(new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map}));
 
     this.waypoints
@@ -88,7 +88,7 @@ export class RouteMapComponent implements OnInit {
         this.markers.push(new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map}));
       });
 
-    if(this.destination)
+    if (this.destination)
       this.markers.push(new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map}));
 
     this.markers.forEach((marker: google.maps.Marker) => {
@@ -96,7 +96,7 @@ export class RouteMapComponent implements OnInit {
         this.stepDisplay.setContent(marker.getTitle());
         this.stepDisplay.open(this.map, marker);
       });
-    })
+    });
 
     this.calculateAndDisplayRoute();
   }
@@ -132,7 +132,7 @@ export class RouteMapComponent implements OnInit {
       optimizeWaypoints: false,
       travelMode: 'DRIVING'
     }, (response, status: any) => {
-      if(status === 'OK'){
+      if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
         const legs = response.routes[0].legs
           .map(value => (

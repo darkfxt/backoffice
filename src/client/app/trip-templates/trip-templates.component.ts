@@ -1,19 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TripTemplate } from '../shared/models/TripTemplate';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { PaginationOptionsInterface } from '../shared/common-list/common-list-item/pagination-options.interface';
 import { TripTemplateService } from '../shared/services/trip-template.service';
-import { Store } from '@ngrx/store';
-import {
-  AppState,
-  tripTemplateLoadingSelector,
-  tripTemplateMetadataSelector,
-  tripTemplateSelector
-} from '../store';
+import {select, Store} from '@ngrx/store';
 import { GetTripTemplates, TripTemplateEditionLeft } from '../store/trip-template/trip-template.actions';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import {AppState} from '../store/shared/app.interfaces';
+import {getTripTemplatesMetadata, getAllTripTemplates} from '../store/trip-template';
+import {selectLoaderEntity} from '../store/shared/reducers';
 
 @Component({
   selector: 'app-trip-templates',
@@ -27,16 +24,18 @@ export class TripTemplatesComponent implements OnInit, OnDestroy {
   drawingComponent: ListItemComponent;
   metadata$: Observable<PaginationOptionsInterface>;
   paginationOptions: PaginationOptionsInterface;
+  _subscription: Subscription;
 
   constructor(private TripTemplateServiceInstance: TripTemplateService,
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
-    store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
-      this.loading = isLoading;
-    });
-    this.tripTemplates$ = store.select(tripTemplateSelector);
-    this.metadata$ = store.select(tripTemplateMetadataSelector);
+    // store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
+    //   this.loading = isLoading;
+    // });
+    this.tripTemplates$ = this.store.pipe(select(getAllTripTemplates));
+    this.metadata$ = this.store.pipe(select(getTripTemplatesMetadata));
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent(TripTemplateSummarizedCardComponent);
   }
 
@@ -48,10 +47,6 @@ export class TripTemplatesComponent implements OnInit, OnDestroy {
       length: 0
     };
     this.store.dispatch(new GetTripTemplates(this.paginationOptions));
-    this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      this.paginationOptions = data.metadata;
-      this.loading = data.loading;
-    });
   }
 
   ngOnDestroy() {

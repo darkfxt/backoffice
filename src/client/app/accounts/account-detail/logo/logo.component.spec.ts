@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PointMapComponent } from './point-map.component';
+import { LogoComponent } from './logo.component';
 
-describe('PointMapComponent', () => {
-  let component: PointMapComponent;
-  let fixture: ComponentFixture<PointMapComponent>;
+describe('LogoComponent', () => {
+  let component: LogoComponent;
+  let fixture: ComponentFixture<LogoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PointMapComponent ]
+      declarations: [ LogoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PointMapComponent);
+    fixture = TestBed.createComponent(LogoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

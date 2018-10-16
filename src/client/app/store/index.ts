@@ -1,3 +1,4 @@
+/*
 import {
   ActionReducer,
   ActionReducerMap,
@@ -8,23 +9,29 @@ import {
 import { storeFreeze } from 'ngrx-store-freeze';
 import { storeLogger } from 'ngrx-store-logger';
 
-import { pointReducer, PointState } from './place/place.reducer';
+import { pointReducer } from './place/place.reducer';
 
 import { environment } from '../../environments/environment';
 import { segmentReducer, SegmentState } from './route/route.reducer';
 import { tripTemplateReducer, TripTemplateState } from './trip-template/trip-template.reducer';
-import {Event} from '../shared/models/TripTemplate';
+import { Event } from '../shared/models/TripTemplate';
+import { userReducer, UserState } from './user/user.reducer';
+import { accountReducer, AccountState } from './account/account.reducer';
 
 export interface AppState {
   points: PointState;
   segments: SegmentState;
   tripTemplates: TripTemplateState;
+  users: UserState;
+  accounts: AccountState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   points: pointReducer,
   segments: segmentReducer,
-  tripTemplates: tripTemplateReducer
+  tripTemplates: tripTemplateReducer,
+  users: userReducer,
+  accounts: accountReducer
 };
 
 export function logger(reducer: ActionReducer<AppState>) {
@@ -59,7 +66,7 @@ export const segmentLoadingSelector = createSelector(
   (state: SegmentState) => state.loading
 );
 
-export const segmentSelector = createSelector(
+export const getSegmentsEntityState = createSelector(
   SegmentStateSelector,
   (state: SegmentState) => state.segments
 );
@@ -91,6 +98,46 @@ export const tripTemplateMetadataSelector = createSelector(
   (state: TripTemplateState) => state.metadata
 );
 
+
+/!**
+ * User Section
+ *!/
+const UserStateSelector = createFeatureSelector('users');
+
+export const userLoadingSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.loading,
+);
+
+export const userSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.users,
+);
+
+export const userMetadataSelector = createSelector(
+  UserStateSelector,
+  (state: UserState) => state.metadata,
+);
+
+/!***** Account *****!/
+const AccountStateSelector = createFeatureSelector('accounts');
+
+export const accountLoadingSelector = createSelector(
+  AccountStateSelector,
+  (state: AccountState) => state.loading,
+);
+
+export const accountSelector = createSelector(
+  AccountStateSelector,
+  (state: AccountState) => state.accounts,
+);
+
+export const accountMetadataSelector = createSelector(
+  AccountStateSelector,
+  (state: AccountState) => state.metadata,
+);
+
 export { PointsRetrieved } from './place/place.actions';
 export { SegmentsRetrieved } from './route/route.actions';
 export { TripTemplatesRetrieved } from './trip-template/trip-template.actions';
+*/

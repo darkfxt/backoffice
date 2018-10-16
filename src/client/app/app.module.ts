@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
 import { PlacesModule } from './places/places.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginRoutingModule } from './login/login-routing.module';
 import { RoutesModule } from './routes/routes.module';
@@ -16,7 +16,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { TripTemplatesModule } from './trip-templates/trip-templates.module';
-import { reducers, metaReducers } from './store';
 import { SegmentEffects } from './store/route/route.effects';
 
 // Components
@@ -30,6 +29,15 @@ import { PointEffects } from './store/place/place.effects';
 // Config
 import { environment } from '../environments/environment';
 import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
+import { UsersModule } from './users/users.module';
+import { UserEffects } from './store/user/user.effects';
+import { AccountsModule } from './accounts/accounts.module';
+import { ErrorInterceptor } from './shared/helpers/error.interceptor';
+import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
+import { AccountEffects } from './store/account/account.effects';
+import { LoadingModule } from './shared/loading/loading.module';
+import { StateModule } from './store/state.module';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -48,22 +56,27 @@ registerLocaleData(localeEs, 'es');
     PageNotFoundComponent,
     LoginComponent,
     TagsComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects]),
-    StoreDevtoolsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    StateModule.forRoot(),
+    // StoreModule.forRoot(reducers, {metaReducers}),
+    // EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
+    // StoreDevtoolsModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: false}),
     BrowserAnimationsModule,
+    LoadingModule,
     PlacesModule,
     RoutesModule,
     TripTemplatesModule,
+    UsersModule,
+    AccountsModule,
     LoginRoutingModule,
     AppRoutingModule,
-    MatIconModule,
+    MatButtonModule, MatIconModule, MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -72,7 +85,10 @@ registerLocaleData(localeEs, 'es');
       }
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

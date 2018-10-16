@@ -1,0 +1,65 @@
+
+<form [formGroup]="form" #formDir="ngForm" novalidate>
+  <app-detail-header
+                     [title]="'Editar usuario' | translate"
+                     class="detail-header-content"
+                     (backButtonClicked)="goBack()">
+    <div class="button-container save-button">
+      <button (click)="onSubmit()">
+        <mat-icon aria-label="New">save</mat-icon>
+      </button>
+    </div>
+  </app-detail-header>
+  <div class="app-container full-size body-content">
+    <div class="box-container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent">
+            <mat-select placeholder="{{'Organización' | translate}}" name="company_id" required formControlName="company_id">
+              <mat-option [value]="organization.id" *ngFor="let organization of (organizations | async)">
+                {{organization.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('company_id').invalid && (form.get('company_id').dirty || form.get('company_id').touched)">{{'Campo requerido' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent" >
+            <input #location type="text" matInput placeholder="{{'Email' | translate}}" required name="email" formControlName="email"/>
+            <mat-error *ngIf="form.get('email').hasError('required') && (form.get('email').dirty || form.get('email').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email') && (form.get('email').dirty || form.get('email').touched)">{{'Formato incorrecto' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent">
+            <mat-select placeholder="{{'Rol' | translate}}" name="role" required formControlName="role">
+              <mat-option [value]="role" *ngFor="let role of (roles | async)">
+                {{role.name | translate}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('role').invalid && (form.get('role').dirty || form.get('role').touched)">{{'Campo requerido' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent" >
+            <input #location type="password" matInput placeholder="{{'Contraseña' | translate}}" required name="password" formControlName="password"/>
+            <mat-error *ngIf="form.get('password').hasError('required') && (form.get('password').dirty || form.get('password').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('password').hasError('maxlength') && (form.get('password').dirty || form.get('password').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent" >
+            <input #location type="password" matInput placeholder="{{'Repetir Contraseña' | translate}}" required name="confirmPassword" formControlName="confirmPassword" [errorStateMatcher]="matcher"/>
+            <!--<mat-error *ngIf="form.get('confirmPassword').hasError('required') && (form.get('confirmPassword').dirty || form.get('confirmPassword').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('confirmPassword').hasError('maxlength') && (form.get('confirmPassword').dirty || form.get('confirmPassword').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>-->
+            <mat-error *ngIf="form.hasError('notSame')">Passwords do not match</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<app-loading *ngIf="bussy"></app-loading>
+
