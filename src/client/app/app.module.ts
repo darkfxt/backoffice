@@ -40,6 +40,7 @@ import { StateModule } from './store/state.module';
 import { ErrorComponent } from './error/error.component';
 
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -65,7 +66,7 @@ registerLocaleData(localeEs, 'es');
     // StoreModule.forRoot(reducers, {metaReducers}),
     // EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
     // StoreDevtoolsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: false}),
     BrowserAnimationsModule,
     LoadingModule,
     PlacesModule,

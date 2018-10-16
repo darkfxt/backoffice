@@ -34,7 +34,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'error', component: ErrorComponent},
-  { path: '',   redirectTo: '/bookings', pathMatch: 'full' },
+  { path: '',   redirectTo: '/trip-templates', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
