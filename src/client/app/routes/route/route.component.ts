@@ -14,7 +14,7 @@ import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-temp
 import { Store } from '@ngrx/store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
-import { ToggleDialogPoint } from '../../store/place/place.actions';
+import {ClearPoint, ToggleDialogPoint} from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getSegmentsEntityState } from '../../store/route';
@@ -90,6 +90,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._subscription)
       this._subscription.unsubscribe();
+
+    this.store.dispatch(new ClearSegment());
   }
 
   // Form control
