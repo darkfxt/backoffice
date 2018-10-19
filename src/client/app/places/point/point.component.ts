@@ -7,13 +7,13 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
-import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
+import {EventSelected} from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-point',
@@ -145,12 +145,6 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
-      // this._subscription = this.placeService.addPlace(formData).subscribe((resp) => {
-      //   this.placeForm.reset();
-      //   this.router.navigate(['/places']);
-      // }, err => {
-//
-      // });
     } else {
       Object.keys(this.placeForm.controls).forEach(field => {
         const control = this.placeForm.get(field);

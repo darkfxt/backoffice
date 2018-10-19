@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ListItemInterface } from '../../shared/common-list/common-list-item/list-item.interface';
-import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
+import {EventSelected} from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-point-summarized-card',

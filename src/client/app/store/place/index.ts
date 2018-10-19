@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from '../shared/app.interfaces';
 import * as fromPoints from './place.reducer';
 import { SegmentsState } from '../route';
+import * as fromPlace from './place.reducer';
 
 export interface PointState {
   points: fromPoints.PointState;
@@ -38,3 +39,9 @@ export const getAllPoints = createSelector(
     return Object.keys(entities).map(id => entities[id]);
   }
 );
+
+export const getDialogStatus = createSelector(
+  getPointsState,
+  (state: any) => state.dialog
+);
+

@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AddEvent } from '../../../../store/trip-template/trip-template.actions';
-import { Event, eventType } from '../../../../shared/models/TripTemplate';
+import { Event, TypeOfEvent } from '../../../../shared/models/TripTemplate';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from '../../../../store/shared/app.interfaces';
 import { getTripTemplatesEntities } from '../../../../store/trip-template';
+import {AddEvent} from '../../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-custom-event',
@@ -37,7 +37,7 @@ export class CustomEventComponent implements OnInit {
   }
 
   onButtonClick() {
-    const newEvent: Event = this.convertToEvent(eventType.OTHER, this.dayOfEvent);
+    const newEvent: Event = this.convertToEvent(TypeOfEvent.OTHER, this.dayOfEvent);
     this.store.dispatch(new AddEvent(newEvent));
     this.closeDialog();
   }
@@ -47,9 +47,8 @@ export class CustomEventComponent implements OnInit {
     const data = this.form.value;
     converted.name = data.name;
     converted.description = data.description;
-    converted.geo = [];
-    converted.event_type = event_type;
-    converted.ordinal = order || 1;
+    converted.eventType = event_type;
+    converted.order = order || 1;
     return converted;
   }
 

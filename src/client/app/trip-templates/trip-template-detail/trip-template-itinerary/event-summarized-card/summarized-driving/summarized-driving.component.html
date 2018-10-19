@@ -1,12 +1,11 @@
+<div *ngIf="!data.origin"><app-add-event></app-add-event></div>
 <div class="event-cluster" [class.edit-mode]="editMode">
   <div class="icon-ctn">
   </div>
-  <div>Agregar Origen</div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
     <p>{{data.description}}</p>
   </div>
-  <div>Agregar Destino</div>
   <div class="menu">
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
@@ -19,3 +18,4 @@
     </mat-menu>
   </div>
 </div>
+<div *ngIf="!data.destination">Agregar Destino</div>

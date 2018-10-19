@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
 import {
-  GetEventsForTripTemplate,
   SaveTripTemplate,
   TripTemplateEditionLeft,
   TripTemplateSelected, SetDescriptionForTemplate,
@@ -14,7 +13,7 @@ import { TripTemplate, Event } from '../../shared/models/TripTemplate';
 import { SaveSegment } from '../../store/route/route.actions';
 import { MatSnackBar } from '@angular/material';
 import { AppState } from '../../store/shared/app.interfaces';
-import {getTripTemplatesEntities} from '../../store/trip-template';
+import { getTripTemplatesEntities } from '../../store/trip-template';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -61,11 +60,11 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
           description: this.fb.control(data.tripTemplate.description)
         });
         this.store.dispatch(new TripTemplateSelected(data.tripTemplate));
-        this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
+        // this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
       } else {
         this.tripTemplate = new TripTemplate();
         this.store.dispatch(new TripTemplateSelected(this.tripTemplate));
-        this.store.dispatch(new GetEventsForTripTemplate(undefined));
+        // this.store.dispatch(new GetEventsForTripTemplate(undefined));
       }
     });
 

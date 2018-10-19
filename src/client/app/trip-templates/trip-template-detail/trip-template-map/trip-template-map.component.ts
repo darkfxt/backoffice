@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
 import { Store } from '@ngrx/store';
-import { eventType } from '../../../shared/models/TripTemplate';
+import { TypeOfEvent } from '../../../shared/models/TripTemplate';
 import { AppState } from '../../../store/shared/app.interfaces';
 import { getTripTemplatesEntities } from '../../../store/trip-template';
 
@@ -71,11 +71,11 @@ export class TripTemplateMapComponent implements OnInit {
 
   private drawerPicker(element, index, array) {
     /// MIRAR::: al estar ejecutandose dentro del iterador, el this queda como undefined.
-    if (element.eventType === eventType.DRIVING) {
+    if (element.eventType === TypeOfEvent.DRIVING) {
       let origin = element.geo[0].origin.geo.point, destination = element.geo[0].destination.geo.point;
-      if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== eventType.DRIVING)
+      if (element.geo[0].origin.type === 'REFERENCE' && index > 0 && array[index - 1].eventType !== TypeOfEvent.DRIVING)
         origin = array[index - 1].geo[0];
-      if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== eventType.DRIVING)
+      if (element.geo[0].destination.type === 'REFERENCE' && index < array.length - 1 && array[index + 1].eventType !== TypeOfEvent.DRIVING)
         destination = array[index + 1].geo[0];
       this.directions.push({origin, middle_points: element.geo[0].middle_points, destination});
       // this.traceRoutes(origin, element.geo[0].middle_points, destination);

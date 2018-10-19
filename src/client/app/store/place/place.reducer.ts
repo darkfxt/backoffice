@@ -41,3 +41,5 @@ export function pointReducer(state = initialState, action: PointActions): PointS
       return state;
   }
 }
+
+export const getDialogStatus = (state: PointState) => state.dialog;

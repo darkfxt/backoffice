@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RemoveEvent } from '../../../../../store/trip-template/trip-template.actions';
-import { AppState } from '../../../../../store';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../store/shared/app.interfaces';
+import { RemoveEvent } from '../../../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-summarized-driving',
@@ -20,6 +20,8 @@ export class SummarizedDrivingComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
+    console.log('hola cargaste un autito');
+    console.log(this.data);
   }
 
   onRemoveEvent(index) {

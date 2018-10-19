@@ -10,14 +10,14 @@ import Segment from '../../shared/models/Segment';
 import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
-import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-template/trip-template.actions';
 import { Store } from '@ngrx/store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
-import {ClearPoint, ToggleDialogPoint} from '../../store/place/place.actions';
+import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getSegmentsEntityState } from '../../store/route';
+import { EventSelected } from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-route',

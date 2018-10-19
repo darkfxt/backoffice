@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CustomIconService } from './shared/services/custom-icon.service';
 import { select, Store } from '@ngrx/store';
 import { AppState } from './store/shared/app.interfaces';
-import {isLoaderShowing, selectLoaderEntity} from './store/shared/reducers';
+import { isLoaderShowing, selectLoaderEntity } from './store/shared/reducers';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -24,9 +24,9 @@ export class AppComponent implements OnInit {
               private store: Store<AppState>) {
     this.translate.setDefaultLang('es');
     this.translate.use('es');
-
+    this.store.select(selectLoaderEntity).subscribe(loader => setTimeout(() => this.loading = loader.show) );
     this.customIconService.init();
-    this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
+    //
   }
 
   ngOnInit() {
@@ -34,6 +34,6 @@ export class AppComponent implements OnInit {
     //     console.log('LOADING', loading);
     //   }
     // );
-    this.loading$ = this.store.pipe(select(isLoaderShowing));
+    // this.loading$ = this.store.pipe(select(isLoaderShowing));
   }
 }

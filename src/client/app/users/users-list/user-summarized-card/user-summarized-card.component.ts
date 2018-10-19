@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EventSelected } from '../../../store/trip-template/trip-template.actions';
 import { AppState } from '../../../store/shared/app.interfaces';
 
 @Component({

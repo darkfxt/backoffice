@@ -10,15 +10,13 @@ import {
   animate,
   transition, keyframes
 } from '@angular/animations';
-import { Event, TripTemplate, eventType } from '../../../shared/models/TripTemplate';
+import { Event, TripTemplate, TypeOfEvent, DayOfTrip } from '../../../shared/models/TripTemplate';
 import { PaginationOptionsInterface } from '../../../shared/common-list/common-list-item/pagination-options.interface';
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
-  AddEvent,
-  DayIndexTypeForEventSetted,
   SetDescriptionForTemplate,
   SetNameForTemplate
 } from '../../../store/trip-template/trip-template.actions';
@@ -29,10 +27,17 @@ import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.ac
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
 import { BottomSheetEventComponent } from './add-event/add-event.component';
-import {AppState} from '../../../store/shared/app.interfaces';
-import {getTripTemplatesEntities} from '../../../store/trip-template';
-import {getSegmentsEntityState} from '../../../store/route';
-import { getPointsEntity } from '../../../store/place';
+import { AppState } from '../../../store/shared/app.interfaces';
+import {
+  getDaysForSelectedTrip,
+  getEventEntities,
+  getTripTemplateSelected,
+  getTripTemplatesEntities
+} from '../../../store/trip-template';
+import { getSegmentsEntityState } from '../../../store/route';
+import { getDialogStatus, getPointsEntity } from '../../../store/place';
+import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
+import { AddDay } from '../../../store/trip-template/day/day.actions';
 
 
 @Component({
@@ -51,12 +56,13 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   itineraryDays: Array<any> = [];
   drawingComponent: ListItemComponent;
   dayOfEvent: number;
-  typeForEvent: string;
+  typeForEvent: TypeOfEvent;
   ordinalForEvent: string;
   headerCollapsed: boolean;
   dialogReference: any;
   dialogReferenceSub: any;
   _subscription: Subscription;
+  dialogStatus$: Observable<any>;
 
   @ViewChild('dayList') dayList: ElementRef;
 
@@ -83,11 +89,15 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
 
-    this.store.select(getSegmentsEntityState).subscribe( (data: any) => {
-      if (data && data.dialog === DialogActions.CLOSE)
+    this.store.select(getDialogStatus).subscribe( (data: any) => {
+      if (data && data === DialogActions.CLOSE) {
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
+        if (this.dialogReference)
+          this.dialogReference.close();
+      }
     });
     this.store.select(getPointsEntity).subscribe( (data: any) => {
       if (data && data.dialog === DialogActions.CLOSE)
@@ -95,7 +105,9 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
           this.dialogReferenceSub.close();
     });
 
-    this._subscription = this.store.select(getTripTemplatesEntities).subscribe((data: any) => {
+    this._subscription = this.store.select(getTripTemplateSelected).subscribe((data: any) => {
+      console.log('///////////////////////////-------------////////////////////////');
+      console.log(data);
       if (data.selectedTripTemplateEvents) {
         /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
         // const arrangedEvents = [];
@@ -109,8 +121,9 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
         // this.itineraryDays.splice(0, this.itineraryDays.length);
         // this.itineraryDays = arreglo;
         // this.itinerary.patchValue(data.selectedTripTemplateEvents);
-        this.itineraryDays = data.selectedTripTemplate.days.slice(0);
+
       }
+      this.itineraryDays = data.days;
       if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
       if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
       if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
@@ -147,33 +160,25 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   }
 
   convertToEvent(toConvert: any, event_type: string, order: number): Event {
-    const converted: Event = new Event();
-    converted.name = toConvert.name;
-    converted.description = toConvert.description;
-    converted.reference_id = toConvert._id;
-    converted.event_type = this.typeForEvent;
-    converted.ordinal = order || 1;
+    const converted: Event = new Event(toConvert.name, toConvert.description, this.typeForEvent, 1);
     switch (this.typeForEvent) {
-      case eventType.ACTIVITY:
-      case eventType.HOTEL:
-        converted.geo = [toConvert.geo.point];
+      case TypeOfEvent.ACTIVITY:
+      case TypeOfEvent.HOTEL:
+        converted.product = toConvert;
         break;
-      case eventType.DRIVING:
-        const geo = [];
-        // geo.push(toConvert.origin.geo.point);
-        // toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
-        // geo.push(toConvert.destination.geo.point);
-        geo.push({origin: toConvert.origin, middle_points: toConvert['middle_points'], destination: toConvert.destination});
-        converted.geo = geo;
+      case TypeOfEvent.DRIVING:
+        converted.product = toConvert;
         break;
       default:
-        converted.geo = [];
+        converted.product = toConvert;
     }
     return converted;
   }
 
   addDay() {
-    this.itineraryDays.push([]);
+    // this.itineraryDays.push([]);
+    const diaNuevo = new DayOfTrip(Math.random().toString(), []);
+    this.store.dispatch(new AddDay(diaNuevo));
     setTimeout(() => {
       this.dayList.nativeElement.scrollTop = this.dayList.nativeElement.scrollHeight;
     }, 100);

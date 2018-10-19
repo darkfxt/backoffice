@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EventSelected } from '../../store/trip-template/trip-template.actions';
 import { AppState } from '../../store/shared/app.interfaces';
+import {EventSelected} from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-route-summarized-card',

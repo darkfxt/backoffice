@@ -7,7 +7,7 @@ import {
   transition, keyframes
 } from '@angular/animations';
 
-import { eventType } from '../../../../shared/models/TripTemplate';
+import { TypeOfEvent } from '../../../../shared/models/TripTemplate';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -120,10 +120,10 @@ export class AddEventComponent implements OnInit {
 })
 export class BottomSheetEventComponent {
   productTypes = [
-    {value: eventType.DRIVING, viewValue: 'driving', icon: 'driving'},
-    {value: eventType.HOTEL, viewValue: 'hotel', icon: 'hotel'},
-    {value: eventType.ACTIVITY, viewValue: 'activity', icon: 'ticket'},
-    {value: eventType.OTHER, viewValue: 'other', icon: 'edit_2'}
+    {value: TypeOfEvent.DRIVING, viewValue: 'driving', icon: 'driving'},
+    {value: TypeOfEvent.HOTEL, viewValue: 'hotel', icon: 'hotel'},
+    {value: TypeOfEvent.ACTIVITY, viewValue: 'activity', icon: 'ticket'},
+    {value: TypeOfEvent.OTHER, viewValue: 'other', icon: 'edit_2'}
   ];
 
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>) {

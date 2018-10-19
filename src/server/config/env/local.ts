@@ -19,7 +19,7 @@ export const config = {
     url: 'https://dev.api.taylorgps.com/geo'
   },
   routes: {
-    url: 'https://dev.api.taylorgps.com/routes'
+    url: 'http://local.taylorgps.com:6001/routes'
   },
   idm: {
     url: 'https://dev.api.taylorgps.com/idm'

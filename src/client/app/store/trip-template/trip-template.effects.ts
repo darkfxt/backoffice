@@ -5,8 +5,6 @@ import { switchMap, map, mergeMap, catchError } from 'rxjs/internal/operators';
 import {
   GetTripTemplates,
   TripTemplatesRetrieved,
-  GetEventsForTripTemplate,
-  EventsRetrieved,
   TripTemplateActions,
   TripTemplateActionTypes,
   CreateTripTemplate,
@@ -21,6 +19,7 @@ import { TripTemplateService } from '../../shared/services/trip-template.service
   import { HttpError } from '../shared/actions/error.actions';
   import { HttpErrorResponse } from '@angular/common/http';
   import { SnackbarOpen } from '../shared/actions/snackbar.actions';
+  import { EventsRetrieved } from './event/event.actions';
 
 @Injectable()
 export class TripTemplateEffects {
@@ -56,10 +55,10 @@ export class TripTemplateEffects {
 
   @Effect()
   getEventsFromTemplate$ = this.actions$
-    .ofType(TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE)
+    .ofType(TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED)
     .pipe(
-      switchMap((tripTemplate: GetEventsForTripTemplate) =>
-        this.TripTemplateServiceInstance.getEventsFromTripTemplate(tripTemplate.payload)),
+      switchMap((tripTemplate: any) =>
+        this.TripTemplateServiceInstance.getEventsFromTripTemplate(tripTemplate.payload._id)),
       map((serverResponse: Event[]) => new EventsRetrieved(serverResponse)),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );

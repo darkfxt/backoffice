@@ -24,11 +24,15 @@ import * as fromPoints from './place/place.reducer';
 import * as fromTripTemplates from './trip-template/trip-template.reducer';
 import * as fromAccounts from './account/account.reducer';
 import * as fromUsers from './user/user.reducer';
+import * as fromEvent from './trip-template/event/event.reducer';
+import * as fromDays from './trip-template/day/day.reducer';
 import { SegmentEffects } from './route/route.effects';
 import { AccountEffects } from './account/account.effects';
 import { PointEffects } from './place/place.effects';
 import { TripTemplateEffects } from './trip-template/trip-template.effects';
 import { UserEffects } from './user/user.effects';
+import { EventEffects } from './trip-template/event/event.effects';
+import { DayEffects } from './trip-template/day/day.effects';
 
 @NgModule({
   imports: [
@@ -43,6 +47,8 @@ import { UserEffects } from './user/user.effects';
     StoreModule.forFeature('tripTemplates', fromTripTemplates.tripTemplateReducer),
     StoreModule.forFeature('accounts', fromAccounts.accountReducer),
     StoreModule.forFeature('users', fromUsers.userReducer),
+    StoreModule.forFeature('events', fromEvent.eventReducer),
+    StoreModule.forFeature('days', fromDays.dayReducer),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([
       AppEffects,
@@ -50,6 +56,8 @@ import { UserEffects } from './user/user.effects';
       AccountEffects,
       PointEffects,
       TripTemplateEffects,
+      EventEffects,
+      DayEffects,
       UserEffects,
       ErrorEffects,
       SnackbarEffects

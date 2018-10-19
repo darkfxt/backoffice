@@ -12,3 +12,29 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"Enricos-MacBook-Pro.local","pid":4754,"time":"2018-10-16T18:17:30.491Z","msg":"Module not enabled in configuration; not starting."}
 {"v":0,"level":30,"name":"newrelic","hostname":"Enricos-MacBook-Pro.local","pid":4759,"time":"2018-10-16T18:17:48.361Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.9.4."}
 {"v":0,"level":30,"name":"newrelic","hostname":"Enricos-MacBook-Pro.local","pid":4759,"time":"2018-10-16T18:17:48.363Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":23826,"time":"2018-10-16T19:07:52.130Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":23826,"time":"2018-10-16T19:07:52.132Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":24028,"time":"2018-10-16T20:19:10.297Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":24028,"time":"2018-10-16T20:19:10.299Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":24040,"time":"2018-10-16T20:19:20.243Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":24040,"time":"2018-10-16T20:19:20.244Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":25374,"time":"2018-10-16T20:28:02.479Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":25374,"time":"2018-10-16T20:28:02.480Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":25409,"time":"2018-10-16T20:30:22.154Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":25409,"time":"2018-10-16T20:30:22.155Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26028,"time":"2018-10-16T21:46:57.300Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26028,"time":"2018-10-16T21:46:57.301Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26042,"time":"2018-10-16T21:47:09.793Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26042,"time":"2018-10-16T21:47:09.797Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26076,"time":"2018-10-16T21:47:57.503Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26076,"time":"2018-10-16T21:47:57.507Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26087,"time":"2018-10-16T21:48:13.723Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":26087,"time":"2018-10-16T21:48:13.725Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":34030,"time":"2018-10-18T11:21:36.689Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":34030,"time":"2018-10-18T11:21:36.690Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":34042,"time":"2018-10-18T11:21:46.780Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":34042,"time":"2018-10-18T11:21:46.782Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8249,"time":"2018-10-18T20:08:22.425Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8249,"time":"2018-10-18T20:08:22.429Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8458,"time":"2018-10-18T20:08:33.910Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8458,"time":"2018-10-18T20:08:33.912Z","msg":"Module not enabled in configuration; not starting."}
