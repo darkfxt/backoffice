@@ -34,9 +34,22 @@ export const getTripTemplatesMetadata = createSelector(
   (state: any) => state.metadata
 );
 
-export const getTripTemplateSelected = createSelector(
+export const getTripTemplatesIds = createSelector(
+  getTripTemplatesState,
+  (state: any) => state.ids
+)
+
+export const getTripTemplateSelectedId = createSelector(
   getTripTemplatesState,
   (state: any) => state.selectedTripTemplate
+);
+
+export const getCurrentTripTemplate = createSelector(
+  getTripTemplatesEntities,
+  getTripTemplateSelectedId,
+  (tripTemplateEntities, tripTemplateId) => {
+    return tripTemplateEntities[tripTemplateId];
+  }
 );
 
 export const getAllTripTemplates = createSelector(
@@ -55,9 +68,30 @@ export const getDayEntities = createSelector(
 );
 
 export const getDaysForSelectedTrip = createSelector(
-  getTripTemplateSelected,
-  (tripTemplate: TripTemplate) => {
-    return tripTemplate.days;
+  getTripTemplatesEntities,
+  getTripTemplateSelectedId,
+  (tTemplateEntities, tTemplateId) => {
+    return tTemplateEntities[tTemplateId].days;
+  }
+);
+
+export const getSelectedDayId = createSelector(
+  getDaysState,
+  (state: any) => state.selectedDay
+);
+
+export const getCurrentDay = createSelector(
+  getDayEntities,
+  getSelectedDayId,
+  (dayEntities, dayId) => {
+    return dayEntities[dayId];
+  }
+);
+
+export const getAllDays = createSelector(
+  getDayEntities,
+  entities => {
+    return Object.keys(entities).map(id => entities[id]);
   }
 );
 
@@ -67,4 +101,24 @@ export const getEventsState = createFeatureSelector<EventState>('events');
 export const getEventEntities = createSelector(
   getEventsState,
   (state: any) => state.entities
+);
+
+export const getAllEvents = createSelector(
+  getEventEntities,
+  entities => {
+    return Object.keys(entities).map(id => entities[id]);
+  }
+);
+
+export const getSelectedEventId = createSelector(
+  getEventsState,
+  (state: any) => state.selectedEvent
+);
+
+export const getCurrentEvent = createSelector(
+  getEventEntities,
+  getSelectedEventId,
+  (eventEntities, eventId) => {
+    return eventEntities[eventId];
+  }
 );

@@ -55,7 +55,7 @@ export class RouteSummarizedCardComponent implements OnInit {
 
   editSegment() {
     if (this.selectionMode) {
-      this.store.dispatch(new EventSelected(this.data));
+      this.store.dispatch(new EventSelected({_id: this.data._id, type: 'SEGMENT'}));
       return;
     }
     this.router.navigate([`/routes/${this.data._id}`]);

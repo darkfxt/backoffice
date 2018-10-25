@@ -14,7 +14,9 @@
     <div class="box-container">
       <div class="row ">
         <div class="col-xs-12 itinerary-ctn">
-          <app-trip-template-itinerary [itinerary]="form.get('itinerary')"></app-trip-template-itinerary>
+          <app-trip-template-itinerary *ngIf="loadItinerary" [itinerary]="form.get('itinerary')" >
+
+          </app-trip-template-itinerary>
         </div>
         <div class="col-xs-12 map-ctn">
           <app-trip-template-map></app-trip-template-map>

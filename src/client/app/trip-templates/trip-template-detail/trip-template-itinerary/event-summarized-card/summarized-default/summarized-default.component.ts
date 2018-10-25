@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-summarized-default',
@@ -14,7 +14,7 @@ export class SummarizedDefaultComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('hola gato');
+
   }
 
 }

@@ -14,7 +14,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 export interface EventState extends EntityState<Event> {
   metadata: PaginationOptionsInterface;
   selectedTripTemplateEvents?: Event[];
-  selectedEvent?: any;
+  selectedEvent?: string | null;
   indexForEvent?: number;
   dayForEvent?: number;
   typeForEvent?: TypeOfEvent;
@@ -44,14 +44,11 @@ export function eventReducer(state = initialState, action: EventActions): EventS
       // const dayOfEvent = state.dayForEvent || 1 ;
       // const eventToAdd = Object.assign({}, action.payload, {ordinal: dayOfEvent, eventType: productTypeEvent});
       // array.splice(+indexOfEvent, 0, eventToAdd);
-      const convertToEvent = new Event( action.payload.name,
-                                        action.payload.description,
-                                        state.typeForEvent,
-                                        state.indexForEvent,
-                                        action.payload);
-      return adapter.addOne(convertToEvent, state);
-      // {...state, selectedTripTemplateEvents: array,
-      //  selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
+      const newEvent = action.payload.event;
+      const entities = {...state.entities, [newEvent._id]: newEvent};
+      const ids: Array<any> = state.ids.slice(0);
+      ids.splice(+state.indexForEvent, 0, newEvent._id);
+      return {...state, entities, ids};
     }
     case EventActionTypes.REMOVE_EVENT: {
       const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
@@ -59,6 +56,8 @@ export function eventReducer(state = initialState, action: EventActions): EventS
       return {...state, selectedTripTemplateEvents: array,
         selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
     }
+    case EventActionTypes.UPDATE_EVENT:
+      return adapter.addOne(action.payload, state);
     case EventActionTypes.SELECT_ORDINAL_TO_ADD_EVENT:
       return {...state, indexForEvent: action.payload};
     case EventActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL:

@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from '../shared/app.interfaces';
 import * as fromSegments from './route.reducer';
-import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export interface SegmentsState {
   segments: fromSegments.SegmentState;
@@ -39,4 +38,7 @@ export const getAllSegments = createSelector(
   }
 );
 
-
+export const getSegmentDialogStatus = createSelector(
+  getSegmentsState,
+  (state: any) => state.dialog
+);

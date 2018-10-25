@@ -7,6 +7,7 @@ export enum EventActionTypes {
   EVENT_SELECTED = '[Events] Selected',
   ADD_EVENT = '[Events] Adding new Event',
   REMOVE_EVENT = '[Events] Removing Event',
+  UPDATE_EVENT = '[Events] Updating Event',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
   SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
@@ -27,7 +28,7 @@ export class EventsRetrieved implements Action {
 
 export class AddEvent implements Action {
   readonly type = EventActionTypes.ADD_EVENT;
-  constructor (readonly payload: Event) {
+  constructor (readonly payload: {event: Event, day: string}) {
     this.payload = payload;
   }
 }
@@ -39,9 +40,14 @@ export class RemoveEvent implements Action {
   }
 }
 
+export class UpdateEvent implements Action {
+  readonly type = EventActionTypes.UPDATE_EVENT;
+  constructor (readonly payload: Event) { }
+}
+
 export class EventSelected implements Action {
   readonly type = EventActionTypes.EVENT_SELECTED;
-  constructor (readonly payload: any) {
+  constructor (readonly payload: {_id: string, type: string}) {
     this.payload = payload;
   }
 }
@@ -93,4 +99,4 @@ interface dayIndexType {
 
 export type EventActions = GetEventsForTripTemplate | EventsRetrieved |
   EventSelected | AddEvent | OrdinalForEventSetted | SetNameForTemplate | DayIndexTypeForEventSetted |
-  SetDescriptionForTemplate | RemoveEvent;
+  SetDescriptionForTemplate | RemoveEvent | UpdateEvent;

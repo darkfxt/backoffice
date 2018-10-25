@@ -29,6 +29,23 @@ export class AuthService {
       }));
   }
 
+  refreshToken() {
+    return this.http.get(`api/users/refresh`)
+      .pipe(map((user: any) => {
+        // login successful if there's a jwt token in the response
+        if (user && user.token) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.isLoggedIn = true;
+          if(this.redirectUrl)
+            this.router.navigate([this.redirectUrl]);
+          else
+            this.router.navigate(['/']);
+        }
+        return user;
+      }));
+  }
+
   logout(): void {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');

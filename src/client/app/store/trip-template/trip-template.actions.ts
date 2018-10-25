@@ -1,6 +1,7 @@
 import { Event, TripTemplate, TripTemplateWithMetadata, TypeOfEvent, DayOfTrip } from '../../shared/models/TripTemplate';
 import { Action } from '@ngrx/store';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {Update} from '@ngrx/entity';
 
 export enum TripTemplateActionTypes {
   GET_TRIP_TEMPLATES = '[T.Template] Retrieving',
@@ -8,6 +9,7 @@ export enum TripTemplateActionTypes {
   TRIP_TEMPLATES_METADATA_RETRIEVED = '[T.Template] Retrieved Metadata',
   TRIP_TEMPLATE_SELECTED = '[T.Template] Selected',
   CREATE_TRIP_TEMPLATE = '[T.Template] Posting',
+  UPDATE_TRIP_TEMPLATE = '[T.Template] Updating Template',
   SAVE_TRIP_TEMPLATE = '[T.Template] Updating',
   TRIP_TEMPLATE_PROCESSED_SUCCESFULLY = '[T.Template] Processed Succesfully',
   TRIP_TEMPLATE_LEAVE_EDITION = '[T.Template] Leaving template edition',
@@ -26,9 +28,7 @@ export class GetTripTemplates implements Action {
 
 export class CreateTripTemplate implements Action {
   readonly type = TripTemplateActionTypes.CREATE_TRIP_TEMPLATE;
-  constructor (readonly payload: TripTemplate) {
-    this.payload = payload;
-  }
+  constructor (readonly payload: {tripTemplate: TripTemplate}) { }
 }
 
 export class SaveTripTemplate implements Action {
@@ -40,7 +40,7 @@ export class SaveTripTemplate implements Action {
 
 export class TripTemplateSelected implements Action {
   readonly type = TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED;
-  constructor (readonly payload: TripTemplate) {
+  constructor (readonly payload: string | null) {
     this.payload = payload;
   }
 }
@@ -95,7 +95,12 @@ export class UpdateDayOnSelectedTemplate implements Action {
   constructor (readonly payload: any) { }
 }
 
-export type showLoaderTypes = GetTripTemplates | CreateTripTemplate | SaveTripTemplate;
+export class UpdateTripTemplate implements Action {
+  readonly type = TripTemplateActionTypes.UPDATE_TRIP_TEMPLATE;
+  constructor (readonly payload: {tripTemplate: TripTemplate}) { }
+}
+
+export type showLoaderTypes = GetTripTemplates | CreateTripTemplate | SaveTripTemplate ;
 export const showLoaderActions = [
   TripTemplateActionTypes.GET_TRIP_TEMPLATES,
   TripTemplateActionTypes.CREATE_TRIP_TEMPLATE,
@@ -118,4 +123,4 @@ interface dayIndexType {
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate | UpdateDayOnSelectedTemplate |
   TripTemplatesRetrieved | SaveTripTemplate | TripTemplateSelected |
   TripTemplateProcessedSuccesfully | TripTemplateEditionLeft | AddDayToSelectedTemplate |
-  SetNameForTemplate | SetDescriptionForTemplate | TripTemplatesMetadataRetrieved;
+  SetNameForTemplate | SetDescriptionForTemplate | TripTemplatesMetadataRetrieved | UpdateTripTemplate;

@@ -8,7 +8,7 @@ import { DayOfTrip } from '../../../shared/models/TripTemplate';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface DayState extends EntityState<DayOfTrip> {
-  selectedDay?: any;
+  selectedDay?: string | null;
   indexForDay?: number;
 }
 
@@ -35,11 +35,13 @@ export function dayReducer(state = initialState, action: DayActions): DayState {
     }
     case DayActionTypes.SELECT_ORDINAL_TO_ADD_DAY:
       return {...state, indexForDay: action.payload};
-    case DayActionTypes.ADD_EVENT_TO_SELECTED_DAY:
-      const events = state.selectedDay.events.slice(0);
-      events.push(action.payload);
-      const selectedDay = Object.assign({}, state.selectedDay, {events});
-      return {...state, selectedDay};
+    case DayActionTypes.UPDATE_DAY:
+      // const events = state.selectedDay.events.slice(0);
+      // events.push(action.payload);
+      // const selectedDay = Object.assign({}, state.selectedDay, {events});
+      const day = action.payload;
+      const entities = {...state.entities, [day._id]: day};
+      return {...state, entities};
     default:
       return state;
   }

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
 import Place from '../entity/Place';
+import { DayOfTrip, TripTemplate } from '../entity/TripTemplate';
 
 export class TripTemplateController {
 
@@ -71,8 +72,13 @@ export class TripTemplateController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      const answer = await TripTemplateService.getDetail(request.params.id, request.query.lang);
-      response.json(answer.data);
+
+      if (request.params.id && request.params.id !== 'undefined' && request.params.id !== 'new') {
+        const answer = await TripTemplateService.getDetail(request.params.id, request.query.lang);
+        response.json(answer.data);
+      } else
+        response.json(new TripTemplate(request.params.id, '', []));
+
     } catch (err) {
       next(err);
     }

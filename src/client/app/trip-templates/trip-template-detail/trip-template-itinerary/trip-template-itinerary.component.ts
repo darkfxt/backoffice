@@ -11,12 +11,16 @@ import {
   transition, keyframes
 } from '@angular/animations';
 import { Event, TripTemplate, TypeOfEvent, DayOfTrip } from '../../../shared/models/TripTemplate';
-import { PaginationOptionsInterface } from '../../../shared/common-list/common-list-item/pagination-options.interface';
+import {
+  PaginationOptions,
+  PaginationOptionsInterface
+} from '../../../shared/common-list/common-list-item/pagination-options.interface';
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
 import { select, Store } from '@ngrx/store';
 import {
+  GetTripTemplates,
   SetDescriptionForTemplate,
   SetNameForTemplate
 } from '../../../store/trip-template/trip-template.actions';
@@ -29,15 +33,17 @@ import { DialogActions } from '../../../store/dialog-actions.enum';
 import { BottomSheetEventComponent } from './add-event/add-event.component';
 import { AppState } from '../../../store/shared/app.interfaces';
 import {
+  getAllDays,
+  getAllEvents,
   getDaysForSelectedTrip,
-  getEventEntities,
-  getTripTemplateSelected,
+  getEventEntities, getSelectedDayId,
+  getTripTemplateSelectedId,
   getTripTemplatesEntities
 } from '../../../store/trip-template';
-import { getSegmentsEntityState } from '../../../store/route';
+import { getSegmentDialogStatus, getSegmentsEntityState } from '../../../store/route';
 import { getDialogStatus, getPointsEntity } from '../../../store/place';
 import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
-import { AddDay } from '../../../store/trip-template/day/day.actions';
+import { AddDay, DaySelected } from '../../../store/trip-template/day/day.actions';
 
 
 @Component({
@@ -52,7 +58,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   showOverlay: boolean;
   showEmptySlot: boolean;
   loading = false;
-  selectedTemplateEvents$: Observable<any>;
+  tripTemplateEntities$: Observable<any>;
   itineraryDays: Array<any> = [];
   drawingComponent: ListItemComponent;
   dayOfEvent: number;
@@ -62,7 +68,11 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   dialogReference: any;
   dialogReferenceSub: any;
   _subscription: Subscription;
+  subs: Array<Subscription> = [];
   dialogStatus$: Observable<any>;
+  segmentStatus$: Observable<any>;
+  selectedDay$: Observable<string>;
+  selectedTripTemplate$: Observable<string>;
 
   @ViewChild('dayList') dayList: ElementRef;
 
@@ -83,61 +93,56 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     private render: Renderer2
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
-    this.selectedTemplateEvents$ = store.select(getTripTemplatesEntities);
-
+    this.tripTemplateEntities$ = this.store.pipe(select(getTripTemplatesEntities));
   }
 
 
   ngOnInit() {
     this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
+    this.segmentStatus$ = this.store.pipe(select(getSegmentDialogStatus));
+    this.selectedDay$ = this.store.pipe(select(getSelectedDayId));
+    this.selectedTripTemplate$ = this.store.pipe(select(getTripTemplateSelectedId));
 
-    this.store.select(getDialogStatus).subscribe( (data: any) => {
+    this.dialogStatus$.subscribe((data: any) => {
       if (data && data === DialogActions.CLOSE) {
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
-        if (this.dialogReference)
-          this.dialogReference.close();
       }
     });
-    this.store.select(getPointsEntity).subscribe( (data: any) => {
-      if (data && data.dialog === DialogActions.CLOSE)
+
+    this.segmentStatus$.subscribe((data: any) => {
+      if (data && data === DialogActions.CLOSE) {
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
-    });
-
-    this._subscription = this.store.select(getTripTemplateSelected).subscribe((data: any) => {
-      console.log('///////////////////////////-------------////////////////////////');
-      console.log(data);
-      if (data.selectedTripTemplateEvents) {
-        /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
-        // const arrangedEvents = [];
-        // data.selectedTripTemplateEvents.forEach((event, index, array) =>
-        //   arrangedEvents.push(Object.assign({}, event, {index})));
-        // const arreglo = [];
-        // _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
-        //   (value, key) => {
-        //     arreglo.push({day: key, events: value});
-        //   });
-        // this.itineraryDays.splice(0, this.itineraryDays.length);
-        // this.itineraryDays = arreglo;
-        // this.itinerary.patchValue(data.selectedTripTemplateEvents);
-
       }
-      this.itineraryDays = data.days;
-      if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
-      if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
-      if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
-      if (data.selectedEvent) this.addEvent(data.selectedEvent);
     });
+
+    setTimeout(this.loadItinerary());
+  }
+
+  private loadItinerary() {
+     this.subs.push(this.tripTemplateEntities$.subscribe((tripTemplateEntities: any) => {
+      this.subs.push(this.selectedTripTemplate$.subscribe(selectedTemplate => {
+        if (Object.keys(tripTemplateEntities).includes(selectedTemplate)) {
+          this.subs.push(this.store.select(getDaysForSelectedTrip).subscribe((data: any) => {
+            if (data) {
+              this.itineraryDays = data;
+            }
+          }));
+        }
+      }));
+    }));
   }
 
   ngOnDestroy() {
     if (this._subscription) {
       this._subscription.unsubscribe();
     }
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  openEmptySlot(): void {
+  openEmptySlot(day): void {
+    this.store.dispatch(new DaySelected(day));
     this.showOverlay = true;
     this.showEmptySlot = true;
   }
@@ -155,7 +160,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       this.dialogReferenceSub.close();
     }
     const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
-    this.store.dispatch(new AddEvent(newEvent));
+    this.store.dispatch(new AddEvent({event: newEvent, day: this.selectedDay$.toString()}));
     // setTimeout(this.store.dispatch(new ClearSegment()), 500);
   }
 
@@ -177,7 +182,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   addDay() {
     // this.itineraryDays.push([]);
-    const diaNuevo = new DayOfTrip(Math.random().toString(), []);
+    const diaNuevo = new DayOfTrip( []);
     this.store.dispatch(new AddDay(diaNuevo));
     setTimeout(() => {
       this.dayList.nativeElement.scrollTop = this.dayList.nativeElement.scrollHeight;
