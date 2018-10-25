@@ -61,9 +61,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   tripTemplateEntities$: Observable<any>;
   itineraryDays: Array<any> = [];
   drawingComponent: ListItemComponent;
-  dayOfEvent: number;
   typeForEvent: TypeOfEvent;
-  ordinalForEvent: string;
   headerCollapsed: boolean;
   dialogReference: any;
   dialogReferenceSub: any;
@@ -104,16 +102,16 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.selectedTripTemplate$ = this.store.pipe(select(getTripTemplateSelectedId));
 
     this.dialogStatus$.subscribe((data: any) => {
-      if (data && data === DialogActions.CLOSE) {
-        if (this.dialogReferenceSub)
-          this.dialogReferenceSub.close();
+      if (data && data === 'close') {
+        if (this.dialogReference)
+          this.dialogReference.close();
       }
     });
 
     this.segmentStatus$.subscribe((data: any) => {
-      if (data && data === DialogActions.CLOSE) {
-        if (this.dialogReferenceSub)
-          this.dialogReferenceSub.close();
+      if (data && data === 'close') {
+        if (this.dialogReference)
+          this.dialogReference.close();
       }
     });
 
@@ -152,36 +150,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.showEmptySlot = false;
   }
 
-  addEvent(eventToAdd) {
-    if (this.dialogReference) {
-      this.dialogReference.close();
-    }
-    if (this.dialogReferenceSub) {
-      this.dialogReferenceSub.close();
-    }
-    const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
-    this.store.dispatch(new AddEvent({event: newEvent, day: this.selectedDay$.toString()}));
-    // setTimeout(this.store.dispatch(new ClearSegment()), 500);
-  }
-
-  convertToEvent(toConvert: any, event_type: string, order: number): Event {
-    const converted: Event = new Event(toConvert.name, toConvert.description, this.typeForEvent, 1);
-    switch (this.typeForEvent) {
-      case TypeOfEvent.ACTIVITY:
-      case TypeOfEvent.HOTEL:
-        converted.product = toConvert;
-        break;
-      case TypeOfEvent.DRIVING:
-        converted.product = toConvert;
-        break;
-      default:
-        converted.product = toConvert;
-    }
-    return converted;
-  }
-
   addDay() {
-    // this.itineraryDays.push([]);
     const diaNuevo = new DayOfTrip( []);
     this.store.dispatch(new AddDay(diaNuevo));
     setTimeout(() => {
@@ -210,8 +179,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       disableClose: true,
       closeOnNavigation: true
     };
-     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.username) && new SetDescriptionForTemplate (this.itinerary.value.description));
-     // this.store.dispatch(new SetDescriptionForTemplate (this.itinerary.value.description));
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 

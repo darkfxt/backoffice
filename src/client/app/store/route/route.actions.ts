@@ -11,7 +11,7 @@ export enum SegmentActionTypes {
   SEGMENT_SELECTED = '[Segment] Selected',
   CLEAR_SEGMENT = '[Segment] Clear',
   SAVE_SEGMENT = '[Segment] Saving To DB',
-  TOGGLE_DIALOG = '[Segment] Set Dialog ON',
+  TOGGLE_DIALOG = '[Segment] Set Dialog',
   SEGMENTS_METADATA_RETRIEVED = '[Segment] Metadata Retrieved'
 }
 
