@@ -38,3 +38,5 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8249,"time":"2018-10-18T20:08:22.429Z","msg":"Module not enabled in configuration; not starting."}
 {"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8458,"time":"2018-10-18T20:08:33.910Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.11.3."}
 {"v":0,"level":30,"name":"newrelic","hostname":"Leandros-MacBook-Pro.local","pid":8458,"time":"2018-10-18T20:08:33.912Z","msg":"Module not enabled in configuration; not starting."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Enricos-MacBook-Pro.local","pid":27485,"time":"2018-10-19T21:56:01.605Z","msg":"Using New Relic for Node.js. Agent version: 4.9.0; Node version: v8.9.4."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Enricos-MacBook-Pro.local","pid":27485,"time":"2018-10-19T21:56:01.606Z","msg":"Module not enabled in configuration; not starting."}

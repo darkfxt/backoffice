@@ -43,12 +43,14 @@ export class CustomEventComponent implements OnInit {
   }
 
   convertToEvent(event_type: string, order: number): Event {
-    const converted: Event = new Event();
     const data = this.form.value;
-    converted.name = data.name;
-    converted.description = data.description;
-    converted.eventType = event_type;
-    converted.order = order || 1;
+    const converted: Event = new Event(
+      data.name,
+      data.description,
+      data.event_type,
+      order || 1
+    );
+
     return converted;
   }
 

@@ -60,11 +60,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
     //   template.description = action.payload;
     //   return {...state, selectedTripTemplate: temp};
     case TripTemplateActionTypes.ADD_DAY_TO_SELECTED_TEMPLATE:
-      let days = state.selectedTripTemplate.days.slice(0);
-      if (days.length > 0)
-        days.push(action.payload);
-      else
-        days = [action.payload];
+      const days = state.selectedTripTemplate.days ? state.selectedTripTemplate.days.slice(0) : [];
+      days.push(action.payload);
       const tripTemplate = Object.assign({}, state.selectedTripTemplate, {days});
       return {...state, selectedTripTemplate: tripTemplate };
     case TripTemplateActionTypes.UPDATE_DAY_ON_SELECTED_TEMPLATE:
