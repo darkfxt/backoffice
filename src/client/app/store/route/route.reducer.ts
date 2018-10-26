@@ -24,7 +24,7 @@ export function segmentReducer(state: SegmentState = initialState, action: Segme
     case SegmentActionTypes.GET_SEGMENTS:
       return {...state};
     case SegmentActionTypes.SEGMENT_SELECTED:
-      return adapter.addOne(action.payload, state);
+      return {...state, segmentSelected: action.payload};
     case SegmentActionTypes.SEGMENTS_RETRIEVED:
       return adapter.addAll(action.payload, state);
     case SegmentActionTypes.SEGMENTS_METADATA_RETRIEVED:

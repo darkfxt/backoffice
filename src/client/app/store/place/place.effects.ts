@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, map, mergeMap, catchError } from 'rxjs/internal/operators';
+import { switchMap, map, mergeMap, catchError, delay, tap } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs/index';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 import {
   PointActionTypes, GetPoints,
   FilterPoints, PointsRetrieved,
-  PointMetadataRetrieved, PointSelected, SavePoint, ClearPoint
+  PointMetadataRetrieved, PointSelected, SavePoint, ClearPoint, ToggleDialogPoint
 } from './place.actions';
 import { Point, PointWithMetadata } from '../../shared/models/Place';
 import { PlaceService } from '../../shared/services/place.service';
@@ -17,12 +17,15 @@ import { HttpError } from '../shared/actions/error.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarOpen } from '../shared/actions/snackbar.actions';
 import { HideLoader, ShowLoader } from '../shared/actions/loader.actions';
+import { DialogActions } from '../dialog-actions.enum';
+import { AppState } from '../shared/app.interfaces';
 
 @Injectable()
 export class PointEffects {
   constructor(private actions$: Actions,
               private matDialog: MatDialog,
-              private placeServiceInstance: PlaceService) {
+              private placeServiceInstance: PlaceService,
+              private store: Store<AppState>) {
   }
 
   @Effect()
@@ -51,4 +54,5 @@ export class PointEffects {
       ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
+
 }

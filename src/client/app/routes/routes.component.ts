@@ -22,6 +22,7 @@ import { selectLoaderEntity } from '../store/shared/reducers';
 export class RoutesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
   @Input() isDialog ? = 'false';
+  popup = false;
   @Input() dialogRef: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
@@ -45,6 +46,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.popup = this.isDialog !== 'false';
     this.paginationOptions = {
       previousPageIndex: 0,
       pageIndex: 0,
@@ -71,7 +73,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   }
 
   onButtonClick() {
-    if (this.isDialog) {
+    if (this.popup) {
       if (this.dialogRef) {
         this.dialogRef.close('OPEN_NEW_ROUTES');
       }
@@ -81,7 +83,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.isDialog) {
+    if (this.popup) {
       if (this.dialogRef)
         this.dialogRef.close('CLOSE');
       return;

@@ -1,6 +1,6 @@
-<app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
+<app-detail-header *ngIf="!loading" [disableBackButton]="!popup"
                    [title]="'{value} rutas encontradas' | translate: {value: paginationOptions.length}"
-                   [isDialog]="isDialog"
+                   [isDialog]="popup"
                    class="detail-header-content"
                    (backButtonClicked)="goBack()"
                    navUrl="/routes/new">

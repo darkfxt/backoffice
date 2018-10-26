@@ -1,6 +1,6 @@
 
 <form [formGroup]="placeForm" #formDir="ngForm" novalidate autocomplete="none|false|no|off">
-  <app-detail-header [isDialog]="amIDialog"
+  <app-detail-header [isDialog]="popup"
                      [title]="'Actualizar lugar' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
@@ -41,5 +41,4 @@
     </div>
   </div>
 </form>
-<app-loading *ngIf="bussy"></app-loading>
 
