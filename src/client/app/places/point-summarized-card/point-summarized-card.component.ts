@@ -36,7 +36,7 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
 
   editPoint() {
     if (this.selectionMode) {
-      this.store.dispatch(new EventSelected(this.data));
+      this.store.dispatch(new EventSelected({_id: this.data._id, type: 'POINT'}));
       return;
     }
     this.router.navigate([`/places/${this.data._id}`]);

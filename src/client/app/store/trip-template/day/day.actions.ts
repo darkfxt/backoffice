@@ -1,5 +1,6 @@
 import { DayOfTrip, Event } from '../../../shared/models/TripTemplate';
 import { Action } from '@ngrx/store';
+import {Update} from '@ngrx/entity';
 
 export enum DayActionTypes {
   GET_DAYS = '[Days] Retrieving',
@@ -8,7 +9,7 @@ export enum DayActionTypes {
   ADD_DAY = '[Days] Adding new Day',
   REMOVE_DAY = '[Days] Removing Day',
   SELECT_ORDINAL_TO_ADD_DAY = '[Days] Selecting ordinal Index',
-  ADD_EVENT_TO_SELECTED_DAY = '[Days] Adding Event'
+  UPDATE_DAY = '[Days] Adding Event'
 }
 
 export class GetDaysForTripTemplate implements Action {
@@ -39,7 +40,7 @@ export class RemoveDay implements Action {
 
 export class DaySelected implements Action {
   readonly type = DayActionTypes.DAY_SELECTED;
-  constructor (readonly payload: DayOfTrip) {
+  constructor (readonly payload: string | null) {
     this.payload = payload;
   }
 }
@@ -51,9 +52,9 @@ export class OrdinalForDaySetted implements Action {
   }
 }
 
-export class AddEventToSelectedDay implements Action {
-  readonly type = DayActionTypes.ADD_EVENT_TO_SELECTED_DAY;
-  constructor(public payload: Event) { }
+export class UpdateDay implements Action {
+  readonly type = DayActionTypes.UPDATE_DAY;
+  constructor(public payload: DayOfTrip) { }
 }
 
 export type showLoaderTypes = GetDaysForTripTemplate | AddDay ;
@@ -68,4 +69,4 @@ export const hideLoaderActions = [
 ];
 
 export type DayActions = GetDaysForTripTemplate | DaysRetrieved |
-  DaySelected | AddDay | OrdinalForDaySetted | RemoveDay | AddEventToSelectedDay;
+  DaySelected | AddDay | OrdinalForDaySetted | RemoveDay | UpdateDay;

@@ -47,7 +47,8 @@ export class SegmentEffects {
     .ofType(SegmentActionTypes.FILTER_SEGMENTS)
     .pipe(
       switchMap((query: FilterSegments) => this.routeServiceInstance.getAll(query.payload)),
-      map((segments: SegmentWithMetadata) => new SegmentsRetrieved(segments.data))
+      map((segments: SegmentWithMetadata) => new SegmentsRetrieved(segments.data)),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
   @Effect()

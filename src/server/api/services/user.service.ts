@@ -33,6 +33,10 @@ export class UserService {
     return axios.post(`${config.idm.url}/signin`, {username: email, password}, {headers});
   }
 
+  public static async refreshToken(headers: any): Promise<any> {
+    return axios.get(`${config.idm.url}/refresh-token`,{headers});
+  }
+
   public static async signOutUser(headers: any): Promise<any> {
     return axios.get(`${config.idm.url}/signout`, {headers});
   }

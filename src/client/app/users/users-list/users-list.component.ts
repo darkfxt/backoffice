@@ -45,12 +45,6 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetUsers());
-    // this._subscription = this.store.select(getUserEntities).subscribe((data: any) => {
-    //   this.paginationOptions = data.metadata;
-    //   this.loading = data.loading;
-    //   console.log('**********************');
-    //   console.log(data);
-    // });
   }
 
   onButtonClick() {

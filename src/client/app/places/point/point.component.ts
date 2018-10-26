@@ -58,7 +58,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       if (storePoint && storePoint.dialog === DialogActions.TRUE) {
         this.amIDialog = true;
         if (storePoint.pointSelected)
-          this.store.dispatch(new EventSelected(storePoint.pointSelected));
+          this.store.dispatch(new EventSelected(storePoint.pointSelected._id));
       }
       this.bussy = (storePoint && storePoint.loading) ? storePoint.loading : false;
     });

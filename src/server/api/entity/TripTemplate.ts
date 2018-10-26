@@ -37,7 +37,7 @@ export class DayOfTrip {
 export class TripTemplate {
 
   created_by: string;
-  constructor(public _id: string, public name: string, public days: DayOfTrip[]) {
+  constructor(public _id: string, public name?: string, public days?: DayOfTrip[]) {
     this._id = _id;
     this.name = name;
     this.days = days;

@@ -11,21 +11,23 @@ export enum TypeOfEvent {
 
 export class Event {
 
-  _id: number;
+  _id: string;
   name: string;
   description: string;
   eventType: string;
   time: Date;
   order: number;
   created_by: string;
+  dayId?: string;
   product?: any;
   constructor(name: string, description: string, eventType: TypeOfEvent,
-              order: number, product?: any, time?: Date) {
+              order: number, dayId?: string, product?: any, time?: Date) {
     this.name = name;
     this.description = description;
     this.eventType = eventType;
     this.order = order;
-    this._id = order;
+    this._id = new Date().getUTCMilliseconds().toString();
+    if (dayId) this.dayId = dayId;
     if (time) this.time = time;
     if (product) {
       const productToAdd = Object.assign({}, product);
@@ -47,8 +49,11 @@ export class Event {
 export class DayOfTrip {
   _id: string;
   events: Array<Event>;
-  constructor(id: string, events: Array<Event>) {
-    this._id = id;
+  constructor(events: Array<Event>, id?: string) {
+    if (id)
+      this._id = id;
+    else
+      this._id = new Date().getUTCMilliseconds().toString();
     this.events = events;
   }
 }

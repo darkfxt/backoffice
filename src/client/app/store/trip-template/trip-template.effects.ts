@@ -1,6 +1,6 @@
   import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, map, mergeMap, catchError } from 'rxjs/internal/operators';
+import {switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter} from 'rxjs/internal/operators';
 
 import {
   GetTripTemplates,
@@ -11,7 +11,7 @@ import {
   SaveTripTemplate,
   TripTemplateProcessedSuccesfully,
   TripTemplateSelected,
-  TripTemplatesMetadataRetrieved
+  TripTemplatesMetadataRetrieved, UpdateTripTemplate
 } from './trip-template.actions';
 import { TripTemplate, TripTemplateWithMetadata, Event } from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
@@ -20,10 +20,15 @@ import { TripTemplateService } from '../../shared/services/trip-template.service
   import { HttpErrorResponse } from '@angular/common/http';
   import { SnackbarOpen } from '../shared/actions/snackbar.actions';
   import { EventsRetrieved } from './event/event.actions';
+  import { AppState } from '../shared/app.interfaces';
+  import { Store } from '@ngrx/store';
+  import { DaysRetrieved } from './day/day.actions';
 
 @Injectable()
 export class TripTemplateEffects {
-  constructor(private actions$: Actions, private TripTemplateServiceInstance: TripTemplateService) {
+  constructor(private actions$: Actions,
+              private TripTemplateServiceInstance: TripTemplateService,
+              private store: Store<AppState>) {
   }
 
   @Effect()
@@ -38,28 +43,38 @@ export class TripTemplateEffects {
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
+  // @Effect()
+  // createTripTemplate$ = this.actions$
+  //   .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
+  //   .pipe(
+  //     switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
+  //     mergeMap((serverResponse: any) => [
+  //       new TripTemplatesRetrieved(serverResponse),
+  //       new SnackbarOpen({
+  //         message: 'Template creado',
+  //         action: 'Success'
+  //       })
+  //     ]),
+  //     catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+  //   );
+
   @Effect()
-  createTripTemplate$ = this.actions$
-    .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
+  setDaysForSelectedTrip = this.actions$
+    .ofType(TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED)
     .pipe(
-      switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
-      mergeMap((serverResponse: any) => [
-        new TripTemplatesRetrieved(serverResponse),
-        new SnackbarOpen({
-          message: 'Template creado',
-          action: 'Success'
-        })
-      ]),
+      switchMap((tripTemplateId: TripTemplateSelected) => this.TripTemplateServiceInstance.getDetail(tripTemplateId.payload)),
+      map((response: any) => new DaysRetrieved(response.days)),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
   @Effect()
-  getEventsFromTemplate$ = this.actions$
-    .ofType(TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED)
+  updateTripTemplateDay$ = this.actions$
+    .ofType(TripTemplateActionTypes.ADD_DAY_TO_SELECTED_TEMPLATE)
     .pipe(
-      switchMap((tripTemplate: any) =>
-        this.TripTemplateServiceInstance.getEventsFromTripTemplate(tripTemplate.payload._id)),
-      map((serverResponse: Event[]) => new EventsRetrieved(serverResponse)),
+      switchMap((action: any) => of(action.payload)),
+      withLatestFrom(this.store),
+      map((response: any) => new UpdateTripTemplate(
+        Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate], {days: response[0]}))),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
@@ -70,7 +85,7 @@ export class TripTemplateEffects {
        switchMap((tripTemplate: SaveTripTemplate) =>
          this.TripTemplateServiceInstance.upsert(tripTemplate.payload) ),
        mergeMap((serverResponse: any) => [
-         new TripTemplateSelected(Object.assign(new TripTemplate(), serverResponse.data[0])),
+         new TripTemplateSelected(serverResponse.data[0]._id),
          new SnackbarOpen({
            message: 'Template Guardado',
            action: 'Success'

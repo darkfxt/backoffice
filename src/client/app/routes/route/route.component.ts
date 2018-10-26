@@ -57,7 +57,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       if (storeSegment && storeSegment.dialog === DialogActions.TRUE) {
         this.amIDialog = true;
         if (storeSegment.segmentSelected )
-          this.store.dispatch(new EventSelected(storeSegment.segmentSelected));
+          this.store.dispatch(new EventSelected(storeSegment.segmentSelected._id));
       }
       this.bussy = (storeSegment && storeSegment.loading) ? storeSegment.loading : false;
     });

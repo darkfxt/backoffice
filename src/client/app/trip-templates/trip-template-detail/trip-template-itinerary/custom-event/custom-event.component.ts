@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Event, TypeOfEvent } from '../../../../shared/models/TripTemplate';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {Observable, Subscription} from 'rxjs';
 import { AppState } from '../../../../store/shared/app.interfaces';
-import { getTripTemplatesEntities } from '../../../../store/trip-template';
+import {getSelectedDayId, getTripTemplatesEntities} from '../../../../store/trip-template';
 import {AddEvent} from '../../../../store/trip-template/event/event.actions';
 
 @Component({
@@ -21,10 +21,12 @@ export class CustomEventComponent implements OnInit {
   minutes = new Array(60);
   _subscription: Subscription;
   dayOfEvent: number;
+  selectedDay$: Observable<string>;
   constructor(private fb: FormBuilder,
               private store: Store<AppState>) { }
 
   ngOnInit() {
+    this.selectedDay$ = this.store.pipe(select(getSelectedDayId));
     this.form = this.fb.group({
       name: '',
       description: '',
@@ -38,20 +40,13 @@ export class CustomEventComponent implements OnInit {
 
   onButtonClick() {
     const newEvent: Event = this.convertToEvent(TypeOfEvent.OTHER, this.dayOfEvent);
-    this.store.dispatch(new AddEvent(newEvent));
+    this.store.dispatch(new AddEvent({event: newEvent, day: this.selectedDay$.toString()}));
     this.closeDialog();
   }
 
   convertToEvent(event_type: string, order: number): Event {
     const data = this.form.value;
-    const converted: Event = new Event(
-      data.name,
-      data.description,
-      data.event_type,
-      order || 1
-    );
-
-    return converted;
+    return new Event(data.name, data.description, TypeOfEvent.OTHER, order || 1);
   }
 
   closeDialog() {
@@ -59,8 +54,7 @@ export class CustomEventComponent implements OnInit {
       if (this.dialogRef)
         this.dialogRef.close('CLOSE');
       return;
-    } else
-      console.log('pepe');
+    }
   }
 
 }

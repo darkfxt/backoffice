@@ -62,4 +62,13 @@ export class UserController {
     }
   }
 
+  public static async refreshToken (request: Request, response: Response, next: NextFunction) {
+    try {
+      const user = await UserService.refreshToken(request.headers);
+      response.json(user.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
 }
