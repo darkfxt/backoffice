@@ -1,3 +1,4 @@
-<div class="empty-slot" (click)="showOptions()" [hidden]="!editMode">
-  <p>{{'Agregar evento aquí' | translate}}</p>
+
+<div class="event-cluster" (click)="showOptions()">
+  <ng-content selector=".add-event-cluster"></ng-content>
 </div>

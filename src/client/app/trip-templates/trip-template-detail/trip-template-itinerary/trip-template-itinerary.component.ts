@@ -71,6 +71,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   segmentStatus$: Observable<any>;
   selectedDay$: Observable<string>;
   selectedTripTemplate$: Observable<string>;
+  editedDayId;
 
   @ViewChild('dayList') dayList: ElementRef;
 
@@ -143,13 +144,11 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   openEmptySlot(day): void {
     this.store.dispatch(new DaySelected(day));
-    this.showOverlay = true;
-    this.showEmptySlot = true;
+    this.editedDayId = day;
   }
 
   hideEmptySlot(): void {
-    this.showOverlay = false;
-    this.showEmptySlot = false;
+    this.editedDayId = undefined;
   }
 
   addDay() {
@@ -185,8 +184,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 
     this.dialogReference.afterClosed().subscribe(result => {
-      this.showEmptySlot = false;
-      this.showOverlay = false;
+      //this.hideEmptySlot();
       if (result === 'OPEN_NEW_ROUTES') {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);

@@ -1,13 +1,26 @@
-<div *ngIf="!data.product.origin">
-  <app-add-event (openedDialog)="openDialog($event, 'origin')">
-  </app-add-event>
-</div>
+
 <div class="event-cluster" [class.edit-mode]="editMode">
   <div class="icon-ctn">
   </div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
     <p>{{data.description}}</p>
+    <div class="location" *ngIf="data.product.origin">
+      Sale: {{data.product.origin.name}}
+    </div>
+    <div *ngIf="!data.product.origin">
+      <app-add-event (openedDialog)="openDialog($event, 'origin')">
+        <div class="add-event-cluster">+Añadir lugar de salida</div>
+      </app-add-event>
+    </div>
+    <div class="location" *ngIf="data.product.destination">
+      Llega: {{data.product.destination.name}}
+    </div>
+    <div *ngIf="!data.product.destination">
+      <app-add-event (openedDialog)="openDialog($event, 'destination')">
+        <div class="add-event-cluster">+Añadir lugar de llegada</div>
+      </app-add-event>
+    </div>
   </div>
   <div class="menu">
     <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -21,7 +34,4 @@
     </mat-menu>
   </div>
 </div>
-<div *ngIf="!data.product.destination">
-  <app-add-event (openedDialog)="openDialog($event, 'destination')">
-  </app-add-event>
-</div>
+

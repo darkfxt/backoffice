@@ -71,7 +71,8 @@ export const getDaysForSelectedTrip = createSelector(
   getTripTemplatesEntities,
   getTripTemplateSelectedId,
   (tTemplateEntities, tTemplateId) => {
-    return tTemplateEntities[tTemplateId].days;
+    if (tTemplateEntities[tTemplateId])
+      return tTemplateEntities[tTemplateId].days;
   }
 );
 
