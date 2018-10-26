@@ -1,4 +1,7 @@
-<div *ngIf="!data.origin"><app-add-event></app-add-event></div>
+<div *ngIf="!data.product.origin">
+  <app-add-event (openedDialog)="openDialog($event, 'origin')">
+  </app-add-event>
+</div>
 <div class="event-cluster" [class.edit-mode]="editMode">
   <div class="icon-ctn">
   </div>
@@ -11,11 +14,14 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button (click)="onRemoveEvent(data.index)" mat-menu-item>
+      <button (click)="onRemoveEvent(data._id)" mat-menu-item>
         <mat-icon>delete</mat-icon>
         <span>{{'Eliminar' | translate}}</span>
       </button>
     </mat-menu>
   </div>
 </div>
-<div *ngIf="!data.destination">Agregar Destino</div>
+<div *ngIf="!data.product.destination">
+  <app-add-event (openedDialog)="openDialog($event, 'destination')">
+  </app-add-event>
+</div>

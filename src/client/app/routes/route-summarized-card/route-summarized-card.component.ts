@@ -12,7 +12,7 @@ import {EventSelected} from '../../store/trip-template/event/event.actions';
 export class RouteSummarizedCardComponent implements OnInit {
 
   @Input() data: any;
-  @Input() selectionMode = false;
+  @Input() selectionMode = 'false';
   imageUrl: string;
   title: string;
   subtitleData: any;
@@ -54,8 +54,12 @@ export class RouteSummarizedCardComponent implements OnInit {
   }
 
   editSegment() {
-    if (this.selectionMode) {
+    if (this.selectionMode === 'select') {
       this.store.dispatch(new EventSelected({_id: this.data._id, type: 'SEGMENT'}));
+      return;
+    }
+    if (this.selectionMode === 'update') {
+      console.log('aca actualizaría el driving');
       return;
     }
     this.router.navigate([`/routes/${this.data._id}`]);

@@ -21,8 +21,10 @@ import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
 })
 export class PlacesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
-  @Input() isDialog ? = false;
+  @Input() isDialog ? = 'false';
+  dialog: boolean;
   @Input() dialogRef: any;
+  @Input() drivingUpdate?: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
@@ -43,6 +45,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.dialog = this.isDialog !== 'false';
     this.paginationOptions = {
       previousPageIndex: 0,
       pageIndex: 0,
@@ -69,7 +72,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onButtonClick() {
-    if (this.isDialog) {
+    if (this.dialog) {
       if (this.dialogRef) {
         this.dialogRef.close('OPEN_NEW_PLACES');
       }
@@ -79,7 +82,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.isDialog) {
+    if (this.dialog) {
       if (this.dialogRef)
         this.dialogRef.close('CLOSE');
       return;

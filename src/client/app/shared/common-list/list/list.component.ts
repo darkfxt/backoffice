@@ -18,7 +18,7 @@ export class ListComponent implements OnInit {
   @Input() objectList: any;
   @Input() drawingComponent: ListItemComponent;
   @Input() storeToWatch: string;
-  @Input() selectionMode ? = false;
+  @Input() selectionMode ? = 'false';
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
   iterationList: any[];
   loading = false;

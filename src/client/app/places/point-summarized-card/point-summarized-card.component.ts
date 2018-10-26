@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ListItemInterface } from '../../shared/common-list/common-list-item/list-item.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
-import {EventSelected} from '../../store/trip-template/event/event.actions';
+import { EventSelected, TerminalSelected, UpdateEvent } from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-point-summarized-card',
@@ -13,7 +13,7 @@ import {EventSelected} from '../../store/trip-template/event/event.actions';
 })
 export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   @Input() data: any;
-  @Input() selectionMode = false;
+  @Input() selectionMode = 'false';
   imageUrl: string;
   title: string;
   subtitle: string;
@@ -35,8 +35,12 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   }
 
   editPoint() {
-    if (this.selectionMode) {
+    if (this.selectionMode === 'select') {
       this.store.dispatch(new EventSelected({_id: this.data._id, type: 'POINT'}));
+      return;
+    }
+    if (this.selectionMode === 'update') {
+        this.store.dispatch(new TerminalSelected({terminal: this.data}));
       return;
     }
     this.router.navigate([`/places/${this.data._id}`]);

@@ -1,4 +1,4 @@
-import { DayOfTrip, Event, TypeOfEvent } from '../../../shared/models/TripTemplate';
+import {DayOfTrip, Event, terminalType, TypeOfEvent} from '../../../shared/models/TripTemplate';
 import { Action } from '@ngrx/store';
 
 export enum EventActionTypes {
@@ -8,7 +8,10 @@ export enum EventActionTypes {
   ADD_EVENT = '[Events] Adding new Event',
   REMOVE_EVENT = '[Events] Removing Event',
   UPDATE_EVENT = '[Events] Updating Event',
+  SELECT_TERMINAL = '[Events] Terminal selected',
+  CLEAR_EVENT = '[Events] Clear event data',
   SELECT_ORDINAL_TO_ADD_EVENT = '[Events] Selecting ordinal Index',
+  DRIVING_EVENT_SELECTED = '[Events] Selected driving for update',
   SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
   SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting Type, index & day for event'
@@ -45,11 +48,26 @@ export class UpdateEvent implements Action {
   constructor (readonly payload: Event) { }
 }
 
+export class ClearEvents implements Action {
+  readonly type = EventActionTypes.CLEAR_EVENT;
+  constructor () { }
+}
+
 export class EventSelected implements Action {
   readonly type = EventActionTypes.EVENT_SELECTED;
   constructor (readonly payload: {_id: string, type: string}) {
     this.payload = payload;
   }
+}
+
+export class TerminalSelected implements Action {
+  readonly type = EventActionTypes.SELECT_TERMINAL;
+  constructor (readonly payload: {terminal: any}) { }
+}
+
+export class DrivingEventSelected implements Action {
+  readonly type = EventActionTypes.DRIVING_EVENT_SELECTED;
+  constructor (readonly payload: {event: Event, terminal: string}) { }
 }
 
 export class OrdinalForEventSetted implements Action {
@@ -97,6 +115,6 @@ interface dayIndexType {
   type: TypeOfEvent;
 }
 
-export type EventActions = GetEventsForTripTemplate | EventsRetrieved |
+export type EventActions = GetEventsForTripTemplate | EventsRetrieved | TerminalSelected |
   EventSelected | AddEvent | OrdinalForEventSetted | SetNameForTemplate | DayIndexTypeForEventSetted |
-  SetDescriptionForTemplate | RemoveEvent | UpdateEvent;
+  SetDescriptionForTemplate | RemoveEvent | UpdateEvent | DrivingEventSelected | ClearEvents;

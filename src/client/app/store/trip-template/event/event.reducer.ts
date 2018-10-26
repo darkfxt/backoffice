@@ -4,7 +4,7 @@ import {
   EventActions, EventActionTypes
 } from './event.actions';
 
-import { Event, DayOfTrip, TypeOfEvent } from '../../../shared/models/TripTemplate';
+import {Event, DayOfTrip, TypeOfEvent, terminalType} from '../../../shared/models/TripTemplate';
 import {
   PaginationOptions,
   PaginationOptionsInterface
@@ -15,6 +15,9 @@ export interface EventState extends EntityState<Event> {
   metadata: PaginationOptionsInterface;
   selectedTripTemplateEvents?: Event[];
   selectedEvent?: {_id: string, type: string};
+  selectedDriving?: Event;
+  terminalToReplace?: string;
+  selectedTerminal?: any;
   indexForEvent?: number;
   dayForEvent?: number;
   typeForEvent?: TypeOfEvent;
@@ -38,12 +41,6 @@ export function eventReducer(state = initialState, action: EventActions): EventS
     case EventActionTypes.EVENT_SELECTED:
       return {...state, selectedEvent: action.payload};
     case EventActionTypes.ADD_EVENT: {
-      // const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
-      // const indexOfEvent = state.indexForEvent === undefined ? array.length : state.indexForEvent;
-      // const productTypeEvent = state.typeForEvent;
-      // const dayOfEvent = state.dayForEvent || 1 ;
-      // const eventToAdd = Object.assign({}, action.payload, {ordinal: dayOfEvent, eventType: productTypeEvent});
-      // array.splice(+indexOfEvent, 0, eventToAdd);
       const newEvent = action.payload.event;
       const entities = {...state.entities, [newEvent._id]: newEvent};
       const ids: Array<any> = state.ids.slice(0);
@@ -57,7 +54,15 @@ export function eventReducer(state = initialState, action: EventActions): EventS
         selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
     }
     case EventActionTypes.UPDATE_EVENT:
-      return adapter.addOne(action.payload, state);
+      const event = action.payload;
+      const entities = {...state.entities, [event._id]: event};
+      return {...state, entities};
+    case EventActionTypes.CLEAR_EVENT:
+      return {...state};
+    case EventActionTypes.SELECT_TERMINAL:
+      return {...state, selectedTerminal: action.payload.terminal};
+    case EventActionTypes.DRIVING_EVENT_SELECTED:
+      return {...state, selectedDriving: action.payload.event, terminalToReplace: action.payload.terminal};
     case EventActionTypes.SELECT_ORDINAL_TO_ADD_EVENT:
       return {...state, indexForEvent: action.payload};
     case EventActionTypes.SELECT_EVENT_TYPE_DAY_ORDINAL:

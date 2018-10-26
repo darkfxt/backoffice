@@ -9,6 +9,11 @@ export enum TypeOfEvent {
   OTHER = 'OTHER'
 }
 
+export enum terminalType {
+  ORIGIN = 'origin',
+  DESTINATION = 'destination'
+}
+
 export class Event {
 
   _id: string;
@@ -21,22 +26,25 @@ export class Event {
   dayId?: string;
   product?: any;
   constructor(name: string, description: string, eventType: TypeOfEvent,
-              order: number, dayId?: string, product?: any, time?: Date) {
+              order: number, dayId?: string, product?: any, id?: string, time?: Date) {
     this.name = name;
     this.description = description;
     this.eventType = eventType;
     this.order = order;
-    this._id = new Date().getUTCMilliseconds().toString();
+    if (id)
+      this._id = id;
+    else
+      this._id = new Date().getUTCMilliseconds().toString();
     if (dayId) this.dayId = dayId;
     if (time) this.time = time;
     if (product) {
       const productToAdd = Object.assign({}, product);
       if (eventType === 'DRIVING') {
-        if (product.origin.type === 'REFERENCE') {
+        if (product.origin !== null && product.origin.type === 'REFERENCE') {
           productToAdd.referencedOrigin = product.origin;
           productToAdd.origin = null;
         }
-        if (product.destination.type === 'REFERENCE') {
+        if (product.destination !== null && product.destination.type === 'REFERENCE') {
           productToAdd.referencedDestination = product.destination;
           productToAdd.destination = null;
         }
