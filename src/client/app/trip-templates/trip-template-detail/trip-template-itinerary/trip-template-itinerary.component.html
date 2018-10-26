@@ -26,7 +26,7 @@
                        (openedDialog)="openDialog($event)"
                        [ordinal]="day.events.length || 0"
                        [day]="day._id" *ngIf="showEmptySlot"
-                       [firstEvent]="(itineraryDays[dayIndex] || []).length === 0"></app-add-event>
+                       [firstEvent]="(day.events.length || []).length === 0"></app-add-event>
 
         <li (click)="openEmptySlot(day._id)" class="add-event-ctn">
           <div class="icon-ctn" >
