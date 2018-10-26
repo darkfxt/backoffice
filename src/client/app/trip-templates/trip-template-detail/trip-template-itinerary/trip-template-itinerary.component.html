@@ -20,11 +20,11 @@
         <li *ngFor="let events of day.events, let intidx = index">
           <app-add-event (openedDialog)="openDialog($event)" [ordinal]="intidx" [day]="day._id" *ngIf="showEmptySlot"></app-add-event>
           <app-event-summarized-card [editMode]="showEmptySlot" [data]="events" [day]="dayIndex" (openedDialog)="openDialog($event)" ></app-event-summarized-card>
-        </li>
+
 
         <app-add-event [editMode]="showEmptySlot"
                        (openedDialog)="openDialog($event)"
-                       [ordinal]="itineraryDays[dayIndex].length || 0"
+                       [ordinal]="day.events.length || 0"
                        [day]="day._id" *ngIf="showEmptySlot"
                        [firstEvent]="(itineraryDays[dayIndex] || []).length === 0"></app-add-event>
 
