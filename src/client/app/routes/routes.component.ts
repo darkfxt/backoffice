@@ -21,7 +21,7 @@ import { selectLoaderEntity } from '../store/shared/reducers';
 })
 export class RoutesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
-  @Input() isDialog ? = false;
+  @Input() isDialog ? = 'false';
   @Input() dialogRef: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 

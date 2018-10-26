@@ -105,6 +105,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       if (data && data === 'close') {
         if (this.dialogReference)
           this.dialogReference.close();
+        this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
       }
     });
 
@@ -112,6 +113,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       if (data && data === 'close') {
         if (this.dialogReference)
           this.dialogReference.close();
+        this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
       }
     });
 
@@ -174,7 +176,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       panelClass: 'eventDialogPanel',
       data: {
         productType: event.productType,
-        dialog: true
+        dialog: 'select'
         },
       disableClose: true,
       closeOnNavigation: true

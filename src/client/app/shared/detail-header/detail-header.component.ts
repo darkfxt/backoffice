@@ -14,7 +14,7 @@ export class DetailHeaderComponent implements OnInit {
   disableBackButton: boolean;
 
   @Input()
-  isDialog: boolean;
+  isDialog: string;
 
   @Input()
 
@@ -32,7 +32,7 @@ export class DetailHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.iconType = this.isDialog ? 'close' : 'arrow_back';
+    this.iconType = this.isDialog === 'false' ? 'close' : 'arrow_back';
   }
 
   goBack(e) {

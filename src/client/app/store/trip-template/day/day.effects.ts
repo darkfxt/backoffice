@@ -10,6 +10,8 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../shared/app.interfaces';
 import { getTripTemplateSelectedId } from '../index';
 import { TripTemplate } from '../../../shared/models/TripTemplate';
+import { ClearSegment } from '../../route/route.actions';
+import { ClearEvents } from '../event/event.actions';
 
 @Injectable()
 export class DayEffects {
@@ -39,7 +41,10 @@ export class DayEffects {
    updateDayOnTrip = this.actions$
      .ofType(DayActionTypes.UPDATE_DAY)
      .pipe(
-       switchMap((action: any) => of(action.payload)),
+       switchMap((action: any) => {
+         this.store.dispatch(new ClearEvents());
+         return of(action.payload);
+       }),
        withLatestFrom(this.store),
        map((payload: any) => {
          const originalData = payload[1].tripTemplates.entities[payload[1].tripTemplates.selectedTripTemplate];
