@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { DayOfTrip, Event } from '../../../shared/models/TripTemplate';
 import { PlaceService } from '../../../shared/services/place.service';
 import { RoutesService } from '../../../shared/services/routes.service';
+import {ToggleSegmentDialog} from '../../route/route.actions';
 
 @Injectable()
 export class EventEffects {
@@ -27,10 +28,13 @@ export class EventEffects {
     .ofType(EventActionTypes.EVENT_SELECTED)
     .pipe(
       switchMap((action: any) => {
-        if (action.payload.type === 'POINT')
+        if (action.payload.type === 'POINT') {
+          this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
           return this.pointServiceInstance.getDetail(action.payload._id);
-        else
+        } else {
+          this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
           return this.segmentServiceInstance.getDetail(action.payload._id);
+        }
       }),
       withLatestFrom(this.store),
       map((response: any) => {
@@ -43,7 +47,7 @@ export class EventEffects {
         return {event, day: response[1].days.selectedDay }
       }),
       mergeMap((response: any) => [
-        new ToggleDialogPoint(DialogActions.CLOSE),
+
         new AddEvent({event: response.event, day: response.day})
       ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))

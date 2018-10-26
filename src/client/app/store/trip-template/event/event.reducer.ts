@@ -14,7 +14,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 export interface EventState extends EntityState<Event> {
   metadata: PaginationOptionsInterface;
   selectedTripTemplateEvents?: Event[];
-  selectedEvent?: string | null;
+  selectedEvent?: {_id: string, type: string};
   indexForEvent?: number;
   dayForEvent?: number;
   typeForEvent?: TypeOfEvent;
