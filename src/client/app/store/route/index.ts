@@ -27,8 +27,8 @@ export const getSegmentsMetadata = createSelector(
 );
 
 export const getSegmentSelected = createSelector(
-  getSegmentsEntityState,
-  fromSegments.getSegmentSelected
+  getSegmentsState,
+  (state: any) => state.segmentSelected
 );
 
 export const getAllSegments = createSelector(

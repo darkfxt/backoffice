@@ -106,6 +106,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       if (data && data === 'close') {
         if (this.dialogReference)
           this.dialogReference.close();
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
         this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
       }
     });
@@ -114,6 +116,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       if (data && data === 'close') {
         if (this.dialogReference)
           this.dialogReference.close();
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
       }
     });
@@ -189,14 +193,14 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
+          this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
         });
        }
       if (result === 'OPEN_NEW_PLACES') {
         this.store.dispatch(new ToggleDialogPoint(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
+          this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
         });
       }
        this.state = 'out';

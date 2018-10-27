@@ -1,5 +1,5 @@
 <form [formGroup]="form" #formDir="ngForm"  novalidate>
-  <app-detail-header [isDialog]="amIDialog"
+  <app-detail-header [isDialog]="popup"
                      [title]="'Actualizar ruta' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
@@ -40,4 +40,3 @@
     </div>
   </div>
 </form>
-<app-loading *ngIf="bussy"></app-loading>

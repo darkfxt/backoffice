@@ -7,13 +7,14 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
-import { getPointsEntity } from '../../store/place';
+import { getDialogStatus, getPointSelected, getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
-import {EventSelected} from '../../store/trip-template/event/event.actions';
+import { EventSelected } from '../../store/trip-template/event/event.actions';
+import { map, withLatestFrom } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-point',
@@ -28,10 +29,12 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _resolverSubscription: Subscription;
   _getDetailSubscription: Subscription;
   bussy: boolean;
-  amIDialog = false;
+  amIDialog = 'false';
+  popup = false;
   private autocompleteTimeout;
   private lastSearch;
   options: Observable<any[]>;
+  dialogStatus: string;
 
   constructor(
     private fb: FormBuilder,
@@ -49,18 +52,21 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   ngOnInit() {
     let isUpdate = false;
-    this._subscription = this.store.select(getPointsEntity).subscribe((storePoint: any) => {
+    this.store.pipe(
+      select(getDialogStatus)
+    ).subscribe(dialogStatus => {
+      this.dialogStatus = dialogStatus;
+      if (dialogStatus === 'true') this.popup = true;
+    });
 
-      if (storePoint && storePoint.pointSelected && storePoint.pointSelected._id
-        && storePoint.pointSelected._id !== 'new' && !this.place._id && storePoint.dialog !== DialogActions.TRUE)
-        this.router.navigate([`/places/${storePoint.pointSelected._id}`]);
-
-      if (storePoint && storePoint.dialog === DialogActions.TRUE) {
-        this.amIDialog = true;
-        if (storePoint.pointSelected)
-          this.store.dispatch(new EventSelected(storePoint.pointSelected._id));
+    this._subscription = this.store.select(getPointSelected)
+      .subscribe( (selectedPoint: any) => {
+      if (selectedPoint && selectedPoint._id !== 'new' && selectedPoint._id !== undefined) {
+          if (this.dialogStatus === 'true') {
+            this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}) && new ToggleDialogPoint(DialogActions.CLOSE));
+            return;
+          }
       }
-      this.bussy = (storePoint && storePoint.loading) ? storePoint.loading : false;
     });
 
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
@@ -140,11 +146,11 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
       this.store.dispatch(new SavePoint({id: this.place._id, body: formData}));
-      this.snackBar.open('Place saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
+      // this.snackBar.open('Place saved', undefined, {
+      //   duration: 3000,
+      //   verticalPosition: 'top',
+      //   horizontalPosition: 'right'
+      // });
     } else {
       Object.keys(this.placeForm.controls).forEach(field => {
         const control = this.placeForm.get(field);
@@ -166,7 +172,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.amIDialog)
+    if (this.popup)
       this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     else
       this.router.navigate(['/places']);

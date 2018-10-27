@@ -10,14 +10,15 @@ import Segment from '../../shared/models/Segment';
 import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
-import { getSegmentsEntityState } from '../../store/route';
+import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState } from '../../store/route';
 import { EventSelected } from '../../store/trip-template/event/event.actions';
+import { getDialogStatus, getPointSelected } from '../../store/place';
 
 @Component({
   selector: 'app-route',
@@ -32,6 +33,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   _subscription: Subscription;
   segment = new Segment();
   amIDialog = false;
+  dialogStatus: string;
+  popup = false;
 
   constructor(
     private fb: FormBuilder,
@@ -48,19 +51,24 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
   ngOnInit() {
 
-    this._subscription = this.store.select(getSegmentsEntityState).subscribe((storeSegment: any) => {
-      if (storeSegment && storeSegment.segmentSelected && storeSegment.segmentSelected._id
-        && storeSegment.segmentSelected._id !== 'new' && this.segment._id === '' &&
-        storeSegment.dialog !== DialogActions.TRUE)
-        this.router.navigate([`/routes/${storeSegment.segmentSelected._id}`]);
-
-      if (storeSegment && storeSegment.dialog === DialogActions.TRUE) {
-        this.amIDialog = true;
-        if (storeSegment.segmentSelected )
-          this.store.dispatch(new EventSelected(storeSegment.segmentSelected._id));
-      }
-      this.bussy = (storeSegment && storeSegment.loading) ? storeSegment.loading : false;
+    this.store.pipe(
+      select(getSegmentDialogStatus)
+    ).subscribe(dialogStatus => {
+      this.dialogStatus = dialogStatus;
+      if (dialogStatus === 'true') this.popup = true;
     });
+
+    this._subscription = this.store.select(getSegmentSelected)
+      .subscribe( (selectedSegment: any) => {
+        if (selectedSegment && selectedSegment._id !== 'new' && selectedSegment._id !== undefined) {
+          if (this.dialogStatus === 'true') {
+            this.store.dispatch(new EventSelected({_id: selectedSegment._id, type: 'SEGMENT'}));
+            setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
+            return;
+          }
+        }
+      });
+
     this.route.data.subscribe(({segment}) => {
       if (segment) {
         this.segment = segment;
@@ -99,16 +107,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.bussy = true;
       const formData = this.prepareToSave();
-      const method = (this.segment._id === '') ? 'create' : 'update';
-      // this._subscription = this.routesService[method]({id: this.segment._id, body: formData}).subscribe((resp) => {
-      //   this.router.navigate(['/routes']);
-      // });
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
-      this.snackBar.open('Route saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
@@ -149,7 +148,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.amIDialog)
+    if (this.popup)
       this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
     else
       this.router.navigate(['/routes']);
