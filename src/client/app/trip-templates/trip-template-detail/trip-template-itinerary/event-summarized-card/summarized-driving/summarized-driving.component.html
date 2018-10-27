@@ -11,7 +11,7 @@
       Sale: {{data.product.origin.name}}
     </div>
     <div *ngIf="!data.product.origin">
-      <app-add-event (openedDialog)="openDialog($event, 'origin')">
+      <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
         <div class="add-event-cluster">+Añadir lugar de salida</div>
       </app-add-event>
     </div>
@@ -19,7 +19,7 @@
       Llega: {{data.product.destination.name}}
     </div>
     <div *ngIf="!data.product.destination">
-      <app-add-event (openedDialog)="openDialog($event, 'destination')">
+      <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['TERMINAL', 'HOTEL']">
         <div class="add-event-cluster">+Añadir lugar de llegada</div>
       </app-add-event>
     </div>

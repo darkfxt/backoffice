@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
   trigger,
   state,
@@ -7,12 +7,12 @@ import {
   transition, keyframes
 } from '@angular/animations';
 
-import {iconMap, TypeOfEvent} from '../../../../shared/models/TripTemplate';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
+import { iconMap, TypeOfEvent } from '../../../../shared/models/TripTemplate';
+import {MAT_BOTTOM_SHEET_DATA, MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AppState } from '../../../../store/shared/app.interfaces';
-import {TRANSLATE} from '../../../../translate-marker';
+import { TRANSLATE } from '../../../../translate-marker';
 
 @Component({
   selector: 'app-add-event',
@@ -24,6 +24,7 @@ export class AddEventComponent implements OnInit {
   @Input() ordinal;
   @Input() day: number;
   @Input() editMode: boolean;
+  @Input() filterEventType = [];
 
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
 
@@ -41,7 +42,10 @@ export class AddEventComponent implements OnInit {
   showOptions(): void {
     setTimeout(() => {
       const bottomSheetRef = this.bottomSheet.open(BottomSheetEventComponent, {
-        panelClass: 'event-bottom-sheet'
+        panelClass: 'event-bottom-sheet',
+        data: {
+          filterEventType: this.filterEventType
+        }
       });
 
       bottomSheetRef.afterDismissed().subscribe((result) => {
@@ -93,7 +97,7 @@ export class AddEventComponent implements OnInit {
     }`
   ]
 })
-export class BottomSheetEventComponent {
+export class BottomSheetEventComponent implements OnInit {
   productTypes = [
     {value: TRANSLATE('POI'), icon: iconMap[TypeOfEvent.POI]},
     {value: TRANSLATE('HOTEL'), icon: iconMap[TypeOfEvent.HOTEL]},
@@ -104,7 +108,14 @@ export class BottomSheetEventComponent {
     {value: TRANSLATE('OTHER'), icon: iconMap[TypeOfEvent.OTHER]}
   ];
 
-  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>) {
+  constructor(
+    private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any
+    ) {}
+
+  ngOnInit() {
+    if (this.data.filterEventType.length)
+      this.productTypes = this.productTypes.filter(item => this.data.filterEventType.indexOf(item.value) > -1);
   }
 
   openDialog(productType): void {
