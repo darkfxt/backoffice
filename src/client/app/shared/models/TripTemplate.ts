@@ -14,6 +14,16 @@ export enum terminalType {
   DESTINATION = 'destination'
 }
 
+const colors = [
+  '#ba68c8',
+  '#f06292',
+  '#7986cb',
+  '#4db6ac',
+  '#ff8a65',
+  '#90a4ae',
+  '#f06292'
+];
+
 export class Event {
 
   _id: string;
@@ -25,6 +35,8 @@ export class Event {
   created_by: string;
   dayId?: string;
   product?: any;
+  color: string;
+
   constructor(name: string, description: string, eventType: TypeOfEvent,
               order: number, dayId?: string, product?: any, id?: string, time?: Date) {
     this.name = name;
@@ -51,6 +63,7 @@ export class Event {
       }
       this.product = productToAdd;
     }
+    this.color = colors[Math.floor(Math.random() * colors.length)];
   }
 }
 

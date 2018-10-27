@@ -1,17 +1,21 @@
 <div class="itinerary-header" *ngIf="!editedDayId">
   <h3>{{'Itinerario'}}</h3>
   <div class="itinerary-buttons">
-    <button mat-button (click)="addDay()" color="accent" class="new-day">{{'+ Añadir día'}}</button>
+    <button mat-flat-button (click)="addDay()" color="accent" class="new-day">{{'+ Añadir día'}}</button>
   </div>
 </div>
 <div class="days-list" #dayList [hidden]="headerCollapsed">
   <ul class="event-list">
     <li *ngFor="let day of itineraryDays; let dayIndex = index;" class="day-ctn" [hidden]="editedDayId && editedDayId !== day._id">
-      <div class="day-count">
-        <div class="horizontal-divisor"></div>
+      <div class="vertical-line"></div>
+      <div class="day-count" [class.edit-mode]="editedDayId && editedDayId === day._id">
         <h4>Day {{dayIndex + 1}}</h4>
-        <button mat-button (click)="openEmptySlot(day._id)" *ngIf="!editedDayId">Editar</button>
-        <button mat-button (click)="hideEmptySlot()" *ngIf="editedDayId">Cerrar</button>
+        <button mat-icon-button class="edit-button" alt="Edit" (click)="openEmptySlot(day._id)" *ngIf="!editedDayId">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button class="close-button" alt="Close" (click)="hideEmptySlot()" *ngIf="editedDayId">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
       <ul>
 

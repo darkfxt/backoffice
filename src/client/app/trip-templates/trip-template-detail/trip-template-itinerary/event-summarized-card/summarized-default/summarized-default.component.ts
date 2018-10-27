@@ -10,11 +10,15 @@ export class SummarizedDefaultComponent implements OnInit {
   @Input() day: any;
   @Input() showEmptySlot: boolean;
   @Input() editMode: boolean;
-
+  iconMap = {
+    'ACTIVITY': 'local_activity',
+    'HOTEL': 'hotel',
+    'POI': 'local_see',
+    'DESTINATION': 'place'
+  };
   constructor() { }
 
   ngOnInit() {
-
   }
 
 }
