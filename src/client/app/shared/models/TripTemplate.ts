@@ -3,11 +3,26 @@ import Segment from './Segment';
 import { Point } from './Place';
 
 export enum TypeOfEvent {
+  POI = 'POI',
   HOTEL = 'HOTEL',
-  DRIVING = 'DRIVING',
   ACTIVITY = 'ACTIVITY',
+  DESTINATION = 'DESTINATION',
+  REFERENCE = 'REFERENCE',
+  TERMINAL = 'TERMINAL',
+  DRIVING = 'DRIVING',
   OTHER = 'OTHER'
 }
+
+export const iconMap = {
+  'ACTIVITY': 'local_activity',
+  'HOTEL': 'hotel',
+  'POI': 'local_see',
+  'DESTINATION': 'place',
+  'REFERENCE': 'place',
+  'TERMINAL': 'trip_origin',
+  'DRIVING': 'directions_car',
+  'OTHER': 'not_listed_location'
+};
 
 export enum terminalType {
   ORIGIN = 'origin',

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { iconMap } from '../../../../../shared/models/TripTemplate';
 
 @Component({
   selector: 'app-summarized-default',
@@ -10,12 +11,7 @@ export class SummarizedDefaultComponent implements OnInit {
   @Input() day: any;
   @Input() showEmptySlot: boolean;
   @Input() editMode: boolean;
-  iconMap = {
-    'ACTIVITY': 'local_activity',
-    'HOTEL': 'hotel',
-    'POI': 'local_see',
-    'DESTINATION': 'place'
-  };
+  iconMap = iconMap;
   constructor() { }
 
   ngOnInit() {

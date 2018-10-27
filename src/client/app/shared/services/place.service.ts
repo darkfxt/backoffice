@@ -14,18 +14,17 @@ export class PlaceService {
   }
 
   getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
-    let queryParams = '';
-    if (paginationMetadata) {
-      queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
-      if (paginationMetadata.search) {
-        queryParams += `&search=${paginationMetadata.search}`;
-      }
-    }
-    if (withoutMetadata) {
-      queryParams += '&simple=true';
-    }
+    const queryParams: any = {};
+    queryParams.size = paginationMetadata.pageSize;
+    queryParams.page = paginationMetadata.pageIndex;
+    if (paginationMetadata.search)
+      queryParams.search = paginationMetadata.search;
+    if (paginationMetadata.type)
+      queryParams.type = paginationMetadata.type;
+    if (withoutMetadata)
+      queryParams.type = true;
 
-    return this.http.get('/api/places' + queryParams);
+    return this.http.get('/api/places', {params: queryParams});
   }
 
   addPlace (place): Observable<any> {

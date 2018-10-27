@@ -24,6 +24,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   @Input() isDialog ? = 'false';
   popup = false;
   @Input() dialogRef: any;
+  @Input() query = {};
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
@@ -53,6 +54,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
       pageSize: 10,
       length: 0
     };
+    this.paginationOptions = {...this.paginationOptions, ...this.query};
     this.store.dispatch(new GetSegments(this.paginationOptions));
   }
 

@@ -24,6 +24,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   @Input() isDialog ? = 'false';
   dialog: boolean;
   @Input() dialogRef: any;
+  @Input() query = {};
   @Input() drivingUpdate?: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
@@ -52,6 +53,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
       pageSize: 10,
       length: 0
     };
+    this.paginationOptions = {...this.paginationOptions, ...this.query}
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
