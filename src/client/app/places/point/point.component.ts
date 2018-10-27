@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
 import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import { select, Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
@@ -44,7 +44,6 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private store: Store<AppState>,
     matDialog: MatDialog,
     modalService: ModalService,
-    public snackBar: MatSnackBar,
     private placeStore: PlaceStore
   ) {
     super(matDialog, modalService);
@@ -81,7 +80,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     this.placeForm = this.fb.group({
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
-      description: [this.place.description, Validators.required],
+      description: [this.place.description],
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
@@ -146,11 +145,6 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
       this.store.dispatch(new SavePoint({id: this.place._id, body: formData}));
-      // this.snackBar.open('Place saved', undefined, {
-      //   duration: 3000,
-      //   verticalPosition: 'top',
-      //   horizontalPosition: 'right'
-      // });
     } else {
       Object.keys(this.placeForm.controls).forEach(field => {
         const control = this.placeForm.get(field);

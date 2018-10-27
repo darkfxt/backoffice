@@ -38,7 +38,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,

@@ -61,13 +61,14 @@ export class ErrorInterceptor implements HttpInterceptor {
               }
               break;
             case 409:
+              const message = (err.error.response && err.error.response.message) ? err.error.response.message : 'Duplicado';
               this.store.dispatch(new SnackbarOpen(
-                {message: 'Duplicado', action: 'Error'}
+                {message: message}
               ));
               break;
             default:
               this.store.dispatch(new SnackbarOpen(
-                {message: 'Error inesperado', action: 'Error'}
+                {message: 'Error inesperado'}
               ));
           }
 

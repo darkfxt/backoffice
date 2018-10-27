@@ -21,7 +21,7 @@ export class SnackbarEffects {
     .pipe(
       map((action: SnackbarOpen) => action.payload),
       tap(payload => this.matSnackBar.open(payload.message, payload.action, payload.config)),
-      delay(2000),
+      delay(5000),
       map(() => new SnackbarClose())
     );
 

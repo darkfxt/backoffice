@@ -7,23 +7,31 @@
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
     <p>{{data.description}}</p>
-    <div class="location" *ngIf="data.product.origin">
-      Sale: {{data.product.origin.name}}
-    </div>
-    <div *ngIf="!data.product.origin">
-      <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
-        <div class="add-event-cluster">+Añadir lugar de salida</div>
-      </app-add-event>
-    </div>
-    <div class="location" *ngIf="data.product.destination">
-      Llega: {{data.product.destination.name}}
-    </div>
-    <div *ngIf="!data.product.destination">
-      <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['TERMINAL', 'HOTEL']">
-        <div class="add-event-cluster">+Añadir lugar de llegada</div>
-      </app-add-event>
-    </div>
+
+    <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
+      <div class="add-event-cluster">
+        <span *ngIf="data.product.origin; else showEmptyOrigin">
+          Desde: {{data.product.origin.name}}
+        </span>
+        <ng-template #showEmptyOrigin>
+          <span>+Añadir lugar de salida</span>
+        </ng-template>
+      </div>
+    </app-add-event>
+
+    <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['TERMINAL', 'HOTEL']">
+      <div class="add-event-cluster">
+        <span *ngIf="data.product.destination; else showEmptyDestination">
+          Hasta: {{data.product.destination.name}}
+        </span>
+        <ng-template #showEmptyDestination>
+          <span>+Añadir lugar de llegada</span>
+        </ng-template>
+      </div>
+    </app-add-event>
+
   </div>
+
   <div class="menu">
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>expand_more</mat-icon>

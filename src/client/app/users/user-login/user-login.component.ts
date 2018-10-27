@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { SignInUser } from '../../store/user/user.actions';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/internal/operators';
@@ -28,7 +27,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
 
   constructor(private fb: FormBuilder,
-              private snackBar: MatSnackBar,
               private route: ActivatedRoute,
               private userService: UserService,
               private router: Router,

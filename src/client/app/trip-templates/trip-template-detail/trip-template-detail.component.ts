@@ -10,7 +10,6 @@ import {
   GetTripTemplates, CreateTripTemplate
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
-import { MatSnackBar } from '@angular/material';
 import { AppState } from '../../store/shared/app.interfaces';
 import {
   getAllDays,
@@ -48,7 +47,6 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private routesService: TripTemplateService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
     ) {
     this.form = this.fb.group({
       itinerary: this.fb.array([
@@ -139,12 +137,6 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       if (this._selectedRouteTemplateId !== 'new')
         tripTemplateToSave._id = this._selectedRouteTemplateId;
       this.store.dispatch(new SaveTripTemplate(tripTemplateToSave));
-
-      this.snackBar.open('Trip saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
