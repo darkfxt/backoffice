@@ -55,7 +55,7 @@ export function eventReducer(state = initialState, action: EventActions): EventS
       const entities = {...state.entities, [event._id]: event};
       return {...state, entities};
     case EventActionTypes.CLEAR_EVENT:
-      return {...state};
+      return {...state, selectedTerminal: null, selectedDriving: null, selectedEvent: null, terminalToReplace: null};
     case EventActionTypes.SELECT_TERMINAL:
       return {...state, selectedTerminal: action.payload.terminal};
     case EventActionTypes.DRIVING_EVENT_SELECTED:

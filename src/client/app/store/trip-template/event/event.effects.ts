@@ -86,7 +86,7 @@ export class EventEffects {
         const dayToUpdate: DayOfTrip = new DayOfTrip(originalData[0].events, originalData[0]._id);
         const events = originalData[0].events.length > 0 ? originalData[0].events.slice(0) : [];
         events.splice(events.map(event => event._id)
-          .indexOf(response[0].eventId), 1);
+          .indexOf(response[0]._id), 1);
         dayToUpdate.events = events;
         return dayToUpdate;
       }),

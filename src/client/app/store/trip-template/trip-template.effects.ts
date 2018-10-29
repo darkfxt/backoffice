@@ -1,6 +1,6 @@
   import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import {switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter} from 'rxjs/internal/operators';
+import {switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter, delay} from 'rxjs/internal/operators';
 
 import {
   GetTripTemplates,
@@ -19,7 +19,7 @@ import { TripTemplateService } from '../../shared/services/trip-template.service
   import { HttpError } from '../shared/actions/error.actions';
   import { HttpErrorResponse } from '@angular/common/http';
   import { SnackbarOpen } from '../shared/actions/snackbar.actions';
-  import { EventsRetrieved } from './event/event.actions';
+  import {ClearEvents, EventsRetrieved} from './event/event.actions';
   import { AppState } from '../shared/app.interfaces';
   import { Store } from '@ngrx/store';
   import { DaysRetrieved } from './day/day.actions';
@@ -75,6 +75,8 @@ export class TripTemplateEffects {
       withLatestFrom(this.store),
       map((response: any) => new UpdateTripTemplate(
         Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate], {days: response[0]}))),
+      delay(1000),
+      tap(() => this.store.dispatch(new ClearEvents())),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
