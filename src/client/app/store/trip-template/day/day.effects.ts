@@ -57,4 +57,24 @@ export class DayEffects {
        concatMap((tripTemplate: TripTemplate) => [new UpdateTripTemplate({tripTemplate})]),
        catchError((e: HttpErrorResponse) => of(new HttpError(e)))
      );
+
+  @Effect()
+  removeDayFromTrip = this.actions$
+    .ofType(DayActionTypes.REMOVE_DAY)
+    .pipe(
+      switchMap((action: any) => {
+        return of(action.payload);
+      }),
+      withLatestFrom(this.store),
+      map((payload: any) => {
+        const originalData = payload[1].tripTemplates.entities[payload[1].tripTemplates.selectedTripTemplate];
+        const tripToUpdate: TripTemplate = Object.assign(new TripTemplate(), originalData);
+        const days = originalData.days.length > 0 ? originalData.days.slice(0) : [];
+        days.splice(days.map(day => day._id).indexOf(payload[0]._id), 1);
+        tripToUpdate.days = days;
+        return tripToUpdate;
+      }),
+      concatMap((tripTemplate: TripTemplate) => [new UpdateTripTemplate({tripTemplate})]),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
 }

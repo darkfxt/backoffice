@@ -33,7 +33,7 @@ export class AddDay implements Action {
 
 export class RemoveDay implements Action {
   readonly type = DayActionTypes.REMOVE_DAY;
-  constructor (readonly payload: number) {
+  constructor (readonly payload: {_id: number}) {
     this.payload = payload;
   }
 }

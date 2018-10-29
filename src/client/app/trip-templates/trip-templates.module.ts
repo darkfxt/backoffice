@@ -28,6 +28,7 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
 import { SummarizedDrivingComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/summarized-driving/summarized-driving.component';
 import { EventSummarizedCardDirective } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.directive';
 import { SummarizedDefaultComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/summarized-default/summarized-default.component';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,7 @@ import { SummarizedDefaultComponent } from './trip-template-detail/trip-template
   providers: [ ],
   entryComponents: [
     EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent,
-    SummarizedDefaultComponent, SummarizedDrivingComponent
+    SummarizedDefaultComponent, SummarizedDrivingComponent, ConfirmationModalComponent
   ],
 })
 export class TripTemplatesModule { }
