@@ -42,10 +42,11 @@
 }
 
 .itinerary-ctn{
-  margin-bottom: 24px;
+  //margin-bottom: 24px;
   background: #fff;
 
   @media only screen and (min-width: 736px) {
+    /*
     position: absolute;
     z-index: 9;
     margin-top: 8px;
@@ -53,6 +54,7 @@
     border-radius: 4px;
     box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
     width: 290px;
+    */
   }
 
 }
