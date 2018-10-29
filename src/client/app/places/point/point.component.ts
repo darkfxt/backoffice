@@ -62,7 +62,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       .subscribe( (selectedPoint: any) => {
       if (selectedPoint && selectedPoint._id !== 'new' && selectedPoint._id !== undefined) {
           if (this.dialogStatus === 'true') {
-            this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}) && new ToggleDialogPoint(DialogActions.CLOSE));
+            this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}));
+            setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
             return;
           }
       }
