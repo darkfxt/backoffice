@@ -1,0 +1,9 @@
+@import "../../../../assets/variables";
+h2{
+  color: $gray-title;
+}
+
+.buttons-ctn{
+  display: flex;
+  justify-content: space-between;
+}

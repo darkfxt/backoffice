@@ -1,5 +1,7 @@
 <div>
   <h2>{{data.message}}</h2>
-  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>No</button>
-  <button mat-button [mat-dialog-close]="true">Sí</button>
+  <div class="buttons-ctn">
+    <button mat-button color="primary" [mat-dialog-close]="false" cdkFocusInitial>No, me he arrepentido</button>
+    <button mat-button color="accent" [mat-dialog-close]="true">Sí, eliminar</button>
+  </div>
 </div>

@@ -69,12 +69,12 @@ export class SummarizedDrivingComponent implements OnInit {
 
   onRemoveEvent(eventId, dayId) {
     const dialogConfig = {
-      maxHeight: '300px',
-      maxWidth: '300px',
+      maxHeight: '70%',
+      maxWidth: '70%',
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: 'Seguro que querés eliminar este evento?'
+        message: 'Deseas eliminar este evento?'
       },
       disableClose: true,
       closeOnNavigation: true,

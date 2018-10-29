@@ -210,12 +210,12 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   deleteDay(dayId) {
     const dialogConfig = {
-      maxHeight: '300px',
-      maxWidth: '300px',
+      maxHeight: '70%',
+      maxWidth: '70%',
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: 'Seguro que querés eliminar este día?'
+        message: 'Deseas eliminar este día?'
       },
       disableClose: true,
       closeOnNavigation: true,

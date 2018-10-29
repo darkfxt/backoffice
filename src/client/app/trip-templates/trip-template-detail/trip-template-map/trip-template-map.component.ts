@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {} from '@types/googlemaps';
 import { Store } from '@ngrx/store';
 import { TypeOfEvent } from '../../../shared/models/TripTemplate';
 import { AppState } from '../../../store/shared/app.interfaces';
-import {getDaysForSelectedTrip, getTripTemplatesEntities} from '../../../store/trip-template';
+import { getDaysForSelectedTrip, getTripTemplatesEntities } from '../../../store/trip-template';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-trip-template-map',
@@ -11,18 +12,17 @@ import {getDaysForSelectedTrip, getTripTemplatesEntities} from '../../../store/t
     <div #gmap style="width:100%; height:590px"></div>
   `
 })
-export class TripTemplateMapComponent implements OnInit {
+export class TripTemplateMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('gmap') gmapElement: any;
 
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
+  infoWindows: google.maps.InfoWindow[] = [];
   bounds: google.maps.LatLngBounds;
   directions: Array<any> = [];
   _referencesRenderer: Array<any> = [];
-  _self: any;
-
-  private stepDisplay = new google.maps.InfoWindow;
+  _subscription: Subscription;
   private directionsService = new google.maps.DirectionsService;
   private directionsDisplay = new google.maps.DirectionsRenderer;
   terminalTypes = [
@@ -44,12 +44,14 @@ export class TripTemplateMapComponent implements OnInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
 
-    this.store.select(getDaysForSelectedTrip).subscribe((days: any) => {
+    this._subscription = this.store.select(getDaysForSelectedTrip).subscribe((days: any) => {
       if (days && days.length) {
 
         this.directionsDisplay.setMap(this.map);
         this.bounds = new google.maps.LatLngBounds();
         this.markers.forEach(marker => marker.setMap(null));
+        this.infoWindows = [];
+        this.markers = [];
         this.directions = [];
         this._referencesRenderer.forEach(element => {
           element.setMap(null);
@@ -62,14 +64,14 @@ export class TripTemplateMapComponent implements OnInit {
                 const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                 const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
                 if (this.terminalTypes.indexOf(origin.type) > -1)
-                  this.drawerPicker(origin.geo.point, {color: event.color});
+                  this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name});
                 if (this.terminalTypes.indexOf(destination.type) > -1)
-                  this.drawerPicker(destination.geo.point, {color: event.color});
+                  this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name});
 
                 this.traceRoutes(origin.geo.point, event.product.middle_points, destination.geo.point);
                 break;
               default:
-                this.drawerPicker(event.product.geo.point, {color: event.color});
+                this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name});
                 break;
             }
           });
@@ -91,13 +93,27 @@ export class TripTemplateMapComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
+  }
+
   private drawerPicker(position, options: any = {}) {
     this.bounds.extend(position);
-    this.markers.push(new google.maps.Marker({
+    const infowindow = new google.maps.InfoWindow({
+      content: `<h3>${options.label}</h3>`
+    });
+
+    const marker = new google.maps.Marker({
       position: position,
       map: this.map,
-      title: ''
-    }));
+      title: options.label
+    });
+    marker.addListener('click', () => {
+      this.infoWindows.forEach(info => info.close());
+      infowindow.open(this.map, marker);
+    });
+    this.infoWindows.push(infowindow);
+    this.markers.push(marker);
   }
 
   private traceRoutes(start, waypts, end): void {
