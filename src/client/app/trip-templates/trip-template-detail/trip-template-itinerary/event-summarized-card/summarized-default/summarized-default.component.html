@@ -12,7 +12,7 @@
       <mat-icon>expand_more</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item (click)="onRemoveEvent(data._id, data.dayId)">
         <mat-icon>delete</mat-icon>
         <span>{{'Eliminar' | translate}}</span>
       </button>

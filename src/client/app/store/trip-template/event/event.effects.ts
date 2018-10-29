@@ -75,6 +75,26 @@ export class EventEffects {
     );
 
   @Effect()
+  removeEvent$ = this.actions$
+    .ofType(EventActionTypes.REMOVE_EVENT)
+    .pipe(
+      switchMap((action: any) => of(action.payload)),
+      withLatestFrom(this.store),
+      map((response: any) => {
+        const originalData = response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate]
+          .days.filter(day => day._id === response[0].dayId);
+        const dayToUpdate: DayOfTrip = new DayOfTrip(originalData[0].events, originalData[0]._id);
+        const events = originalData[0].events.length > 0 ? originalData[0].events.slice(0) : [];
+        events.splice(events.map(event => event._id)
+          .indexOf(response[0].eventId), 1);
+        dayToUpdate.events = events;
+        return dayToUpdate;
+      }),
+      concatMap((response: any) => [new UpdateDay(response)]),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
+
+  @Effect()
   updateDriving$ = this.actions$
     .ofType(EventActionTypes.SELECT_TERMINAL)
     .pipe(

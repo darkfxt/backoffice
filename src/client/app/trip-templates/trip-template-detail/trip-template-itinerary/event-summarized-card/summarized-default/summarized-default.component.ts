@@ -1,5 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { iconMap } from '../../../../../shared/models/TripTemplate';
+import {ConfirmationModalComponent} from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
+import {AppState} from '../../../../../store/shared/app.interfaces';
+import {Store} from '@ngrx/store';
+import {MatDialog} from '@angular/material';
+import {RemoveEvent} from '../../../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-summarized-default',
@@ -12,9 +17,30 @@ export class SummarizedDefaultComponent implements OnInit {
   @Input() showEmptySlot: boolean;
   @Input() editMode: boolean;
   iconMap = iconMap;
-  constructor() { }
+  constructor(public dialog: MatDialog, private store: Store<AppState>) { }
 
   ngOnInit() {
+  }
+
+  onRemoveEvent(eventId, dayId) {
+    const dialogConfig = {
+      maxHeight: '300px',
+      maxWidth: '300px',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: 'Seguro que querés eliminar este evento?'
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new RemoveEvent({_id: eventId, dayId}));
+    });
   }
 
 }

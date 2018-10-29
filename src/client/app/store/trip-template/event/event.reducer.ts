@@ -48,10 +48,7 @@ export function eventReducer(state = initialState, action: EventActions): EventS
       return {...state, entities, ids};
     }
     case EventActionTypes.REMOVE_EVENT: {
-      const array = state.selectedTripTemplateEvents ? state.selectedTripTemplateEvents.slice(0) : [];
-      array.splice(+action.payload, 1);
-      return {...state, selectedTripTemplateEvents: array,
-        selectedEvent: null, indexForEvent: null, typeForEvent: null, dayForEvent: null};
+      return adapter.removeOne(action.payload._id, state);
     }
     case EventActionTypes.UPDATE_EVENT:
       const event = action.payload;

@@ -38,7 +38,7 @@ export class AddEvent implements Action {
 
 export class RemoveEvent implements Action {
   readonly type = EventActionTypes.REMOVE_EVENT;
-  constructor (readonly payload: number) {
+  constructor (readonly payload: {_id: string, dayId: string}) {
     this.payload = payload;
   }
 }

@@ -18,6 +18,8 @@ import {getSegmentDialogStatus} from '../../../../../store/route';
 import {getDialogStatus} from '../../../../../store/place';
 import {getSelectedDayId, getTripTemplateSelectedId} from '../../../../../store/trip-template';
 import {Observable} from 'rxjs';
+import {ConfirmationModalComponent} from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
+import {RemoveDay} from '../../../../../store/trip-template/day/day.actions';
 
 @Component({
   selector: 'app-summarized-driving',
@@ -43,8 +45,6 @@ export class SummarizedDrivingComponent implements OnInit {
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
 
   ngOnInit() {
-    console.log('Dentro del summarized driving');
-    console.log(this.data);
     this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
     this.segmentStatus$ = this.store.pipe(select(getSegmentDialogStatus));
     this.selectedDay$ = this.store.pipe(select(getSelectedDayId));
@@ -67,42 +67,25 @@ export class SummarizedDrivingComponent implements OnInit {
     });
   }
 
-  onRemoveEvent(index) {
-    this.store.dispatch(new RemoveEvent(index));
-  }
-
-  onUpdateEvent(id, day) {
-    const updatedEvent = this.data;
-    updatedEvent.product.origin = {
-      '_id': '5bc8f251b58f4a0010536668',
-      'name': 'Cachi',
-      'search_name': 'Cachi',
-      'description': 'Ciudad de Cachi',
-      'type': 'REFERENCE',
-      'geo': {
-        'label': '-25.120235,-66.162496',
-        'point': {
-          'lat': -25.1202353,
-          'lng': -66.16249649999997
-        },
-        'address': {
-          'country_code': 'AR',
-          'country': 'Argentina',
-          'locality': 'Cachi',
-          'region': 'Salta',
-          'postalCode': '',
-          'route': '',
-          'street_number': '',
-          'formatted_address': 'Cachi, Salta, Argentina'
-        }
+  onRemoveEvent(eventId, dayId) {
+    const dialogConfig = {
+      maxHeight: '300px',
+      maxWidth: '300px',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: 'Seguro que querés eliminar este evento?'
       },
-      'images': [],
-      'place_id': 'ChIJd0e5BEIeHJQRRVAm2F8cxMw',
-      'status': 1,
-      'company_id': 1,
-      'created_by': 'jerez.matias@gmail.com'
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
     };
-    this.store.dispatch(new UpdateEvent(updatedEvent));
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+       this.store.dispatch(new RemoveEvent({_id: eventId, dayId}));
+    });
   }
 
   hideEmptySlot(): void {

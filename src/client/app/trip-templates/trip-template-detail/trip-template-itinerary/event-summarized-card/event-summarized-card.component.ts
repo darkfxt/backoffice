@@ -31,7 +31,6 @@ export class EventSummarizedCardComponent implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    console.log(this.data);
     if (this.data.eventType === 'DRIVING')
       this.drawingComponent = new ListItemComponent(SummarizedDrivingComponent);
     else
@@ -51,12 +50,8 @@ export class EventSummarizedCardComponent implements OnInit {
     const componentFactoryInstance = this.componentFactoryResolver.resolveComponentFactory(componentToRender);
     const viewContainerRef = this.appEventListContainer.viewContainerRef;
     viewContainerRef.clear();
-    // if (this.iterationList) {
-    //   this.iterationList.forEach((item, index) => {
-        const componentRef = viewContainerRef.createComponent(componentFactoryInstance);
-        (<ListItemInterface>componentRef.instance).data = this.data;
-    //   });
-    // }
+    const componentRef = viewContainerRef.createComponent(componentFactoryInstance);
+    (<ListItemInterface>componentRef.instance).data = this.data;
   }
 
 }
