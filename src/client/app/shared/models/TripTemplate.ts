@@ -39,6 +39,14 @@ const colors = [
   '#f06292'
 ];
 
+/**
+ * Event types that works as terminal
+ */
+const terminalTypes = [
+  TypeOfEvent.TERMINAL,
+  TypeOfEvent.HOTEL
+];
+
 export class Event {
 
   _id: string;
@@ -67,11 +75,11 @@ export class Event {
     if (product) {
       const productToAdd = Object.assign({}, product);
       if (eventType === 'DRIVING') {
-        if (product.origin !== null && product.origin.type === 'REFERENCE') {
+        if (product.origin !== null && terminalTypes.indexOf(product.origin.type) === -1) {
           productToAdd.referencedOrigin = product.origin;
           productToAdd.origin = null;
         }
-        if (product.destination !== null && product.destination.type === 'REFERENCE') {
+        if (product.destination !== null && terminalTypes.indexOf(product.destination.type) === -1) {
           productToAdd.referencedDestination = product.destination;
           productToAdd.destination = null;
         }
