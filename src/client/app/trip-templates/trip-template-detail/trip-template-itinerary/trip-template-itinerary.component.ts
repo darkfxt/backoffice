@@ -43,7 +43,8 @@ import {
 import { getSegmentDialogStatus, getSegmentsEntityState } from '../../../store/route';
 import { getDialogStatus, getPointsEntity } from '../../../store/place';
 import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
-import { AddDay, DaySelected } from '../../../store/trip-template/day/day.actions';
+import { AddDay, DaySelected, RemoveDay } from '../../../store/trip-template/day/day.actions';
+import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 
 
 @Component({
@@ -188,7 +189,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 
     this.dialogReference.afterClosed().subscribe(result => {
-      //this.hideEmptySlot();
+      // this.hideEmptySlot();
       if (result === 'OPEN_NEW_ROUTES') {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
@@ -205,6 +206,27 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       }
        this.state = 'out';
      });
+  }
+
+  deleteDay(dayId) {
+    const dialogConfig = {
+      maxHeight: '300px',
+      maxWidth: '300px',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: 'Seguro que querés eliminar este día?'
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new RemoveDay(dayId));
+    });
   }
 
 

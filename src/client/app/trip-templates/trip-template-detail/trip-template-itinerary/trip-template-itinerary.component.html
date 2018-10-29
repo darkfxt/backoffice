@@ -10,6 +10,9 @@
       <div class="vertical-line"></div>
       <div class="day-count" [class.edit-mode]="editedDayId && editedDayId === day._id">
         <h4>Day {{dayIndex + 1}}</h4>
+        <button mat-icon-button class="delete-button" alt="Delete" (click)="deleteDay(day._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
         <button mat-icon-button class="edit-button" alt="Edit" (click)="openEmptySlot(day._id)" *ngIf="!editedDayId">
           <mat-icon>edit</mat-icon>
         </button>

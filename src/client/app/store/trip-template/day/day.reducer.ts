@@ -31,7 +31,7 @@ export function dayReducer(state = initialState, action: DayActions): DayState {
       // return {...state};
     }
     case DayActionTypes.REMOVE_DAY: {
-      return adapter.removeOne(action.payload, state);
+      return adapter.removeOne(action.payload._id, state);
     }
     case DayActionTypes.SELECT_ORDINAL_TO_ADD_DAY:
       return {...state, indexForDay: action.payload};
