@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {} from '@types/googlemaps';
-import { Store } from '@ngrx/store';
-import { TypeOfEvent } from '../../../shared/models/TripTemplate';
-import { AppState } from '../../../store/shared/app.interfaces';
-import { getDaysForSelectedTrip, getTripTemplatesEntities } from '../../../store/trip-template';
+import {Store} from '@ngrx/store';
+import {TypeOfEvent} from '../../../shared/models/TripTemplate';
+import {AppState} from '../../../store/shared/app.interfaces';
+import {getDaysForSelectedTrip, getTripTemplatesEntities} from '../../../store/trip-template';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -59,21 +59,28 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
         });
         days.forEach((day) => {
           day.events.forEach((event) => {
-            switch (event.eventType) {
-              case TypeOfEvent.DRIVING:
-                const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
-                const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
-                if (this.terminalTypes.indexOf(origin.type) > -1)
-                  this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name});
-                if (this.terminalTypes.indexOf(destination.type) > -1)
-                  this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name});
+            if (event.product)
+              switch (event.eventType) {
+                case TypeOfEvent.DRIVING:
+                  const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
+                  const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
+                  if (this.terminalTypes.indexOf(origin.type) > -1)
+                    this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name});
+                  if (this.terminalTypes.indexOf(destination.type) > -1)
+                    this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name});
 
-                this.traceRoutes(origin.geo.point, event.product.middle_points, destination.geo.point);
-                break;
-              default:
-                this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name});
-                break;
-            }
+                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name}));
+
+                  this.traceRoutes(
+                    origin.geo.point,
+                    event.product.middle_points.map(mp => ({location: mp.geo.point})),
+                    destination.geo.point
+                  );
+                  break;
+                default:
+                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name});
+                  break;
+              }
           });
 
 
