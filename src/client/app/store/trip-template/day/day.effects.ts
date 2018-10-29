@@ -59,7 +59,7 @@ export class DayEffects {
      );
 
   @Effect()
-  updateDayOnTrip = this.actions$
+  removeDayFromTrip = this.actions$
     .ofType(DayActionTypes.REMOVE_DAY)
     .pipe(
       switchMap((action: any) => {

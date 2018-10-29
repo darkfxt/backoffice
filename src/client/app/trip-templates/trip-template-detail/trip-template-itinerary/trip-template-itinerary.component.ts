@@ -225,7 +225,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
     confirmationReference.afterClosed().subscribe(result => {
       if (result)
-        this.store.dispatch(new RemoveDay(dayId));
+        this.store.dispatch(new RemoveDay({_id: dayId}));
     });
   }
 
