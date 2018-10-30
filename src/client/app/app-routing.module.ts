@@ -7,6 +7,7 @@ import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.servi
 import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 import { AuthGuard } from './shared/services/auth-guard.service';
 import { ErrorComponent } from './error/error.component';
+import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
   {
@@ -33,6 +34,11 @@ const appRoutes: Routes = [
     loadChildren: './accounts/accounts.module#AccountsModule',
     canActivate: [AuthGuard]
   },
+  {
+    path: 'booking',
+    loadChildren: './booking/booking.module#BookingModule',
+    canActivate: [AuthGuard]
+  },
   { path: 'error', component: ErrorComponent},
   { path: '',   redirectTo: '/trip-templates', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
@@ -43,7 +49,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       {
-        enableTracing: true, // <-- debugging purposes only
+        enableTracing: !environment.production, // <-- debugging purposes only
         preloadingStrategy: SelectivePreloadingStrategy,
 
       }

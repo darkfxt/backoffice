@@ -1,0 +1,44 @@
+<app-detail-header title="{{'Nuevo template'}}"
+                   (backButtonClicked)="goBack()">
+  <div class="button-container save-button">
+    <button (click)="saveBooking()">
+      <mat-icon aria-label="New">save</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
+<div class="app-container full-size body-content">
+  <div class="box-container">
+    <mat-horizontal-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="formHeader">
+        <form [formGroup]="formHeader">
+          <ng-template matStepLabel>Datos de la reserva</ng-template>
+          <app-booking-detail-header></app-booking-detail-header>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="formItinerary">
+        <form [formGroup]="formItinerary">
+          <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
+          <app-booking-detail-itinerary></app-booking-detail-itinerary>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <form [formGroup]="formStatus">
+          <ng-template matStepLabel>Listo, ya casi terminamos</ng-template>
+          <app-booking-detail-status></app-booking-detail-status>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>
+
