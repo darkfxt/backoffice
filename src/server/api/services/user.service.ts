@@ -6,6 +6,7 @@ export class UserService {
 
   public static async getAll(query, headers): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
+    // tslint:disable-next-line:curly
     if (query.search) {
       queryParams += `&search=${query.search}`;
     }
@@ -34,7 +35,7 @@ export class UserService {
   }
 
   public static async refreshToken(headers: any): Promise<any> {
-    return axios.get(`${config.idm.url}/refresh-token`,{headers});
+    return axios.get(`${config.idm.url}/refresh-token`, {headers});
   }
 
   public static async signOutUser(headers: any): Promise<any> {

@@ -14,7 +14,7 @@ import { errorConverter } from '../core/errors/error-converter-middleware';
 import RolesRouter from './routers/roles.route';
 import * as cookieParser from 'cookie-parser';
 import SignRouter from './routers/sign.route';
-import { authentication, authorization } from '../auth/auth.middleware';
+import { authorization, authentication } from 'gl-auth';
 
 class Api {
 
