@@ -65,19 +65,19 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
                   if (this.terminalTypes.indexOf(origin.type) > -1)
-                    this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name});
+                    this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.eventType});
                   if (this.terminalTypes.indexOf(destination.type) > -1)
-                    this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name});
+                    this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.eventType});
 
                   this.traceRoutes(
                     origin.geo.point,
                     event.product.middle_points.map(mp => ({location: mp.geo.point})),
                     destination.geo.point
                   );
-                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name}));
+                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name, type: mp.type}));
                   break;
                 default:
-                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name});
+                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.eventType});
                   break;
               }
           });
@@ -113,7 +113,11 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     const marker = new google.maps.Marker({
       position: position,
       map: this.map,
-      title: options.label
+      title: options.label,
+      icon: {
+        url: `/assets/icons/${options.type}.png`, // url
+        scaledSize: new google.maps.Size(30, 42), // scaled size
+      }
     });
     marker.addListener('click', () => {
       this.infoWindows.forEach(info => info.close());

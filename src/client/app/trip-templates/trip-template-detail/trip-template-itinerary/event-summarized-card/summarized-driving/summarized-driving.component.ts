@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {select, Store} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../store/shared/app.interfaces';
 import {
   DayIndexTypeForEventSetted, DrivingEventSelected,
@@ -13,13 +13,12 @@ import { EventDialogComponent } from '../../event-dialog/event-dialog.component'
 import { ToggleSegmentDialog } from '../../../../../store/route/route.actions';
 import { RouteComponent } from '../../../../../routes/route/route.component';
 import { MatDialog } from '@angular/material';
-import { terminalType } from '../../../../../shared/models/TripTemplate';
-import {getSegmentDialogStatus} from '../../../../../store/route';
-import {getDialogStatus} from '../../../../../store/place';
-import {getSelectedDayId, getTripTemplateSelectedId} from '../../../../../store/trip-template';
-import {Observable} from 'rxjs';
-import {ConfirmationModalComponent} from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
-import {RemoveDay} from '../../../../../store/trip-template/day/day.actions';
+import { getSegmentDialogStatus } from '../../../../../store/route';
+import { getDialogStatus } from '../../../../../store/place';
+import { getSelectedDayId, getTripTemplateSelectedId } from '../../../../../store/trip-template';
+import { Observable } from 'rxjs';
+import { ConfirmationModalComponent } from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { eventColors } from '../../../../../shared/models/TripTemplate';
 
 @Component({
   selector: 'app-summarized-driving',
@@ -41,6 +40,7 @@ export class SummarizedDrivingComponent implements OnInit {
   selectedDay$: Observable<string>;
   selectedTripTemplate$: Observable<string>;
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
+  colors = eventColors;
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
 
@@ -60,6 +60,10 @@ export class SummarizedDrivingComponent implements OnInit {
       }
     });
 
+  }
+
+  get color() {
+    return this.colors[this.data.eventType];
   }
 
   onRemoveEvent(eventId, dayId) {

@@ -1,6 +1,4 @@
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
-import Segment from './Segment';
-import { Point } from './Place';
 
 export enum TypeOfEvent {
   POI = 'POI',
@@ -29,15 +27,16 @@ export enum terminalType {
   DESTINATION = 'destination'
 }
 
-const colors = [
-  '#ba68c8',
-  '#f06292',
-  '#7986cb',
-  '#4db6ac',
-  '#ff8a65',
-  '#90a4ae',
-  '#f06292'
-];
+export const eventColors = {
+  'ACTIVITY': '#4db6ac',
+  'HOTEL': '#7986cb',
+  'POI': '#ff8a65',
+  'DESTINATION': '#f06292',
+  'REFERENCE': '#f06292',
+  'TERMINAL': '#ba68c8',
+  'DRIVING': '#42a5f5',
+  'OTHER': '#90a4ae'
+};
 
 /**
  * Event types that works as terminal
@@ -86,7 +85,6 @@ export class Event {
       }
       this.product = productToAdd;
     }
-    this.color = colors[Math.floor(Math.random() * colors.length)];
   }
 }
 
