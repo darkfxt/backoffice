@@ -69,13 +69,12 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   if (this.terminalTypes.indexOf(destination.type) > -1)
                     this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name});
 
-                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name}));
-
                   this.traceRoutes(
                     origin.geo.point,
                     event.product.middle_points.map(mp => ({location: mp.geo.point})),
                     destination.geo.point
                   );
+                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name}));
                   break;
                 default:
                   this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name});
@@ -87,6 +86,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
         });
 
         this.map.fitBounds(this.bounds);
+
 
         /*
         setTimeout(() => {
@@ -139,7 +139,8 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     this._referencesRenderer.push(new google.maps.DirectionsRenderer({
       directions: directions,
       map: this.map,
-      suppressMarkers: true
+      suppressMarkers: true,
+      preserveViewport: true
     }));
 
   }
