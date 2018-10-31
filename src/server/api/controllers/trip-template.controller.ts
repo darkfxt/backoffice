@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
 import Place from '../entity/Place';
 import { DayOfTrip, TripTemplate } from '../entity/TripTemplate';
+import httpStatus = require('http-status');
 
 export class TripTemplateController {
 
@@ -87,7 +88,7 @@ export class TripTemplateController {
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
       const template = await TripTemplateService.deleteOne(request.params.id, request.headers);
-      response.json(template);
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

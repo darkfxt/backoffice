@@ -1,14 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { User } from '../../shared/models/User';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../../shared/services/user.service';
 import { CompanyService } from '../../shared/services/company.service';
 import { RolesService } from '../../shared/services/roles.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import {share} from 'rxjs/operators';
+import { share } from 'rxjs/operators';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/shared/app.interfaces';
 
 export class ComparePasswordValidator implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -33,6 +37,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   organizations: Observable<any>;
   resolverSubscription: Subscription;
   updatePassword = true;
+  _deleteSubscription: Subscription;
 
   matcher = new ComparePasswordValidator();
 
@@ -42,7 +47,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private companyService: CompanyService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private dialog: MatDialog,
+    private store: Store<AppState>,
   ) {}
 
   ngOnInit() {
@@ -71,6 +78,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resolverSubscription.unsubscribe();
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   goBack() {
@@ -119,6 +128,33 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     const confirmPass = group.controls.confirmPassword.value;
 
     return pass === confirmPass ? null : { notSame: true };
+  }
+
+  deleteUser() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.user.email}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.userService.deleteById(this.user.id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.user.email} ha sido eliminado`}
+          ));
+          this.router.navigate(['/users']);
+        });
+    });
   }
 
 }

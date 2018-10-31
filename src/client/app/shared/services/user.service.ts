@@ -42,6 +42,10 @@ export class UserService {
     return this.http.get(`/api/users/${id}`);
   }
 
+  deleteById(id): Observable<any> {
+    return this.http.delete(`/api/users/${id}`);
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.

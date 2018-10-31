@@ -65,6 +65,10 @@ export class PlaceService {
       );
   }
 
+  deleteById (place_id: string): Observable<any> {
+    return this.http.delete(`/api/places/${place_id}`);
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.

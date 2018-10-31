@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
+import {httpstatus} from 'aws-sdk/clients/glacier';
+import httpStatus = require('http-status');
 
 
 export class PlaceController {
@@ -61,7 +63,7 @@ export class PlaceController {
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
       const place = await PlaceService.deleteOne(request.params.place_id, request.headers);
-      response.json(place);
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

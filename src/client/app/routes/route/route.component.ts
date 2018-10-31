@@ -19,6 +19,8 @@ import { AppState } from '../../store/shared/app.interfaces';
 import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState } from '../../store/route';
 import { EventSelected } from '../../store/trip-template/event/event.actions';
 import { getDialogStatus, getPointSelected } from '../../store/place';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 
 @Component({
   selector: 'app-route',
@@ -35,6 +37,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   amIDialog = false;
   dialogStatus: string;
   popup = false;
+  _deleteSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +46,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private placeStore: PlaceStore,
-    daDialog: MatDialog,
+    private daDialog: MatDialog,
     modalService: ModalService
   ) {
     super(daDialog, modalService);
@@ -98,6 +101,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this._subscription)
       this._subscription.unsubscribe();
 
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
+
     this.store.dispatch(new ClearSegment());
   }
 
@@ -151,6 +157,33 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
     else
       this.router.navigate(['/routes']);
+  }
+
+  deleteRoute() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.segment.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.daDialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.routesService.deleteById(this.segment._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.segment.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/routes']);
+        });
+    });
   }
 
 }
