@@ -16,23 +16,23 @@ export class TripTemplateService {
     if (query.company_id)
       queryParams += `&company_id=${query.company_id}`;
     return axios
-      .get(`${config.routes.url}/trip-templates${queryParams}`, {headers});
+      .get(`${config.routes.url}/trip-templates${queryParams}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async create(tripTemplate, headers: any): Promise<any> {
-    return axios.post(`${config.routes.url}/trip-templates`, tripTemplate, {headers});
+    return axios.post(`${config.routes.url}/trip-templates`, tripTemplate, {headers: {authorization: headers.authorization}});
   }
 
   public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.routes.url}/trip-templates/${id}`, body, {headers});
+    return axios.patch(`${config.routes.url}/trip-templates/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
   public static async deleteOne(id, headers: any): Promise<any> {
-    return axios.delete(`${config.routes.url}/trip-templates/${id}`, {headers});
+    return axios.delete(`${config.routes.url}/trip-templates/${id}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async getDetail(id: string, lang: string = 'en', headers: any): Promise<any> {
-    return axios.get(`${config.routes.url}/trip-templates/${id}?lang=${lang}`, {headers});
+    return axios.get(`${config.routes.url}/trip-templates/${id}?lang=${lang}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async getEventsFromTripTemplate(id: string, headers: any): Promise<any> {

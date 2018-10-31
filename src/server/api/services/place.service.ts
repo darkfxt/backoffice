@@ -12,16 +12,16 @@ export class PlaceService {
 
   public static async getAll(query, headers): Promise<any> {
     return axios
-      .get(`${config.geo.url}/places`, {params: query, headers});
+      .get(`${config.geo.url}/places`, {params: query, headers: {authorization: headers.authorization}});
   }
 
   public static async create(body, headers: any): Promise<any> {
-    const ret = await axios.post(`${config.geo.url}/places`, body, {headers});
+    const ret = await axios.post(`${config.geo.url}/places`, body, {headers: {authorization: headers.authorization}});
     return ret;
   }
 
   public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.geo.url}/places/${id}`, body, {headers});
+    return axios.patch(`${config.geo.url}/places/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
   public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
@@ -43,7 +43,7 @@ export class PlaceService {
 
   public static async getDetail(place_id: string, headers: any, lang: string = 'en'): Promise<Place> {
     return axios
-      .get(`${config.geo.url}/places/${place_id}`, {headers})
+      .get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
       .then(resp => {
         return resp.data;
       });
@@ -51,7 +51,7 @@ export class PlaceService {
 
   public static async deleteOne(place_id: string, headers: any): Promise<any> {
     return axios
-      .delete(`${config.geo.url}/places/${place_id}`, {headers});
+      .delete(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async search(params, lang: string = 'en', headers: any): Promise<any> {
@@ -62,7 +62,7 @@ export class PlaceService {
           query.push(`${key}=${value}`);
       }
     );
-    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`, {headers});
+    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`, {headers: {authorization: headers.authorization}});
   }
 
 }
