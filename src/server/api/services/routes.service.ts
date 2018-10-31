@@ -3,35 +3,41 @@ import { config } from '../../config/env';
 
 export class RoutesService {
 
-  public static async getAll(query): Promise<any> {
+  public static async getAll(query, headers): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
-    if (query.search) {
+    if (query.search)
       queryParams += `&search=${query.search}`;
-    }
-    if (query.company_id) {
+    if (query.company_id)
       queryParams += `&company_id=${query.company_id}`;
-    }
     return axios
-      .get(`${config.routes.url}/segments${queryParams}`);
+      .get(`${config.routes.url}/segments${queryParams}`, {headers});
   }
 
-  public static async create(route): Promise<any> {
+  public static async create(route, headers: any): Promise<any> {
     if (route._id) Reflect.deleteProperty(route, '_id');
-    const ret = await axios.post(`${config.routes.url}/segments`, route);
+    const ret = await axios.post(`${config.routes.url}/segments`, route, {headers});
     return ret.data;
   }
 
-  public static async update(id, body): Promise<any> {
+  public static async update(id, body, headers: any): Promise<any> {
     try {
-      return await axios.patch(`${config.routes.url}/segments/${id}`, body);
+      return await axios.patch(`${config.routes.url}/segments/${id}`, body, {headers});
     } catch (error) {
       throw error;
     }
   }
 
-  public static async getDetail(id: string, lang: string = 'en'): Promise<any> {
+  public static async deleteOne(id: string, headers: any): Promise<any> {
+    try {
+      return await axios.delete(`${config.routes.url}/segments/${id}`, {headers});
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public static async getDetail(id: string, headers: any, lang: string = 'en'): Promise<any> {
     return axios
-      .get(`${config.routes.url}/segments/${id}?lang=${lang}`)
+      .get(`${config.routes.url}/segments/${id}?lang=${lang}`, {headers})
       .then(resp => {
         return resp.data;
       });

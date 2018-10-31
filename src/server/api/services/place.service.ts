@@ -41,12 +41,17 @@ export class PlaceService {
       });
   }
 
-  public static async getDetail(place_id: string, lang: string = 'en', headers: any): Promise<Place> {
+  public static async getDetail(place_id: string, headers: any, lang: string = 'en'): Promise<Place> {
     return axios
       .get(`${config.geo.url}/places/${place_id}`, {headers})
       .then(resp => {
         return resp.data;
       });
+  }
+
+  public static async deleteOne(place_id: string, headers: any): Promise<any> {
+    return axios
+      .delete(`${config.geo.url}/places/${place_id}`, {headers});
   }
 
   public static async search(params, lang: string = 'en', headers: any): Promise<any> {

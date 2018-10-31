@@ -53,20 +53,17 @@ class Api {
           code: err.code,
           response: err.response,
         };
-        if (this.api.get('env') === 'production') {
+        if (this.api.get('env') === 'production')
           Reflect.deleteProperty(error, 'stack');
-        }
+
         res.status(err.status || httpStatus.INTERNAL_SERVER_ERROR).json(error);
         console.error(err);
       });
 
         this.api.use(fourOFour);
         this.api.use((req, res) => {
-          if (res.statusCode === httpStatus.NOT_FOUND) {
-            res.json({
-              message: httpStatus[httpStatus.NOT_FOUND],
-            });
-          }
+          if (res.statusCode === httpStatus.NOT_FOUND)
+            res.json({message: httpStatus[httpStatus.NOT_FOUND]});
         });
     }
 
