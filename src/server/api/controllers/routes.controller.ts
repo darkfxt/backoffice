@@ -9,7 +9,7 @@ export class RoutesController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
-      const answer = await RoutesService.getAll(request.query);
+      const answer = await RoutesService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
         return;
@@ -34,7 +34,7 @@ export class RoutesController {
       data.company_id = (request as any).loggedUser.CompanyID;
       data.created_by = (request as any).loggedUser.Username;
 
-      const resp = await RoutesService.create(data);
+      const resp = await RoutesService.create(data, request.headers);
       response.json(resp);
     } catch (err) {
       // TODO: Delete uploaded files on error
@@ -56,7 +56,7 @@ export class RoutesController {
 
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       data.company_id = (request as any).loggedUser.CompanyID;
-      const resp = await RoutesService.update(request.params.id, data);
+      const resp = await RoutesService.update(request.params.id, data, request.headers);
       response.json(resp.data);
     } catch (err) {
       // TODO: Delete uploaded files on error
@@ -66,8 +66,17 @@ export class RoutesController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      const resp = await RoutesService.getDetail(request.params.id, request.query.lang);
+      const resp = await RoutesService.getDetail(request.params.id, request.headers, request.query.lang);
       response.json(resp);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async deleteOne(request: Request, response: Response, next: NextFunction) {
+    try {
+      const route = await RoutesService.deleteOne(request.params.id, request.headers);
+      response.json(route);
     } catch (err) {
       next(err);
     }

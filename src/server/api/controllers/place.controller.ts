@@ -51,8 +51,17 @@ export class PlaceController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = await PlaceService.getDetail(request.params.place_id, request.query.lang, request.headers);
+      const data = await PlaceService.getDetail(request.params.place_id, request.headers, request.query.lang);
       response.json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async deleteOne(request: Request, response: Response, next: NextFunction) {
+    try {
+      const place = await PlaceService.deleteOne(request.params.place_id, request.headers);
+      response.json(place);
     } catch (err) {
       next(err);
     }
