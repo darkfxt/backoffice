@@ -1,0 +1,21 @@
+mat-form-field{
+  width: 100%;
+}
+
+.date{
+  width: calc(50% - 6px);
+
+  &.start-date{
+    margin-right: 12px;
+  }
+}
+
+mat-slide-toggle{
+  margin: 10px 0 23px;
+}
+
+.box-container{
+  background: white;
+  border: 1px solid #DEDEDE;
+  padding: 16px;
+}

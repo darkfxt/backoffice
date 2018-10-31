@@ -18,7 +18,7 @@ export class AccountsService {
     body.secondary_color = body.secondary_color.replace('#', '');
     Reflect.deleteProperty(body, 'file');
     Reflect.deleteProperty(body, 'deleted_images');
-    const resp = await axios.post(`${config.core.url}/accounts`, body);
+    const resp = await axios.post(`${config.core.url}/accounts`, body, {headers: {authorization: headers.authorization}});
     return resp;
   }
 

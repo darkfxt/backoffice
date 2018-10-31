@@ -37,6 +37,7 @@ export class AccountsController {
         url: value.location
       }))[0];
       data.company_id = (<any>request).loggedUser.CompanyID;
+      // TODO: Make a header for requests
       const user = await AccountsService.create(data, request.headers);
 
       response.json(user.data);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-detail',
@@ -9,17 +9,32 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class BookingDetailComponent implements OnInit {
   formHeader: FormGroup;
   formItinerary: FormGroup;
-  formStatus: FormGroup;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.formHeader = this.fb.group({});
-    this.formItinerary = this.fb.group({});
-    this.formStatus = this.fb.group({});
+    this.formHeader = this.fb.group({
+      booking_name: ['', Validators.required],
+      client_id: ['', Validators.required],
+      passenger_name: ['', Validators.required],
+      start_date: ['', Validators.required],
+      end_date: ['', Validators.required],
+      comment: '',
+      device_id: '',
+      pickup_point: '',
+      dropoff_point: ''
+    });
+    this.formItinerary = this.fb.group({
+
+    });
   }
 
   saveBooking() {
-
+    if (this.formHeader.valid) {
+    } else
+      Object.keys(this.formHeader.controls).forEach(field => {
+        const control = this.formHeader.get(field);
+        control.markAsTouched({onlySelf: true});
+      });
   }
 
   goBack() {

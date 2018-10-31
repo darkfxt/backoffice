@@ -8,7 +8,15 @@ import { BookingDetailItineraryComponent } from './booking-detail/booking-detail
 import { BookingRoutingModule } from './booking-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { MatButtonModule, MatFormFieldModule, MatIconModule, MatStepperModule } from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule, MatDatepickerModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule, MatNativeDateModule, MatSlideToggleModule,
+  MatStepperModule
+} from '@angular/material';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -20,7 +28,13 @@ import { MatButtonModule, MatFormFieldModule, MatIconModule, MatStepperModule } 
     MatIconModule,
     MatStepperModule,
     MatButtonModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    TranslateModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule
   ],
   declarations: [
     BookingListComponent,
