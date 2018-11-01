@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-booking-detail',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class BookingDetailComponent implements OnInit {
   formHeader: FormGroup;
   formItinerary: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.formHeader = this.fb.group({
@@ -38,7 +39,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   goBack() {
-
+    this.router.navigate(['/booking']);
   }
 
 

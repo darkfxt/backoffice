@@ -21,7 +21,7 @@ import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
 })
 export class PlacesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
-  @Input() isDialog ? = 'false';
+  @Input() isDialog ? = false;
   dialog: boolean;
   @Input() dialogRef: any;
   @Input() query = {};
@@ -46,7 +46,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.dialog = this.isDialog !== 'false';
+    this.dialog = this.isDialog;
     this.paginationOptions = {
       previousPageIndex: 0,
       pageIndex: 0,

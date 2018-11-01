@@ -22,7 +22,7 @@ export class PlaceService {
     if (paginationMetadata.type)
       queryParams.type = paginationMetadata.type;
     if (withoutMetadata)
-      queryParams.type = true;
+      queryParams.simple = true;
 
     return this.http.get('/api/places', {params: queryParams});
   }
