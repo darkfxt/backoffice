@@ -8,6 +8,7 @@ const s3Middleware: S3Middleware = new S3Middleware({bucket: 'accounts'});
 
 AccountsRouter.route('/:id')
   .get(AccountsController.getDetail)
+  .delete(AccountsController.delete)
   .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], AccountsController.update);
 
 AccountsRouter.route('/')

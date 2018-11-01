@@ -3,7 +3,10 @@
     <button mat-icon-button class="close-button" (click)="goBack($event)" *ngIf="!disableBackButton">
       <mat-icon aria-label="Go back">{{iconType}}</mat-icon>
     </button>
-    <h1>{{title}}</h1>
+    <div class="title">
+      <h1>{{title}}</h1>
+      <ng-content select=".more-options" class="more-options"></ng-content>
+    </div>
 
     <ng-content select=".button-container" class="save-button"></ng-content>
 

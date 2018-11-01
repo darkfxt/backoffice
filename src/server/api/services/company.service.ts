@@ -10,20 +10,20 @@ export class CompanyService {
       queryParams += `&search=${query.search}`;
     }
     return axios
-      .get(`${config.core.url}/companies`, {headers});
+      .get(`${config.core.url}/companies`, {headers: {authorization: headers.authorization}});
   }
 
   public static async create(body, headers: any): Promise<any> {
-    const resp = await axios.post(`${config.core.url}/companies`, body, {headers});
+    const resp = await axios.post(`${config.core.url}/companies`, body, {headers: {authorization: headers.authorization}});
     return resp;
   }
 
   public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.core.url}/companies/${id}`, body, {headers});
+    return axios.patch(`${config.core.url}/companies/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
   public static async getDetail(id: string, lang: string = 'en', headers: any): Promise<any> {
-    return axios.get(`${config.core.url}/companies/${id}`, {headers});
+    return axios.get(`${config.core.url}/companies/${id}`, {headers: {authorization: headers.authorization}});
   }
 
 }

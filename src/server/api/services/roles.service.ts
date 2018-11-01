@@ -11,11 +11,11 @@ export class RolesService {
       queryParams += `&search=${query.search}`;
     }
     return axios
-      .get(`${config.idm.url}/roles`, {headers});
+      .get(`${config.idm.url}/roles`, {headers: {authorization: headers.authorization}});
   }
 
   public static async getDetail(id: string, lang: string = 'en', headers): Promise<any> {
-    return axios.get(`${config.idm.url}/roles/${id}`, {headers});
+    return axios.get(`${config.idm.url}/roles/${id}`, {headers: {authorization: headers.authorization}});
   }
 
   /**

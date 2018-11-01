@@ -16,6 +16,7 @@ PlaceRouter.route('/google/:place_id')
 
 PlaceRouter.route('/:place_id')
   .get(PlaceController.getDetail)
+  .delete(PlaceController.deleteOne)
   .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], PlaceController.create);
 
 PlaceRouter.route('/')

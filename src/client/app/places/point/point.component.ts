@@ -13,8 +13,10 @@ import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getDialogStatus, getPointSelected, getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
-import { EventSelected } from '../../store/trip-template/event/event.actions';
+import {EventSelected, RemoveEvent} from '../../store/trip-template/event/event.actions';
 import { map, withLatestFrom } from 'rxjs/internal/operators';
+import {SnackbarOpen} from '../../store/shared/actions/snackbar.actions';
+import {ConfirmationModalComponent} from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-point',
@@ -28,6 +30,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _subscription: Subscription;
   _resolverSubscription: Subscription;
   _getDetailSubscription: Subscription;
+  _deleteSubscription: Subscription;
   bussy: boolean;
   amIDialog = 'false';
   popup = false;
@@ -42,9 +45,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
-    matDialog: MatDialog,
+    private matDialog: MatDialog,
     modalService: ModalService,
-    private placeStore: PlaceStore
+    private placeStore: PlaceStore,
   ) {
     super(matDialog, modalService);
   }
@@ -115,6 +118,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
     if (this._getDetailSubscription)
       this._getDetailSubscription.unsubscribe();
+
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   onOptionSelected(e) {
@@ -171,6 +177,33 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     else
       this.router.navigate(['/places']);
+  }
+
+  deletePlace() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.place.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.matDialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.placeService.deleteById(this.place._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.place.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/places']);
+        });
+    });
   }
 
 }

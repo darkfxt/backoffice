@@ -1,0 +1,25 @@
+
+
+.app-container{
+  margin-top: 44px;
+}
+
+mat-horizontal-stepper{
+  background-color: transparent;
+}
+
+.buttons-ctn{
+  background: white;
+  border: 1px solid #DEDEDE;
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  border-top: none;
+  margin-bottom: 44px;
+
+  &.status-step{
+    max-width: 680px;
+    margin: 0 auto;
+  }
+}

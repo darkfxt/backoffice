@@ -33,6 +33,14 @@
   margin-bottom: 24px;
 }
 
+.more-options{
+  margin-left: 16px;
+  margin-right: -16px;
+  mat-icon{
+    color: white;
+  }
+}
+
 mat-form-field{
   width: 100%;
 }

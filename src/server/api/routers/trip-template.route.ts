@@ -12,6 +12,7 @@ TripTemplateRouter.route('/autocomplete')
 
 TripTemplateRouter.route('/:id')
   .get(TripTemplateController.getDetail)
+  .delete(TripTemplateController.deleteOne)
   .patch(TripTemplateController.update);
 
 TripTemplateRouter.route('/:id/events')
