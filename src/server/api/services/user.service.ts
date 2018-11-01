@@ -35,7 +35,7 @@ export class UserService {
   }
 
   public static async signInUser(email: string, password: string, headers: any): Promise<any> {
-    return axios.post(`${config.idm.url}/signin`, {username: email, password}, {headers: {authorization: headers.authorization}});
+    return axios.post(`${config.idm.url}/signin`, {username: email, password});
   }
 
   public static async refreshToken(headers: any): Promise<any> {

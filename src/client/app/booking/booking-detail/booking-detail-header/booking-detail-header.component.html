@@ -2,41 +2,41 @@
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <mat-form-field color="accent">
-        <input type="text" #name matInput placeholder="{{'Nombre de la reserva'}}" name="booking_name" formControlName="booking_name" required/>
-        <mat-error *ngIf="form.get('booking_name').invalid && (form.get('booking_name').dirty || form.get('booking_name').touched)">{{'Campo requerido' }}</mat-error>
+        <input type="text" #name matInput placeholder="{{'Nombre de la reserva' | translate}}" name="booking_name" formControlName="booking_name" required/>
+        <mat-error *ngIf="form.get('booking_name').invalid && (form.get('booking_name').dirty || form.get('booking_name').touched)">{{'Campo requerido' | translate}}</mat-error>
       </mat-form-field>
 
       <mat-form-field color="accent" >
-        <input type="text" matInput placeholder="{{'Seleccionar cliente'}}" required [matAutocomplete]="autoGroup" formControlName="client_id"/>
+        <input type="text" matInput placeholder="{{'Seleccionar cliente' | translate}}" required [matAutocomplete]="autoGroup" formControlName="client_id"/>
         <mat-icon matSuffix>search</mat-icon>
         <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option.name}}</mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="form.get('client_id').invalid && (form.get('client_id').dirty || form.get('client_id').touched)">{{'Campo requerido' }}</mat-error>
+        <mat-error *ngIf="form.get('client_id').invalid && (form.get('client_id').dirty || form.get('client_id').touched)">{{'Campo requerido' | translate}}</mat-error>
       </mat-form-field>
 
       <mat-form-field color="accent">
-        <input type="text" #name matInput placeholder="{{'Nombre del pasajero'}}" name="passenger_name" formControlName="passenger_name" required/>
-        <mat-error *ngIf="form.get('passenger_name').invalid && (form.get('passenger_name').dirty || form.get('passenger_name').touched)">{{'Campo requerido' }}</mat-error>
+        <input type="text" #name matInput placeholder="{{'Nombre del pasajero' | translate}}" name="passenger_name" formControlName="passenger_name" required/>
+        <mat-error *ngIf="form.get('passenger_name').invalid && (form.get('passenger_name').dirty || form.get('passenger_name').touched)">{{'Campo requerido' | translate}}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="date start-date">
-        <input matInput readonly (click)="startDatePicker.open()" [min]="minDate" [matDatepicker]="startDatePicker" placeholder="{{'Fecha de inicio' }}" formControlName="start_date">
+        <input matInput readonly (click)="startDatePicker.open()" [min]="minDate" [matDatepicker]="startDatePicker" placeholder="{{'Fecha de inicio' | translate}}" formControlName="start_date">
         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #startDatePicker></mat-datepicker>
-        <mat-error *ngIf="form.get('start_date').errors && form.get('start_date').errors['required'] && (form.get('start_date').dirty || form.get('start_date').touched)">{{'Campo requerido' }}</mat-error>
+        <mat-error *ngIf="form.get('start_date').errors && form.get('start_date').errors['required'] && (form.get('start_date').dirty || form.get('start_date').touched)">{{'Campo requerido' | translate}}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="date">
-        <input matInput readonly (click)="endDatePicker.open()" [min]="minDate2" [matDatepicker]="endDatePicker" placeholder="{{'Fecha de finalización' }}" formControlName="end_date">
+        <input matInput readonly (click)="endDatePicker.open()" [min]="minDate2" [matDatepicker]="endDatePicker" placeholder="{{'Fecha de finalización' | translate}}" formControlName="end_date">
         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #endDatePicker></mat-datepicker>
-        <mat-error *ngIf="form.get('end_date').errors && form.get('end_date').errors['required'] && (form.get('end_date').dirty || form.get('end_date').touched)">{{'Campo requerido' }}</mat-error>
-        <mat-error *ngIf="form.get('end_date').errors && form.get('end_date').errors['matDatepickerMin'] && (form.get('end_date').dirty || form.get('end_date').touched)">{{'La fecha de finalización no puede ser menor a la de inicio' }}</mat-error>
+        <mat-error *ngIf="form.get('end_date').errors && form.get('end_date').errors['required'] && (form.get('end_date').dirty || form.get('end_date').touched)">{{'Campo requerido' | translate}}</mat-error>
+        <mat-error *ngIf="form.get('end_date').errors && form.get('end_date').errors['matDatepickerMin'] && (form.get('end_date').dirty || form.get('end_date').touched)">{{'La fecha de finalización no puede ser menor a la de inicio' | translate}}</mat-error>
       </mat-form-field>
 
       <mat-form-field color="accent">
-        <textarea matInput #description placeholder="{{'Observaciones' }}" name="comment" formControlName="comment"></textarea>
+        <textarea matInput #description placeholder="{{'Observaciones' | translate}}" name="comment" formControlName="comment"></textarea>
       </mat-form-field>
     </div>
 
@@ -44,30 +44,30 @@
       <mat-slide-toggle color="primary" (change)="onToggleGPS()">With GPS</mat-slide-toggle>
       <div *ngIf="has_gps">
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Número de dispositivo' }}" required [matAutocomplete]="autoGroup" formControlName="device_id"/>
+          <input type="text" matInput placeholder="{{'Número de dispositivo' | translate}}" required [matAutocomplete]="autoGroup" formControlName="device_id"/>
           <mat-icon matSuffix>search</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="form.get('device_id').invalid && (form.get('device_id').dirty || form.get('device_id').touched)">{{'Campo requerido' }}</mat-error>
+          <mat-error *ngIf="form.get('device_id').invalid && (form.get('device_id').dirty || form.get('device_id').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de retirada' }}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
+          <input type="text" matInput placeholder="{{'Lugar de retirada' | translate}}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
           <mat-icon matSuffix>search</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' }}</mat-error>
+          <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de entrega' }}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
+          <input type="text" matInput placeholder="{{'Lugar de entrega' | translate}}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
           <mat-icon matSuffix>search</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido'}}</mat-error>
+          <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
       </div>
     </div>

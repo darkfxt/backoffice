@@ -13,6 +13,7 @@ import { MatButtonModule, MatFormFieldModule, MatNativeDateModule,
   MatOptionModule, MatInputModule, MatDatepickerModule, MatSlideToggleModule
 } from '@angular/material';
 import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
     MatFormFieldModule,
     MatSlideToggleModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    TranslateModule
   ],
   declarations: [
     BookingListComponent,
