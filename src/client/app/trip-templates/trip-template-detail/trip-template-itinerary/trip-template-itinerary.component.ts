@@ -1,4 +1,15 @@
-import { Component, OnInit, Inject, Input, OnDestroy, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  Input,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatBottomSheet, MatDialog } from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
 import { RouteComponent } from '../../../routes/route/route.component';
@@ -73,6 +84,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   selectedDay$: Observable<string>;
   selectedTripTemplate$: Observable<string>;
   editedDayId;
+  @Output() itineraryUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('dayList') dayList: ElementRef;
 
@@ -132,9 +144,26 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
         if (Object.keys(tripTemplateEntities).includes(selectedTemplate)) {
           this.subs.push(this.store.select(getDaysForSelectedTrip).subscribe((data: any) => {
             if (data) {
+
               this.itineraryDays = data;
-            }
-          }));
+              this.itinerary = this.fb.array([]);
+              data.forEach( (day: any) => {
+                let eventsForm;
+                eventsForm = this.fb.array([]);
+                day.events.forEach((evento: any) => {
+                  eventsForm.push(this.fb.group({
+                    name: evento.name,
+                    description: evento.description,
+                    product: evento.product
+                  }));
+                });
+                this.itinerary.push(this.fb.group({
+                  _id: day._id,
+                  events: eventsForm
+                }));
+              });
+              this.itineraryUpdated.emit(this.itinerary);
+          }}));
         }
       }));
     }));

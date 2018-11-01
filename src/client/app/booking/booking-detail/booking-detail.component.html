@@ -7,7 +7,7 @@
   </div>
 </app-detail-header>
 <div>
-  <mat-horizontal-stepper [linear]="false" #stepper>
+  <mat-horizontal-stepper [linear]="true" #stepper>
     <mat-step [stepControl]="formHeader">
       <ng-template matStepLabel>Datos de la reserva</ng-template>
       <form [formGroup]="formHeader" class="app-container full-size body-content">
@@ -20,7 +20,7 @@
     <mat-step [stepControl]="formItinerary">
       <form [formGroup]="formItinerary">
         <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
-        <app-booking-detail-itinerary></app-booking-detail-itinerary>
+        <app-booking-detail-itinerary [formItinerary]="formItinerary" (templateUpdated)="updateItinerary($event)"></app-booking-detail-itinerary>
         <div class="buttons-ctn itinerary-step">
           <button mat-button matStepperPrevious color="accent">ATRAS</button>
           <button mat-button matStepperNext color="accent">CONTINUAR</button>

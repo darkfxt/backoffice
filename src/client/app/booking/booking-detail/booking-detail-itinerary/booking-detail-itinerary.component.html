@@ -1,5 +1,5 @@
 <div>
-  <form [formGroup]="bookingItinerary" #formDir="ngForm"  novalidate>
+  <form [formGroup]="formItinerary" #formDir="ngForm"  novalidate>
     <div class="app-container full-size body-content">
       <div class="box-container">
         <div class="row">
@@ -26,6 +26,9 @@
       </div>
     </div>
 
-    <app-trip-template-detail [fromBooking]="true" [templateToImport]="confirmedTemplate"></app-trip-template-detail>
+    <app-trip-template-detail [fromBooking]="true"
+                              [templateToImport]="confirmedTemplate"
+                              [form]="formItinerary"
+                              (templateUpdated)="onTemplateUpdated($event)"></app-trip-template-detail>
   </form>
 </div>
