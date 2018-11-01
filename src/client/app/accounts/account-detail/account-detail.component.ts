@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TRANSLATE } from '../../translate-marker';
-import { MatSnackBar } from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Account } from '../../shared/models/Account';
 import { AccountsService } from '../../shared/services/accounts.service';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-account-detail',
@@ -20,13 +24,16 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
   resolverSubscription: Subscription;
   primary_color_toogle: boolean;
   secondary_color_toogle: boolean;
+  _deleteSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private accountsService: AccountsService,
+    private store: Store<AppState>,
     private router: Router,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -48,6 +55,8 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resolverSubscription.unsubscribe();
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   goBack() {
@@ -87,6 +96,33 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
     if (image)
       formData.append('files[]', image, image.name);
     return formData;
+  }
+
+  deleteAccount() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.account.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.accountsService.deleteById(this.account.id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.account.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/accounts']);
+        });
+    });
   }
 
 }

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AccountsService } from '../services/accounts.service';
+import httpStatus = require('http-status');
 
 
 export class AccountsController {
@@ -37,6 +38,7 @@ export class AccountsController {
         url: value.location
       }))[0];
       data.company_id = (<any>request).loggedUser.CompanyID;
+      // TODO: Make a header for requests
       const user = await AccountsService.create(data, request.headers);
 
       response.json(user.data);
@@ -51,6 +53,16 @@ export class AccountsController {
       const user = await AccountsService.update(request.params.id, data, request.headers);
 
       response.json(user.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async delete(request: Request, response: Response, next: NextFunction) {
+    try {
+      const user = await AccountsService.delete(request.params.id, request.headers);
+
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

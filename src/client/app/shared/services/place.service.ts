@@ -22,7 +22,7 @@ export class PlaceService {
     if (paginationMetadata.type)
       queryParams.type = paginationMetadata.type;
     if (withoutMetadata)
-      queryParams.type = true;
+      queryParams.simple = true;
 
     return this.http.get('/api/places', {params: queryParams});
   }
@@ -63,6 +63,10 @@ export class PlaceService {
       .pipe(
         catchError(this.handleError('getDetail', []))
       );
+  }
+
+  deleteById (place_id: string): Observable<any> {
+    return this.http.delete(`/api/places/${place_id}`);
   }
 
   /**

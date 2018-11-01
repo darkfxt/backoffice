@@ -12,11 +12,8 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
 import { TripTemplatesModule } from './trip-templates/trip-templates.module';
-import { SegmentEffects } from './store/route/route.effects';
 
 // Components
 import { AppComponent } from './app.component';
@@ -24,20 +21,17 @@ import { HeaderComponent } from './shared/header/header.component';
 import { PageNotFoundComponent } from './not-found.component';
 import { LoginComponent } from './login/login.component';
 import { TagsComponent } from './shared/tags/tags.component';
-import { PointEffects } from './store/place/place.effects';
 
 // Config
 import { environment } from '../environments/environment';
-import { TripTemplateEffects } from './store/trip-template/trip-template.effects';
 import { UsersModule } from './users/users.module';
-import { UserEffects } from './store/user/user.effects';
 import { AccountsModule } from './accounts/accounts.module';
 import { ErrorInterceptor } from './shared/helpers/error.interceptor';
 import { JwtInterceptor } from './shared/helpers/jwt.interceptor';
-import { AccountEffects } from './store/account/account.effects';
 import { LoadingModule } from './shared/loading/loading.module';
 import { StateModule } from './store/state.module';
 import { ErrorComponent } from './error/error.component';
+import { BookingModule } from './booking/booking.module';
 
 
 
@@ -63,15 +57,13 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     HttpClientModule,
     StateModule.forRoot(),
-    // StoreModule.forRoot(reducers, {metaReducers}),
-    // EffectsModule.forRoot([PointEffects, SegmentEffects, TripTemplateEffects, UserEffects, AccountEffects]),
-    // StoreDevtoolsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: false}),
     BrowserAnimationsModule,
     LoadingModule,
     PlacesModule,
     RoutesModule,
     TripTemplatesModule,
+    BookingModule,
     UsersModule,
     AccountsModule,
     LoginRoutingModule,

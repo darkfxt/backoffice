@@ -1,0 +1,9 @@
+<app-detail-header [disableBackButton]="true"
+                   [title]="'{bookings length} reservas encontradas' | translate: {value: 0}"
+                   class="detail-header-content" navUrl="/booking/new">
+  <div class="button-container save-button">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>

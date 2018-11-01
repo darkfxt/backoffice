@@ -7,7 +7,7 @@ import {
   SaveTripTemplate,
   TripTemplateEditionLeft,
   TripTemplateSelected,
-  GetTripTemplates, CreateTripTemplate
+  GetTripTemplates, CreateTripTemplate, ImportTripTemplate
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
 import { AppState } from '../../store/shared/app.interfaces';
@@ -19,9 +19,12 @@ import {
   getTripTemplatesEntities, getTripTemplatesIds
 } from '../../store/trip-template';
 import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {combineLatest, Observable, Subscription} from 'rxjs';
-import {selectLoaderEntity} from '../../store/shared/reducers';
-import {first} from 'rxjs/internal/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { selectLoaderEntity } from '../../store/shared/reducers';
+import { first } from 'rxjs/internal/operators';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -30,6 +33,15 @@ import {first} from 'rxjs/internal/operators';
 })
 export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
+  @Input() fromBooking: boolean;
+  @Input() set templateToImport(templateToImport: string) {
+    if(templateToImport !== null) {
+      console.log('me estás metiendo el' + templateToImport);
+      this._templateToImport = templateToImport;
+      this.importTemplate(templateToImport);
+    }
+  }
+  _templateToImport: string;
   form: FormGroup;
   loading = false;
   loadItinerary = false;
@@ -38,6 +50,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   tripSubscription: Subscription;
   events: Event[];
   days$: Observable<DayOfTrip[]>;
+  _deleteSubscription: Subscription;
 
   _selectedRouteTemplateId: string;
 
@@ -45,8 +58,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private router: Router,
-    private routesService: TripTemplateService,
+    private tripTemplateService: TripTemplateService,
     private route: ActivatedRoute,
+    private dialog: MatDialog
     ) {
     this.form = this.fb.group({
       itinerary: this.fb.array([
@@ -126,6 +140,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     this.store.dispatch(new TripTemplateEditionLeft(null));
     if (this.tripSubscription)
       this.tripSubscription.unsubscribe();
+
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   saveTripTemplate() {
@@ -149,5 +166,35 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     return this.days$.subscribe(days => tripTemplate.days = days);
   }
 
+  deleteTripTemplate() {
 
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.tripTemplate.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.tripTemplateService.deleteById(this.tripTemplate._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.tripTemplate.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/trip-templates']);
+        });
+    });
+  }
+
+  importTemplate(templateId) {
+    console.log('mirá hasta donde llegaste con este ' + templateId);
+    this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
+  }
 }

@@ -11,6 +11,7 @@ RoutesRouter.route('/')
 
 RoutesRouter.route('/:id')
   .get(RoutesController.getDetail)
+  .delete(RoutesController.deleteOne)
   .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], RoutesController.update);
 
 export default RoutesRouter;

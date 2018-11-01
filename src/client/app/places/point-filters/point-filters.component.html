@@ -2,11 +2,10 @@
     <mat-form-field color="accent">
       <input #location
              type="text" matInput placeholder="{{'Buscar' | translate}}" required
-             name="name" (keyup)="onSearch(location.value)"
-             [matAutocomplete]="autoGroup"
-             (keyup.enter)="onEnter(location.value)" [(ngModel)]="searchString"/>
-      <mat-icon (click)="onSearch(location.value)" matSuffix>search</mat-icon>
-      <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
+             name="name" (keyup.enter)="onOptionSelected($event)"
+             [matAutocomplete]="autoGroup"/>
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
         <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
           <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
         </mat-optgroup>

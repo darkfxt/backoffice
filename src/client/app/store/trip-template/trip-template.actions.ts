@@ -1,7 +1,7 @@
 import { Event, TripTemplate, TripTemplateWithMetadata, TypeOfEvent, DayOfTrip } from '../../shared/models/TripTemplate';
 import { Action } from '@ngrx/store';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {Update} from '@ngrx/entity';
+import { Update } from '@ngrx/entity';
 
 export enum TripTemplateActionTypes {
   GET_TRIP_TEMPLATES = '[T.Template] Retrieving',
@@ -16,7 +16,8 @@ export enum TripTemplateActionTypes {
   SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
   ADD_DAY_TO_SELECTED_TEMPLATE = '[T.Template] Add a new Day to selected Template',
-  UPDATE_DAY_ON_SELECTED_TEMPLATE = '[T.Template] Updating day on Template'
+  UPDATE_DAY_ON_SELECTED_TEMPLATE = '[T.Template] Updating day on Template',
+  IMPORT_TRIP_TEMPLATE = '[T.Template] Importing Trip Template'
 }
 
 export class GetTripTemplates implements Action {
@@ -100,11 +101,16 @@ export class UpdateTripTemplate implements Action {
   constructor (readonly payload: {tripTemplate: TripTemplate}) { }
 }
 
-export type showLoaderTypes = GetTripTemplates | CreateTripTemplate | SaveTripTemplate ;
+export class ImportTripTemplate implements Action {
+  readonly type = TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE;
+  constructor (readonly payload: {tripTemplateId: string}) { }
+}
+
+export type showLoaderTypes = GetTripTemplates | CreateTripTemplate | SaveTripTemplate;
 export const showLoaderActions = [
   TripTemplateActionTypes.GET_TRIP_TEMPLATES,
   TripTemplateActionTypes.CREATE_TRIP_TEMPLATE,
-  TripTemplateActionTypes.SAVE_TRIP_TEMPLATE
+  TripTemplateActionTypes.SAVE_TRIP_TEMPLATE,
 ];
 export type hideLoaderTypes = TripTemplatesRetrieved |
   TripTemplateSelected | TripTemplateProcessedSuccesfully | TripTemplateEditionLeft ;
@@ -121,6 +127,6 @@ interface dayIndexType {
 }
 
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate | UpdateDayOnSelectedTemplate |
-  TripTemplatesRetrieved | SaveTripTemplate | TripTemplateSelected |
+  TripTemplatesRetrieved | SaveTripTemplate | TripTemplateSelected | ImportTripTemplate |
   TripTemplateProcessedSuccesfully | TripTemplateEditionLeft | AddDayToSelectedTemplate |
   SetNameForTemplate | SetDescriptionForTemplate | TripTemplatesMetadataRetrieved | UpdateTripTemplate;

@@ -8,6 +8,7 @@ UserRouter.route('/refresh')
 
 UserRouter.route('/:id')
   .get(UserController.getDetail)
+  .delete(UserController.delete)
   .patch(UserController.update);
 
 UserRouter.route('/')

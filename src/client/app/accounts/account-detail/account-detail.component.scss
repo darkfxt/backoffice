@@ -21,3 +21,11 @@ mat-form-field{
 .color-picker-input{
   text-transform: uppercase;
 }
+
+.more-options{
+  margin-left: 16px;
+  margin-right: -16px;
+  mat-icon{
+    color: white;
+  }
+}
