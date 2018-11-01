@@ -41,7 +41,8 @@ import { TranslateModule } from '@ngx-translate/core';
     BookingDetailHeaderComponent,
     BookingDetailStatusComponent,
     BookingDetailItineraryComponent
-  ]
+  ],
+  providers: []
 })
 export class BookingModule {
 }

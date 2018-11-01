@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TripTemplateService } from '../../../shared/services/trip-template.service';
@@ -10,21 +10,21 @@ import { TripTemplateService } from '../../../shared/services/trip-template.serv
 })
 export class BookingDetailItineraryComponent implements OnInit {
 
-  bookingItinerary: FormGroup;
+  @Input() formItinerary: FormGroup;
   options: Observable<any>;
   private autocompleteTimeout;
   private lastSearch;
   selectedTripTemplate = null;
   confirmedTemplate = null;
 
+  @Output() templateUpdated: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(
     private tripTemplateService: TripTemplateService
   ) { }
 
   ngOnInit() {
-    this.bookingItinerary = new FormGroup({
-      templateName: new FormControl()
-    });
+
   }
 
   displayFn(value) {
@@ -53,6 +53,11 @@ export class BookingDetailItineraryComponent implements OnInit {
     this.confirmedTemplate = this.selectedTripTemplate;
     console.log('Vas a meter el ' + this.selectedTripTemplate);
     console.log('estas seguro de lo que vas a hacer?');
+  }
+
+  onTemplateUpdated(event) {
+    console.log('estás a punto de meterte en algo groso', event);
+    this.templateUpdated.emit(event);
   }
 
 }

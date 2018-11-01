@@ -13,10 +13,10 @@ import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getDialogStatus, getPointSelected, getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
-import {EventSelected, RemoveEvent} from '../../store/trip-template/event/event.actions';
+import { EventSelected, RemoveEvent } from '../../store/trip-template/event/event.actions';
 import { map, withLatestFrom } from 'rxjs/internal/operators';
-import {SnackbarOpen} from '../../store/shared/actions/snackbar.actions';
-import {ConfirmationModalComponent} from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-point',

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,14 +35,13 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   @Input() fromBooking = false;
   @Input() set templateToImport(templateToImport: string) {
-    if(templateToImport !== null) {
-      console.log('me estás metiendo el' + templateToImport);
+    if (templateToImport !== null) {
       this._templateToImport = templateToImport;
       this.importTemplate(templateToImport);
     }
   }
   _templateToImport: string;
-  form: FormGroup;
+  @Input() form: FormGroup;
   loading = false;
   loadItinerary = false;
   tripTemplate = new TripTemplate();
@@ -54,6 +53,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   _selectedRouteTemplateId: string;
 
+  @Output() templateUpdated: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
@@ -62,13 +63,22 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialog: MatDialog
     ) {
-    this.form = this.fb.group({
-      itinerary: this.fb.array([
-        this.fb.control('')
-      ]),
-      name: ['', Validators.required],
-      description: this.fb.control('')
-    });
+    if (this.fromBooking) {
+      this.form = this.fb.group({
+        itinerary: this.fb.array([
+          this.fb.control('')
+        ]),
+      });
+    } else {
+      this.form = this.fb.group({
+        itinerary: this.fb.array([
+          this.fb.control('')
+        ]),
+        name: ['', Validators.required],
+        description: this.fb.control('')
+      });
+    }
+
 
     this.tripTemplate$ = this.store.pipe(select(getAllTripTemplates));
     this.store.dispatch(new GetTripTemplates(new PaginationOptions()));
@@ -196,5 +206,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   importTemplate(templateId) {
     console.log('mirá hasta donde llegaste con este ' + templateId);
     this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
+  }
+
+  onTemplateUpdated(event) {
+    this.templateUpdated.emit(event);
   }
 }
