@@ -75,8 +75,8 @@ export class RoutesController {
 
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
-      const route = await RoutesService.deleteOne(request.params.id, request.headers);
-      response.json(route);
+      const resp = await RoutesService.deleteOne(request.params.id, request.headers);
+      response.status(204);
     } catch (err) {
       next(err);
     }

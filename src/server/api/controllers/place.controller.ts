@@ -60,8 +60,8 @@ export class PlaceController {
 
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
-      const place = await PlaceService.deleteOne(request.params.place_id, request.headers);
-      response.json(place);
+      const resp = await PlaceService.deleteOne(request.params.place_id, request.headers);
+      response.status(204);
     } catch (err) {
       next(err);
     }

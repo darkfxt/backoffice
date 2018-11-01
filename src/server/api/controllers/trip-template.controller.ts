@@ -86,8 +86,8 @@ export class TripTemplateController {
 
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
-      const template = await TripTemplateService.deleteOne(request.params.id, request.headers);
-      response.json(template);
+      const resp = await TripTemplateService.deleteOne(request.params.id, request.headers);
+      response.status(204);
     } catch (err) {
       next(err);
     }
