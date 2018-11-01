@@ -6,11 +6,11 @@
     </button>
   </div>
 </app-detail-header>
-<div class="app-container full-size body-content">
+<div>
   <mat-horizontal-stepper [linear]="false" #stepper>
     <mat-step [stepControl]="formHeader">
-      <form [formGroup]="formHeader">
-        <ng-template matStepLabel>Datos de la reserva</ng-template>
+      <ng-template matStepLabel>Datos de la reserva</ng-template>
+      <form [formGroup]="formHeader" class="app-container full-size body-content">
         <app-booking-detail-header [form]="formHeader"></app-booking-detail-header>
         <div class="buttons-ctn">
           <button mat-button matStepperNext color="accent">CONTINUAR</button>
@@ -21,7 +21,7 @@
       <form [formGroup]="formItinerary">
         <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
         <app-booking-detail-itinerary></app-booking-detail-itinerary>
-        <div class="buttons-ctn">
+        <div class="buttons-ctn itinerary-step">
           <button mat-button matStepperPrevious color="accent">ATRAS</button>
           <button mat-button matStepperNext color="accent">CONTINUAR</button>
         </div>
@@ -29,10 +29,12 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Listo, ya casi terminamos</ng-template>
-      <app-booking-detail-status></app-booking-detail-status>
-      <div class="buttons-ctn status-step">
-        <button mat-button matStepperPrevious color="accent">ATRAS</button>
-        <button mat-button color="primary">PUBLICAR VIAJE</button>
+      <div class="app-container full-size body-content">
+        <app-booking-detail-status></app-booking-detail-status>
+        <div class="buttons-ctn status-step">
+          <button mat-button matStepperPrevious color="accent">ATRAS</button>
+          <button mat-button color="primary">PUBLICAR VIAJE</button>
+        </div>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

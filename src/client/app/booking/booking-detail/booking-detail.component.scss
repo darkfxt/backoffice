@@ -1,7 +1,16 @@
+/deep/.mat-horizontal-stepper-header-container{
+  max-width: 1024px;
+  margin: 34px auto 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
 
+/deep/.mat-horizontal-content-container{
+  padding: 0 0 24px !important;
+}
 
 .app-container{
-  margin-top: 44px;
+  margin-top: 24px;
 }
 
 mat-horizontal-stepper{
@@ -16,10 +25,17 @@ mat-horizontal-stepper{
   justify-content: flex-end;
   box-sizing: border-box;
   border-top: none;
-  margin-bottom: 44px;
+  max-width: 1024px;
+  margin: 0 auto 44px;
+  box-sizing: border-box;
 
   &.status-step{
     max-width: 680px;
     margin: 0 auto;
+  }
+
+  &.itinerary-step{
+    max-width: 992px;
+    margin-top: -8px;
   }
 }
