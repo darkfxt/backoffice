@@ -116,6 +116,11 @@ export const getSelectedEventId = createSelector(
   (state: any) => state.selectedEvent
 );
 
+export const getSelectedDriving = createSelector(
+  getEventsState,
+  (state: any) => state.selectedDriving
+);
+
 export const getCurrentEvent = createSelector(
   getEventEntities,
   getSelectedEventId,

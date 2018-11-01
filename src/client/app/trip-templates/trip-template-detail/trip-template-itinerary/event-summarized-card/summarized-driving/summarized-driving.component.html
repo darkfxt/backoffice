@@ -1,12 +1,12 @@
 
 <div class="event-cluster" [class.edit-mode]="editMode">
-  <div class="vertical-line" [style.border-color]="data.color"></div>
-  <div class="icon-ctn" [style.border-color]="data.color">
-    <mat-icon [style.color]="data.color">directions_car</mat-icon>
+  <div class="vertical-line" [style.border-color]="color"></div>
+  <div class="icon-ctn" [style.border-color]="color">
+    <mat-icon [style.color]="color">directions_car</mat-icon>
   </div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
-    <p>{{data.description}}</p>
+    <p>{{data.eventType | translate}}</p>
 
     <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
       <div class="add-event-cluster">

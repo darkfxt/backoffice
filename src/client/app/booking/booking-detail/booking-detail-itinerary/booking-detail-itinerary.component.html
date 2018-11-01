@@ -1,6 +1,7 @@
 <div>
-  <form [formGroup]="formItinerary" #formDir="ngForm" novalidate>
-  <div class="box-container">
+  <form [formGroup]="formItinerary" #formDir="ngForm"  novalidate>
+    <div class="app-container full-size body-content">
+    <div class="templates-search" class="box-container">
     <mat-form-field color="accent" >
       <input type="text" matInput placeholder="{{'Ingresa el nombre del template' }}"
              (keyup)="search($event)" [matAutocomplete]="autoGroup" required/>
@@ -18,5 +19,6 @@
                             [templateToImport]="confirmedTemplate"
                             [form]="formItinerary"
                             (templateUpdated)="onTemplateUpdated($event)"></app-trip-template-detail>
+    </div>
   </form>
 </div>

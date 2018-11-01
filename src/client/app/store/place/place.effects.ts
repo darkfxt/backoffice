@@ -48,8 +48,7 @@ export class PointEffects {
       mergeMap((response: any) => [
         new PointSelected(Object.assign(new Point(), response.data[0])),
         new SnackbarOpen({
-          message: 'Lugar Creado',
-          action: 'Success'
+          message: 'Lugar guardado'
         })
       ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))

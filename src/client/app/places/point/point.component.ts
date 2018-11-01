@@ -13,8 +13,8 @@ import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getDialogStatus, getPointSelected, getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
-import { EventSelected, RemoveEvent } from '../../store/trip-template/event/event.actions';
-import { map, withLatestFrom } from 'rxjs/internal/operators';
+import { EventSelected, TerminalSelected, RemoveEvent } from '../../store/trip-template/event/event.actions';
+import { getSelectedDriving } from '../../store/trip-template';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 
@@ -38,6 +38,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   private lastSearch;
   options: Observable<any[]>;
   dialogStatus: string;
+  drivingStatus: string;
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +48,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private matDialog: MatDialog,
     modalService: ModalService,
-    private placeStore: PlaceStore,
+    private placeStore: PlaceStore
   ) {
     super(matDialog, modalService);
   }
@@ -61,14 +62,26 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       if (dialogStatus === 'true') this.popup = true;
     });
 
+    this.store.pipe(
+      select(getSelectedDriving)
+    ).subscribe(driving => {
+      this.drivingStatus = driving;
+    });
+
     this._subscription = this.store.select(getPointSelected)
       .subscribe( (selectedPoint: any) => {
       if (selectedPoint && selectedPoint._id !== 'new' && selectedPoint._id !== undefined) {
           if (this.dialogStatus === 'true') {
-            this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}));
+            if (this.drivingStatus) {
+              this.store.dispatch(new TerminalSelected({terminal: selectedPoint}));
+            } else {
+              this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}));
+            }
             setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
             return;
           }
+
+          this.router.navigate(['/places']);
       }
     });
 

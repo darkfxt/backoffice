@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { iconMap } from '../../../../../shared/models/TripTemplate';
-import {ConfirmationModalComponent} from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
-import {AppState} from '../../../../../store/shared/app.interfaces';
-import {Store} from '@ngrx/store';
-import {MatDialog} from '@angular/material';
-import {RemoveEvent} from '../../../../../store/trip-template/event/event.actions';
+import {eventColors, iconMap} from '../../../../../shared/models/TripTemplate';
+import { ConfirmationModalComponent } from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { AppState } from '../../../../../store/shared/app.interfaces';
+import { Store } from '@ngrx/store';
+import { MatDialog } from '@angular/material';
+import { RemoveEvent } from '../../../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-summarized-default',
@@ -17,9 +17,15 @@ export class SummarizedDefaultComponent implements OnInit {
   @Input() showEmptySlot: boolean;
   @Input() editMode: boolean;
   iconMap = iconMap;
+  colors = eventColors;
   constructor(public dialog: MatDialog, private store: Store<AppState>) { }
 
+
   ngOnInit() {
+  }
+
+  get color() {
+    return this.colors[this.data.eventType];
   }
 
   onRemoveEvent(eventId, dayId) {
