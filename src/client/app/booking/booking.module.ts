@@ -8,7 +8,10 @@ import { BookingDetailItineraryComponent } from './booking-detail/booking-detail
 import { BookingRoutingModule } from './booking-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { MatButtonModule, MatFormFieldModule, MatIconModule, MatStepperModule } from '@angular/material';
+import { MatButtonModule, MatFormFieldModule,
+  MatIconModule, MatStepperModule, MatAutocompleteModule,
+  MatOptionModule, MatInputModule } from '@angular/material';
+import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
 
 @NgModule({
   imports: [
@@ -16,8 +19,12 @@ import { MatButtonModule, MatFormFieldModule, MatIconModule, MatStepperModule } 
     BookingRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    TripTemplatesModule,
     SharedModule,
     MatIconModule,
+    MatInputModule,
+    MatOptionModule,
+    MatAutocompleteModule,
     MatStepperModule,
     MatButtonModule,
     MatFormFieldModule

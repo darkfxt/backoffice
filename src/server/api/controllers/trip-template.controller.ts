@@ -62,9 +62,8 @@ export class TripTemplateController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-      console.log('NOT IMPLEMENTEd');
-      // const resp = await TripTemplateService.search(request.query, request.query.lang);
-      // response.json(resp.data);
+      const resp = await TripTemplateService.search(request.query, request.query.lang);
+      response.json(resp.data);
     } catch (err) {
       next(err);
     }

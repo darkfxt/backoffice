@@ -7,7 +7,7 @@ import {
   SaveTripTemplate,
   TripTemplateEditionLeft,
   TripTemplateSelected,
-  GetTripTemplates, CreateTripTemplate
+  GetTripTemplates, CreateTripTemplate, ImportTripTemplate
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
 import { AppState } from '../../store/shared/app.interfaces';
@@ -19,9 +19,9 @@ import {
   getTripTemplatesEntities, getTripTemplatesIds
 } from '../../store/trip-template';
 import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {combineLatest, Observable, Subscription} from 'rxjs';
-import {selectLoaderEntity} from '../../store/shared/reducers';
-import {first} from 'rxjs/internal/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { selectLoaderEntity } from '../../store/shared/reducers';
+import { first } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -30,6 +30,15 @@ import {first} from 'rxjs/internal/operators';
 })
 export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
+  @Input() fromBooking = false;
+  @Input() set templateToImport(templateToImport: string) {
+    if(templateToImport !== null) {
+      console.log('me estás metiendo el' + templateToImport);
+      this._templateToImport = templateToImport;
+      this.importTemplate(templateToImport);
+    }
+  }
+  _templateToImport: string;
   form: FormGroup;
   loading = false;
   loadItinerary = false;
@@ -147,6 +156,11 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   attachItineraryToTrip(tripTemplate: TripTemplate) {
     return this.days$.subscribe(days => tripTemplate.days = days);
+  }
+
+  importTemplate(templateId) {
+    console.log('mirá hasta donde llegaste con este ' + templateId);
+    this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
   }
 
 
