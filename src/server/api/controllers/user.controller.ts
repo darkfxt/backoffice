@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/user.service';
+import httpStatus = require('http-status');
 
 
 export class UserController {
@@ -46,6 +47,16 @@ export class UserController {
       const user = await UserService.update(request.params.id, request.body, request.headers);
 
       response.json(user.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async delete(request: Request, response: Response, next: NextFunction) {
+    try {
+      const user = await UserService.delete(request.params.id, request.headers);
+
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

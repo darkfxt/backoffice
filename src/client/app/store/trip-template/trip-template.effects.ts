@@ -11,7 +11,7 @@ import {
   SaveTripTemplate,
   TripTemplateProcessedSuccesfully,
   TripTemplateSelected,
-  TripTemplatesMetadataRetrieved, UpdateTripTemplate
+  TripTemplatesMetadataRetrieved, UpdateTripTemplate, ImportTripTemplate
 } from './trip-template.actions';
 import { TripTemplate, TripTemplateWithMetadata, Event } from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
@@ -64,6 +64,24 @@ export class TripTemplateEffects {
     .pipe(
       switchMap((tripTemplateId: TripTemplateSelected) => this.TripTemplateServiceInstance.getDetail(tripTemplateId.payload)),
       map((response: any) => new DaysRetrieved(response.days)),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
+
+  @Effect()
+  importDaysFromAnotherTemplate = this.actions$
+    .ofType(TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE)
+    .pipe(
+      switchMap((tripTemplateId: ImportTripTemplate) => this.TripTemplateServiceInstance.getDetail(tripTemplateId.payload.tripTemplateId)),
+      withLatestFrom(this.store),
+      map((response: any) => {
+        const selectedTemplate = response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate];
+        let updatedDays = selectedTemplate.days ? selectedTemplate.days.slice(0) : [];
+        updatedDays = updatedDays.concat(response[0].days);
+        const updated: TripTemplate =
+          Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate],
+            {days: updatedDays});
+        return new UpdateTripTemplate({tripTemplate: updated});
+      }),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 

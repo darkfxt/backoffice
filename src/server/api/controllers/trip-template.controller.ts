@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { TripTemplateService } from '../services/trip-template.service';
 import Place from '../entity/Place';
 import { DayOfTrip, TripTemplate } from '../entity/TripTemplate';
+import httpStatus = require('http-status');
 
 export class TripTemplateController {
 
@@ -62,9 +63,8 @@ export class TripTemplateController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-      console.log('NOT IMPLEMENTED');
-      // const resp = await TripTemplateService.search(request.query, request.query.lang);
-      // response.json(resp.data);
+      const resp = await TripTemplateService.search(request.query, request.query.lang);
+      response.json(resp.data);
     } catch (err) {
       next(err);
     }
@@ -86,8 +86,8 @@ export class TripTemplateController {
 
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
-      const resp = await TripTemplateService.deleteOne(request.params.id, request.headers);
-      response.status(204);
+      const template = await TripTemplateService.deleteOne(request.params.id, request.headers);
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

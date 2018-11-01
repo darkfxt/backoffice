@@ -5,7 +5,7 @@ import { AccountDetailComponent } from './account-detail/account-detail.componen
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import {MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule} from '@angular/material';
 import { LoadingModule } from '../shared/loading/loading.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -31,7 +31,8 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
     TranslateModule,
     ColorPickerModule,
     UploaderModule,
-    AccountsRoutingModule
+    AccountsRoutingModule,
+    MatMenuModule
   ],
   declarations: [AccountsListComponent, AccountDetailComponent, LogoComponent, AccountSummarizedCardComponent],
   exports: [AccountSummarizedCardComponent]

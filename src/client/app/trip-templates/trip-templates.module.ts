@@ -73,5 +73,6 @@ import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/c
     EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent,
     SummarizedDefaultComponent, SummarizedDrivingComponent, ConfirmationModalComponent
   ],
+  exports: [TripTemplateDetailComponent]
 })
 export class TripTemplatesModule { }

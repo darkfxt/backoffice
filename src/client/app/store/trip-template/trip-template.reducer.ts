@@ -19,6 +19,7 @@ export interface TripTemplateState extends EntityState<TripTemplate> {
   indexForEvent?: number;
   dayForEvent?: number;
   typeForEvent?: TypeOfEvent;
+  importTemplateId?: string;
 }
 
 export const adapter: EntityAdapter<TripTemplate> = createEntityAdapter({
@@ -53,37 +54,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       if (!ids.includes(tripTemplate._id))
         ids.push(tripTemplate._id);
       return {...state, entities, ids};
-    // case TripTemplateActionTypes.SET_NAME_FOR_TEMPLATE:
-    //   const template: TripTemplate = state.selectedTripTemplate ?
-    //     Object.assign(state.selectedTripTemplate) :
-    //     new TripTemplate();
-    //   template.name = action.payload;
-    //   return {...state, selectedTripTemplate: template};
-    // case TripTemplateActionTypes.SET_DESCRIPTION_FOR_TEMPLATE:
-    //   const temp: TripTemplate = state.selectedTripTemplate ?
-    //     Object.assign( state.selectedTripTemplate )  :
-    //     new TripTemplate();
-    //   template.description = action.payload;
-    //   return {...state, selectedTripTemplate: temp};
-    // case TripTemplateActionTypes.ADD_DAY_TO_SELECTED_TEMPLATE:
-    //   const days = state.entities[state.selectedTripTemplate].days.slice(0);
-    //   days.push(action.payload);
-    //   const selectedTemplate: TripTemplate = Object.assign(
-    //     {},
-    //     state.entities[state.selectedTripTemplate],
-    //     {days});
-    //   const updatedTemplate: Update<TripTemplate> = Update<TripTemplate>(selectedTemplate);
-    //   return adapter.updateOne(updatedTemplate, state); // {...state, selectedTripTemplate: tripTemplate };
-    // case TripTemplateActionTypes.UPDATE_DAY_ON_SELECTED_TEMPLATE:
-    //   const filteredDays = state.selectedTripTemplate
-    //     .filter((day: any) => day._id !== action.payload.selectedDay._id).slice(0);
-    //   const dayToUpdate = Object.assign({}, action.payload.selectedDay);
-    //   // const dayEvents = action.payload.selectedDay.events.slice(0);
-    //   // dayEvents.push(action.payload.event);
-    //   // dayToUpdate.events = dayEvents;
-    //   filteredDays.push(dayToUpdate);
-    //   const trip_template = Object.assign({}, state.selectedTripTemplate, {days: filteredDays});
-    //   return {...state, selectedTripTemplate: trip_template };
+    case TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE:
+      return {...state, importTemplateId: action.payload.tripTemplateId};
     default:
       return state;
   }

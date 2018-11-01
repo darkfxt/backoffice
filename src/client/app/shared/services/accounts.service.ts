@@ -40,6 +40,10 @@ export class AccountsService {
     return this.http.get(`/api/accounts/${id}`);
   }
 
+  deleteById(id): Observable<any> {
+    return this.http.delete(`/api/accounts/${id}`);
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.

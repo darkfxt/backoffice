@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Route from '../entity/Route';
 import { RoutesService } from '../services/routes.service';
+import httpStatus = require('http-status');
 
 
 export class RoutesController {
@@ -75,8 +76,8 @@ export class RoutesController {
 
   public static async deleteOne(request: Request, response: Response, next: NextFunction) {
     try {
-      const resp = await RoutesService.deleteOne(request.params.id, request.headers);
-      response.status(204);
+      const route = await RoutesService.deleteOne(request.params.id, request.headers);
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }

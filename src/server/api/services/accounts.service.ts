@@ -26,6 +26,10 @@ export class AccountsService {
     return axios.patch(`${config.core.url}/accounts/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
+  public static async delete(id, headers): Promise<any> {
+    return axios.delete(`${config.core.url}/accounts/${id}`, {headers: {authorization: headers.authorization}});
+  }
+
   public static async getDetail(id: string, lang: string = 'en', headers): Promise<any> {
     return axios.get(`${config.core.url}/accounts/${id}`, {headers: {authorization: headers.authorization}});
   }
