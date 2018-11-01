@@ -74,12 +74,19 @@
     position: absolute;
     right: 16px;
     top: 29px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     @media only screen and (max-device-width: 736px) {
       position: fixed;
       right: 16px;
       top: auto;
       bottom: 16px;
+
+      .save-label{
+        display: none;
+      }
     }
 
     .mat-icon{
@@ -94,6 +101,11 @@
       border-radius: 50px;
       border: none;
       background: $secondary-color;
+    }
+
+    .save-label{
+      margin-top: 4px;
+      color: rgba(0,0,0,0.54);
     }
 
   }

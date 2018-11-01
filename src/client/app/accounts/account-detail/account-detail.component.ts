@@ -71,6 +71,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       const body = this.prepareToSave();
       this.accountsService.upsert({id: this.account.id, body: body}).subscribe(resp => {
         responseMessage = 'Cuenta guardada con exito';
+        this.router.navigate(['/accounts']);
       }, err => {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
       }, () => {
@@ -78,7 +79,6 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
         this.snackBar.open(responseMessage, undefined, {
           duration: 3000,
           verticalPosition: 'bottom',
-          horizontalPosition: 'left'
         });
       });
     } else

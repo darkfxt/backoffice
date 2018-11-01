@@ -1,19 +1,28 @@
 <div>
   <form [formGroup]="bookingItinerary" #formDir="ngForm"  novalidate>
     <div class="app-container full-size body-content">
-      <div class="templates-search" class="box-container">
-        <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Ingresa el nombre del template' }}"
-                 (keyup)="search($event)" [matAutocomplete]="autoGroup" required/>
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+      <div class="box-container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <div class="add-template-button">
+              <mat-form-field color="accent" >
+                <input type="text" matInput placeholder="{{'Ingresa el nombre del template' }}"
+                       (keyup)="search($event)" [matAutocomplete]="autoGroup"/>
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div>
+                <button mat-flat-button color="accent" [disabled]="selectedTripTemplate === null" (click)="addTemplate()">Añadir template</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 templates-search">
+            <p>Añade templates para ahorrar tiempo y trabajo. Los templates se agregaran a continuación del último día.</p>
+          </div>
+        </div>
 
-        <button [disabled]="selectedTripTemplate === null" (click)="addTemplate()">
-          <mat-icon aria-label="Add">add</mat-icon>
-        </button>
       </div>
     </div>
 

@@ -93,15 +93,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
       this.userService.upsert({id: this.user.id, body: this.prepareToSave()}).subscribe(resp => {
         responseMessage = 'Usuario guardado con exito';
+        this.router.navigate(['/users']);
       }, err => {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
       }, () => {
         this.bussy = false;
-        // this.snackBar.open(responseMessage, undefined, {
-        //   duration: 3000,
-        //   verticalPosition: 'bottom',
-        //   horizontalPosition: 'left'
-        // });
       });
     } else
       Object.keys(this.form.controls).forEach(field => {

@@ -44,21 +44,9 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.router.navigate(['/error', {message: err.error, code: err.status}]);
               break;
             case 404:
-              if (err.error && err.error.code === 401) {
-                const APIError = err.error;
-                if (APIError.response.message === 'incorrect Username or Password') {
-                  this.store.dispatch(new SnackbarOpen(
-                    {message: 'Usuario o contraseña incorrectos', action: 'Error'}
-                  ));
-                  this.router.navigate(['/users/login']);
-                }
-                break;
-              }
-              if (err.error && err.error.message === 'Not Found') {
-                this.router.navigate(['/error', {message: err.error.message, code: err.status}]);
-              } else {
-                this.router.navigate(['/error', {message: 'Página no encontrada', code: 404}]);
-              }
+              this.store.dispatch(new SnackbarOpen(
+                {message: 'Not found'}
+              ));
               break;
             case 409:
               const message = (err.error.response && err.error.response.message) ? err.error.response.message : 'Duplicado';
