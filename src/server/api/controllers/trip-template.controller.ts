@@ -63,7 +63,7 @@ export class TripTemplateController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-      const resp = await TripTemplateService.search(request.query, request.query.lang);
+      const resp = await TripTemplateService.search(request.query, request.query.lang, request.headers);
       response.json(resp.data);
     } catch (err) {
       next(err);

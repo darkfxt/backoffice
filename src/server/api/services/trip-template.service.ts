@@ -61,16 +61,11 @@ export class TripTemplateService {
     return [];
   }
 
-  public static async search(params, lang: string = 'en'): Promise<any> {
-    const query: string[] = [];
-    Object.entries(params).forEach(
-      ([key, value]) => {
-        if (key !== 'lang')
-          query.push(`${key}=${value}`);
-      }
-    );
+  public static async search(params, lang: string = 'en', headers): Promise<any> {
+    const query: any = Object.assign(params);
+    Reflect.deleteProperty(query, 'lang');
 
-    return axios.get(`${config.routes.url}/trip-templates/autocomplete?${query.join('&')}`);
+    return axios.get(`${config.routes.url}/trip-templates/autocomplete`, {params: query, headers: {authorization: headers.authorization}});
 
   }
 
