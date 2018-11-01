@@ -37,6 +37,7 @@ export class RouteMapComponent implements OnInit {
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsDisplay.setMap(this.map);
+    this.directionsDisplay.setOptions({suppressMarkers: true});
 
     this.map.addListener('click', (e) => {
       const place = new Place({

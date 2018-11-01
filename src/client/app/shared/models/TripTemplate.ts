@@ -104,7 +104,7 @@ export class TripTemplate {
 
   _id: string;
   name: string;
-  days: DayOfTrip[];
+  public days: DayOfTrip[];
   description: string;
   created_by: string;
   company_id: number;

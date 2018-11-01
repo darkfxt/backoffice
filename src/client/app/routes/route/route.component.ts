@@ -68,6 +68,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
+          this.router.navigate(['/routes']);
         }
       });
 

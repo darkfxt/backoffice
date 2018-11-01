@@ -50,8 +50,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   tripSubscription: Subscription;
   events: Event[];
   days$: Observable<DayOfTrip[]>;
+  daysSubscription: Subscription;
   _deleteSubscription: Subscription;
-
   _selectedRouteTemplateId: string;
 
   constructor(
@@ -110,26 +110,6 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
 
-    if (this.tripTemplate._id !== 'new') {
-      this.store.select(getCurrentTripTemplate).subscribe((data: any) => {
-        if (data) {
-          if (data._id &&
-            data._id !== 'new' && this._selectedRouteTemplateId === 'new') {
-            this.router.navigate([`/trip-templates/${data._id}`]);
-          }
-          /*if (data.selectedTripTemplateEvents) {
-            this.events = data.selectedTripTemplateEvents;
-            this.form = this.fb.group({
-              itinerary: this.fb.array(data.selectedTripTemplateEvents),
-              name: [this.form.value.name, Validators.required],
-              description: this.fb.control(this.form.value.description)
-            });
-          }*/
-        }
-      });
-    }
-
-
   }
 
   goBack(): void {
@@ -143,6 +123,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
+
+    if (this.daysSubscription)
+      this.daysSubscription.unsubscribe();
+
   }
 
   saveTripTemplate() {
@@ -163,7 +147,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   attachItineraryToTrip(tripTemplate: TripTemplate) {
-    return this.days$.subscribe(days => tripTemplate.days = days);
+    this.daysSubscription = this.days$.subscribe(days => {
+      if (days)
+        tripTemplate.days = days;
+    });
   }
 
   deleteTripTemplate() {
