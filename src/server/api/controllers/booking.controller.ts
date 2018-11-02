@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
-import {AccountsService} from '../services/accounts.service';
 
 export class BookingController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
@@ -46,4 +45,15 @@ export class BookingController {
       next(err);
     }
   }
+
+  public static async update(request: Request, response: Response, next: NextFunction) {
+    try {
+      const resp = await BookingService.update(request.params.id, request.headers);
+
+      response.json(httpStatus.OK);
+    } catch (err) {
+      next(err);
+    }
+  }
+
 }

@@ -15,6 +15,7 @@ import RolesRouter from './routers/roles.route';
 import * as cookieParser from 'cookie-parser';
 import SignRouter from './routers/sign.route';
 import { authorization, authentication } from 'gl-auth';
+import BookingRouter from './routers/booking.route';
 
 class Api {
 
@@ -33,6 +34,7 @@ class Api {
         this.api.use('/places', [authentication, authorization('PLACE')], PlaceRouter);
         this.api.use('/routes', [authentication, authorization('ROUTE')], RoutesRouter);
         this.api.use('/trip-templates', [authentication, authorization('TEMPLATE')], TripTemplateRouter);
+        this.api.use('/bookings', [authentication, authorization('BOOKING')], BookingRouter);
         this.api.use('/users', SignRouter);
         this.api.use('/users', [authentication, authorization('USER')], UserRouter);
         this.api.use('/accounts', [authentication, authorization('ACCOUNT')], AccountsRouter);

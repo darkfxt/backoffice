@@ -6,7 +6,10 @@ const BookingRouter: Router = Router();
 BookingRouter.route('/:id')
   .get(BookingController.getDetail)
   .delete(BookingController.delete)
-  .post(BookingController.create);
+  .patch(BookingController.update);
 
 BookingRouter.route('/')
-  .get(BookingController.getAll);
+  .get(BookingController.getAll)
+  .post(BookingController.create);
+
+  export default BookingRouter;
