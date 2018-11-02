@@ -12,15 +12,15 @@ export class BookingService {
   }
 
   public static async delete (id, headers): Promise<any> {
-    return axios.delete(`${config.core.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    return axios.delete(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async getDetail (id, headers): Promise<any> {
-    return axios.get(`${config.core.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    return axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async update (id, headers): Promise<any> {
-    return axios.patch(`${config.core.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    return axios.patch(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
   }
 
 }
