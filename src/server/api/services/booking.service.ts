@@ -19,8 +19,8 @@ export class BookingService {
     return axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
   }
 
-  public static async update (id, headers): Promise<any> {
-    return axios.patch(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+  public static async update (id, body, headers): Promise<any> {
+    return axios.patch(`${config.routes.url}/bookings/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
 }

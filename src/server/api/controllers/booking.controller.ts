@@ -27,7 +27,7 @@ export class BookingController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = JSON.parse(request.body.data);
+      const data = JSON.parse(request.body);
       const booking = await BookingService.create(data, request.headers);
 
       response.json(booking.data);
@@ -48,7 +48,7 @@ export class BookingController {
 
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
-      const resp = await BookingService.update(request.params.id, request.headers);
+      const resp = await BookingService.update(request.params.id, request.body, request.headers);
 
       response.json(httpStatus.OK);
     } catch (err) {
