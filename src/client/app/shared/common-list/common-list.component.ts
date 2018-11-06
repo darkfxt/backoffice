@@ -4,6 +4,8 @@ import { ListItemComponent } from './common-list-item/common-list-item.component
 import { PageEvent } from '@angular/material';
 import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
 import { PaginationOptionsInterface } from './common-list-item/pagination-options.interface';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store/shared/app.interfaces';
 
 @Component({
   selector: 'app-common-list',
@@ -11,7 +13,8 @@ import { PaginationOptionsInterface } from './common-list-item/pagination-option
   styleUrls: ['./common-list.component.scss']
 })
 export class CommonListComponent implements OnInit {
-  @Input() list: Observable<any>;
+  // @Input() list: Observable<any>;
+  @Input() list: any;
   @Input() component: ListItemComponent;
   @Input() totalElements: number;
   @Input() paginationMetadata: PaginationOptionsInterface;
@@ -26,29 +29,29 @@ export class CommonListComponent implements OnInit {
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  constructor() {
+  constructor(private store: Store<AppState>) {
 
   }
 
   ngOnInit() {
-    this.list.subscribe((storeData: any) => {
-      if (!storeData.loading) {
-        this.paginationMetadata = {
-          previousPageIndex: 0,
-          pageIndex: 0,
-          pageSize: 10,
-          length: (storeData.metadata && storeData.metadata.length)
-            ? storeData.metadata.length : 0
-        };
-      } else {
-        this.paginationMetadata = {
-          previousPageIndex: 0,
-          pageIndex: 0,
-          pageSize: 10,
-          length: 0
-        };
-      }
-    });
+    // this.list.subscribe((storeData: any) => {
+    //   if (!storeData.loading) {
+    //     this.paginationMetadata = {
+    //       previousPageIndex: 0,
+    //       pageIndex: 0,
+    //       pageSize: 10,
+    //       length: (storeData.metadata && storeData.metadata.length)
+    //         ? storeData.metadata.length : 0
+    //     };
+    //   } else {
+    //     this.paginationMetadata = {
+    //       previousPageIndex: 0,
+    //       pageIndex: 0,
+    //       pageSize: 10,
+    //       length: 0
+    //     };
+    //   }
+    // });
 
   }
 

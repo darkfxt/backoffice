@@ -1,45 +1,46 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { SegmentActions, SegmentActionTypes } from './route.actions';
 
-import {default as Segment } from '../../shared/models/Segment';
-import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { default as Segment } from '../../shared/models/Segment';
+import { PaginationOptionsInterface, PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
 
-export interface SegmentState {
-  loading: boolean;
-  segments: Segment[];
-  metadata: PaginationOptionsInterface;
-  segmentSelected?: Segment;
-  dialog?: DialogActions;
-}
-
-export const initialState: SegmentState = {
-  loading: false,
-  segments: null,
-  metadata: {
-    previousPageIndex: 0,
-    pageIndex: 1,
-    pageSize: 10,
-    length: 0
+export interface SegmentState extends EntityState<Segment> {
+    metadata: PaginationOptionsInterface;
+    segmentSelected?: Segment;
+    dialog?: DialogActions;
   }
-};
 
-export function segmentReducer(state = initialState, action: SegmentActions): SegmentState {
+export const adapter: EntityAdapter<Segment> = createEntityAdapter({
+  selectId: (segment: Segment) => segment._id
+});
+
+export const initialState = adapter.getInitialState({
+  metadata: new PaginationOptions()
+});
+
+export function segmentReducer(state: SegmentState = initialState, action: SegmentActions): SegmentState {
   switch (action.type) {
     case SegmentActionTypes.GET_SEGMENTS:
-      return {...state, loading: true};
+      return {...state};
     case SegmentActionTypes.SEGMENT_SELECTED:
-      return {...state, loading: false, segmentSelected: action.payload};
-    case SegmentActionTypes.FILTER_SEGMENTS:
-      return {...state, loading: true, metadata: action.payload};
+      return {...state, segmentSelected: action.payload};
     case SegmentActionTypes.SEGMENTS_RETRIEVED:
-      return {...state, loading: false, segments: action.payload, metadata: action.metadata};
+      return adapter.addAll(action.payload, state);
+    case SegmentActionTypes.SEGMENTS_METADATA_RETRIEVED:
+      return {...state, metadata: action.payload};
+    case SegmentActionTypes.FILTER_SEGMENTS:
+      return {...state, metadata: action.payload};
     case SegmentActionTypes.SAVE_SEGMENT:
-      return {...state, loading: true};
+      return {...state};
     case SegmentActionTypes.CLEAR_SEGMENT:
-      return {...state, loading: false, segmentSelected: null};
+      return {...state, segmentSelected: null};
     case SegmentActionTypes.TOGGLE_DIALOG:
-      return {...state, loading: false, dialog: action.payload};
+      return {...state, dialog: action.payload};
     default:
       return state;
   }
 }
+
+export const getSegmentsMetadata = (state: SegmentState) => state.metadata;
+export const getSegmentSelected = (state: SegmentState) => state.segmentSelected;

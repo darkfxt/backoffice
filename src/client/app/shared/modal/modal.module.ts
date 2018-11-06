@@ -3,6 +3,7 @@ import { CommonModule }   from '@angular/common';
 
 import { MatButtonModule, MatDialogModule } from '@angular/material';
 import { GuardModalComponent } from './guard-modal.component';
+import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -11,10 +12,12 @@ import { GuardModalComponent } from './guard-modal.component';
     MatDialogModule,
   ],
   exports: [
-    GuardModalComponent
+    GuardModalComponent,
+    ConfirmationModalComponent
   ],
   declarations: [
-    GuardModalComponent
+    GuardModalComponent,
+    ConfirmationModalComponent
   ],
   providers: [
   ],

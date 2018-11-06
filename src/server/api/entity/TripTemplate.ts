@@ -8,40 +8,49 @@ export enum event_type {
 export class Event {
 
   constructor( public _id: string, public name: string,
-               public ordinal: number, public time: Date, public eventType: event_type,
-               public description?: string, public reference_id?: string, public index?: number,
+               public ordinal: number, public time: Date, public event_type: event_type, // tslint:disable-line
+               public description?: string, public reference_id?: string, public referencedObject?: any, public index?: number,
                public geo?: any
                ) {
     this._id = _id;
     this.name = name;
     this.ordinal = ordinal;
     this.time = time;
-    this.eventType = eventType;
+    this.event_type = event_type;
     if (description) this.description = description;
     if (reference_id) this.reference_id = reference_id;
     if (index) this.index = index;
     if (geo) this.geo = geo;
+    if (referencedObject) this.referencedObject = referencedObject;
 
   }
 
   created_by: string;
 }
 
+export class DayOfTrip {
+  constructor(public events: Event[]) {
+    this.events = events;
+  }
+}
+
 export class TripTemplate {
 
-  constructor(
-    public _id: string,
-    public name: string,
-    public events: Event[],
-    public company_id: number,
-    public created_by: string
-  ) {}
+  created_by: string;
+  constructor(public _id: string, public name?: string, public days?: DayOfTrip[]) {
+    this._id = _id;
+    this.name = name;
+    this.days = days;
+  }
 }
 
 export class TripTemplateEmpty {
   created_by: string;
   name: string;
-  events: Event[] = [];
+  days: DayOfTrip[];
   constructor() {
+    this.days = [new DayOfTrip([EventEmpty])];
   }
 }
+
+export const EventEmpty: Event = new Event(null, null, null, null, null);

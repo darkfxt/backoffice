@@ -1,9 +1,17 @@
 
 <form [formGroup]="placeForm" #formDir="ngForm" novalidate autocomplete="none|false|no|off">
-  <app-detail-header [isDialog]="amIDialog"
+  <app-detail-header [isDialog]="popup"
                      [title]="'Actualizar lugar' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
+    <div class="more-options">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" overlapTrigger="false">
+        <button mat-menu-item (click)="deletePlace()">Eliminar</button>
+      </mat-menu>
+    </div>
     <div class="button-container save-button">
       <button (click)="onSubmit()">
         <mat-icon aria-label="New">save</mat-icon>
@@ -41,5 +49,4 @@
     </div>
   </div>
 </form>
-<app-loading *ngIf="bussy"></app-loading>
 

@@ -1,0 +1,39 @@
+@import "../../../../assets/variables";
+.icon-ctn{
+  border-radius: 40px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0,0,0,0.54);
+
+  &.draft{
+    background: #ffe000;
+  }
+}
+
+.status-header{
+  display: flex;
+  color: $gray-title;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1{
+    margin: 0 0 0 16px;
+  }
+}
+
+p{
+  color: $gray-body;
+}
+
+.box-container{
+  background: white;
+  border: 1px solid #DEDEDE;
+  padding: 34px 16px 16px;
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 300px;
+}

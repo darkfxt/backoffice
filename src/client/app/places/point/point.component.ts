@@ -5,14 +5,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Place from '../../../../server/api/entity/Place';
 import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
-import { AppState, pointSelector } from '../../store';
-import { EventSelected } from '../../store/trip-template/trip-template.actions';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ClearPoint, SavePoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getDialogStatus, getPointSelected, getPointsEntity } from '../../store/place';
 import { PlaceStore } from '../../shared/services/place-store.services';
+import { EventSelected, TerminalSelected, RemoveEvent } from '../../store/trip-template/event/event.actions';
+import { getSelectedDriving } from '../../store/trip-template';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-point',
@@ -26,11 +30,15 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _subscription: Subscription;
   _resolverSubscription: Subscription;
   _getDetailSubscription: Subscription;
+  _deleteSubscription: Subscription;
   bussy: boolean;
-  amIDialog = false;
+  amIDialog = 'false';
+  popup = false;
   private autocompleteTimeout;
   private lastSearch;
   options: Observable<any[]>;
+  dialogStatus: string;
+  drivingStatus: string;
 
   constructor(
     private fb: FormBuilder,
@@ -38,9 +46,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
-    matDialog: MatDialog,
+    private matDialog: MatDialog,
     modalService: ModalService,
-    public snackBar: MatSnackBar,
     private placeStore: PlaceStore
   ) {
     super(matDialog, modalService);
@@ -48,18 +55,32 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   ngOnInit() {
     let isUpdate = false;
-    this._subscription = this.store.select(pointSelector).subscribe((storePoint: any) => {
+    this.store.pipe(
+      select(getDialogStatus)
+    ).subscribe(dialogStatus => {
+      this.dialogStatus = dialogStatus;
+      if (dialogStatus === 'true') this.popup = true;
+    });
 
-      if (storePoint && storePoint.pointSelected && storePoint.pointSelected._id
-        && storePoint.pointSelected._id !== 'new' && !this.place._id && storePoint.dialog !== DialogActions.TRUE)
-        this.router.navigate([`/places/${storePoint.pointSelected._id}`]);
+    this.store.pipe(
+      select(getSelectedDriving)
+    ).subscribe(driving => {
+      this.drivingStatus = driving;
+    });
 
-      if (storePoint && storePoint.dialog === DialogActions.TRUE) {
-        this.amIDialog = true;
-        if (storePoint.pointSelected)
-          this.store.dispatch(new EventSelected(storePoint.pointSelected));
+    this._subscription = this.store.select(getPointSelected)
+      .subscribe( (selectedPoint: any) => {
+      if (selectedPoint && selectedPoint._id !== 'new' && selectedPoint._id !== undefined) {
+          if (this.dialogStatus === 'true') {
+            if (this.drivingStatus) {
+              this.store.dispatch(new TerminalSelected({terminal: selectedPoint}));
+            } else {
+              this.store.dispatch(new EventSelected({_id: selectedPoint._id, type: 'POINT'}));
+            }
+            setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
+            return;
+          }
       }
-      this.bussy = (storePoint && storePoint.loading) ? storePoint.loading : false;
     });
 
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
@@ -74,7 +95,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     this.placeForm = this.fb.group({
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
-      description: [this.place.description, Validators.required],
+      description: [this.place.description],
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
@@ -108,6 +129,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
     if (this._getDetailSubscription)
       this._getDetailSubscription.unsubscribe();
+
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   onOptionSelected(e) {
@@ -139,17 +163,6 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       this.bussy = true;
       const formData = this.prepareToSave(this.placeForm.value);
       this.store.dispatch(new SavePoint({id: this.place._id, body: formData}));
-      this.snackBar.open('Place saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
-      // this._subscription = this.placeService.addPlace(formData).subscribe((resp) => {
-      //   this.placeForm.reset();
-      //   this.router.navigate(['/places']);
-      // }, err => {
-//
-      // });
     } else {
       Object.keys(this.placeForm.controls).forEach(field => {
         const control = this.placeForm.get(field);
@@ -171,10 +184,37 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.amIDialog)
+    if (this.popup)
       this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     else
       this.router.navigate(['/places']);
+  }
+
+  deletePlace() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.place.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.matDialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.placeService.deleteById(this.place._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.place.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/places']);
+        });
+    });
   }
 
 }

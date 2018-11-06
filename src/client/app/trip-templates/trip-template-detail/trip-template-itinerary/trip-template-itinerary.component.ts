@@ -10,23 +10,17 @@ import {
   animate,
   transition, keyframes
 } from '@angular/animations';
-import { Event, TripTemplate, eventType } from '../../../shared/models/TripTemplate';
-import { PaginationOptionsInterface } from '../../../shared/common-list/common-list-item/pagination-options.interface';
+import { Event, TripTemplate, TypeOfEvent, DayOfTrip } from '../../../shared/models/TripTemplate';
+import {
+  PaginationOptions,
+  PaginationOptionsInterface
+} from '../../../shared/common-list/common-list-item/pagination-options.interface';
 import { Observable, of, zip, combineLatest, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../../shared/common-list/common-list-item/common-list-item.component';
 import { EventSummarizedCardComponent } from './event-summarized-card/event-summarized-card.component';
+import { select, Store } from '@ngrx/store';
 import {
-  AppState,
-  eventsFromTemplateSelector,
-  pointSelector,
-  segmentSelector,
-  tripTemplateLoadingSelector,
-  tripTemplateSelector
-} from '../../../store';
-import { Store } from '@ngrx/store';
-import {
-  AddEvent,
-  DayIndexTypeForEventSetted,
+  GetTripTemplates,
   SetDescriptionForTemplate,
   SetNameForTemplate
 } from '../../../store/trip-template/trip-template.actions';
@@ -37,6 +31,20 @@ import { ClearSegment, ToggleSegmentDialog } from '../../../store/route/route.ac
 import { ToggleDialogPoint } from '../../../store/place/place.actions';
 import { DialogActions } from '../../../store/dialog-actions.enum';
 import { BottomSheetEventComponent } from './add-event/add-event.component';
+import { AppState } from '../../../store/shared/app.interfaces';
+import {
+  getAllDays,
+  getAllEvents,
+  getDaysForSelectedTrip,
+  getEventEntities, getSelectedDayId,
+  getTripTemplateSelectedId,
+  getTripTemplatesEntities
+} from '../../../store/trip-template';
+import { getSegmentDialogStatus, getSegmentsEntityState } from '../../../store/route';
+import { getDialogStatus, getPointsEntity } from '../../../store/place';
+import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
+import { AddDay, DaySelected, RemoveDay } from '../../../store/trip-template/day/day.actions';
+import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 
 
 @Component({
@@ -51,16 +59,20 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   showOverlay: boolean;
   showEmptySlot: boolean;
   loading = false;
-  selectedTemplateEvents$: Observable<any>;
-  itineraryEvents: Array<any> = [];
+  tripTemplateEntities$: Observable<any>;
+  itineraryDays: Array<any> = [];
   drawingComponent: ListItemComponent;
-  dayOfEvent: number;
-  typeForEvent: string;
-  ordinalForEvent: string;
+  typeForEvent: TypeOfEvent;
   headerCollapsed: boolean;
   dialogReference: any;
   dialogReferenceSub: any;
   _subscription: Subscription;
+  subs: Array<Subscription> = [];
+  dialogStatus$: Observable<any>;
+  segmentStatus$: Observable<any>;
+  selectedDay$: Observable<string>;
+  selectedTripTemplate$: Observable<string>;
+  editedDayId;
 
   @ViewChild('dayList') dayList: ElementRef;
 
@@ -81,102 +93,72 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     private render: Renderer2
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
-    this.selectedTemplateEvents$ = store.select(tripTemplateSelector);
-
+    this.tripTemplateEntities$ = this.store.pipe(select(getTripTemplatesEntities));
   }
 
 
   ngOnInit() {
+    this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
+    this.segmentStatus$ = this.store.pipe(select(getSegmentDialogStatus));
+    this.selectedDay$ = this.store.pipe(select(getSelectedDayId));
+    this.selectedTripTemplate$ = this.store.pipe(select(getTripTemplateSelectedId));
 
-    this.store.select(segmentSelector).subscribe( (data: any) => {
-      if (data && data.dialog === DialogActions.CLOSE)
+    this.dialogStatus$.subscribe((data: any) => {
+      if (data && data === 'close') {
+        if (this.dialogReference)
+          this.dialogReference.close();
         if (this.dialogReferenceSub)
           this.dialogReferenceSub.close();
-    });
-    this.store.select(pointSelector).subscribe( (data: any) => {
-      if (data && data.dialog === DialogActions.CLOSE)
-        if (this.dialogReferenceSub)
-          this.dialogReferenceSub.close();
-    });
-
-    this._subscription = this.store.select(tripTemplateSelector).subscribe((data: any) => {
-      if (data.selectedTripTemplateEvents) {
-        /// TODO:: Me parece que la ailanié, ver si se puede mejorar.
-        const arrangedEvents = [];
-        data.selectedTripTemplateEvents.forEach((event, index, array) =>
-          arrangedEvents.push(Object.assign({}, event, {index})));
-        const arreglo = [];
-        _.forEach(_.groupBy(arrangedEvents, 'ordinal'),
-          (value, key) => {
-            arreglo.push({day: key, events: value});
-          });
-        this.itineraryEvents.splice(0, this.itineraryEvents.length);
-        this.itineraryEvents = arreglo;
-        // this.itinerary.patchValue(data.selectedTripTemplateEvents);
+        this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
       }
-      if (data.ordinalForEvent) this.ordinalForEvent = data.ordinalForEvent;
-      if (data.dayForEvent) this.dayOfEvent = data.dayForEvent;
-      if (data.typeForEvent) this.typeForEvent = data.typeForEvent;
-      if (data.selectedEvent) this.addEvent(data.selectedEvent);
     });
+
+    this.segmentStatus$.subscribe((data: any) => {
+      if (data && data === 'close') {
+        if (this.dialogReference)
+          this.dialogReference.close();
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
+        this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
+      }
+    });
+
+    setTimeout(this.loadItinerary());
+  }
+
+  private loadItinerary() {
+     this.subs.push(this.tripTemplateEntities$.subscribe((tripTemplateEntities: any) => {
+      this.subs.push(this.selectedTripTemplate$.subscribe(selectedTemplate => {
+        if (Object.keys(tripTemplateEntities).includes(selectedTemplate)) {
+          this.subs.push(this.store.select(getDaysForSelectedTrip).subscribe((data: any) => {
+            if (data) {
+              this.itineraryDays = data;
+            }
+          }));
+        }
+      }));
+    }));
   }
 
   ngOnDestroy() {
     if (this._subscription) {
       this._subscription.unsubscribe();
     }
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  openEmptySlot(): void {
-    this.showOverlay = true;
-    this.showEmptySlot = true;
+  openEmptySlot(day): void {
+    this.store.dispatch(new DaySelected(day));
+    this.editedDayId = day;
   }
 
   hideEmptySlot(): void {
-    this.showOverlay = false;
-    this.showEmptySlot = false;
-  }
-
-  addEvent(eventToAdd) {
-    if (this.dialogReference) {
-      this.dialogReference.close();
-    }
-    if (this.dialogReferenceSub) {
-      this.dialogReferenceSub.close();
-    }
-    const newEvent: Event = this.convertToEvent(eventToAdd, this.typeForEvent, this.dayOfEvent);
-    this.store.dispatch(new AddEvent(newEvent));
-    // setTimeout(this.store.dispatch(new ClearSegment()), 500);
-  }
-
-  convertToEvent(toConvert: any, event_type: string, order: number): Event {
-    const converted: Event = new Event();
-    converted.name = toConvert.name;
-    converted.description = toConvert.description;
-    converted.reference_id = toConvert._id;
-    converted.event_type = this.typeForEvent;
-    converted.ordinal = order || 1;
-    switch (this.typeForEvent) {
-      case eventType.ACTIVITY:
-      case eventType.HOTEL:
-        converted.geo = [toConvert.geo.point];
-        break;
-      case eventType.DRIVING:
-        const geo = [];
-        // geo.push(toConvert.origin.geo.point);
-        // toConvert['middle_points'].forEach(point => geo.push(point.geo.point));
-        // geo.push(toConvert.destination.geo.point);
-        geo.push({origin: toConvert.origin, middle_points: toConvert['middle_points'], destination: toConvert.destination});
-        converted.geo = geo;
-        break;
-      default:
-        converted.geo = [];
-    }
-    return converted;
+    this.editedDayId = undefined;
   }
 
   addDay() {
-    this.itineraryEvents.push({day: ((this.itineraryEvents.length || 0) + 1).toString(), events: []});
+    const diaNuevo = new DayOfTrip( []);
+    this.store.dispatch(new AddDay(diaNuevo));
     setTimeout(() => {
       this.dayList.nativeElement.scrollTop = this.dayList.nativeElement.scrollHeight;
     }, 100);
@@ -198,35 +180,53 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       panelClass: 'eventDialogPanel',
       data: {
         productType: event.productType,
-        dialog: true
+        dialog: 'select'
         },
       disableClose: true,
       closeOnNavigation: true
     };
-     // this.store.dispatch(new SetNameForTemplate(this.itinerary.value.username) && new SetDescriptionForTemplate (this.itinerary.value.description));
-     // this.store.dispatch(new SetDescriptionForTemplate (this.itinerary.value.description));
      this.store.dispatch(new DayIndexTypeForEventSetted(event.day, event.ordinal, event.productType ));
      this.dialogReference = this.dialog.open(EventDialogComponent, dialogConfig);
 
     this.dialogReference.afterClosed().subscribe(result => {
-      this.showEmptySlot = false;
-      this.showOverlay = false;
+      // this.hideEmptySlot();
       if (result === 'OPEN_NEW_ROUTES') {
         this.store.dispatch(new ToggleSegmentDialog(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(RouteComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleSegmentDialog(DialogActions.FALSE));
+          this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
         });
        }
       if (result === 'OPEN_NEW_PLACES') {
         this.store.dispatch(new ToggleDialogPoint(DialogActions.TRUE));
         this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
         this.dialogReferenceSub.afterClosed().subscribe(res => {
-          this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
+          this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
         });
       }
        this.state = 'out';
      });
+  }
+
+  deleteDay(dayId) {
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: 'Deseas eliminar este día?'
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new RemoveDay({_id: dayId}));
+    });
   }
 
 

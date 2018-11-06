@@ -2,15 +2,17 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { PaginationOptionsInterface } from '../shared/common-list/common-list-item/pagination-options.interface';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { Observable, Subscription } from 'rxjs';
-import { AppState, segmentLoadingSelector, segmentMetadataSelector, segmentSelector } from '../store';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { RouteSummarizedCardComponent } from './route-summarized-card/route-summarized-card.component';
 import { RoutesService } from '../shared/services/routes.service';
 import { GetSegments } from '../store/route/route.actions';
-import Segment from '../shared/models/Segment';
+import {default as Segment, SegmentWithMetadata} from '../shared/models/Segment';
 import Route from '../../../server/api/entity/Route';
 import { PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppState } from '../store/shared/app.interfaces';
+import { getAllSegments, getSegmentsMetadata } from '../store/route';
+import { selectLoaderEntity } from '../store/shared/reducers';
 
 @Component({
   selector: 'app-tg-routes',
@@ -19,11 +21,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class RoutesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
-  @Input() isDialog ? = false;
+  @Input() isDialog ? = 'false';
+  popup = false;
   @Input() dialogRef: any;
+  @Input() query = {};
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
   loading = false;
+  loading$: Observable<boolean>;
+  routes: any;
   routes$: Observable<Segment[]>;
   drawingComponent: ListItemComponent;
   metadata$: Observable<PaginationOptionsInterface>;
@@ -34,26 +40,22 @@ export class RoutesComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
-    store.select(segmentLoadingSelector).subscribe((isLoading) => {
-      this.loading = isLoading;
-    });
-    this.routes$ = store.select(segmentSelector);
-    this.metadata$ = store.select(segmentMetadataSelector);
+    this.routes$ = this.store.pipe(select(getAllSegments));
+    this.metadata$ = this.store.pipe(select(getSegmentsMetadata));
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent( RouteSummarizedCardComponent );
   }
 
   ngOnInit() {
+    this.popup = this.isDialog !== 'false';
     this.paginationOptions = {
       previousPageIndex: 0,
       pageIndex: 0,
       pageSize: 10,
       length: 0
     };
+    this.paginationOptions = {...this.paginationOptions, ...this.query};
     this.store.dispatch(new GetSegments(this.paginationOptions));
-    this._subscription = this.store.select(segmentSelector).subscribe((data: any) => {
-      this.paginationOptions = data.metadata;
-      this.loading = data.loading;
-    });
   }
 
   ngOnDestroy() {
@@ -73,7 +75,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   }
 
   onButtonClick() {
-    if (this.isDialog) {
+    if (this.popup) {
       if (this.dialogRef) {
         this.dialogRef.close('OPEN_NEW_ROUTES');
       }
@@ -83,7 +85,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.isDialog) {
+    if (this.popup) {
       if (this.dialogRef)
         this.dialogRef.close('CLOSE');
       return;

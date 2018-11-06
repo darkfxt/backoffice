@@ -3,8 +3,8 @@ import { ListItemComponent } from '../../shared/common-list/common-list-item/com
 import { User } from '../../shared/models/User';
 import { UserSummarizedCardComponent } from './user-summarized-card/user-summarized-card.component';
 import { Observable, Subscription } from 'rxjs';
-import { AppState, segmentSelector, userSelector } from '../../store';
-import { Store } from '@ngrx/store';
+// import { AppState, getSegmentsEntityState, userSelector } from '../../store';
+import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import {
@@ -12,6 +12,9 @@ import {
   PaginationOptionsInterface
 } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { GetUsers } from '../../store/user/user.actions';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getAllUsers, getUserEntities } from '../../store/user';
+import { selectLoaderEntity } from '../../store/shared/reducers';
 
 @Component({
   selector: 'app-users-list',
@@ -25,6 +28,7 @@ export class UsersListComponent implements OnInit {
   @Output() selectedUser: EventEmitter<User> = new EventEmitter<User>();
 
   users$: Observable<User[]>;
+  metadata = new PaginationOptions();
   loading = false;
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface = new PaginationOptions();
@@ -33,18 +37,14 @@ export class UsersListComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
+    this.users$ = this.store.pipe(select(getAllUsers));
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent( UserSummarizedCardComponent );
-    this.users$ = this.store.select(userSelector);
+    // this.users$ = this.store.select(userSelector);
   }
 
   ngOnInit() {
     this.store.dispatch(new GetUsers());
-    this._subscription = this.store.select(userSelector).subscribe((data: any) => {
-      this.paginationOptions = data.metadata;
-      this.loading = data.loading;
-      console.log('**********************');
-      console.log(data);
-    });
   }
 
   onButtonClick() {

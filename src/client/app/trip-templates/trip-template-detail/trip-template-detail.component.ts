@@ -1,19 +1,30 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState, eventsFromTemplateSelector, tripTemplateLoadingSelector, tripTemplateSelector } from '../../store';
+import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
 import {
-  GetEventsForTripTemplate,
   SaveTripTemplate,
   TripTemplateEditionLeft,
-  TripTemplateSelected, SetDescriptionForTemplate,
-  SetNameForTemplate
+  TripTemplateSelected,
+  GetTripTemplates, CreateTripTemplate, ImportTripTemplate
 } from '../../store/trip-template/trip-template.actions';
-import { TripTemplate, Event } from '../../shared/models/TripTemplate';
-import { SaveSegment } from '../../store/route/route.actions';
-import { MatSnackBar } from '@angular/material';
+import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
+import { AppState } from '../../store/shared/app.interfaces';
+import {
+  getAllDays,
+  getAllTripTemplates,
+  getCurrentTripTemplate, getDaysForSelectedTrip,
+  getTripTemplateSelectedId,
+  getTripTemplatesEntities, getTripTemplatesIds
+} from '../../store/trip-template';
+import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { selectLoaderEntity } from '../../store/shared/reducers';
+import { first } from 'rxjs/internal/operators';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -22,10 +33,24 @@ import { MatSnackBar } from '@angular/material';
 })
 export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
+  @Input() fromBooking: boolean;
+  @Input() set templateToImport(templateToImport: string) {
+    if(templateToImport !== null) {
+      console.log('me estás metiendo el' + templateToImport);
+      this._templateToImport = templateToImport;
+      this.importTemplate(templateToImport);
+    }
+  }
+  _templateToImport: string;
   form: FormGroup;
   loading = false;
+  loadItinerary = false;
   tripTemplate = new TripTemplate();
+  tripTemplate$: Observable<any>;
+  tripSubscription: Subscription;
   events: Event[];
+  days$: Observable<DayOfTrip[]>;
+  _deleteSubscription: Subscription;
 
   _selectedRouteTemplateId: string;
 
@@ -33,13 +58,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private router: Router,
-    private routesService: TripTemplateService,
+    private tripTemplateService: TripTemplateService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private dialog: MatDialog
     ) {
-    store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
-      this.loading = isLoading;
-    });
     this.form = this.fb.group({
       itinerary: this.fb.array([
         this.fb.control('')
@@ -47,43 +69,65 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       description: this.fb.control('')
     });
-    // this.tripTemplate$ = store.select(tripTemplateSelector);
+
+    this.tripTemplate$ = this.store.pipe(select(getAllTripTemplates));
+    this.store.dispatch(new GetTripTemplates(new PaginationOptions()));
   }
 
   ngOnInit() {
-
+    this.store.select(selectLoaderEntity).subscribe(loader => () => this.loading = loader.show );
     this.route.data.subscribe(( data: any ) => {
-      if (data) {
-        this.tripTemplate = data.selectedTripTemplate;
+      if (data.tripTemplate && data.tripTemplate._id) {
+        this.tripTemplate = data.tripTemplate;
         this.form = this.fb.group({
           name: [data.tripTemplate.name, Validators.required],
           description: this.fb.control(data.tripTemplate.description)
         });
-        this.store.dispatch(new TripTemplateSelected(data.tripTemplate));
-        this.store.dispatch(new GetEventsForTripTemplate(data.tripTemplate._id));
+        this.tripSubscription =  this.tripTemplate$.subscribe((templates: any) => {
+          if (templates.length && templates.length > 0) {
+            this.store.dispatch(new TripTemplateSelected(data.tripTemplate._id));
+            this.days$ = this.store.pipe(select(getDaysForSelectedTrip));
+            this.loadItinerary = true;
+          }
+        });
       } else {
         this.tripTemplate = new TripTemplate();
-        this.store.dispatch(new TripTemplateSelected(this.tripTemplate));
-        this.store.dispatch(new GetEventsForTripTemplate(undefined));
+        this.tripTemplate._id = 'new';
+        this.tripTemplate.days = [new DayOfTrip([])];
+        const templateIDs: Observable<string[]> = this.store.pipe(select(getTripTemplatesIds));
+        this.tripSubscription = templateIDs
+          .subscribe((templates: any) => {
+          if (!this.loading && templates.indexOf('new') === -1) {
+            this.store.dispatch(new CreateTripTemplate({tripTemplate: this.tripTemplate}));
+            this.store.dispatch(new TripTemplateSelected('new'));
+            this.days$ = this.store.pipe(select(getDaysForSelectedTrip));
+            this.loadItinerary = true;
+          }
+        });
       }
+
     });
 
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
 
-    this.store.select(tripTemplateSelector).subscribe( (data: any) => {
-      if (data.selectedTripTemplate && data.selectedTripTemplate._id &&
-        data.selectedTripTemplate._id !== 'new' && this._selectedRouteTemplateId === 'new') {
-        this.router.navigate([`/trip-templates/${data.selectedTripTemplate._id}`]);
-      }
-      if (data.selectedTripTemplateEvents) {
-        this.events = data.selectedTripTemplateEvents;
-        this.form = this.fb.group({
-          itinerary: this.fb.array(data.selectedTripTemplateEvents),
-          name: [this.form.value.name, Validators.required],
-          description: this.fb.control(this.form.value.description)
-        });
-      }
-    });
+    if (this.tripTemplate._id !== 'new') {
+      this.store.select(getCurrentTripTemplate).subscribe((data: any) => {
+        if (data) {
+          if (data._id &&
+            data._id !== 'new' && this._selectedRouteTemplateId === 'new') {
+            this.router.navigate([`/trip-templates/${data._id}`]);
+          }
+          /*if (data.selectedTripTemplateEvents) {
+            this.events = data.selectedTripTemplateEvents;
+            this.form = this.fb.group({
+              itinerary: this.fb.array(data.selectedTripTemplateEvents),
+              name: [this.form.value.name, Validators.required],
+              description: this.fb.control(this.form.value.description)
+            });
+          }*/
+        }
+      });
+    }
 
 
   }
@@ -94,24 +138,22 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.store.dispatch(new TripTemplateEditionLeft(null));
+    if (this.tripSubscription)
+      this.tripSubscription.unsubscribe();
+
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
   }
 
   saveTripTemplate() {
     if (this.form.valid) {
-      this.loading = true;
       const tripTemplateToSave: TripTemplate = new TripTemplate();
       tripTemplateToSave.name = this.form.value.name;
       tripTemplateToSave.description = this.form.value.description;
-      tripTemplateToSave.events = this.form.value.itinerary;
+      this.attachItineraryToTrip(tripTemplateToSave);
       if (this._selectedRouteTemplateId !== 'new')
         tripTemplateToSave._id = this._selectedRouteTemplateId;
       this.store.dispatch(new SaveTripTemplate(tripTemplateToSave));
-
-      this.snackBar.open('Trip saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
@@ -120,12 +162,39 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  prepareToSave() {
-    const formData = new FormData();
-    const data = Object.assign({}, this.form.value);
-
-    this.form = this.fb.group({name: this.tripTemplate.name, description: this.tripTemplate.description});
+  attachItineraryToTrip(tripTemplate: TripTemplate) {
+    return this.days$.subscribe(days => tripTemplate.days = days);
   }
 
+  deleteTripTemplate() {
 
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.tripTemplate.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.tripTemplateService.deleteById(this.tripTemplate._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.tripTemplate.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/trip-templates']);
+        });
+    });
+  }
+
+  importTemplate(templateId) {
+    console.log('mirá hasta donde llegaste con este ' + templateId);
+    this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
+  }
 }

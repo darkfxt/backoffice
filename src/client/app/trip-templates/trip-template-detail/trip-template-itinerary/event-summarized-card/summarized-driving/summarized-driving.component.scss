@@ -1,0 +1,91 @@
+@import '../../../../../../assets/variables';
+
+
+
+.event-cluster{
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  padding: 0 16px 32px 10px;
+
+  .summary-ctn{
+    flex: auto;
+  }
+
+  .vertical-line{
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    border-left: 1px solid red;
+    left: 30px;
+  }
+
+  @media only screen and (max-device-width: 736px) {
+  }
+
+  .menu{
+    position: absolute;
+    right: 0;
+    top: -10px;
+    display: none;
+    color: $gray-body;
+
+    @media only screen and (max-device-width: 736px) {
+      display: block;
+    }
+  }
+
+  &:hover{
+    .menu{
+      display: block;
+    }
+  }
+
+  .icon-ctn{
+    width: 40px;
+    height: 40px;
+    border: 1px solid #999;
+    margin-right: 16px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    align-items: center;
+    border-radius: 40px;
+    background: #fff;
+    box-sizing: border-box;
+    position: relative;
+
+    mat-icon{
+    }
+
+  }
+
+  h5{
+    color: $gray-title;
+    margin-bottom: 0;
+    font-size: 16px;
+    padding-right: 8px;
+  }
+
+  p{
+    color: $gray-body;
+    transition: height 0.2s ease;
+  }
+
+  .location{
+    color: $gray-title;
+  }
+
+}
+
+.add-event-cluster{
+  color: $link-color;
+  cursor: pointer;
+
+  &:hover{
+    text-decoration: underline;
+  }
+}
+

@@ -1,20 +1,34 @@
   import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, map } from 'rxjs/internal/operators';
+import {switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter, delay} from 'rxjs/internal/operators';
 
 import {
   GetTripTemplates,
   TripTemplatesRetrieved,
-  GetEventsForTripTemplate,
-  EventsRetrieved,
-  TripTemplateActions, TripTemplateActionTypes, CreateTripTemplate, SaveTripTemplate, TripTemplateProcessedSuccesfully, TripTemplateSelected
+  TripTemplateActions,
+  TripTemplateActionTypes,
+  CreateTripTemplate,
+  SaveTripTemplate,
+  TripTemplateProcessedSuccesfully,
+  TripTemplateSelected,
+  TripTemplatesMetadataRetrieved, UpdateTripTemplate, ImportTripTemplate
 } from './trip-template.actions';
 import { TripTemplate, TripTemplateWithMetadata, Event } from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
+  import { of } from 'rxjs';
+  import { HttpError } from '../shared/actions/error.actions';
+  import { HttpErrorResponse } from '@angular/common/http';
+  import { SnackbarOpen } from '../shared/actions/snackbar.actions';
+  import {ClearEvents, EventsRetrieved} from './event/event.actions';
+  import { AppState } from '../shared/app.interfaces';
+  import { Store } from '@ngrx/store';
+  import { DaysRetrieved } from './day/day.actions';
 
 @Injectable()
 export class TripTemplateEffects {
-  constructor(private actions$: Actions, private TripTemplateServiceInstance: TripTemplateService) {
+  constructor(private actions$: Actions,
+              private TripTemplateServiceInstance: TripTemplateService,
+              private store: Store<AppState>) {
   }
 
   @Effect()
@@ -22,31 +36,82 @@ export class TripTemplateEffects {
     .ofType(TripTemplateActionTypes.GET_TRIP_TEMPLATES)
     .pipe(
       switchMap((query: GetTripTemplates) => this.TripTemplateServiceInstance.getAll(query.payload)),
-      map((tripTemplate: TripTemplateWithMetadata) => new TripTemplatesRetrieved(tripTemplate))
+      mergeMap((tripTemplate: TripTemplateWithMetadata) => [
+        new TripTemplatesRetrieved(tripTemplate.data),
+        new TripTemplatesMetadataRetrieved(tripTemplate.metadata)
+      ]),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
+
+  // @Effect()
+  // createTripTemplate$ = this.actions$
+  //   .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
+  //   .pipe(
+  //     switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
+  //     mergeMap((serverResponse: any) => [
+  //       new TripTemplatesRetrieved(serverResponse),
+  //       new SnackbarOpen({
+  //         message: 'Template creado',
+  //         action: 'Success'
+  //       })
+  //     ]),
+  //     catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+  //   );
+
+  @Effect()
+  setDaysForSelectedTrip = this.actions$
+    .ofType(TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED)
+    .pipe(
+      switchMap((tripTemplateId: TripTemplateSelected) => this.TripTemplateServiceInstance.getDetail(tripTemplateId.payload)),
+      map((response: any) => new DaysRetrieved(response.days)),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
   @Effect()
-  createTripTemplate$ = this.actions$
-    .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
+  importDaysFromAnotherTemplate = this.actions$
+    .ofType(TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE)
     .pipe(
-      switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
-      map((serverResponse: any) => new TripTemplatesRetrieved(serverResponse))
+      switchMap((tripTemplateId: ImportTripTemplate) => this.TripTemplateServiceInstance.getDetail(tripTemplateId.payload.tripTemplateId)),
+      withLatestFrom(this.store),
+      map((response: any) => {
+        const selectedTemplate = response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate];
+        let updatedDays = selectedTemplate.days ? selectedTemplate.days.slice(0) : [];
+        updatedDays = updatedDays.concat(response[0].days);
+        const updated: TripTemplate =
+          Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate],
+            {days: updatedDays});
+        return new UpdateTripTemplate({tripTemplate: updated});
+      }),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
   @Effect()
-  getEventsFromTemplate$ = this.actions$
-    .ofType(TripTemplateActionTypes.GET_EVENTS_FOR_T_TEMPLATE)
+  updateTripTemplateDay$ = this.actions$
+    .ofType(TripTemplateActionTypes.ADD_DAY_TO_SELECTED_TEMPLATE)
     .pipe(
-      switchMap((tripTemplate: GetEventsForTripTemplate) => this.TripTemplateServiceInstance.getEventsFromTripTemplate(tripTemplate.payload)),
-      map((serverResponse: Event[]) => new EventsRetrieved(serverResponse))
+      switchMap((action: any) => of(action.payload)),
+      withLatestFrom(this.store),
+      map((response: any) => new UpdateTripTemplate(
+        Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate], {days: response[0]}))),
+      delay(1000),
+      tap(() => this.store.dispatch(new ClearEvents())),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 
    @Effect()
    addEventToEvents$ = this.actions$
      .ofType(TripTemplateActionTypes.SAVE_TRIP_TEMPLATE)
      .pipe(
-       switchMap((tripTemplate: SaveTripTemplate) => this.TripTemplateServiceInstance.upsert(tripTemplate.payload) ),
-       map((serverResponse: any) => new TripTemplateSelected(Object.assign(new TripTemplate(), serverResponse.data[0])))
+       switchMap((tripTemplate: SaveTripTemplate) =>
+         this.TripTemplateServiceInstance.upsert(tripTemplate.payload) ),
+       mergeMap((serverResponse: any) => [
+         new TripTemplateSelected(serverResponse.data[0]._id),
+         new SnackbarOpen({
+           message: 'Template Guardado',
+           action: 'Success'
+         })
+       ]),
+       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
      );
 
 }

@@ -13,6 +13,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   searchString: string;
   options: any[];
   optionsSubsription: Subscription;
+  lastSearch = '';
   private autocompleteTimeout;
   @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>();
 
@@ -30,20 +31,19 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   }
 
   onOptionSelected(event) {
-    this.searchString = event.option.value.name;
-    this.filterChanged.emit(event.option.value.name);
+    this.filterChanged.emit(event.target.value);
   }
 
   onSearch(event) {
-    if (this.searchString.length < 3) {
+    if (event.code === 'Backspace' || event.target.value.length < 3 || event.target.value === this.lastSearch)
       return false;
-    }
 
-    const searchParams: PaginationOptionsInterface = new SearchOptions(0, 10, 0, null, event);
+    const searchParams: PaginationOptionsInterface = new SearchOptions(0, 10, 0, null, event.target.value);
 
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.optionsSubsription = this.placeService.getAll(searchParams, true).subscribe((resp) => {
+        this.lastSearch = event.target.value;
         this.options = this.createGroups(resp);
       });
     }, 300);
@@ -61,6 +61,10 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
 
   onEnter(event) {
     this.filterChanged.emit(event);
+  }
+
+  displayFn(value) {
+    return value.name;
   }
 
 }

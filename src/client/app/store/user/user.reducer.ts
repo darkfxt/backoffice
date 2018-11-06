@@ -1,50 +1,47 @@
 
-import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {LoggedUserInterface, User} from '../../shared/models/User';
+import {
+  PaginationOptions,
+  PaginationOptionsInterface
+} from '../../shared/common-list/common-list-item/pagination-options.interface';
+import { LoggedUserInterface, User } from '../../shared/models/User';
 import { UserActions, UserActionTypes } from './user.actions';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface UserState {
-  loading: boolean;
-  users: User[];
+export interface UserState extends EntityState<User> {
   metadata: PaginationOptionsInterface;
   userSelected?: User;
   loggedUser?: LoggedUserInterface;
 }
 
-export const initialState: UserState = {
-  loading: false,
-  users: null,
-  metadata: {
-    previousPageIndex: 0,
-    pageIndex: 1,
-    pageSize: 10,
-    length: 0
-  }
-};
+export const adapter: EntityAdapter<User> = createEntityAdapter();
+
+export const initialState: UserState = adapter.getInitialState({
+  metadata: new PaginationOptions()
+});
 
 export function userReducer(state = initialState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionTypes.GET_USERS:
-      return {...state, loading: true};
+      return {...state};
     case UserActionTypes.RETRIEVED_USERS:
-      return {...state, loading: false, users: action.payload};
+      return adapter.addAll(action.payload, state);
     case UserActionTypes.SAVE_USER:
-      return {...state, loading: true};
+      return {...state};
     case UserActionTypes.USER_SELECTED:
-      return {...state, loading: false, userSelected: action.payload};
+      return {...state, userSelected: action.payload};
     case UserActionTypes.SAVE_USER_SUCCESS:
-      return {...state, loading: false};
+      return {...state};
     case UserActionTypes.SIGNIN_USER:
-      return {...state, loading: true};
+      return {...state};
     case UserActionTypes.USER_SIGNED:
       if (action.payload && action.payload.token) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(action.payload));
       }
-      return {...state, loading: false, loggedUser: action.payload.user};
+      return {...state, loggedUser: action.payload.user};
     case UserActionTypes.SIGNOUT_USER:
       localStorage.removeItem('currentUser');
-      return {...state, loading: false, loggedUser: null};
+      return {...state, loggedUser: null};
     default:
       return state;
   }

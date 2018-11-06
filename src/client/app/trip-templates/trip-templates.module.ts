@@ -10,7 +10,7 @@ import { TripTemplateDetailComponent } from './trip-template-detail/trip-templat
 import { TripTemplatesRoutingModule } from './trip-templates-routing.module';
 import { TripTemplatesComponent } from './trip-templates.component';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../store';
+// import { reducers } from '../store';
 import { CommonListModule } from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
@@ -25,10 +25,14 @@ import { RouteComponent } from '../routes/route/route.component';
 import { PointComponent } from '../places/point/point.component';
 import { TripTemplateDetailHeaderComponent } from './trip-template-detail/trip-template-detail-header/trip-template-detail-header.component';
 import { CustomEventComponent } from './trip-template-detail/trip-template-itinerary/custom-event/custom-event.component';
+import { SummarizedDrivingComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/summarized-driving/summarized-driving.component';
+import { EventSummarizedCardDirective } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.directive';
+import { SummarizedDefaultComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/summarized-default/summarized-default.component';
+import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('tripTemplates', reducers),
+    // StoreModule.forFeature('tripTemplates', reducers),
     CommonModule,
     CommonListModule,
     FormsModule,
@@ -59,11 +63,16 @@ import { CustomEventComponent } from './trip-template-detail/trip-template-itine
     TripTemplateMapComponent,
     TripTemplateDetailHeaderComponent,
     CustomEventComponent,
-    BottomSheetEventComponent
+    BottomSheetEventComponent,
+    SummarizedDrivingComponent,
+    EventSummarizedCardDirective,
+    SummarizedDefaultComponent
   ],
   providers: [ ],
   entryComponents: [
-    EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent
+    EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent,
+    SummarizedDefaultComponent, SummarizedDrivingComponent, ConfirmationModalComponent
   ],
+  exports: [TripTemplateDetailComponent]
 })
 export class TripTemplatesModule { }

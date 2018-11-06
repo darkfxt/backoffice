@@ -10,6 +10,7 @@ export interface PaginationOptionsInterface {
   search?: string;
   sort?: sort;
   orderBy?: string;
+  type?: string;
 
 }
 

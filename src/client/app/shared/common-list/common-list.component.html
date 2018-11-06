@@ -1,7 +1,10 @@
 
 <div class="common-list">
-  <div class="row">
-    <div *ngIf="!hideFilter" class="col-xs-12 col-sm-4">
+  <div class="row" *ngIf="list.length === 0">
+    <ng-content select=".empty-state"></ng-content>
+  </div>
+  <div class="row" >
+    <div class="col-xs-12 col-sm-4">
       <app-filters>
         <div class="list-filters">
           <ng-content select=".common-list-filters"></ng-content>

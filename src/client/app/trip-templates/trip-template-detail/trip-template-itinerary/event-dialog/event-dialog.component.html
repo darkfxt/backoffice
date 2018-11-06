@@ -1,11 +1,27 @@
 <div *ngIf="data.productType == 'DRIVING'">
-  <app-tg-routes [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef"></app-tg-routes>
+  <app-tg-routes [selectMode]="true" [isDialog]="data.dialog" [dialogRef]="dialogRef"></app-tg-routes>
 </div>
 
 <div *ngIf="data.productType == 'ACTIVITY'">
-  <app-places [selectMode]="true" [isDialog]="true" [dialogRef]="dialogRef"></app-places>
+  <app-places [selectMode]="true" [query]="{type: 'ACTIVITY'}" [isDialog]="data.dialog" [drivingUpdate]="data.eventToUpdate" [dialogRef]="dialogRef"></app-places>
+</div>
+
+<div *ngIf="data.productType == 'POI'">
+  <app-places [selectMode]="true" [query]="{type: 'POI'}" [isDialog]="data.dialog" [drivingUpdate]="data.eventToUpdate" [dialogRef]="dialogRef"></app-places>
+</div>
+
+<div *ngIf="data.productType == 'HOTEL'">
+  <app-places [selectMode]="true" [query]="{type: 'HOTEL'}" [isDialog]="data.dialog" [drivingUpdate]="data.eventToUpdate" [dialogRef]="dialogRef"></app-places>
+</div>
+
+<div *ngIf="data.productType == 'REFERENCE'">
+  <app-places [selectMode]="true" [query]="{type: 'REFERENCE'}" [isDialog]="data.dialog" [drivingUpdate]="data.eventToUpdate" [dialogRef]="dialogRef"></app-places>
+</div>
+
+<div *ngIf="data.productType == 'TERMINAL'">
+  <app-places [selectMode]="true" [query]="{type: 'TERMINAL'}" [isDialog]="data.dialog" [drivingUpdate]="data.eventToUpdate" [dialogRef]="dialogRef"></app-places>
 </div>
 
 <div *ngIf="data.productType == 'OTHER'">
-  <app-custom-event [isDialog]="true" [dialogRef]="dialogRef"></app-custom-event>
+  <app-custom-event [isDialog]="data.dialog" [dialogRef]="dialogRef"></app-custom-event>
 </div>

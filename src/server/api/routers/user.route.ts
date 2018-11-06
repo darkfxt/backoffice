@@ -3,8 +3,12 @@ import { UserController } from '../controllers/user.controller';
 
 const UserRouter: Router = Router();
 
+UserRouter.route('/refresh')
+  .get(UserController.refreshToken);
+
 UserRouter.route('/:id')
   .get(UserController.getDetail)
+  .delete(UserController.delete)
   .patch(UserController.update);
 
 UserRouter.route('/')

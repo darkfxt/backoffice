@@ -15,8 +15,7 @@
   </mat-form-field>
 
   <mat-form-field color="accent">
-    <textarea matInput placeholder="{{'Descripción' | translate}}" required name="description" formControlName="description"></textarea>
-    <mat-error *ngIf="placeForm.get('description').invalid && (placeForm.get('description').dirty || placeForm.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
+    <textarea matInput placeholder="{{'Descripción' | translate}}" name="description" formControlName="description"></textarea>
   </mat-form-field>
 
 

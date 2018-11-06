@@ -1,3 +1,4 @@
+/*
 import {
   ActionReducer,
   ActionReducerMap,
@@ -8,7 +9,7 @@ import {
 import { storeFreeze } from 'ngrx-store-freeze';
 import { storeLogger } from 'ngrx-store-logger';
 
-import { pointReducer, PointState } from './place/place.reducer';
+import { pointReducer } from './place/place.reducer';
 
 import { environment } from '../../environments/environment';
 import { segmentReducer, SegmentState } from './route/route.reducer';
@@ -65,7 +66,7 @@ export const segmentLoadingSelector = createSelector(
   (state: SegmentState) => state.loading
 );
 
-export const segmentSelector = createSelector(
+export const getSegmentsEntityState = createSelector(
   SegmentStateSelector,
   (state: SegmentState) => state.segments
 );
@@ -98,9 +99,9 @@ export const tripTemplateMetadataSelector = createSelector(
 );
 
 
-/**
+/!**
  * User Section
- */
+ *!/
 const UserStateSelector = createFeatureSelector('users');
 
 export const userLoadingSelector = createSelector(
@@ -118,7 +119,7 @@ export const userMetadataSelector = createSelector(
   (state: UserState) => state.metadata,
 );
 
-/***** Account *****/
+/!***** Account *****!/
 const AccountStateSelector = createFeatureSelector('accounts');
 
 export const accountLoadingSelector = createSelector(
@@ -139,3 +140,4 @@ export const accountMetadataSelector = createSelector(
 export { PointsRetrieved } from './place/place.actions';
 export { SegmentsRetrieved } from './route/route.actions';
 export { TripTemplatesRetrieved } from './trip-template/trip-template.actions';
+*/

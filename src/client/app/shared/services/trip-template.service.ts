@@ -47,12 +47,23 @@ export class TripTemplateService {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}?lang=es`);
   }
 
+  autocomplete (query: string): Observable<any> {
+    return this.http.get(`/api/trip-templates/autocomplete/?q=${query}&lang=es`)
+      .pipe(
+        catchError(this.handleError('autocomplete'))
+      );
+  }
+
   getEventsFromTripTemplate (tripTemplate_id: string): Observable<any> {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}/events`);
   }
 
   getItineraryFromTripTemplate (tripTemplate_id: string): Observable<any> {
     return this.http.get(`/api/trip-templates/${tripTemplate_id}/itinerary`);
+  }
+
+  deleteById (tripTemplate_id: string): Observable<any> {
+    return this.http.delete(`/api/trip-templates/${tripTemplate_id}`);
   }
 
   /**

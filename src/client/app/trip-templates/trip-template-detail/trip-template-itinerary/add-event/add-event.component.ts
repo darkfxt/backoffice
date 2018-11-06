@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
   trigger,
   state,
@@ -7,44 +7,26 @@ import {
   transition, keyframes
 } from '@angular/animations';
 
-import { eventType } from '../../../../shared/models/TripTemplate';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
+import { iconMap, TypeOfEvent } from '../../../../shared/models/TripTemplate';
+import {MAT_BOTTOM_SHEET_DATA, MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../store';
 import { Router } from '@angular/router';
+import { AppState } from '../../../../store/shared/app.interfaces';
+import { TRANSLATE } from '../../../../translate-marker';
 
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.scss'],
-  animations: [
-    trigger('addEventState', [
-      state('out', style({transform: 'translateX(-100%)'})),
-      state('in', style({transform: 'translateX(0)'})),
-      state('add-in', style({transform: 'rotate(45deg)'})),
-      state('add-out', style({transform: 'rotate(0deg)'})),
-      transition('add-in <=> add-out', animate('100ms ease-in')),
-      transition('out => in', [
-        animate('0.6s', keyframes([
-          style({transform: 'translateX(-100%)', offset: 0}),
-          style({transform: 'translateX(20px)', offset: 0.5}),
-          style({transform: 'translateX(-20px)', offset: 0.7}),
-          style({transform: 'translateX(0)', offset: 1.0}),
-        ]))
-      ])
-    ])
-  ]
+  styleUrls: ['./add-event.component.scss']
 })
 export class AddEventComponent implements OnInit {
   @Input() firstEvent: boolean;
   @Input() ordinal;
   @Input() day: number;
   @Input() editMode: boolean;
+  @Input() filterEventType = [];
 
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
-
-  state = 'out';
-  tooltipMessage = {'in': 'close', 'out': 'Add event here'};
 
   constructor(
     private store: Store<AppState>,
@@ -54,12 +36,16 @@ export class AddEventComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   showOptions(): void {
     setTimeout(() => {
       const bottomSheetRef = this.bottomSheet.open(BottomSheetEventComponent, {
-        panelClass: 'event-bottom-sheet'
+        panelClass: 'event-bottom-sheet',
+        data: {
+          filterEventType: this.filterEventType
+        }
       });
 
       bottomSheetRef.afterDismissed().subscribe((result) => {
@@ -67,11 +53,6 @@ export class AddEventComponent implements OnInit {
       });
     }, 100);
   }
-
-  /*showOptions(): void{
-    this.state = this.state === 'out' ? 'in' : 'out';
-  }*/
-
 
 }
 
@@ -81,9 +62,9 @@ export class AddEventComponent implements OnInit {
     <ul>
       <li *ngFor="let productType of productTypes" (click)="openDialog(productType.value)">
         <div class="product-icon">
-          <mat-icon fontSet="tg">{{productType.icon}}</mat-icon>
+          <mat-icon>{{productType.icon}}</mat-icon>
         </div>
-        <div class="product-label">{{productType.viewValue}}</div>
+        <div class="product-label">{{productType.value | translate}}</div>
       </li>
     </ul>
   `,
@@ -97,12 +78,13 @@ export class AddEventComponent implements OnInit {
       `li {
       display: flex;
       align-items: center;
-      padding: 8px 16px
+      padding: 8px 16px;
+      color: rgba(0,0,0,0.70);
+      cursor: pointer;
     }`,
       `.product-icon {
       height: 40px;
       width: 40px;
-      font-size: 24px;
       text-align: center;
       display: flex;
       cursor: pointer;
@@ -115,15 +97,25 @@ export class AddEventComponent implements OnInit {
     }`
   ]
 })
-export class BottomSheetEventComponent {
+export class BottomSheetEventComponent implements OnInit {
   productTypes = [
-    {value: eventType.DRIVING, viewValue: 'driving', icon: 'driving'},
-    {value: eventType.HOTEL, viewValue: 'hotel', icon: 'hotel'},
-    {value: eventType.ACTIVITY, viewValue: 'activity', icon: 'ticket'},
-    {value: eventType.OTHER, viewValue: 'other', icon: 'edit_2'}
+    {value: TRANSLATE('POI'), icon: iconMap[TypeOfEvent.POI]},
+    {value: TRANSLATE('HOTEL'), icon: iconMap[TypeOfEvent.HOTEL]},
+    {value: TRANSLATE('ACTIVITY'), icon: iconMap[TypeOfEvent.ACTIVITY]},
+    {value: TRANSLATE('REFERENCE'), icon: iconMap[TypeOfEvent.REFERENCE]},
+    {value: TRANSLATE('TERMINAL'), icon: iconMap[TypeOfEvent.TERMINAL]},
+    {value: TRANSLATE('DRIVING'), icon: iconMap[TypeOfEvent.DRIVING]},
+    {value: TRANSLATE('OTHER'), icon: iconMap[TypeOfEvent.OTHER]}
   ];
 
-  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>) {
+  constructor(
+    private bottomSheetRef: MatBottomSheetRef<BottomSheetEventComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any
+    ) {}
+
+  ngOnInit() {
+    if (this.data.filterEventType.length)
+      this.productTypes = this.productTypes.filter(item => this.data.filterEventType.indexOf(item.value) > -1);
   }
 
   openDialog(productType): void {

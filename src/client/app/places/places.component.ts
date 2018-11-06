@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Type } from '@angular/core';
 import { PlaceService } from '../shared/services/place.service';
-import { AppState, loadingSelector, metadataSelector, pointSelector } from '../store';
-import { Store } from '@ngrx/store';
+// import { AppState, loadingSelector, metadataSelector, pointSelector } from '../store';
+import { select, Store } from '@ngrx/store';
 import { Point } from '../shared/models/Place';
 import { Observable, Subscription } from 'rxjs';
 import { GetPoints } from '../store/place/place.actions';
@@ -10,6 +10,9 @@ import { PointSummarizedCardComponent } from './point-summarized-card/point-summ
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationOptionsInterface } from '../shared/common-list/common-list-item/pagination-options.interface';
 import Route from '../../../server/api/entity/Route';
+import { AppState } from '../store/shared/app.interfaces';
+import { getPointsMetadata, getAllPoints } from '../store/place';
+import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
 
 @Component({
   selector: 'app-places',
@@ -19,44 +22,45 @@ import Route from '../../../server/api/entity/Route';
 export class PlacesComponent implements OnInit, OnDestroy {
   @Input() selectMode ? = false;
   @Input() isDialog ? = false;
+  dialog: boolean;
   @Input() dialogRef: any;
+  @Input() query = {};
+  @Input() drivingUpdate?: any;
   @Output() selectedRoute: EventEmitter<Route> = new EventEmitter<Route>();
 
-  pointSelector$: Subscription;
   loading = false;
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface;
+  _subscription: Subscription;
 
   constructor(private placesServiceInstance: PlaceService,
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
-    store.select(loadingSelector).subscribe((isLoading) => {
-      this.loading = isLoading;
-    });
-    this.points$ = store.select(pointSelector);
-    this.metadata$ = store.select(metadataSelector);
+    this.points$ = this.store.pipe(select(getAllPoints));
+    this.metadata$ = this.store.pipe(select(getPointsMetadata));
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent( PointSummarizedCardComponent );
   }
 
   ngOnInit() {
+    this.dialog = this.isDialog;
     this.paginationOptions = {
       previousPageIndex: 0,
       pageIndex: 0,
       pageSize: 10,
       length: 0
     };
+    this.paginationOptions = {...this.paginationOptions, ...this.query}
     this.store.dispatch(new GetPoints(this.paginationOptions));
-    this.pointSelector$ = this.store.select(pointSelector).subscribe((data: any) => {
-      this.paginationOptions = data.metadata;
-      this.loading = data.loading;
-    });
   }
 
   ngOnDestroy() {
-    this.pointSelector$.unsubscribe();
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
   }
 
   onPageChanged(event) {
@@ -70,7 +74,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onButtonClick() {
-    if (this.isDialog) {
+    if (this.dialog) {
       if (this.dialogRef) {
         this.dialogRef.close('OPEN_NEW_PLACES');
       }
@@ -80,7 +84,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.isDialog) {
+    if (this.dialog) {
       if (this.dialogRef)
         this.dialogRef.close('CLOSE');
       return;

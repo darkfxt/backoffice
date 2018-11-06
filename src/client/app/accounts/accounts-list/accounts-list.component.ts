@@ -6,12 +6,15 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { ListItemComponent } from '../../shared/common-list/common-list-item/common-list-item.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { accountSelector, AppState } from '../../store';
+import {select, Store} from '@ngrx/store';
+// import { accountSelector, AppState } from '../../store';
 import { AccountsService } from '../../shared/services/accounts.service';
 import { GetAccounts } from '../../store/account/account.actions';
 import { AccountSummarizedCardComponent } from './account-summarized-card/account-summarized-card.component';
 import { Account } from '../../shared/models/Account';
+import { AppState } from '../../store/shared/app.interfaces';
+import {getAccountEntity, getAllAccounts} from '../../store/account';
+import {selectLoaderEntity} from '../../store/shared/reducers';
 
 @Component({
   selector: 'app-accounts-list',
@@ -34,18 +37,15 @@ export class AccountsListComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
+    this.accounts$ = this.store.pipe(select(getAllAccounts));
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent( AccountSummarizedCardComponent );
-    this.accounts$ = this.store.select(accountSelector);
+    // this.accounts$ = this.store.select(accountSelector);
   }
 
   ngOnInit() {
     this.store.dispatch(new GetAccounts());
-    this._subscription = this.store.select(accountSelector).subscribe((data: any) => {
-      // this.paginationOptions = data.metadata;
-      // this.loading = data.loading;
-      console.log('**********************');
-      console.log(data);
-    });
+
   }
 
   onPageChanged(event) {

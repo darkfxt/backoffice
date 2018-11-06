@@ -1,0 +1,22 @@
+<div>
+  <form [formGroup]="bookingItinerary" #formDir="ngForm"  novalidate>
+    <div class="app-container full-size body-content">
+      <div class="templates-search" class="box-container">
+        <mat-form-field color="accent" >
+          <input type="text" matInput placeholder="{{'Ingresa el nombre del template' }}"
+                 (keyup)="search($event)" [matAutocomplete]="autoGroup" required/>
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button [disabled]="selectedTripTemplate === null" (click)="addTemplate()">
+          <mat-icon aria-label="Add">add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <app-trip-template-detail [fromBooking]="true" [templateToImport]="confirmedTemplate"></app-trip-template-detail>
+  </form>
+</div>

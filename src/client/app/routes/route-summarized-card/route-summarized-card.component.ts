@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store';
-import { EventSelected } from '../../store/trip-template/trip-template.actions';
+import { AppState } from '../../store/shared/app.interfaces';
+import {EventSelected} from '../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -12,7 +12,7 @@ import { EventSelected } from '../../store/trip-template/trip-template.actions';
 export class RouteSummarizedCardComponent implements OnInit {
 
   @Input() data: any;
-  @Input() selectionMode = false;
+  @Input() selectionMode = 'false';
   imageUrl: string;
   title: string;
   subtitleData: any;
@@ -54,8 +54,12 @@ export class RouteSummarizedCardComponent implements OnInit {
   }
 
   editSegment() {
-    if (this.selectionMode) {
-      this.store.dispatch(new EventSelected(this.data));
+    if (this.selectionMode === 'select') {
+      this.store.dispatch(new EventSelected({_id: this.data._id, type: 'SEGMENT'}));
+      return;
+    }
+    if (this.selectionMode === 'update') {
+      console.log('aca actualizaría el driving');
       return;
     }
     this.router.navigate([`/routes/${this.data._id}`]);

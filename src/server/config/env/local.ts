@@ -16,10 +16,10 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://localhost:6002/geo'
+    url: 'http://local.taylorgps.com:6002/geo'
   },
   routes: {
-    url: 'http://localhost:6001/routes'
+    url: 'http://local.taylorgps.com:6001/routes'
   },
   idm: {
     url: 'https://dev.api.taylorgps.com/idm'

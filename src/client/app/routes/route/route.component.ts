@@ -4,19 +4,23 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesService } from '../../shared/services/routes.service';
 import { FormGuard, IFormGuard } from '../../shared/form-guard/form-guard';
-import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { ModalService } from '../../shared/modal/modal.service';
 import Segment from '../../shared/models/Segment';
 import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
-import { DayIndexTypeForEventSetted, EventSelected } from '../../store/trip-template/trip-template.actions';
-import { Store } from '@ngrx/store';
-import { AppState, segmentSelector } from '../../store';
+import { select, Store } from '@ngrx/store';
 import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
-import {ClearPoint, ToggleDialogPoint} from '../../store/place/place.actions';
+import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
+import { AppState } from '../../store/shared/app.interfaces';
+import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState } from '../../store/route';
+import { EventSelected } from '../../store/trip-template/event/event.actions';
+import { getDialogStatus, getPointSelected } from '../../store/place';
+import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 
 @Component({
   selector: 'app-route',
@@ -31,6 +35,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   _subscription: Subscription;
   segment = new Segment();
   amIDialog = false;
+  dialogStatus: string;
+  popup = false;
+  _deleteSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -39,27 +46,31 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private placeStore: PlaceStore,
-    daDialog: MatDialog,
-    modalService: ModalService,
-    public snackBar: MatSnackBar
+    private daDialog: MatDialog,
+    modalService: ModalService
   ) {
     super(daDialog, modalService);
   }
   ngOnInit() {
 
-    this._subscription = this.store.select(segmentSelector).subscribe((storeSegment: any) => {
-      if (storeSegment && storeSegment.segmentSelected && storeSegment.segmentSelected._id
-        && storeSegment.segmentSelected._id !== 'new' && this.segment._id === '' &&
-        storeSegment.dialog !== DialogActions.TRUE)
-        this.router.navigate([`/routes/${storeSegment.segmentSelected._id}`]);
-
-      if (storeSegment && storeSegment.dialog === DialogActions.TRUE) {
-        this.amIDialog = true;
-        if (storeSegment.segmentSelected )
-          this.store.dispatch(new EventSelected(storeSegment.segmentSelected));
-      }
-      this.bussy = (storeSegment && storeSegment.loading) ? storeSegment.loading : false;
+    this.store.pipe(
+      select(getSegmentDialogStatus)
+    ).subscribe(dialogStatus => {
+      this.dialogStatus = dialogStatus;
+      if (dialogStatus === 'true') this.popup = true;
     });
+
+    this._subscription = this.store.select(getSegmentSelected)
+      .subscribe( (selectedSegment: any) => {
+        if (selectedSegment && selectedSegment._id !== 'new' && selectedSegment._id !== undefined) {
+          if (this.dialogStatus === 'true') {
+            this.store.dispatch(new EventSelected({_id: selectedSegment._id, type: 'SEGMENT'}));
+            setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
+            return;
+          }
+        }
+      });
+
     this.route.data.subscribe(({segment}) => {
       if (segment) {
         this.segment = segment;
@@ -90,6 +101,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this._subscription)
       this._subscription.unsubscribe();
 
+    if (this._deleteSubscription)
+      this._deleteSubscription.unsubscribe();
+
     this.store.dispatch(new ClearSegment());
   }
 
@@ -98,16 +112,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.bussy = true;
       const formData = this.prepareToSave();
-      const method = (this.segment._id === '') ? 'create' : 'update';
-      // this._subscription = this.routesService[method]({id: this.segment._id, body: formData}).subscribe((resp) => {
-      //   this.router.navigate(['/routes']);
-      // });
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
-      this.snackBar.open('Route saved', undefined, {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
     } else {
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
@@ -148,10 +153,37 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.amIDialog)
+    if (this.popup)
       this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE));
     else
       this.router.navigate(['/routes']);
+  }
+
+  deleteRoute() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'confirmDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: `Deseas eliminar ${this.segment.name}?`
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.daDialog.open(ConfirmationModalComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+      if (result)
+        this._deleteSubscription = this.routesService.deleteById(this.segment._id).subscribe(resp => {
+          this.store.dispatch(new SnackbarOpen(
+            {message: `${this.segment.name} ha sido eliminado`}
+          ));
+          this.router.navigate(['/routes']);
+        });
+    });
   }
 
 }

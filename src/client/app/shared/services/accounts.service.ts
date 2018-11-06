@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
-import {PaginationOptionsInterface} from '../common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +13,20 @@ export class AccountsService {
   }
 
   getAll (paginationMetadata?: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
-    let queryParams = '';
-    if (paginationMetadata) {
-      queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;
-      if (paginationMetadata.search) {
-        queryParams += `&search=${paginationMetadata.search}`;
-      }
-    }
-    if (withoutMetadata) {
-      queryParams += '&simple=true';
-    }
+    const queryParams: any = {};
+    if (paginationMetadata && paginationMetadata.pageSize)
+      queryParams.size = paginationMetadata.pageSize;
 
-    return this.http.get('/api/accounts' + queryParams);
+    if (paginationMetadata && paginationMetadata.pageIndex)
+      queryParams.page = paginationMetadata.pageSize;
+
+    if (paginationMetadata && paginationMetadata.search)
+      queryParams.search = paginationMetadata.search;
+
+    if (withoutMetadata)
+      queryParams.simple = true;
+
+    return this.http.get('/api/accounts', queryParams);
   }
 
   upsert (params): Observable<any> {
@@ -36,6 +38,10 @@ export class AccountsService {
 
   getDetail(id): Observable<any> {
     return this.http.get(`/api/accounts/${id}`);
+  }
+
+  deleteById(id): Observable<any> {
+    return this.http.delete(`/api/accounts/${id}`);
   }
 
   /**

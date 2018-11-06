@@ -1,39 +1,35 @@
 import { AccountActions, AccountActionTypes } from './account.actions';
 
 import { Account } from '../../shared/models/Account';
-import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import { accountSelector } from '../index';
+import {
+  PaginationOptions,
+  PaginationOptionsInterface
+} from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface AccountState {
-  loading: boolean;
-  accounts: Account[];
-  metadata: PaginationOptionsInterface;
+export interface State extends EntityState<Account> {
+  metadata?: PaginationOptionsInterface;
   accountSelected?: Account;
   dialog?: DialogActions;
 }
 
-export const initialState: AccountState = {
-  loading: false,
-  accounts: null,
-  metadata: {
-    previousPageIndex: 0,
-    pageIndex: 1,
-    pageSize: 10,
-    length: 0
-  }
-};
+export const adapter: EntityAdapter<Account> = createEntityAdapter();
 
-export function accountReducer(state = initialState, action: AccountActions): AccountState {
+export const initialState: State = adapter.getInitialState({
+  metadata: new PaginationOptions()
+});
+
+export function accountReducer(state = initialState, action: AccountActions): State {
   switch (action.type) {
     case AccountActionTypes.GET_ACCOUNTS:
-      return {...state, loading: true};
+      return {...state};
     case AccountActionTypes.RETRIEVED_ACCOUNTS:
-      return {...state, loading: false, accounts: action.payload};
+      return adapter.addAll(action.payload, state);
     case AccountActionTypes.SAVE_ACCOUNT:
-      return {...state, loading: true};
+      return {...state};
     case AccountActionTypes.ACCOUNT_SELECTED:
-      return {...state, loading: false, accountSelected: action.payload};
+      return {...state, accountSelected: action.payload};
     default:
       return state;
   }

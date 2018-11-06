@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/user.service';
-import {AuthService} from '../../auth/auth.service';
+import httpStatus = require('http-status');
 
 
 export class UserController {
@@ -52,10 +52,29 @@ export class UserController {
     }
   }
 
+  public static async delete(request: Request, response: Response, next: NextFunction) {
+    try {
+      const user = await UserService.delete(request.params.id, request.headers);
+
+      response.json(httpStatus.OK);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public static async signInUser (request: Request, response: Response, next: NextFunction) {
     try {
       const {username, password} = request.body;
       const user = await UserService.signInUser(username, password, request.headers);
+      response.json(user.data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async refreshToken (request: Request, response: Response, next: NextFunction) {
+    try {
+      const user = await UserService.refreshToken(request.headers);
       response.json(user.data);
     } catch (err) {
       next(err);

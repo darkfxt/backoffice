@@ -2,7 +2,7 @@ import { Input } from '@angular/core';
 
 export interface ListItemInterface {
   data: any;
-  selectionMode?: boolean;
+  selectionMode?: string;
   // image: any;
   // title: string;
   // subtitle: string;

@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
+import { httpstatus } from 'aws-sdk/clients/glacier';
+import httpStatus = require('http-status');
 
 
 export class PlaceController {
@@ -9,7 +11,7 @@ export class PlaceController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
-      const answer = await PlaceService.getAll(request.query);
+      const answer = await PlaceService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
         return;
@@ -33,7 +35,7 @@ export class PlaceController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
-      const resp = await PlaceService.search(request.query, request.query.lang);
+      const resp = await PlaceService.search(request.query, request.query.lang, request.headers);
       response.json(resp.data);
     } catch (err) {
       next(err);
@@ -51,8 +53,17 @@ export class PlaceController {
 
   public static async getDetail(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = await PlaceService.getDetail(request.params.place_id, request.query.lang);
+      const data = await PlaceService.getDetail(request.params.place_id, request.headers, request.query.lang);
       response.json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async deleteOne(request: Request, response: Response, next: NextFunction) {
+    try {
+      const place = await PlaceService.deleteOne(request.params.place_id, request.headers);
+      response.json(httpStatus.OK);
     } catch (err) {
       next(err);
     }
@@ -75,11 +86,11 @@ export class PlaceController {
       data.created_by = (request as any).loggedUser.Username;
       const oPlace = new Place(data);
       let place;
-      if (request.params.place_id){
-        place = await PlaceService.update(request.params.place_id, oPlace);
+      if (request.params.place_id) {
+        place = await PlaceService.update(request.params.place_id, oPlace, request.headers);
       } else {
         delete oPlace._id;
-        place = await PlaceService.create(oPlace);
+        place = await PlaceService.create(oPlace, request.headers);
       }
 
       response.json(place.data);

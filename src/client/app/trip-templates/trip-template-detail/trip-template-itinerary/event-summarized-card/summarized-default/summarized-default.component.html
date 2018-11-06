@@ -1,0 +1,21 @@
+<div class="event-cluster" [class.edit-mode]="editMode">
+  <div class="vertical-line" [style.border-color]="color"></div>
+  <div class="icon-ctn" [style.border-color]="color">
+    <mat-icon [style.color]="color">{{iconMap[data.eventType]}}</mat-icon>
+  </div>
+  <div class="summary-ctn">
+    <h5>{{data.name}}</h5>
+    <p>{{data.eventType | translate}}</p>
+  </div>
+  <div class="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onRemoveEvent(data._id, data.dayId)">
+        <mat-icon>delete</mat-icon>
+        <span>{{'Eliminar' | translate}}</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

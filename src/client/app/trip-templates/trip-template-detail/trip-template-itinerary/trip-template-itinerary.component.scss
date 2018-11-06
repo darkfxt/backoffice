@@ -1,25 +1,40 @@
 @import '../../../../assets/variables';
 
 .days-list{
-
+  position: relative;
   @media only screen and (min-width: 736px) {
-    height: 500px;
+    height: 520px;
     overflow-y: auto;
   }
 }
 
 .day-ctn{
   position: relative;
+
+  > ul{
+    padding: 16px 0 0;
+  }
 }
 
 .itinerary-header{
-  padding-top: 8px;
+  padding: 16px;
   display: flex;
   align-items: baseline;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  position: sticky;
   background: #fff;
+  border-radius: 4px 4px 0 0;
+
+  h3{
+    margin: 0;
+    font-weight: 500;
+  }
 
   @media only screen and (max-device-width: 736px) {
-    position: sticky;
+
     top: 50px;
     z-index: 9;
   }
@@ -33,19 +48,47 @@
 }
 
 .day-count {
-  position: sticky;
-  background: #fff;
-  margin: 34px 0 24px 0;
-  top:0;
   z-index: 8;
-  padding: 8px 0;
+  padding: 16px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  background: #f5f5f5;
+  color: $gray-title;
+  position: relative;
+
+  &.edit-mode{
+    position: sticky;
+    top: 0;
+  }
+
+  &:hover{
+    .mat-icon-button{
+      display: block;
+    }
+  }
+
+  .mat-icon-button{
+    position: absolute;
+    right: 12px;
+    top: 7px;
+    display: none;
+  }
+
+  .close-button{
+    display: block;
+  }
+
+  .delete-button {
+    right: 48px;
+  }
 
   .horizontal-divisor{
     border-bottom: 1px solid rgba(0,0,0,0.12);
     position: absolute;
     left: 0;
     width: 100%;
-    top: 19px;
+    top: 20px;
   }
 
   h4 {
@@ -53,7 +96,6 @@
     font-weight: 500;
     margin-bottom: 0;
     position: relative;
-    background: #fff;
     display: inline-block;
     padding-right: 8px;
     font-size: 16px;
@@ -131,7 +173,7 @@
   width: 1px;
   position: absolute;
   top: 0;
-  left: 15px;
+  left: 30px;
 }
 
 .event-cluster {
@@ -232,6 +274,57 @@
   .extra-info {
     margin-bottom: 0;
   }
+}
+
+.add-event-cluster{
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  padding: 0 16px 32px 10px;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover{
+    h5, mat-icon{
+      color: $gray-title;
+    }
+
+  }
+
+  @media only screen and (max-device-width: 736px) {
+    padding: 16px 0;
+  }
+
+  .icon-ctn{
+    width: 40px;
+    height: 40px;
+    border: 1px dashed #999;
+    margin-right: 16px;
+    justify-content: center;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    border-radius: 40px;
+    background: #fff;
+    box-sizing: border-box;
+
+    mat-icon{
+      color: $gray-body;
+    }
+
+  }
+
+  .summary-ctn{
+    flex: auto;
+  }
+
+  h5{
+    color: $gray-body;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
 }
 
 

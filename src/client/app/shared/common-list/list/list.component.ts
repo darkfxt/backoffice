@@ -7,7 +7,6 @@ import { ListItemInterface } from '../common-list-item/list-item.interface';
 import { PointSummarizedCardComponent } from '../../../places/point-summarized-card/point-summarized-card.component';
 import { LoadingComponent } from '../../loading/loading.component';
 import { loadConfigurationFromPath } from 'tslint/lib/configuration';
-import { AppState, loadingSelector } from '../../../store';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -16,10 +15,10 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  @Input() objectList: Observable<any>;
+  @Input() objectList: any;
   @Input() drawingComponent: ListItemComponent;
   @Input() storeToWatch: string;
-  @Input() selectionMode ? = false;
+  @Input() selectionMode ? = 'false';
   @ViewChild(CommonListDirective) appMainListContainer: CommonListDirective;
   iterationList: any[];
   loading = false;
@@ -28,13 +27,15 @@ export class ListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.objectList.subscribe( (data: any) => {
-      this.loading = data.loading;
-      if (!data.loading) {
-        this.iterationList = data[this.storeToWatch];
-        this.loadComponent(this.drawingComponent.component);
-      }
-    });
+    this.iterationList = this.objectList;
+    this.loadComponent(this.drawingComponent.component);
+    // this.objectList.subscribe( (data: any) => {
+    //   this.loading = data.loading;
+    //   if (!data.loading) {
+    //     this.iterationList = data[this.storeToWatch];
+    //     this.loadComponent(this.drawingComponent.component);
+    //   }
+    // });
 
   }
 

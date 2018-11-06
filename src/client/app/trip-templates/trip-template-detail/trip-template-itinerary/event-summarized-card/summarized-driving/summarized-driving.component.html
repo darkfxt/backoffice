@@ -1,0 +1,47 @@
+
+<div class="event-cluster" [class.edit-mode]="editMode">
+  <div class="vertical-line" [style.border-color]="color"></div>
+  <div class="icon-ctn" [style.border-color]="color">
+    <mat-icon [style.color]="color">directions_car</mat-icon>
+  </div>
+  <div class="summary-ctn">
+    <h5>{{data.name}}</h5>
+    <p>{{data.eventType | translate}}</p>
+
+    <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
+      <div class="add-event-cluster">
+        <span *ngIf="data.product.origin; else showEmptyOrigin">
+          Desde: {{data.product.origin.name}}
+        </span>
+        <ng-template #showEmptyOrigin>
+          <span>Desde: +Añadir lugar de salida</span>
+        </ng-template>
+      </div>
+    </app-add-event>
+
+    <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['TERMINAL', 'HOTEL']">
+      <div class="add-event-cluster">
+        <span *ngIf="data.product.destination; else showEmptyDestination">
+          Hasta: {{data.product.destination.name}}
+        </span>
+        <ng-template #showEmptyDestination>
+          <span>Hasta: +Añadir lugar de llegada</span>
+        </ng-template>
+      </div>
+    </app-add-event>
+
+  </div>
+
+  <div class="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="onRemoveEvent(data._id, data.dayId)" mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>{{'Eliminar' | translate}}</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
+
