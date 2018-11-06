@@ -1,17 +1,18 @@
-import { DayOfTrip } from './TripTemplate';
+import { DayOfTrip, TripTemplate } from './TripTemplate';
 
-export class Booking {
-  _id: string;
-  name: string;
-  paxName: string;
+export class Booking extends TripTemplate {
+  passenger_name: string;
+  account_id: number;
   startDate: Date;
   endDate: Date;
-  notes: string;
-  itinerary: Itinerary;
+  comment: string;
   status: string;
-  gpsId: string;
+  gps_device: GPSDevice;
 }
 
-export class Itinerary {
-  days: DayOfTrip[];
+export class GPSDevice {
+
+  id: string;
+  pick_up: string;
+  drop_off: string;
 }

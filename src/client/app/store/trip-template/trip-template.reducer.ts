@@ -56,6 +56,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state, entities, ids};
     case TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE:
       return {...state, importTemplateId: action.payload.tripTemplateId};
+    case TripTemplateActionTypes.FILL_ITINERARY:
+      return {...state};
     default:
       return state;
   }

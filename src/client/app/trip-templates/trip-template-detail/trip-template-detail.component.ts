@@ -7,7 +7,7 @@ import {
   SaveTripTemplate,
   TripTemplateEditionLeft,
   TripTemplateSelected,
-  GetTripTemplates, CreateTripTemplate, ImportTripTemplate
+  GetTripTemplates, CreateTripTemplate, ImportTripTemplate, FillItinerary
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
 import { AppState } from '../../store/shared/app.interfaces';
@@ -40,7 +40,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       this.importTemplate(templateToImport);
     }
   }
+  @Input() fillDays?: Array<DayOfTrip>;
   _templateToImport: string;
+  _bookingToFill: string;
   @Input() form: FormGroup;
   loading = false;
   loadItinerary = false;
@@ -119,6 +121,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
+    if (this.fillDays) {
+      setTimeout(() => this.fillItineraryWithDays(this.fillDays), 0);
+    }
 
   }
 
@@ -191,8 +196,12 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   importTemplate(templateId) {
-    console.log('mirá hasta donde llegaste con este ' + templateId);
     this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
+  }
+
+  fillItineraryWithDays(daysToImport: Array<DayOfTrip>) {
+    this.store.dispatch(new FillItinerary({days: daysToImport}))
+    console.log('vas a meter el itinerario de :' + daysToImport);
   }
 
   onTemplateUpdated(event) {

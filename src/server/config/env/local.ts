@@ -16,7 +16,7 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://local.taylorgps.com:6002/geo'
+    url: 'https://dev.api.taylorgps.com/geo'
   },
   routes: {
     url: 'http://local.taylorgps.com:6001/routes'

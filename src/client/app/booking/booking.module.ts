@@ -14,6 +14,8 @@ import { MatButtonModule, MatFormFieldModule, MatNativeDateModule,
 } from '@angular/material';
 import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { BookingSummarizedCardComponent } from './booking-list/booking-summarized-card/booking-summarized-card.component';
+import { CommonListModule } from '../shared/common-list/common-list.module';
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     ReactiveFormsModule,
     TripTemplatesModule,
+    CommonListModule,
     SharedModule,
     MatIconModule,
     MatInputModule,
@@ -40,9 +43,11 @@ import { TranslateModule } from '@ngx-translate/core';
     BookingDetailComponent,
     BookingDetailHeaderComponent,
     BookingDetailStatusComponent,
-    BookingDetailItineraryComponent
+    BookingDetailItineraryComponent,
+    BookingSummarizedCardComponent
   ],
-  providers: []
+  providers: [],
+  exports: [BookingSummarizedCardComponent]
 })
 export class BookingModule {
 }

@@ -23,7 +23,7 @@ export class BookingEffects {
     .ofType(BookingActionTypes.GET_ALL_BOOKINGS)
     .pipe(
       switchMap((query: GetAllBookings) => this.bookingService.getAll(query.payload.paginationOptions)),
-      map((bookings: Array<Booking>) => new BookingsRetrieved({bookings})),
+      map((bookings: any) => new BookingsRetrieved({bookings: bookings.data})),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 

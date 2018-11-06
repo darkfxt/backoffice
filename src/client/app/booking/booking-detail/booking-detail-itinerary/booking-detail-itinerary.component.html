@@ -28,6 +28,7 @@
 
     <app-trip-template-detail [fromBooking]="true"
                               [templateToImport]="confirmedTemplate"
+                              [fillDays]="daysToFill"
                               [form]="formItinerary"
                               (templateUpdated)="onTemplateUpdated($event)"></app-trip-template-detail>
   </form>

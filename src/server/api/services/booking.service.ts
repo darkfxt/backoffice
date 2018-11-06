@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../../config/env';
+import {AccountsService} from './accounts.service';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -7,6 +8,8 @@ export class BookingService {
   }
 
   public static async create (body, headers): Promise<any> {
+    if (typeof body.account_id !== 'string')
+      body.account_id = body.account_id.id;
     const resp = await axios.post(`${config.routes.url}/bookings`, body, {headers: {authorization: headers.authorization}});
     return resp;
   }
@@ -16,7 +19,10 @@ export class BookingService {
   }
 
   public static async getDetail (id, headers): Promise<any> {
-    return axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    const resp = await axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    const account = await AccountsService.getDetail(resp.data.account_id, 'en', headers);
+    resp.data.account_id = account.data;
+    return resp;
   }
 
   public static async update (id, body, headers): Promise<any> {

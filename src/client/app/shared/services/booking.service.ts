@@ -10,19 +10,19 @@ export class BookingService {
   constructor(private http: HttpClient) { }
 
   getAll(paginationOptions: PaginationOptionsInterface): Observable<any> {
-    return this.http.get('/api/booking');
+    return this.http.get('/api/bookings');
   }
 
   getDetail(id: string): Observable<any> {
-    return this.http.get(`/api/booking/${id}`);
+    return this.http.get(`/api/bookings/${id}`);
   }
 
   create(body: any): Observable<any> {
-    return this.http.post('/api/booking', body);
+    return this.http.post('/api/bookings', body);
   }
 
   deleteById(id: string): Observable<any> {
-    return this.http.delete(`/api/booking/${id}`);
+    return this.http.delete(`/api/bookings/${id}`);
   }
 
   /**

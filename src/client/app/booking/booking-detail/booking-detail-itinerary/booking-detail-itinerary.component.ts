@@ -15,6 +15,7 @@ export class BookingDetailItineraryComponent implements OnInit {
   private autocompleteTimeout;
   private lastSearch;
   selectedTripTemplate = null;
+  daysToFill = null;
   confirmedTemplate = null;
 
   @Output() templateUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -24,7 +25,8 @@ export class BookingDetailItineraryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log('dentro del booking detail tenes este formItinerary', this.formItinerary);
+    this.daysToFill = this.formItinerary.value;
   }
 
   displayFn(value) {
@@ -51,12 +53,9 @@ export class BookingDetailItineraryComponent implements OnInit {
 
   addTemplate() {
     this.confirmedTemplate = this.selectedTripTemplate;
-    console.log('Vas a meter el ' + this.selectedTripTemplate);
-    console.log('estas seguro de lo que vas a hacer?');
   }
 
   onTemplateUpdated(event) {
-    console.log('estás a punto de meterte en algo groso', event);
     this.templateUpdated.emit(event);
   }
 

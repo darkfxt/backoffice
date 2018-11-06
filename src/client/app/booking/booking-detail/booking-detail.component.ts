@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../store/shared/app.interfaces';
 import { Store } from '@ngrx/store';
+import { BookingPatchedOk, SaveBooking } from '../../store/booking/booking.actions';
+import { Booking } from '../../shared/models/Booking';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-booking-detail',
@@ -11,37 +14,44 @@ import { Store } from '@ngrx/store';
 })
 export class BookingDetailComponent implements OnInit {
   formHeader: FormGroup;
-  formItinerary: FormGroup;
+  formItinerary: FormArray;
+  booking: Booking;
+  resolverSubscription: Subscription;
   constructor(private fb: FormBuilder,
+              private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
 
   }
 
   ngOnInit() {
+    this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
+      if (resp) {
+        this.booking = resp.booking;
+        this.booking.endDate = resp.booking.end_date;
+        this.booking.startDate = resp.booking.start_date;
+      }
+
+    });
     this.formHeader = this.fb.group({
-      booking_name: ['', Validators.required],
-      client_id: ['', Validators.required],
-      passenger_name: ['', Validators.required],
-      start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
-      comment: '',
+      name: [this.booking.name, Validators.required],
+      account_id: [this.booking.account_id, Validators.required],
+      passenger_name: [this.booking.passenger_name, Validators.required],
+      start_date: [this.booking.startDate, Validators.required], // tslint:disable-line
+      end_date: [this.booking.endDate, Validators.required], // tslint:disable-line
+      comment: this.booking.comment,
       device_id: '',
       pickup_point: '',
       dropoff_point: ''
     });
-    this.formItinerary = this.fb.group({
-
-    });
+    this.formItinerary = this.fb.array(this.booking.days);
   }
 
   saveBooking() {
     if (this.formHeader.valid) {
       if (this.formItinerary.valid) {
-        const formData = new FormData();
-        formData.append('data', JSON.stringify(this.formItinerary.value));
-        console.log('vas a salvar esta verga', formData);
-        // this.store.dispatch(new SaveBooking({body: formData}));
+        const booking = this.prepareToSave();
+        this.store.dispatch(new SaveBooking({body: booking}));
       }
     } else
       Object.keys(this.formHeader.controls).forEach(field => {
@@ -58,10 +68,10 @@ export class BookingDetailComponent implements OnInit {
     this.formItinerary = event;
   }
 
-  prepareToSave(): FormData {
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(this.formItinerary.value));
-    return formData;
+  prepareToSave(): Booking {
+    const booking: Booking = new Booking();
+    Object.assign(booking, {days: this.formItinerary.value}, this.formHeader.value);
+    return booking;
   }
 
 }

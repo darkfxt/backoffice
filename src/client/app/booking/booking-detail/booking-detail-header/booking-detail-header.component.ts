@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {FormGroup, Validators} from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { AccountsService } from '../../../shared/services/accounts.service';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -22,8 +22,9 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
     this.options$ = this.accountService.getAll().subscribe(accounts => {
       this.options = accounts;
     });
+    console.log('dentro del booking detail header', this.form)
 
-    this.filteredOptions = this.form.get('client_id').valueChanges
+    this.filteredOptions = this.form.get('account_id').valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -48,6 +49,12 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
 
   get minDate2(): Date {
     return this.form.get('start_date').value === '' ? new Date() : this.form.get('start_date').value;
+  }
+
+  getValue(value: any) {
+    if (typeof value !== 'string')
+      return value.id;
+    return value;
   }
 
   onToggleGPS() {

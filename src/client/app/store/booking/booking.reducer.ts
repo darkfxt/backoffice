@@ -26,7 +26,7 @@ export function bookingReducer(state= initialState, action: BookingActions): Boo
     case BookingActionTypes.DELETE_BOOKING:
       return {...state};
     case BookingActionTypes.BOOKINGS_RETRIEVED:
-      return {...state};
+      return adapter.addAll(action.payload.bookings, state);
     case BookingActionTypes.BOOKING_PATCHED_OK:
       return {...state};
     case BookingActionTypes.BOOKING_PATCHED_ERROR:
