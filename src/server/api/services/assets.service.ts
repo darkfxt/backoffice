@@ -2,12 +2,12 @@ import axios from 'axios';
 import { config } from '../../config/env';
 
 
-export class AccountsService {
+export class AssetsService {
 
   public static async getAll(query, headers): Promise<any> {
     let queryParams = '';
     if (query.company_id)
-      queryParams += `&company_id=${query.company_id}`;
+      queryParams += `?company_id=${query.company_id}`;
     return axios.get(`${config.core.url}/assets${queryParams}`, {headers: {authorization: headers.authorization}});
   }
 

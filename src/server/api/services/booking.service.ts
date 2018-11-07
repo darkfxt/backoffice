@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { config } from '../../config/env';
-import {AccountsService} from './accounts.service';
+import { AccountsService } from './accounts.service';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -8,7 +8,7 @@ export class BookingService {
   }
 
   public static async create (body, headers): Promise<any> {
-    if (typeof body.account_id !== 'string')
+    if (typeof body.account_id !== 'number')
       body.account_id = body.account_id.id;
     const resp = await axios.post(`${config.routes.url}/bookings`, body, {headers: {authorization: headers.authorization}});
     return resp;
