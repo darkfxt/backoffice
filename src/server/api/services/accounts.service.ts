@@ -6,6 +6,8 @@ export class AccountsService {
 
   public static async getAll(query, headers): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
+    if(query.company_id)
+      queryParams += '&company_id=' + query.company_id;
     if (query.search) {
       queryParams += `&search=${query.search}`;
     }
