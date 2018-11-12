@@ -201,7 +201,6 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   fillItineraryWithDays(daysToImport: Array<DayOfTrip>) {
     this.store.dispatch(new FillItinerary({days: daysToImport}))
-    console.log('vas a meter el itinerario de :' + daysToImport);
   }
 
   onTemplateUpdated(event) {

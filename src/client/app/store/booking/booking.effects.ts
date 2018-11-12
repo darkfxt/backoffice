@@ -1,14 +1,15 @@
-import { BookingActionTypes, BookingsRetrieved, GetAllBookings, SaveBooking } from './booking.actions';
+import {BookingActionTypes, BookingsRetrieved, GetAllBookings, SaveBooking, SelectBookingId} from './booking.actions';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AppState } from '../shared/app.interfaces';
-import { catchError, map, switchMap } from 'rxjs/internal/operators';
+import {catchError, map, mergeMap, switchMap} from 'rxjs/internal/operators';
 import { HttpError } from '../shared/actions/error.actions';
 import { of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Booking } from '../../shared/models/Booking';
 import { BookingService } from '../../shared/services/booking.service';
+import {SnackbarOpen} from '../shared/actions/snackbar.actions';
 
 @Injectable()
 export class BookingEffects {
@@ -32,7 +33,14 @@ export class BookingEffects {
     .ofType(BookingActionTypes.SAVE_BOOKING)
     .pipe(
       switchMap((query: SaveBooking) => this.bookingService.create(query.payload.body)),
-      map((bookings: Array<Booking>) => new BookingsRetrieved({bookings})),
+      mergeMap((bookings: any) => [
+        new BookingsRetrieved({bookings: bookings.data}),
+        new SelectBookingId({_id: bookings.data[0]._id}),
+        new SnackbarOpen({
+          message: 'Reserva Creada',
+          action: 'Success'
+        })
+      ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 }

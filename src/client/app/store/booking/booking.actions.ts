@@ -6,9 +6,11 @@ export enum BookingActionTypes {
   GET_BOOKING = '[Booking] Get one booking',
   GET_ALL_BOOKINGS = '[Booking] Get all bookings',
   UPDATE_BOOKING = '[Booking] Update booking',
+  BOOKING_SELECTED = '[Booking] Selected Booking',
   SAVE_BOOKING = '[Booking] Save booking',
   DELETE_BOOKING = '[Booking] Delete booking',
   BOOKINGS_RETRIEVED = '[Booking] Retrievied succesfully',
+  CLEAR_SELECTED_BOOKING = '[Booking] Clear Selected',
   BOOKING_PATCHED_OK = '[Booking] Save succesful',
   BOOKING_PATCHED_ERROR = '[Booking] Patching Error'
 }
@@ -21,6 +23,11 @@ export class GetBooking implements Action {
 export class GetAllBookings implements Action {
   readonly type = BookingActionTypes.GET_ALL_BOOKINGS;
   constructor (readonly payload: {paginationOptions: PaginationOptionsInterface}) { }
+}
+
+export class SelectBookingId implements Action {
+  readonly type = BookingActionTypes.BOOKING_SELECTED;
+  constructor (readonly payload: {_id: string}) { }
 }
 
 export class UpdateBooking implements Action {
@@ -41,6 +48,10 @@ export class DeleteBooking implements Action {
 export class BookingsRetrieved implements Action {
   readonly type = BookingActionTypes.BOOKINGS_RETRIEVED;
   constructor (readonly payload: {bookings: Array<Booking>}) { }
+}
+
+export class BookingsClearSelected implements Action {
+  readonly type = BookingActionTypes.CLEAR_SELECTED_BOOKING;
 }
 
 export class BookingPatchedOk implements Action {
@@ -68,4 +79,4 @@ export const hideLoaderActions = [
 ];
 
 export type BookingActions = GetAllBookings | GetBooking | UpdateBooking | DeleteBooking | SaveBooking |
-  BookingsRetrieved | BookingPatchedOk | BookingPatchingError;
+  BookingsRetrieved | BookingPatchedOk | BookingPatchingError | SelectBookingId | BookingsClearSelected;

@@ -32,6 +32,7 @@ export class BookingListComponent implements OnInit {
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface = new PaginationOptions();
   _subscription: Subscription;
+  totalElements: number;
 
   constructor(
     private router: Router,
@@ -44,6 +45,7 @@ export class BookingListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetAllBookings({paginationOptions: this.paginationOptions}));
+    this.bookings$.subscribe((bookings) => this.totalElements = (bookings && bookings.length) ? bookings.length : 0);
   }
 
   onPageChanged(event) {
