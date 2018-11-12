@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../store/shared/app.interfaces';
-import { Store } from '@ngrx/store';
-import { BookingPatchedOk, SaveBooking } from '../../store/booking/booking.actions';
+import { select, Store } from '@ngrx/store';
+import {BookingPatchedOk, BookingsClearSelected, SaveBooking} from '../../store/booking/booking.actions';
 import { Booking } from '../../shared/models/Booking';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { getBookingSelected } from '../../store/booking';
 
 @Component({
   selector: 'app-booking-detail',
@@ -17,14 +18,22 @@ export class BookingDetailComponent implements OnInit {
   formItinerary: FormArray;
   booking: Booking;
   resolverSubscription: Subscription;
+  selectedBooking$: Observable<string>;
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
-
+    this.selectedBooking$ = store.pipe(select(getBookingSelected));
   }
 
   ngOnInit() {
+    this.selectedBooking$.subscribe( (selectedBooking: string) => {
+      if (selectedBooking) {
+        this.store.dispatch(new BookingsClearSelected());
+        this.router.navigate([`/booking/${selectedBooking}`]);
+      }
+  });
+
     this.resolverSubscription = this.route.data.subscribe(( resp: any ) => {
       if (resp) {
         this.booking = resp.booking;
@@ -44,7 +53,7 @@ export class BookingDetailComponent implements OnInit {
       pickup_point: '',
       dropoff_point: ''
     });
-    this.formItinerary = this.fb.array(this.booking.days);
+    this.formItinerary = this.fb.array(this.booking.days || []);
   }
 
   saveBooking() {

@@ -23,7 +23,7 @@ export const getBookingEntities = createSelector(
 
 export const getBookingSelected = createSelector(
   getBookingState,
-  (state: any) => state.selectedBooking
+  (state: any) => state.bookingSelected
 );
 
 export const getAllBookings = createSelector(

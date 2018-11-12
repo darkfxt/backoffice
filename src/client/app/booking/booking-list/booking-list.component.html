@@ -1,5 +1,5 @@
 <app-detail-header [disableBackButton]="true"
-                   [title]="'{bookings length} reservas encontradas' | translate: {value: 0}"
+                   [title]="totalElements + ' reservas encontradas'"
                    class="detail-header-content" navUrl="/booking/new">
   <div class="button-container save-button">
     <button (click)="onButtonClick()">

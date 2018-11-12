@@ -19,6 +19,8 @@ export function bookingReducer(state= initialState, action: BookingActions): Boo
       return {...state};
     case BookingActionTypes.GET_ALL_BOOKINGS:
       return {...state};
+    case BookingActionTypes.BOOKING_SELECTED:
+      return {...state, bookingSelected: action.payload._id};
     case BookingActionTypes.SAVE_BOOKING:
       return {...state};
     case BookingActionTypes.UPDATE_BOOKING:
@@ -27,7 +29,9 @@ export function bookingReducer(state= initialState, action: BookingActions): Boo
       return {...state};
     case BookingActionTypes.BOOKINGS_RETRIEVED:
       return adapter.addAll(action.payload.bookings, state);
-    case BookingActionTypes.BOOKING_PATCHED_OK:
+    case BookingActionTypes.CLEAR_SELECTED_BOOKING:
+      return {...state, bookingSelected: undefined};
+      case BookingActionTypes.BOOKING_PATCHED_OK:
       return {...state};
     case BookingActionTypes.BOOKING_PATCHED_ERROR:
       return {...state};

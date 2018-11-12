@@ -22,7 +22,6 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
     this.options$ = this.accountService.getAll().subscribe(accounts => {
       this.options = accounts;
     });
-    console.log('dentro del booking detail header', this.form)
 
     this.filteredOptions = this.form.get('account_id').valueChanges
       .pipe(
@@ -74,7 +73,10 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
   }
 
   displayFn(value) {
-    return value.name;
+    if (value && value.name)
+      return value.name;
+    else
+      return '';
   }
 
 }

@@ -25,7 +25,6 @@ export class BookingDetailItineraryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('dentro del booking detail tenes este formItinerary', this.formItinerary);
     this.daysToFill = this.formItinerary.value;
   }
 
