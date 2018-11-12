@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { ListItemComponent } from './common-list-item/common-list-item.component';
 import { PageEvent } from '@angular/material';
 import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
 import { PaginationOptionsInterface } from './common-list-item/pagination-options.interface';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../store/shared/app.interfaces';
+import {selectLoaderEntity} from '../../store/shared/reducers';
 
 @Component({
   selector: 'app-common-list',
@@ -25,37 +26,21 @@ export class CommonListComponent implements OnInit {
   @Input() activateSelectionMode = false;
   @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   @Output() itemSelected: EventEmitter<any> = new EventEmitter<any>();
+  _subscription: Subscription;
+  loading = false;
 
   // MatPaginator Output
   pageEvent: PageEvent;
 
   constructor(private store: Store<AppState>) {
-
+    this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
   }
 
   ngOnInit() {
-    // this.list.subscribe((storeData: any) => {
-    //   if (!storeData.loading) {
-    //     this.paginationMetadata = {
-    //       previousPageIndex: 0,
-    //       pageIndex: 0,
-    //       pageSize: 10,
-    //       length: (storeData.metadata && storeData.metadata.length)
-    //         ? storeData.metadata.length : 0
-    //     };
-    //   } else {
-    //     this.paginationMetadata = {
-    //       previousPageIndex: 0,
-    //       pageIndex: 0,
-    //       pageSize: 10,
-    //       length: 0
-    //     };
-    //   }
-    // });
-
   }
 
   changePage(event) {
+    Object.assign({}, this.paginationMetadata, event);
     this.pageChanged.emit(event);
   }
 

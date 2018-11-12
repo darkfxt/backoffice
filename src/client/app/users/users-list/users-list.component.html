@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
-                    [title]="'usuarios encontrados'"
+                    [title]="totalElements + ' usuarios encontrados'"
                     [isDialog]="isDialog"
                     class="detail-header-content"
                     (backButtonClicked)="goBack()"

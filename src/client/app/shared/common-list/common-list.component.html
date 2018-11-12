@@ -18,9 +18,10 @@
                 [selectionMode]="activateSelectionMode">
       </app-list>
     </div>
-    <div *ngIf="!hidePagination" class="col-xs-12">
+    <div [hidden]="hidePagination" class="col-xs-12">
       <mat-paginator [length]="paginationMetadata.length"
                      [pageSize]="10"
+                     [pageIndex]="paginationMetadata.pageIndex"
                      [pageSizeOptions]="[5,10,25,50]"
                      (page)="changePage($event)">
       </mat-paginator>

@@ -8,11 +8,12 @@ import { GetPoints } from '../store/place/place.actions';
 import { ListItemComponent } from '../shared/common-list/common-list-item/common-list-item.component';
 import { PointSummarizedCardComponent } from './point-summarized-card/point-summarized-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaginationOptionsInterface } from '../shared/common-list/common-list-item/pagination-options.interface';
+import { PaginationOptionsInterface, PaginationOptions } from '../shared/common-list/common-list-item/pagination-options.interface';
 import Route from '../../../server/api/entity/Route';
 import { AppState } from '../store/shared/app.interfaces';
 import { getPointsMetadata, getAllPoints } from '../store/place';
 import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
+import {filter, first, map, skip, take, takeUntil} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-places',
@@ -32,8 +33,9 @@ export class PlacesComponent implements OnInit, OnDestroy {
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;
   drawingComponent: ListItemComponent;
-  paginationOptions: PaginationOptionsInterface;
+  paginationOptions: PaginationOptionsInterface = new PaginationOptions();
   _subscription: Subscription;
+  totalElements: Number;
 
   constructor(private placesServiceInstance: PlaceService,
               private route: ActivatedRoute,
@@ -47,13 +49,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dialog = this.isDialog;
-    this.paginationOptions = {
-      previousPageIndex: 0,
-      pageIndex: 0,
-      pageSize: 10,
-      length: 0
-    };
-    this.paginationOptions = {...this.paginationOptions, ...this.query}
+    this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
@@ -64,7 +60,9 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onPageChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions, event);
+     this.paginationOptions = Object.assign(
+       {}, this.paginationOptions, event
+     );
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
