@@ -5,14 +5,22 @@ export class Booking extends TripTemplate {
   account_id: number;
   startDate: Date;
   endDate: Date;
+  booking_reference: string;
   comment: string;
-  status: string;
-  gps_device: GPSDevice;
+  status: Status;
+  gps_device?: GPSDevice;
 }
 
 export class GPSDevice {
 
   id: string;
+  name: string;
   pick_up: string;
   drop_off: string;
+}
+
+enum Status {
+  'DRAFT',
+  'PUBLISHED',
+  'CANCELED'
 }

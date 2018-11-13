@@ -36,6 +36,11 @@
       </mat-form-field>
 
       <mat-form-field color="accent">
+        <input type="text" #name matInput placeholder="{{'Reserva de referencia' | translate}}" name="booking_reference" formControlName="booking_reference"/>
+        <mat-error *ngIf="form.get('booking_reference').invalid && (form.get('booking_reference').dirty || form.get('booking_reference').touched)">{{'Campo requerido' | translate}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field color="accent">
         <textarea matInput #description placeholder="{{'Observaciones' | translate}}" name="comment" formControlName="comment"></textarea>
       </mat-form-field>
     </div>
