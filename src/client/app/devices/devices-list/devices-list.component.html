@@ -1,0 +1,32 @@
+<app-detail-header *ngIf="!loading"
+                   [title]="totalElements + ' dispositivos encontrados'"
+                   [isDialog]="isDialog"
+                   class="detail-header-content"
+                   (backButtonClicked)="goBack()"
+                   navUrl="/devices/new">
+  <div class="button-container save-button">
+    <button (click)="onButtonClick()">
+      <mat-icon aria-label="New">add</mat-icon>
+    </button>
+  </div>
+</app-detail-header>
+<div class="app-container full-size body-content">
+
+  <div [hidden]="loading">
+    <app-common-list *ngIf="!loading"
+                     [list]="devices$ | async"
+                     [component]="drawingComponent"
+                     [paginationMetadata]="paginationOptions"
+                     [activateSelectionMode]="isDialog"
+                     [storeToWatch]="'devices'"
+                     (pageChanged)="onPageChanged($event)">
+
+      <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Aun no has creado Dispositivos!!!</h2>
+        <p>Hazlo ahora.</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo dispositivo</button>
+      </div>
+
+    </app-common-list>
+  </div>
+</div>

@@ -25,7 +25,7 @@ export const config = {
     url: 'https://dev.api.taylorgps.com/idm'
   },
   core: {
-    url: 'http://dev.api.taylorgps.com/core'
+    url: 'https://dev.api.taylorgps.com/core'
   }
 
 };

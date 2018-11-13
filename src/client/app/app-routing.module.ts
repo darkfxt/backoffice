@@ -39,6 +39,11 @@ const appRoutes: Routes = [
     loadChildren: './booking/booking.module#BookingModule',
     canActivate: [AuthGuard]
   },
+  {
+    path: 'devices',
+    loadChildren: './devices/devices.module#DevicesModule',
+    canActivate: [AuthGuard]
+  },
   { path: 'error', component: ErrorComponent},
   { path: '',   redirectTo: '/trip-templates', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

@@ -6,7 +6,7 @@ import { CanDeactivateGuard } from '../shared/services/can-deactivate-guard.serv
 import { AuthGuard } from '../shared/services/auth-guard.service';
 import { BookingDetailComponent } from './booking-detail/booking-detail.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
-import {BookingsResolver} from './bookings.resolver';
+import { BookingsResolver } from './bookings.resolver';
 
 const bookingRoutes: Routes = [
   {

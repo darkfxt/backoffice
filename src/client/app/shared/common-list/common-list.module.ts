@@ -12,7 +12,8 @@ import { TripTemplateSummarizedCardComponent } from '../../trip-templates/trip-t
 import { EventSummarizedCardComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component'; // tslint:disable-line
 import { UserSummarizedCardComponent } from '../../users/users-list/user-summarized-card/user-summarized-card.component'; // tslint:disable-line
 import { AccountSummarizedCardComponent } from '../../accounts/accounts-list/account-summarized-card/account-summarized-card.component'; // tslint:disable-line
-import { BookingSummarizedCardComponent } from '../../booking/booking-list/booking-summarized-card/booking-summarized-card.component'; // tslint:disable-line
+import { BookingSummarizedCardComponent } from '../../booking/booking-list/booking-summarized-card/booking-summarized-card.component';
+import { DeviceSummarizedCardComponent } from '../../devices/devices-list/device-summarized-card/device-summarized-card.component'; // tslint:disable-line
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { BookingSummarizedCardComponent } from '../../booking/booking-list/booki
   exports: [
     CommonListComponent
   ],
-  entryComponents: [PointSummarizedCardComponent, RouteSummarizedCardComponent,
+  entryComponents: [DeviceSummarizedCardComponent, PointSummarizedCardComponent, RouteSummarizedCardComponent,
     TripTemplateSummarizedCardComponent, EventSummarizedCardComponent, UserSummarizedCardComponent,
     AccountSummarizedCardComponent, BookingSummarizedCardComponent]
 })
