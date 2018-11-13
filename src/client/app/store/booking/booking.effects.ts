@@ -1,4 +1,11 @@
-import {BookingActionTypes, BookingsRetrieved, GetAllBookings, SaveBooking, SelectBookingId} from './booking.actions';
+import {
+  BookingActionTypes,
+  BookingMetadataRetrieved,
+  BookingsRetrieved,
+  GetAllBookings,
+  SaveBooking,
+  SelectBookingId
+} from './booking.actions';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -24,7 +31,10 @@ export class BookingEffects {
     .ofType(BookingActionTypes.GET_ALL_BOOKINGS)
     .pipe(
       switchMap((query: GetAllBookings) => this.bookingService.getAll(query.payload.paginationOptions)),
-      map((bookings: any) => new BookingsRetrieved({bookings: bookings.data})),
+      mergeMap((bookings: any) => [
+        new BookingsRetrieved({bookings: bookings.data}),
+        new BookingMetadataRetrieved({metadata: bookings.metadata})
+      ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
 

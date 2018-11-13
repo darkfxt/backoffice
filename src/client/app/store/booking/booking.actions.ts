@@ -7,6 +7,7 @@ export enum BookingActionTypes {
   GET_ALL_BOOKINGS = '[Booking] Get all bookings',
   UPDATE_BOOKING = '[Booking] Update booking',
   BOOKING_SELECTED = '[Booking] Selected Booking',
+  BOOKING_METADATA_RETRIEVED = '[Booking] Metadata Retrieved',
   SAVE_BOOKING = '[Booking] Save booking',
   DELETE_BOOKING = '[Booking] Delete booking',
   BOOKINGS_RETRIEVED = '[Booking] Retrievied succesfully',
@@ -33,6 +34,11 @@ export class SelectBookingId implements Action {
 export class UpdateBooking implements Action {
   readonly type = BookingActionTypes.UPDATE_BOOKING;
   constructor (readonly payload: {_id: string, body: Partial<Booking>}) { }
+}
+
+export class BookingMetadataRetrieved implements Action {
+  readonly type = BookingActionTypes.BOOKING_METADATA_RETRIEVED;
+  constructor ( readonly payload: {metadata: PaginationOptionsInterface}) { }
 }
 
 export class SaveBooking implements Action {
@@ -79,4 +85,5 @@ export const hideLoaderActions = [
 ];
 
 export type BookingActions = GetAllBookings | GetBooking | UpdateBooking | DeleteBooking | SaveBooking |
-  BookingsRetrieved | BookingPatchedOk | BookingPatchingError | SelectBookingId | BookingsClearSelected;
+  BookingsRetrieved | BookingPatchedOk | BookingPatchingError | SelectBookingId | BookingsClearSelected |
+  BookingMetadataRetrieved;

@@ -1,9 +1,11 @@
 import { Booking } from '../../shared/models/Booking';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { BookingActions, BookingActionTypes } from './booking.actions';
+import {PaginationOptionsInterface} from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 export interface BookingState extends EntityState<Booking> {
   bookingSelected?: string;
+  metadata?: PaginationOptionsInterface;
 }
 
 export const adapter: EntityAdapter<Booking> = createEntityAdapter({
@@ -21,6 +23,8 @@ export function bookingReducer(state= initialState, action: BookingActions): Boo
       return {...state};
     case BookingActionTypes.BOOKING_SELECTED:
       return {...state, bookingSelected: action.payload._id};
+    case BookingActionTypes.BOOKING_METADATA_RETRIEVED:
+      return {...state, metadata: action.payload.metadata};
     case BookingActionTypes.SAVE_BOOKING:
       return {...state};
     case BookingActionTypes.UPDATE_BOOKING:

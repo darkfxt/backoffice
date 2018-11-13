@@ -9,8 +9,18 @@ import { PaginationOptionsInterface } from '../common-list/common-list-item/pagi
 export class BookingService {
   constructor(private http: HttpClient) { }
 
-  getAll(paginationOptions: PaginationOptionsInterface): Observable<any> {
-    return this.http.get('/api/bookings');
+  getAll(paginationOptions: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
+    let queryParams = '';
+    if (paginationOptions) {
+      queryParams += `?size=${paginationOptions.pageSize}&page=${paginationOptions.pageIndex}`;
+      if (paginationOptions.search) {
+        queryParams += `&search=${paginationOptions.search}`;
+      }
+    }
+    if (withoutMetadata) {
+      queryParams += '&simple=true';
+    }
+    return this.http.get('/api/bookings' + queryParams);
   }
 
   getDetail(id: string): Observable<any> {
