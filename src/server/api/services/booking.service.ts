@@ -4,7 +4,12 @@ import { AccountsService } from './accounts.service';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
-    return axios.get(`${config.routes.url}/bookings`, {headers: {authorization: headers.authorization}});
+    let queryParams = `?size=${query.size}&page=${query.page}`;
+    if (query.search)
+      queryParams += `&search=${query.search}`;
+    if (query.company_id)
+      queryParams += `&company_id=${query.company_id}`;
+    return axios.get(`${config.routes.url}/bookings${queryParams}`, {headers: {authorization: headers.authorization}});
   }
 
   public static async create (body, headers): Promise<any> {

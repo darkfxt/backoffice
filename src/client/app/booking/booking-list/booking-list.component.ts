@@ -12,7 +12,7 @@ import { Account } from '../../shared/models/Account';
 import { Booking } from '../../shared/models/Booking';
 import { GetAllBookings } from '../../store/booking/booking.actions';
 import { selectLoaderEntity } from '../../store/shared/reducers';
-import { getAllBookings } from '../../store/booking';
+import {getAllBookings, getBookingMetadata} from '../../store/booking';
 import { BookingSummarizedCardComponent } from './booking-summarized-card/booking-summarized-card.component';
 
 @Component({
@@ -28,6 +28,7 @@ export class BookingListComponent implements OnInit {
   @Output() selectedAccount: EventEmitter<Account> = new EventEmitter<Account>();
 
   bookings$: Observable<Booking[]>;
+  metadata$: Observable<PaginationOptionsInterface>;
   loading = false;
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface = new PaginationOptions();
@@ -39,13 +40,14 @@ export class BookingListComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.bookings$ = this.store.pipe(select(getAllBookings));
+    this.metadata$ = this.store.pipe(select(getBookingMetadata));
     this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
     this.drawingComponent = new ListItemComponent( BookingSummarizedCardComponent );
   }
 
   ngOnInit() {
     this.store.dispatch(new GetAllBookings({paginationOptions: this.paginationOptions}));
-    this.bookings$.subscribe((bookings) => this.totalElements = (bookings && bookings.length) ? bookings.length : 0);
+    this.metadata$.subscribe((bookings) => this.totalElements = (bookings && bookings.length) ? bookings.length : 0);
   }
 
   onPageChanged(event) {

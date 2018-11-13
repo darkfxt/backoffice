@@ -13,7 +13,7 @@
     <app-common-list *ngIf="!loading"
                      [list]="bookings$ | async"
                      [component]="drawingComponent"
-                     [paginationMetadata]="paginationOptions"
+                     [paginationMetadata]="metadata$ | async"
                      [activateSelectionMode]="isDialog"
                      [storeToWatch]="'booking'"
                      (pageChanged)="onPageChanged($event)">

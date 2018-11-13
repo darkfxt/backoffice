@@ -21,6 +21,11 @@ export const getBookingEntities = createSelector(
   (state: any) => state.entities
 );
 
+export const getBookingMetadata = createSelector(
+  getBookingState,
+  (state: any) => state.metadata
+);
+
 export const getBookingSelected = createSelector(
   getBookingState,
   (state: any) => state.bookingSelected
