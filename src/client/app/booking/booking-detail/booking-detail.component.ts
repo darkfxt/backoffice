@@ -48,6 +48,7 @@ export class BookingDetailComponent implements OnInit {
       passenger_name: [this.booking.passenger_name, Validators.required],
       start_date: [this.booking.startDate, Validators.required], // tslint:disable-line
       end_date: [this.booking.endDate, Validators.required], // tslint:disable-line
+      booking_reference: this.booking.booking_reference,
       comment: this.booking.comment,
       device_id: '',
       pickup_point: '',
