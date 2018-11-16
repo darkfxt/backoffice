@@ -5,6 +5,8 @@ import httpStatus = require('http-status');
 export class BookingController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await BookingService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
