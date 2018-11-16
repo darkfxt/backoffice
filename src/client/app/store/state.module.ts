@@ -27,6 +27,7 @@ import * as fromUsers from './user/user.reducer';
 import * as fromEvent from './trip-template/event/event.reducer';
 import * as fromDays from './trip-template/day/day.reducer';
 import * as fromBooking from './booking/booking.reducer';
+import * as fromDevice from './device/device.reducer';
 import { SegmentEffects } from './route/route.effects';
 import { AccountEffects } from './account/account.effects';
 import { PointEffects } from './place/place.effects';
@@ -35,6 +36,7 @@ import { UserEffects } from './user/user.effects';
 import { EventEffects } from './trip-template/event/event.effects';
 import { DayEffects } from './trip-template/day/day.effects';
 import { BookingEffects } from './booking/booking.effects';
+import { DeviceEffects } from './device/device.effects';
 
 @NgModule({
   imports: [
@@ -52,6 +54,7 @@ import { BookingEffects } from './booking/booking.effects';
     StoreModule.forFeature('events', fromEvent.eventReducer),
     StoreModule.forFeature('days', fromDays.dayReducer),
     StoreModule.forFeature('bookings', fromBooking.bookingReducer),
+    StoreModule.forFeature('devices', fromDevice.deviceReducer),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([
       AppEffects,
@@ -62,6 +65,7 @@ import { BookingEffects } from './booking/booking.effects';
       EventEffects,
       DayEffects,
       BookingEffects,
+      DeviceEffects,
       UserEffects,
       ErrorEffects,
       SnackbarEffects

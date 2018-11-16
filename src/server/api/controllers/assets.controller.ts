@@ -7,6 +7,8 @@ export class AssetsController {
 
   public static async getAll(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
       const answer = await AssetsService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
@@ -29,6 +31,8 @@ export class AssetsController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
+      // if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+      request.body.company_id = (<any>request).loggedUser.CompanyID;
       const user = await AssetsService.create(request.body, request.headers);
       response.json(user.data);
     } catch (err) {
