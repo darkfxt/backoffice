@@ -30,7 +30,8 @@ export function deviceReducer(state= initialState, action: DeviceActions): Devic
     case DeviceActionTypes.UPDATE_DEVICE:
       return {...state};
     case DeviceActionTypes.DELETE_DEVICE:
-      return {...state};
+      return adapter.removeOne(action.payload.id, state);
+      // return {...state};
     case DeviceActionTypes.DEVICES_RETRIEVED:
       return adapter.addAll(action.payload.devices, state);
     case DeviceActionTypes.CLEAR_SELECTED_DEVICE:

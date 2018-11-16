@@ -31,7 +31,7 @@ export class DeviceService {
     return this.http.post('/api/assets', body);
   }
 
-  deleteById(id: string): Observable<any> {
+  deleteById(id: string | number): Observable<any> {
     return this.http.delete(`/api/assets/${id}`);
   }
 

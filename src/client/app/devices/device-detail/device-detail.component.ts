@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AccountsService} from '../../shared/services/accounts.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {DeviceService} from '../../shared/services/device.service';
-import {SaveDevice} from '../../store/device/device.actions';
+import {DeleteDevice, SaveDevice} from '../../store/device/device.actions';
 
 @Component({
   selector: 'app-device-detail',
@@ -68,7 +68,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteDevice() {
-    console.log('vas a borrar el dispositivo')
+    this.store.dispatch(new DeleteDevice({id: this.device.id}));
   }
 
 }

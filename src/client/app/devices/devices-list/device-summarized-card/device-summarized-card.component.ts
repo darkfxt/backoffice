@@ -27,7 +27,7 @@ export class DeviceSummarizedCardComponent implements OnInit {
   }
 
   editAsset() {
-    this.router.navigate([`/devices/${this.data._id}`]);
+    this.router.navigate([`/devices/${this.data.id}`]);
   }
 
 }

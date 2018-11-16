@@ -48,7 +48,7 @@ export class SaveDevice implements Action {
 
 export class DeleteDevice implements Action {
   readonly type = DeviceActionTypes.DELETE_DEVICE;
-  constructor (readonly payload: {deviceId: string}) { }
+  constructor (readonly payload: {id: string | number}) { }
 }
 
 export class DevicesRetrieved implements Action {
