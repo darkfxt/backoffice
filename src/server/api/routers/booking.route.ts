@@ -8,6 +8,9 @@ BookingRouter.route('/:id')
   .delete(BookingController.delete)
   .patch(BookingController.update);
 
+BookingRouter.route('/:id/export')
+  .get(BookingController.getGPXFile);
+
 BookingRouter.route('/')
   .get(BookingController.getAll)
   .post(BookingController.create);

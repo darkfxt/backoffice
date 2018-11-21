@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
+import GPXBuilder from '../../utils/GPXBuilder';
+import BookingDTO from '../entity/dto/BookingDTO';
+
+const fs = require('fs');
 
 export class BookingController {
   public static async getAll(request: Request, response: Response, next: NextFunction) {
@@ -56,5 +60,28 @@ export class BookingController {
       next(err);
     }
   }
+
+  public static async getGPXFile(request: Request, response: Response, next: NextFunction) {
+    try {
+      let content: string = await BookingService.getGPXContent(request.params.id, request.headers)
+      // Construct file
+      let fileName: string = 'Booking' + request.params.id + '.gpx'
+      fs.writeFile(fileName, content, function () {
+        console.log('Booking GPX file created');
+      });
+      const file = fs.createReadStream(fileName);
+      file.on('end', function () {
+        fs.unlink(fileName, function () {
+          console.log('Temporary file removed');
+        });
+      });
+      response.header('Content-Disposition', 'attachment; filename="Booking.gpx"');
+      file.pipe(response);
+      return;
+    } catch (err) {
+      next(err);
+    }
+  }
+
 
 }

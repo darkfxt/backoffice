@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { config } from '../../config/env';
 import { AccountsService } from './accounts.service';
+import GPXBuilder from '../../utils/GPXBuilder';
+import BookingDTO from '../entity/dto/BookingDTO';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -32,6 +34,11 @@ export class BookingService {
 
   public static async update (id, body, headers): Promise<any> {
     return axios.patch(`${config.routes.url}/bookings/${id}`, body, {headers: {authorization: headers.authorization}});
+  }
+
+  public static async getGPXContent(id, headers): Promise<string> {
+    const booking = await axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
+    return GPXBuilder.build(booking.data as BookingDTO);
   }
 
 }
