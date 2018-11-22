@@ -105,7 +105,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       } else {
         this.tripTemplate = new TripTemplate();
         this.tripTemplate._id = 'new';
-        this.tripTemplate.days = [new DayOfTrip([])];
+        this.tripTemplate.days = this.fillDays ? this.fillDays : [new DayOfTrip([])];
         const templateIDs: Observable<string[]> = this.store.pipe(select(getTripTemplatesIds));
         this.tripSubscription = templateIDs
           .subscribe((templates: any) => {
