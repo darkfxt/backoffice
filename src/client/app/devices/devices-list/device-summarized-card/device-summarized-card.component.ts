@@ -18,7 +18,6 @@ export class DeviceSummarizedCardComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    console.log('dentro del summarized', this.data);
     this.imageUrl = ( this.data.logo && this.data.logo.url )
       ? this.data.logo.url
       : '/assets/images/imageNotFound.png';

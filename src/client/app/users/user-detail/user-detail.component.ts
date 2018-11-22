@@ -38,6 +38,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   resolverSubscription: Subscription;
   updatePassword = true;
   _deleteSubscription: Subscription;
+  selectedRole: any;
+  role: FormControl;
 
   matcher = new ComparePasswordValidator();
 
@@ -64,7 +66,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.user.password = '.......';
 
     });
-
+    const selectedRole: any = this.user.role;
+    Reflect.deleteProperty(selectedRole, 'resources');
+    this.selectedRole = selectedRole;
+    this.role = new FormControl(selectedRole);
     this.form = this.fb.group({
       username: [this.user.username],
       password: [this.user.password, [Validators.required]],
@@ -151,6 +156,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           this.router.navigate(['/users']);
         });
     });
+  }
+
+  compareFunction(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
   }
 
 }

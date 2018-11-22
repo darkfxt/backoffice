@@ -3,10 +3,13 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../store/shared/app.interfaces';
 import { select, Store } from '@ngrx/store';
-import {BookingPatchedOk, BookingsClearSelected, SaveBooking} from '../../store/booking/booking.actions';
-import { Booking } from '../../shared/models/Booking';
+import { BookingPatchedOk, BookingsClearSelected, SaveBooking, UpdateBooking } from '../../store/booking/booking.actions';
+import {Booking, Status} from '../../shared/models/Booking';
 import { Observable, Subscription } from 'rxjs';
 import { getBookingSelected } from '../../store/booking';
+import { GetAllDevices } from '../../store/device/device.actions';
+import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import {Event} from '../../shared/models/TripTemplate';
 
 @Component({
   selector: 'app-booking-detail',
@@ -19,6 +22,8 @@ export class BookingDetailComponent implements OnInit {
   booking: Booking;
   resolverSubscription: Subscription;
   selectedBooking$: Observable<string>;
+  published: boolean;
+
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
@@ -27,10 +32,15 @@ export class BookingDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(new GetAllDevices());
+
     this.selectedBooking$.subscribe( (selectedBooking: string) => {
       if (selectedBooking) {
         this.store.dispatch(new BookingsClearSelected());
-        this.router.navigate([`/booking/${selectedBooking}`]);
+        if (this.published)
+          this.router.navigate([`/booking/`]);
+        else
+          this.router.navigate([`/booking/${selectedBooking}`]);
       }
   });
 
@@ -50,18 +60,23 @@ export class BookingDetailComponent implements OnInit {
       end_date: [this.booking.endDate, Validators.required], // tslint:disable-line
       booking_reference: this.booking.booking_reference,
       comment: this.booking.comment,
-      device_id: '',
-      pickup_point: '',
-      dropoff_point: ''
+      device_id: this.booking.gps_device ? this.booking.gps_device : '',
+      pickup_point: this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : '',
+      dropoff_point: this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : ''
     });
     this.formItinerary = this.fb.array(this.booking.days || []);
   }
 
-  saveBooking() {
+  saveBooking(status?: Status) {
     if (this.formHeader.valid) {
       if (this.formItinerary.valid) {
         const booking = this.prepareToSave();
-        this.store.dispatch(new SaveBooking({body: booking}));
+        if (status)
+          booking.status = status;
+        if (this.booking._id === 'new' || this.booking._id === undefined)
+          this.store.dispatch(new SaveBooking({body: booking}));
+         else
+          this.store.dispatch(new UpdateBooking({_id: this.booking._id, body: booking}));
       }
     } else
       Object.keys(this.formHeader.controls).forEach(field => {
@@ -82,6 +97,28 @@ export class BookingDetailComponent implements OnInit {
     const booking: Booking = new Booking();
     Object.assign(booking, {days: this.formItinerary.value}, this.formHeader.value);
     return booking;
+  }
+
+  publishBooking() {
+    if (this.validateItinerary()) {
+      this.published = true;
+      this.saveBooking(Status.PUBLISHED);
+    } else
+      this.store.dispatch(new SnackbarOpen({
+        message: 'No se puede publicar, el evento no tiene un origen/destino definido',
+        action: 'error'
+      }));
+  }
+
+  validateItinerary() {
+    const itinerary = this.formItinerary.value;
+    let invalidEvents: Array<Event> = [];
+    itinerary.forEach((day) => {
+      invalidEvents = invalidEvents.concat(day.events.filter( (event: Event) => {
+        return (event.eventType === 'DRIVING') && (event.product.origin === null || event.product.destination === null);
+      }));
+    });
+    return invalidEvents.length <= 0;
   }
 
 }

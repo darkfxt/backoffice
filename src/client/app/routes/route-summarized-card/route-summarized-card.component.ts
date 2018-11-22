@@ -59,7 +59,6 @@ export class RouteSummarizedCardComponent implements OnInit {
       return;
     }
     if (this.selectionMode === 'update') {
-      console.log('aca actualizaría el driving');
       return;
     }
     this.router.navigate([`/routes/${this.data._id}`]);

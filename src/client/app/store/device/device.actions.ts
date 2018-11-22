@@ -23,7 +23,6 @@ export class GetDevice implements Action {
 
 export class GetAllDevices implements Action {
   readonly type = DeviceActionTypes.GET_ALL_DEVICES;
-  constructor (readonly payload: {paginationOptions: PaginationOptionsInterface}) { }
 }
 
 export class SelectDeviceId implements Action {

@@ -33,7 +33,7 @@ export class DeviceEffects {
   getAllDevices$ = this.actions$
     .ofType(DeviceActionTypes.GET_ALL_DEVICES)
     .pipe(
-      switchMap((query: GetAllDevices) => this.deviceService.getAll(query.payload.paginationOptions)),
+      switchMap((query: GetAllDevices) => this.deviceService.getAll()),
       map((devices: any) => new DevicesRetrieved({devices: devices})),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );

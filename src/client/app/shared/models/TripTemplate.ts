@@ -43,7 +43,8 @@ export const eventColors = {
  */
 const terminalTypes = [
   TypeOfEvent.TERMINAL,
-  TypeOfEvent.HOTEL
+  TypeOfEvent.HOTEL,
+  TypeOfEvent.POI
 ];
 
 export class Event {
@@ -74,11 +75,11 @@ export class Event {
     if (product) {
       const productToAdd = Object.assign({}, product);
       if (eventType === 'DRIVING') {
-        if (product.origin !== null && terminalTypes.indexOf(product.origin.type) === -1) {
+        if (product.origin !== null && !terminalTypes.includes(product.origin.type)) {
           productToAdd.referencedOrigin = product.origin;
           productToAdd.origin = null;
         }
-        if (product.destination !== null && terminalTypes.indexOf(product.destination.type) === -1) {
+        if (product.destination !== null && !terminalTypes.includes(product.destination.type)) {
           productToAdd.referencedDestination = product.destination;
           productToAdd.destination = null;
         }

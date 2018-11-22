@@ -4,7 +4,8 @@
   </div>
   <div class="info-container">
     <h3 class="summarized-card-title">{{title}} <a class="link" hidden> - created by</a></h3>
-    <p class="summarized-card-subtitle">{{description | slice:0:150}}...</p>
+    <p class="summarized-card-subtitle"
+       [ngClass]="{'draft': this.status === 'DRAFT', 'published': this.status === 'PUBLISHED'}">{{status}}</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

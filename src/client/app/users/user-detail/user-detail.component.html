@@ -45,7 +45,7 @@
         </div>
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent">
-            <mat-select placeholder="{{'Rol' | translate}}" name="role" required formControlName="role">
+            <mat-select [compareWith]="compareFunction" placeholder="{{'Rol' | translate}}" name="role" required formControlName="role">
               <mat-option [value]="role" *ngFor="let role of (roles | async)">
                 {{role.name | translate}}
               </mat-option>
