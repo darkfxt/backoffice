@@ -4,7 +4,7 @@ import {
   BookingsRetrieved,
   GetAllBookings,
   SaveBooking,
-  SelectBookingId
+  SelectBookingId, UpdateBooking
 } from './booking.actions';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
@@ -48,6 +48,22 @@ export class BookingEffects {
         new SelectBookingId({_id: bookings.data[0]._id}),
         new SnackbarOpen({
           message: 'Reserva Creada',
+          action: 'Success'
+        })
+      ]),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
+
+  @Effect()
+  updateBooking$ = this.actions$
+    .ofType(BookingActionTypes.UPDATE_BOOKING)
+    .pipe(
+      switchMap((query: UpdateBooking) => this.bookingService.update(query.payload._id, query.payload.body)),
+      mergeMap((bookings: any) => [
+        new BookingsRetrieved({bookings: bookings.data}),
+        new SelectBookingId({_id: bookings.data[0]._id}),
+        new SnackbarOpen({
+          message: 'Reserva Actualizada',
           action: 'Success'
         })
       ]),

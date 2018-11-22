@@ -45,10 +45,18 @@
     }
 
     .summarized-card-subtitle {
-      color: $gray-title;
       font-size: 14px;
       line-height: 20px;
       margin: 0;
+    }
+    .draft {
+      color: $gray-caption;
+    }
+    .canceled {
+      color: red;
+    }
+    .published {
+      color: #00a800;
     }
   }
 

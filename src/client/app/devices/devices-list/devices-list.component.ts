@@ -46,7 +46,7 @@ export class DevicesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new GetAllDevices({paginationOptions: this.paginationOptions}));
+    this.store.dispatch(new GetAllDevices());
     this.devices$.subscribe((metadata) => this.totalElements = (metadata && metadata.length) ? metadata.length : 0);
   }
 

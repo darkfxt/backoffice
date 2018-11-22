@@ -154,7 +154,11 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
                   eventsForm.push(this.fb.group({
                     name: evento.name,
                     description: evento.description,
-                    product: evento.product
+                    product: evento.product,
+                    dayId: evento.dayId,
+                    eventType: evento.eventType,
+                    order: evento.order,
+                    _id: evento._id
                   }));
                 });
                 this.itinerary.push(this.fb.group({

@@ -9,7 +9,7 @@ import { PaginationOptionsInterface } from '../common-list/common-list-item/pagi
 export class DeviceService {
   constructor(private http: HttpClient) { }
 
-  getAll(paginationOptions: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
+  getAll(paginationOptions?: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
     let queryParams = '';
     if (paginationOptions) {
       queryParams += `?size=${paginationOptions.pageSize}&page=${paginationOptions.pageIndex}`;

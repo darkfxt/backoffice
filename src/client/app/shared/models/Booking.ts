@@ -19,7 +19,7 @@ export class GPSDevice {
   drop_off: string;
 }
 
-enum Status {
+export enum Status {
   'DRAFT',
   'PUBLISHED',
   'CANCELED'

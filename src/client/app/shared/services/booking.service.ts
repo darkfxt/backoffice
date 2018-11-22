@@ -31,6 +31,10 @@ export class BookingService {
     return this.http.post('/api/bookings', body);
   }
 
+  update(id: string, body: any): Observable<any> {
+    return this.http.patch('/api/bookings/' + id, body);
+  }
+
   deleteById(id: string): Observable<any> {
     return this.http.delete(`/api/bookings/${id}`);
   }

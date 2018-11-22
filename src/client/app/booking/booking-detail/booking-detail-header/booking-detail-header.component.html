@@ -46,32 +46,24 @@
     </div>
 
     <div class="col-xs-12 col-sm-6">
-      <mat-slide-toggle color="primary" (change)="onToggleGPS()">With GPS</mat-slide-toggle>
+      <mat-slide-toggle color="primary" (change)="onToggleGPS()" [checked]="has_gps">With GPS</mat-slide-toggle>
       <div *ngIf="has_gps">
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Número de dispositivo' | translate}}" required [matAutocomplete]="autoGroup" formControlName="device_id"/>
+          <input type="text" matInput placeholder="{{'Nombre/Número de dispositivo' | translate}}" required [matAutocomplete]="auto" formControlName="device_id"/>
           <mat-icon matSuffix>search</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" [autoActiveFirstOption]="">
+            <mat-option *ngFor="let option of filteredDevices$ | async" [value]="option">{{option.name}}</mat-option>
           </mat-autocomplete>
           <mat-error *ngIf="form.get('device_id').invalid && (form.get('device_id').dirty || form.get('device_id').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de retirada' | translate}}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' | translate}}</mat-error>
+          <input type="text" matInput placeholder="{{'Lugar de retirada' | translate}}" required formControlName="pickup_point"/>
+          <mat-error *ngIf="form.get('pickup_point').invalid && (form.get('pickup_point').dirty || form.get('pickup_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de entrega' | translate}}" required [matAutocomplete]="autoGroup" formControlName="dropoff_point"/>
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of []" [value]="option">{{option.name}}</mat-option>
-          </mat-autocomplete>
+          <input type="text" matInput placeholder="{{'Lugar de entrega' | translate}}" required formControlName="dropoff_point"/>
           <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
       </div>
