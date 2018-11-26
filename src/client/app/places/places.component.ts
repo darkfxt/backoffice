@@ -49,6 +49,9 @@ export class PlacesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dialog = this.isDialog;
+    if (this.query) {
+      this.paginationOptions = Object.assign({}, this.paginationOptions, this.query);
+    }
     this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
