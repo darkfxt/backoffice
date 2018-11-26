@@ -1,6 +1,6 @@
 interface ImageDTO {
-    source: string
-    url: string
+  source: string;
+  url: string;
 }
 
-export default ImageDTO
+export default ImageDTO;

@@ -1,7 +1,7 @@
-import PointDTO from "./PointDTO";
+import PointDTO from './PointDTO';
 
 interface CoordinatesDTO {
-    point: PointDTO
+    point: PointDTO;
 }
 
-export default CoordinatesDTO
+export default CoordinatesDTO;

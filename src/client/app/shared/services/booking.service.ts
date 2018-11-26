@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,11 @@ export class BookingService {
 
   deleteById(id: string): Observable<any> {
     return this.http.delete(`/api/bookings/${id}`);
+  }
+
+  exportGPX(id: string): Observable<any> {
+    return this.http
+      .get(`/api/bookings/${id}/export`, {responseType: 'text'});
   }
 
   /**

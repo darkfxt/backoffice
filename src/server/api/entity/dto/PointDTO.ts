@@ -1,6 +1,6 @@
 class PointDTO {
-    lat: number
-    lng: number
+  lat: number;
+  lng: number;
 }
 
-export default PointDTO
+export default PointDTO;

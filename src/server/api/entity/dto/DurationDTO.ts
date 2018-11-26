@@ -1,6 +1,6 @@
 interface DurationDTO {
-    text: string
-    value: number
+  text: string;
+  value: number;
 }
 
-export default DurationDTO
+export default DurationDTO;

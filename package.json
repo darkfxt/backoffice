@@ -64,6 +64,8 @@
     "ngrx-store-freeze": "latest",
     "ngrx-store-logger": "latest",
     "ngx-color-picker": "^6.7.0",
+    "path": "^0.12.7",
+    "pug": "^2.0.3",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.0.0",
     "typeorm": "^0.2.0",
