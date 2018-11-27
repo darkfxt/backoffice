@@ -25,7 +25,7 @@ class Api {
 
   constructor() {
     this.api = express();
-    this.api.set('views', path.join(__dirname, 'templates'));
+    this.api.set('views', path.join(__dirname, '../../../templates'));
     this.api.set('view engine', 'pug');
     this.middleware();
     // this.mongoSetup();
@@ -38,7 +38,7 @@ class Api {
     this.api.use('/places', [authentication, authorization('PLACE')], PlaceRouter);
     this.api.use('/routes', [authentication, authorization('ROUTE')], RoutesRouter);
     this.api.use('/trip-templates', [authentication, authorization('TEMPLATE')], TripTemplateRouter);
-    this.api.use('/bookings', BookingRouter);
+    this.api.use('/bookings', [authentication, authorization('BOOKING')], BookingRouter);
     this.api.use('/users', SignRouter);
     this.api.use('/users', [authentication, authorization('USER')], UserRouter);
     this.api.use('/accounts', [authentication, authorization('ACCOUNT')], AccountsRouter);

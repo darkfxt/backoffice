@@ -3,6 +3,7 @@ import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
 import GPXBuilder from '../../utils/GPXBuilder';
 import BookingDTO from '../entity/dto/BookingDTO';
+import {ItineraryFactory} from '../factories/itinerary.factory';
 
 const fs = require('fs');
 
@@ -93,7 +94,9 @@ export class BookingController {
 
   public static async getPDFFile(request: Request, response: Response, next: NextFunction) {
     try {
-      response.render('itinerary');
+      const resp = await BookingService.getDetail(request.params.id, request.headers);
+      const itinerary = new ItineraryFactory(resp.data);
+      response.render('itinerary', itinerary);
     } catch (err) {
       next(err);
     }
