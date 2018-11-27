@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../store/shared/app.interfaces';
 import { select, Store } from '@ngrx/store';
 import { BookingPatchedOk, BookingsClearSelected, SaveBooking, UpdateBooking } from '../../store/booking/booking.actions';
-import {Booking, Status} from '../../shared/models/Booking';
+import { Booking, Status } from '../../shared/models/Booking';
 import { Observable, Subscription } from 'rxjs';
 import { getBookingSelected } from '../../store/booking';
 import { GetAllDevices } from '../../store/device/device.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
-import {Event} from '../../shared/models/TripTemplate';
-import {BookingService} from '../../shared/services/booking.service';
+import { Event } from '../../shared/models/TripTemplate';
+import { BookingService } from '../../shared/services/booking.service';
 
 @Component({
   selector: 'app-booking-detail',
@@ -24,6 +24,7 @@ export class BookingDetailComponent implements OnInit {
   resolverSubscription: Subscription;
   selectedBooking$: Observable<string>;
   published: boolean;
+  statusType = Status;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
@@ -101,10 +102,10 @@ export class BookingDetailComponent implements OnInit {
     return booking;
   }
 
-  publishBooking() {
+  publishBooking(status) {
     if (this.validateItinerary()) {
+      this.saveBooking(status);
       this.published = true;
-      this.saveBooking(Status.PUBLISHED);
     } else
       this.store.dispatch(new SnackbarOpen({
         message: 'No se puede publicar, el evento no tiene un origen/destino definido',

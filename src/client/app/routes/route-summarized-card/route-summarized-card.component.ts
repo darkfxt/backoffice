@@ -19,6 +19,7 @@ export class RouteSummarizedCardComponent implements OnInit {
   description: string;
   created_by: string;
   route_type: string;
+  via: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
 
@@ -32,6 +33,7 @@ export class RouteSummarizedCardComponent implements OnInit {
     this.description = this.data.description;
     this.route_type = this.data.route_type;
     this.created_by = this.data.created_by;
+    this.via = this.data.via;
     const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
     this.subtitleData = {
       routeType: this.data.route_type,

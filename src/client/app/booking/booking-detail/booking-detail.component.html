@@ -41,7 +41,8 @@
         <app-booking-detail-status [booking]="booking"></app-booking-detail-status>
         <div class="buttons-ctn status-step">
           <button mat-button matStepperPrevious color="accent">ATRAS</button>
-          <button (click)="publishBooking()" mat-button color="primary">PUBLICAR VIAJE</button>
+          <button *ngIf="!booking.status || (booking.status && booking.status === 2)" (click)="publishBooking(statusType.PUBLISHED)" mat-button color="primary">PUBLICAR RESERVA</button>
+          <button *ngIf="booking.status && booking.status === 1" (click)="publishBooking(statusType.CANCELED)" mat-button color="primary">CANCELAR RESERVA</button>
         </div>
       </div>
     </mat-step>
