@@ -58,12 +58,12 @@
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de retirada' | translate}}" required formControlName="pickup_point"/>
+          <input type="text" matInput placeholder="{{'Lugar de entrega' | translate}}" required formControlName="pickup_point"/>
           <mat-error *ngIf="form.get('pickup_point').invalid && (form.get('pickup_point').dirty || form.get('pickup_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Lugar de entrega' | translate}}" required formControlName="dropoff_point"/>
+          <input type="text" matInput placeholder="{{'Lugar de devolución' | translate}}" required formControlName="dropoff_point"/>
           <mat-error *ngIf="form.get('dropoff_point').invalid && (form.get('dropoff_point').dirty || form.get('dropoff_point').touched)">{{'Campo requerido' | translate}}</mat-error>
         </mat-form-field>
       </div>

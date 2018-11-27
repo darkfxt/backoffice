@@ -3,28 +3,30 @@
   <div class="row" *ngIf="list.length === 0">
     <ng-content select=".empty-state"></ng-content>
   </div>
-  <div class="row" >
-    <div class="col-xs-12 col-sm-4">
-      <app-filters>
-        <div class="list-filters">
-          <ng-content select=".common-list-filters"></ng-content>
-        </div>
-      </app-filters>
-    </div>
-    <div class="col-xs-12 col-sm-8 list-ctn">
-      <app-list [objectList]="list"
-                [drawingComponent]="component"
-                [storeToWatch]="storeToWatch"
-                [selectionMode]="activateSelectionMode">
-      </app-list>
-    </div>
-    <div [hidden]="hidePagination" class="col-xs-12">
-      <mat-paginator [length]="paginationMetadata.length"
-                     [pageSize]="10"
-                     [pageIndex]="paginationMetadata.pageIndex"
-                     [pageSizeOptions]="[5,10,25,50]"
-                     (page)="changePage($event)">
-      </mat-paginator>
+  <div [hidden]="list.length === 0">
+    <div class="row" >
+      <div class="col-xs-12 col-sm-4">
+        <app-filters>
+          <div class="list-filters">
+            <ng-content select=".common-list-filters"></ng-content>
+          </div>
+        </app-filters>
+      </div>
+      <div class="col-xs-12 col-sm-8 list-ctn">
+        <app-list [objectList]="list"
+                  [drawingComponent]="component"
+                  [storeToWatch]="storeToWatch"
+                  [selectionMode]="activateSelectionMode">
+        </app-list>
+      </div>
+      <div [hidden]="hidePagination" class="col-xs-12">
+        <mat-paginator [length]="paginationMetadata.length"
+                       [pageSize]="10"
+                       [pageIndex]="paginationMetadata.pageIndex"
+                       [pageSizeOptions]="[5,10,25,50]"
+                       (page)="changePage($event)">
+        </mat-paginator>
+      </div>
     </div>
   </div>
 </div>

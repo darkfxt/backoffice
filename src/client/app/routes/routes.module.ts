@@ -22,6 +22,7 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
 import { SharedModule } from '../shared/shared.module';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
 import { LoadingModule } from '../shared/loading/loading.module';
+import { PipesModule } from '../shared/pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { LoadingModule } from '../shared/loading/loading.module';
     MatSnackBarModule,
     TranslateModule,
     MatDialogModule,
-    SharedModule
+    SharedModule,
+    PipesModule
   ],
   exports: [
     RouteComponent,

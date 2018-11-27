@@ -49,7 +49,7 @@ export class RouteSummarizedCardComponent implements OnInit {
     });
 
     return {
-      distance: distance / 1000, duration: (duration / (60 * 60 )).toFixed(2)
+      distance: Math.floor(distance / 1000), duration: duration
     };
   }
 
