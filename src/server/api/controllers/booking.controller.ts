@@ -3,6 +3,7 @@ import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
 import GPXBuilder from '../../utils/GPXBuilder';
 import BookingDTO from '../entity/dto/BookingDTO';
+import {ItineraryFactory} from '../factories/itinerary.factory';
 
 const fs = require('fs');
 
@@ -72,21 +73,30 @@ export class BookingController {
 
   public static async getGPXFile(request: Request, response: Response, next: NextFunction) {
     try {
-      let content: string = await BookingService.getGPXContent(request.params.id, request.headers)
+      const content: string = await BookingService.getGPXContent(request.params.id, request.headers)
       // Construct file
-      let fileName: string = 'Booking' + request.params.id + '.gpx'
+      const fileName: string = 'Booking' + request.params.id + '.gpx'
       fs.writeFile(fileName, content, function () {
         console.log('Booking GPX file created');
-      });
-      const file = fs.createReadStream(fileName);
-      file.on('end', function () {
-        fs.unlink(fileName, function () {
-          console.log('Temporary file removed');
+        const file = fs.createReadStream(fileName);
+        file.on('end', function () {
+          fs.unlink(fileName, function () {
+            console.log('Temporary file removed');
+          });
         });
+        response.header('Content-Disposition', 'attachment; filename="Booking.gpx"');
+        file.pipe(response);
       });
-      response.header('Content-Disposition', 'attachment; filename="Booking.gpx"');
-      file.pipe(response);
-      return;
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async getPDFFile(request: Request, response: Response, next: NextFunction) {
+    try {
+      const resp = await BookingService.getDetail(request.params.id, request.headers);
+      const itinerary = new ItineraryFactory(resp.data);
+      response.render('itinerary', itinerary);
     } catch (err) {
       next(err);
     }

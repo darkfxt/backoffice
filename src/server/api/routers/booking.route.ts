@@ -8,8 +8,11 @@ BookingRouter.route('/:id')
   .delete(BookingController.delete)
   .patch(BookingController.update);
 
-BookingRouter.route('/:id/export')
+BookingRouter.route('/:id/export/gpx')
   .get(BookingController.getGPXFile);
+
+BookingRouter.route('/:id/export/pdf')
+  .get(BookingController.getPDFFile);
 
 BookingRouter.route('/')
   .get(BookingController.getAll)

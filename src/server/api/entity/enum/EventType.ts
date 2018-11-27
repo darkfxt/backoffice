@@ -1,11 +1,11 @@
 enum EventType {
-    HOTEL = 'HOTEL',
-    POI = 'POI',
-    DRIVING = 'DRIVING',
-    TERMINAL ='TERMINAL',
-    REFERENCE = 'REFERENCE',
-    ACTIVITY = 'ACTIVITY',
-    CUSTOM = 'CUSTOM'
+  HOTEL = 'HOTEL',
+  POI = 'POI',
+  DRIVING = 'DRIVING',
+  TERMINAL = 'TERMINAL',
+  REFERENCE = 'REFERENCE',
+  ACTIVITY = 'ACTIVITY',
+  CUSTOM = 'CUSTOM'
 }
 
-export default EventType
+export default EventType;

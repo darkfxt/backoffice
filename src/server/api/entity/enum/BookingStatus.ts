@@ -1,7 +1,7 @@
 enum BookingStatus {
-    'DRAFT',
-    'PUBLISHED',
-    'CANCELED'
+  'DRAFT',
+  'PUBLISHED',
+  'CANCELED'
 }
 
-export default BookingStatus
+export default BookingStatus;

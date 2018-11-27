@@ -10,6 +10,7 @@ import { getBookingSelected } from '../../store/booking';
 import { GetAllDevices } from '../../store/device/device.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import {Event} from '../../shared/models/TripTemplate';
+import {BookingService} from '../../shared/services/booking.service';
 
 @Component({
   selector: 'app-booking-detail',
@@ -27,7 +28,8 @@ export class BookingDetailComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private store: Store<AppState>) {
+              private store: Store<AppState>,
+              private bs: BookingService) {
     this.selectedBooking$ = store.pipe(select(getBookingSelected));
   }
 
@@ -119,6 +121,22 @@ export class BookingDetailComponent implements OnInit {
       }));
     });
     return invalidEvents.length <= 0;
+  }
+
+  exportGPS() {
+
+    this.bs.exportGPX(this.booking._id).subscribe(res => {
+      const blob = new Blob([res], { type: 'Content-Disposition'});
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = this.booking._id + '.gpx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove(); // remove the element
+    });
   }
 
 }

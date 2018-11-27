@@ -24,11 +24,6 @@ export class BookingsResolver implements Resolve<any> {
     if (id === 'new')
       return of(new Booking());
 
-    return this.service.getDetail(id)
-      .pipe(catchError((err)  => {
-        console.error(err); // deal with API error (eg not found)
-        this.router.navigate(['/']); // could redirect to error page
-        return EMPTY;
-      }));
+    return this.service.getDetail(id);
   }
 }

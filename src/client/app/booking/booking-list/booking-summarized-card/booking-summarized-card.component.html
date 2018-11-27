@@ -1,11 +1,23 @@
 <div class="card-container" (click)="editBooking()">
-  <div class="image-container">
-    <img class="point-thumbnail" src="{{imageUrl}}" />
-  </div>
   <div class="info-container">
-    <h3 class="summarized-card-title">{{title}} <a class="link" hidden> - created by</a></h3>
-    <p class="summarized-card-subtitle"
-       [ngClass]="{'draft': this.status === 'DRAFT', 'published': this.status === 'PUBLISHED'}">{{status}}</p>
+    <div class="summarized-card-title">
+      <h3>{{data.name}}</h3>
+      <span>{{data.start_date | date: 'dd MMM yyyy'}} - {{data.end_date | date: 'dd MMM yyyy'}}</span>
+    </div>
+    <div class="summarized-card-body">
+      <div class="client-box data-box">
+        <span class="label">Pasajero</span>
+        <span class="value">{{data.passenger_name}}</span>
+      </div>
+      <div class="gps-box data-box">
+        <span class="label">GPS</span>
+        <span class="value">{{data.gps_device ? 'Si' : 'No'}}</span>
+      </div>
+      <div class="status-box data-box">
+        <span class="label">Estado</span>
+        <span class="value">{{status | translate}}</span>
+      </div>
+    </div>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

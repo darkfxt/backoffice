@@ -58,6 +58,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.store.dispatch(new SnackbarOpen(
                 {message: 'Error inesperado'}
               ));
+              // this.router.navigate(['/error', {message: 'Error inesperado', code: err.status}]);
           }
 
           this.store.dispatch(new HideLoader());

@@ -1,0 +1,73 @@
+mixin driving(event)
+  div
+    span= event.type
+    h4= event.title
+      if(event.meta.via)
+        span  - Via #{event.meta.via}
+    p
+      span.avg-time Avg. time #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min
+      span.distance Distance #{event.meta.distance}km
+    ul
+      each ttk in event.meta.things_to_know
+        li
+          span= ttk.title
+          p= ttk.description
+
+
+
+mixin place(event)
+  div
+    span= event.type
+    h4= event.title
+    span= event.caption
+    p= event.description
+
+doctype html
+html
+  head
+    title
+    link(href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet")
+    style.
+      ul, li{
+        margin: 0;
+        list-style: none;
+      }
+      body{
+        margin: 0 auto;
+        width: 800px;
+        background: #f5f5f5;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+      }
+      .main{
+        padding: 16px;
+        background: #fff;
+      }
+      .event-cluster{
+
+      }
+      .event-cluster h4{
+        font-weight: 500;
+        font-size: 16px;
+        color: rgba(0,0,0,0.7);
+      }
+
+  body
+    header header
+    main.main
+      ul
+        each day in itinerary
+          li
+            div
+              div= day.date
+            div
+              ul
+                each event in day.events
+                  li.event-cluster
+                    if event.type == 'Driving'
+                      +driving(event)
+                    else
+                      +place(event)
+    footer footer
+
+
+
