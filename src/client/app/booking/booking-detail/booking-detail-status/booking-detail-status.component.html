@@ -8,6 +8,6 @@
   <p *ngIf="status === 'DRAFT'">
     La reserva se encuentra en estado borrador. Para publicar el viaje  y que los viajeros puedan acceder a ella, haz click en el boton <i>"publicar reserva"</i>
   </p>
-  <p *ngIf="status === 'PUBLISHED'">La reserva se encuentra publicada. Comparte el siguiente link a los viajeros para que puedan acceder a su itinerario. <a href="https://appv2.taylorgps.com/trips/{{booking._id}}-{{booking.name}}" target="_blank">https://appv2.taylorgps.com/trips/{{booking._id}}-{{booking.name}}</a></p>
+  <p *ngIf="status === 'PUBLISHED'">La reserva se encuentra publicada. Comparte el siguiente link a los viajeros para que puedan acceder a su itinerario. <a href="https://{{basePath}}/trips/{{booking._id}}-{{booking.name}}" target="_blank">https://{{basePath}}/trips/{{booking._id}}-{{booking.name}}</a></p>
   <p *ngIf="status === 'CANCELED'">Esta reserva ha sido cancelada. Para volver a publicarla has click en <i>"publicar reserva"</i></p>
 </div>
