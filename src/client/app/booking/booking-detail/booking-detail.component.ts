@@ -133,7 +133,7 @@ export class BookingDetailComponent implements OnInit {
       document.body.appendChild(a);
       a.setAttribute('style', 'display: none');
       a.href = url;
-      a.download = this.booking._id + '.gpx';
+      a.download = this.booking.name + ' - ' + this.booking.passenger_name + '.gpx';
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove(); // remove the element

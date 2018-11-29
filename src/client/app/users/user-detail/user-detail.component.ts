@@ -67,7 +67,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     });
     const selectedRole: any = this.user.role;
-    Reflect.deleteProperty(selectedRole, 'resources');
+    if (selectedRole !== '')
+      Reflect.deleteProperty(selectedRole, 'resources');
     this.selectedRole = selectedRole;
     this.role = new FormControl(selectedRole);
     this.form = this.fb.group({

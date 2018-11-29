@@ -9,7 +9,7 @@
   <div formArrayName="things_to_know">
     <div *ngFor="let ttk of thingsToKnow.controls; let i= index;" [formGroupName]="i" class="ttk-content">
       <mat-form-field color="accent">
-        <input type="text" matInput placeholder="{{'Titulo' | translate}}" name="title" formControlName="title"/>
+        <input type="text" matInput placeholder="{{'Titulo' | translate}}" required name="title" formControlName="title"/>
         <mat-error *ngIf="ttk.get('title').invalid && (ttk.get('title').dirty || ttk.get('title').touched)">{{'Campo requerido' | translate}}</mat-error>
       </mat-form-field>
 
