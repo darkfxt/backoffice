@@ -23,7 +23,7 @@ export class UserService {
 
   public static async update(id, body, headers: any): Promise<any> {
     body.role = body.role.id;
-    return axios.patch(`${config.idm.url}/users/${id}`, body, {headers: {authorization: headers.authorization}});
+    return axios.put(`${config.idm.url}/users/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
   public static async delete(id, headers: any): Promise<any> {

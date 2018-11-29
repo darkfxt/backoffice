@@ -9,7 +9,7 @@
       <mat-form-field color="accent" >
         <input type="text" matInput placeholder="{{'Seleccionar cliente' | translate}}" required [matAutocomplete]="autoGroup" formControlName="account_id"/>
         <mat-icon matSuffix>search</mat-icon>
-        <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" [autoActiveFirstOption]="">
+        <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option.name}}</mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="form.get('account_id').invalid && (form.get('account_id').dirty || form.get('account_id').touched)">{{'Campo requerido' | translate}}</mat-error>

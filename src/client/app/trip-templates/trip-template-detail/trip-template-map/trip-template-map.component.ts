@@ -64,8 +64,12 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                 case TypeOfEvent.DRIVING:
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
+                  this.bounds.extend(origin.geo.point);
+                  this.bounds.extend(destination.geo.point);
+
                   if (this.terminalTypes.indexOf(origin.type) > -1)
                     this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.eventType});
+
                   if (this.terminalTypes.indexOf(destination.type) > -1)
                     this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.eventType});
 
@@ -74,9 +78,13 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                     event.product.middle_points.map(mp => ({location: mp.geo.point})),
                     destination.geo.point
                   );
-                  event.product.middle_points.forEach(mp => this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name, type: mp.type}));
+                  event.product.middle_points.forEach(mp => {
+                    this.bounds.extend(mp.geo.point);
+                    this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name, type: mp.type});
+                  });
                   break;
                 default:
+                  this.bounds.extend(event.product.geo.point);
                   this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.eventType});
                   break;
               }
@@ -105,7 +113,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   }
 
   private drawerPicker(position, options: any = {}) {
-    this.bounds.extend(position);
+    //this.bounds.extend(position);
     const infowindow = new google.maps.InfoWindow({
       content: `<h3>${options.label}</h3>`
     });

@@ -42,7 +42,7 @@ export class BookingService {
 
   exportGPX(id: string): Observable<any> {
     return this.http
-      .get(`/api/bookings/${id}/export`, {responseType: 'text'});
+      .get(`/api/bookings/${id}/export/gpx`, {responseType: 'text'});
   }
 
   /**
