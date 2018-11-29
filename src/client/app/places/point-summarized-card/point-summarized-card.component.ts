@@ -5,6 +5,7 @@ import { ListItemInterface } from '../../shared/common-list/common-list-item/lis
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import { EventSelected, TerminalSelected, UpdateEvent } from '../../store/trip-template/event/event.actions';
+import {StaticsService} from '../../shared/services/statics.service';
 
 @Component({
   selector: 'app-point-summarized-card',
@@ -20,13 +21,15 @@ export class PointSummarizedCardComponent implements ListItemInterface, OnInit {
   description: string;
   created_by: string;
 
-  constructor(private router: Router, private store: Store<AppState>) {
+  constructor(private router: Router,
+              private store: Store<AppState>,
+              private staticsService: StaticsService) {
 
   }
 
   ngOnInit() {
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
-      ? this.data.images[0].url
+      ? this.staticsService.getThumbnailUrl(this.data.images[0].url)
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.subtitle = this.data.type;

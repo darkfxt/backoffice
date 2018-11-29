@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import {StaticsService} from '../../../shared/services/statics.service';
 
 @Component({
   selector: 'app-account-logo',
@@ -13,7 +14,8 @@ export class LogoComponent implements OnInit {
 
   previewImage;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+              private staticsService: StaticsService) { }
 
   ngOnInit() {
     this.previewImage = this.form.get('logo').value;

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import {EventSelected} from '../../store/trip-template/event/event.actions';
+import {StaticsService} from '../../shared/services/statics.service';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -21,13 +22,15 @@ export class RouteSummarizedCardComponent implements OnInit {
   route_type: string;
   via: string;
 
-  constructor(private router: Router, private store: Store<AppState>) {
+  constructor(private router: Router,
+              private store: Store<AppState>,
+              private staticsService: StaticsService) {
 
   }
 
   ngOnInit() {
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
-      ? this.data.images[0].url
+      ? this.staticsService.getThumbnailUrl(this.data.images[0].url)
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.description = this.data.description;

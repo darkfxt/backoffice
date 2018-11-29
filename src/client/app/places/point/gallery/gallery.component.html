@@ -28,7 +28,7 @@
           </button>
         </mat-menu>
       </div>
-      <div class="image" [style.background-image]="'url('+image.url+')'"></div>
+      <div class="image" [style.background-image]="'url('+staticsService.getTinyPicUrl(image.url)+')'"></div>
     </li>
   </ul>
 </div>
