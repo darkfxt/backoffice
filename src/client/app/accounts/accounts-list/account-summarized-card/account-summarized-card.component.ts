@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {StaticsService} from '../../../shared/services/statics.service';
 
 @Component({
   selector: 'app-account-summarized-card',
@@ -15,11 +16,12 @@ export class AccountSummarizedCardComponent implements OnInit {
   subtitleData: any;
   description: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private staticsService: StaticsService) { }
 
   ngOnInit() {
     this.imageUrl = ( this.data.logo && this.data.logo.url )
-      ? this.data.logo.url
+      ? this.staticsService.getThumbnailUrl(this.data.logo.url)
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     // this.description = this.data.role.name;
