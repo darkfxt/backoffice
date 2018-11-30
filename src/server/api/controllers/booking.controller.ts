@@ -33,6 +33,8 @@ export class BookingController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
+      if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
+        request.body.company_id = (<any>request).loggedUser.CompanyID;
       const booking = await BookingService.create(request.body, request.headers);
 
       response.json(booking.data);
