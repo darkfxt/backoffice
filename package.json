@@ -55,6 +55,7 @@
     "express-healthcheck": "^0.1.0",
     "fs": "0.0.1-security",
     "gl-auth": "git+https://dboverio:gM5dFJchEhHAScwNzFLq@bitbucket.org/get-lost/gl-auth.git#master",
+    "html-pdf": "^2.2.0",
     "http-status": "^1.1.2",
     "jsonwebtoken": "^8.3.0",
     "mongodb": "^3.0.7",

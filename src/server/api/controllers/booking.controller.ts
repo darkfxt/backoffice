@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
-import GPXBuilder from '../../utils/GPXBuilder';
-import BookingDTO from '../entity/dto/BookingDTO';
-import {ItineraryFactory} from '../factories/itinerary.factory';
+import { ItineraryFactory } from '../factories/itinerary.factory';
+import * as pdf from 'html-pdf';
 
 const fs = require('fs');
 
@@ -73,9 +72,9 @@ export class BookingController {
 
   public static async getGPXFile(request: Request, response: Response, next: NextFunction) {
     try {
-      const content: string = await BookingService.getGPXContent(request.params.id, request.headers)
+      const content: string = await BookingService.getGPXContent(request.params.id, request.headers);
       // Construct file
-      const fileName: string = 'Booking' + request.params.id + '.gpx'
+      const fileName: string = 'Booking' + request.params.id + '.gpx';
       fs.writeFile(fileName, content, function () {
         console.log('Booking GPX file created');
         const file = fs.createReadStream(fileName);
@@ -95,8 +94,16 @@ export class BookingController {
   public static async getPDFFile(request: Request, response: Response, next: NextFunction) {
     try {
       const resp = await BookingService.getDetail(request.params.id, request.headers);
-      const itinerary = new ItineraryFactory(resp.data);
-      response.render('itinerary', itinerary);
+      const booking = new ItineraryFactory(resp.data);
+      if (request.query.edit)
+        return response.render('itinerary', booking);
+      response.render('itinerary', booking, (err, html) => {
+        pdf.create(html, {}).toStream((error, stream) => {
+          if (error)
+            throw error;
+          stream.pipe(response);
+        });
+      });
     } catch (err) {
       next(err);
     }

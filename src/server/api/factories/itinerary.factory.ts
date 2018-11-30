@@ -1,5 +1,6 @@
 import BookingDTO from '../entity/dto/BookingDTO';
 import DayOfTripDTO from '../entity/dto/DayOfTripDTO';
+import { config } from '../../config/env';
 
 const eventTypes = {
   POI: 'Highlight',
@@ -28,8 +29,17 @@ export class ItineraryFactory {
 
   header;
   itinerary;
+  basePath;
 
   constructor(booking: BookingDTO) {
+    this.basePath = config.env !== 'production' ? 'dev.appv2.taylorgps.com' : 'appv2.taylorgps.com';
+    this.header = {
+      id: booking._id,
+      name: booking.name,
+      passenger_name: (<any>booking).passenger_name,
+      start_date: (<any>booking.start_date).substr(0, 10).split('-').reverse().join('/'),
+      end_date: booking.end_date ? booking.end_date.toJSON().substr(0, 10).split('-').reverse().join('/') : ''
+    };
     this.itinerary = this.transformItinerary(booking.days, booking.start_date);
   }
 
@@ -49,6 +59,10 @@ export class ItineraryFactory {
         const meta = {
           ...calculateDistanceAndTime(event.product.legs),
           ...{things_to_know: event.product.things_to_know},
+          ...{highlights: event.product.middle_points
+              .filter(point => point.type !== 'WAYPOINT')
+              .map(point => point.name)
+          },
           via: event.product.via,
         };
         return <Event>{
