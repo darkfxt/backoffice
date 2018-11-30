@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import {EventSelected} from '../../store/trip-template/event/event.actions';
+import {StaticsService} from '../../shared/services/statics.service';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -19,19 +20,23 @@ export class RouteSummarizedCardComponent implements OnInit {
   description: string;
   created_by: string;
   route_type: string;
+  via: string;
 
-  constructor(private router: Router, private store: Store<AppState>) {
+  constructor(private router: Router,
+              private store: Store<AppState>,
+              private staticsService: StaticsService) {
 
   }
 
   ngOnInit() {
     this.imageUrl = ( this.data.images && this.data.images.length > 0 )
-      ? this.data.images[0].url
+      ? this.staticsService.getThumbnailUrl(this.data.images[0].url)
       : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     this.description = this.data.description;
     this.route_type = this.data.route_type;
     this.created_by = this.data.created_by;
+    this.via = this.data.via;
     const distanceAndTime = this.calculateDistanceAndTime(this.data.legs);
     this.subtitleData = {
       routeType: this.data.route_type,
@@ -49,7 +54,7 @@ export class RouteSummarizedCardComponent implements OnInit {
     });
 
     return {
-      distance: distance / 1000, duration: (duration / (60 * 60 )).toFixed(2)
+      distance: Math.floor(distance / 1000), duration: duration
     };
   }
 
@@ -59,7 +64,6 @@ export class RouteSummarizedCardComponent implements OnInit {
       return;
     }
     if (this.selectionMode === 'update') {
-      console.log('aca actualizaría el driving');
       return;
     }
     this.router.navigate([`/routes/${this.data._id}`]);

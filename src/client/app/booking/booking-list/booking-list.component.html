@@ -1,5 +1,5 @@
 <app-detail-header [disableBackButton]="true"
-                   [title]="'{bookings length} reservas encontradas' | translate: {value: 0}"
+                   [title]="totalElements + ' reservas encontradas'"
                    class="detail-header-content" navUrl="/booking/new">
   <div class="button-container save-button">
     <button (click)="onButtonClick()">
@@ -7,3 +7,23 @@
     </button>
   </div>
 </app-detail-header>
+<div class="app-container full-size body-content">
+
+  <div [hidden]="loading">
+    <app-common-list *ngIf="!loading"
+                     [list]="bookings$ | async"
+                     [component]="drawingComponent"
+                     [paginationMetadata]="metadata$ | async"
+                     [activateSelectionMode]="isDialog"
+                     [storeToWatch]="'booking'"
+                     (pageChanged)="onPageChanged($event)">
+
+      <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Aun no has creado reservas!!!</h2>
+        <p></p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nueva reserva</button>
+      </div>
+
+    </app-common-list>
+  </div>
+</div>

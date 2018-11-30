@@ -54,6 +54,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/accounts']);
   }
 
+  goToDevices() {
+    this.router.navigate(['/devices']);
+  }
+
   goToUsers() {
     this.router.navigate(['/users']);
   }

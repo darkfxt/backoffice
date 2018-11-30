@@ -38,6 +38,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   resolverSubscription: Subscription;
   updatePassword = true;
   _deleteSubscription: Subscription;
+  selectedRole: any;
+  role: FormControl;
 
   matcher = new ComparePasswordValidator();
 
@@ -64,7 +66,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.user.password = '.......';
 
     });
-
+    const selectedRole: any = this.user.role;
+    if (selectedRole !== '')
+      Reflect.deleteProperty(selectedRole, 'resources');
+    this.selectedRole = selectedRole;
+    this.role = new FormControl(selectedRole);
     this.form = this.fb.group({
       username: [this.user.username],
       password: [this.user.password, [Validators.required]],
@@ -93,15 +99,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
       this.userService.upsert({id: this.user.id, body: this.prepareToSave()}).subscribe(resp => {
         responseMessage = 'Usuario guardado con exito';
+        this.router.navigate(['/users']);
       }, err => {
         responseMessage = 'A ocurrido un error intentelo nuevamente';
       }, () => {
         this.bussy = false;
-        // this.snackBar.open(responseMessage, undefined, {
-        //   duration: 3000,
-        //   verticalPosition: 'bottom',
-        //   horizontalPosition: 'left'
-        // });
       });
     } else
       Object.keys(this.form.controls).forEach(field => {
@@ -155,6 +157,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           this.router.navigate(['/users']);
         });
     });
+  }
+
+  compareFunction(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
   }
 
 }

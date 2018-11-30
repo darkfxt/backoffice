@@ -35,6 +35,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
   metadata$: Observable<PaginationOptionsInterface>;
   paginationOptions: PaginationOptionsInterface;
   _subscription: Subscription;
+  totalElements: Number;
 
   constructor(private SegmentServiceInstance: RoutesService,
               private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
       pageSize: 10,
       length: 0
     };
+    this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.paginationOptions = {...this.paginationOptions, ...this.query};
     this.store.dispatch(new GetSegments(this.paginationOptions));
   }

@@ -3,9 +3,11 @@
     <img class="point-thumbnail" src="{{imageUrl}}" />
   </div>
   <div class="info-container">
-    <h3 class="summarized-card-title">{{title}}</h3>
+    <h3 class="summarized-card-title">{{title}}
+      <span *ngIf="via"> - Via {{via}}</span>
+    </h3>
     <span class="summarized-card-caption">{{route_type | translate}} - {{'Creado por {user}' | translate: {user: created_by} }}</span>
-    <p class="summarized-card-subtitle">{{'Distancia {distance} km. Tiempo estimado {duration} hours' | translate: subtitleData}}</p>
+    <p class="summarized-card-subtitle">{{'Distancia' | translate}} {{subtitleData.distance}}km. Tiempo estimado <span [innerHTML]="subtitleData.duration | hoursMinutes"></span></p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

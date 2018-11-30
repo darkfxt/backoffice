@@ -17,7 +17,8 @@ export enum TripTemplateActionTypes {
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
   ADD_DAY_TO_SELECTED_TEMPLATE = '[T.Template] Add a new Day to selected Template',
   UPDATE_DAY_ON_SELECTED_TEMPLATE = '[T.Template] Updating day on Template',
-  IMPORT_TRIP_TEMPLATE = '[T.Template] Importing Trip Template'
+  IMPORT_TRIP_TEMPLATE = '[T.Template] Importing Trip Template',
+  FILL_ITINERARY = '[T.Template] Fill itinerary with booking data'
 }
 
 export class GetTripTemplates implements Action {
@@ -106,6 +107,11 @@ export class ImportTripTemplate implements Action {
   constructor (readonly payload: {tripTemplateId: string}) { }
 }
 
+export class FillItinerary implements Action {
+  readonly type = TripTemplateActionTypes.FILL_ITINERARY;
+  constructor (readonly payload: {days: Array<DayOfTrip>}) { }
+}
+
 export type showLoaderTypes = GetTripTemplates | CreateTripTemplate | SaveTripTemplate;
 export const showLoaderActions = [
   TripTemplateActionTypes.GET_TRIP_TEMPLATES,
@@ -127,6 +133,6 @@ interface dayIndexType {
 }
 
 export type TripTemplateActions = GetTripTemplates | CreateTripTemplate | UpdateDayOnSelectedTemplate |
-  TripTemplatesRetrieved | SaveTripTemplate | TripTemplateSelected | ImportTripTemplate |
+  TripTemplatesRetrieved | SaveTripTemplate | TripTemplateSelected | ImportTripTemplate | FillItinerary |
   TripTemplateProcessedSuccesfully | TripTemplateEditionLeft | AddDayToSelectedTemplate |
   SetNameForTemplate | SetDescriptionForTemplate | TripTemplatesMetadataRetrieved | UpdateTripTemplate;

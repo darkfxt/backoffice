@@ -25,14 +25,12 @@ export class TripTemplatesComponent implements OnInit, OnDestroy {
   metadata$: Observable<PaginationOptionsInterface>;
   paginationOptions: PaginationOptionsInterface;
   _subscription: Subscription;
+  totalTemplates: number;
 
   constructor(private TripTemplateServiceInstance: TripTemplateService,
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>) {
-    // store.select(tripTemplateLoadingSelector).subscribe((isLoading) => {
-    //   this.loading = isLoading;
-    // });
     this.tripTemplates$ = this.store.pipe(select(getAllTripTemplates));
     this.metadata$ = this.store.pipe(select(getTripTemplatesMetadata));
     this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
@@ -46,11 +44,14 @@ export class TripTemplatesComponent implements OnInit, OnDestroy {
       pageSize: 10,
       length: 0
     };
+    this.metadata$.subscribe(metadata => this.totalTemplates = metadata.length);
     this.store.dispatch(new GetTripTemplates(this.paginationOptions));
   }
 
   ngOnDestroy() {
     this.store.dispatch(new TripTemplateEditionLeft('jo'));
+    if(this._subscription)
+      this._subscription.unsubscribe();
   }
 
 

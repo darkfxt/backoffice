@@ -59,8 +59,7 @@ export class SegmentEffects {
       mergeMap((response: any) => [
         new SegmentSelected(Object.assign(new Segment(), response.data[0])),
         new SnackbarOpen({
-          message: 'Segmento Creado',
-          action: 'Success'
+          message: 'Ruta guardada'
         })
       ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))

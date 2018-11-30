@@ -1,3 +1,5 @@
+@import "../../../../assets/variables";
+
 .box-container{
   background: white;
   border: 1px solid #DEDEDE;
@@ -7,4 +9,31 @@
 .app-container{
   margin-top: 24px;
   margin-bottom: -40px;
+
+  @media only screen and (max-width: 736px) {
+    margin-bottom: 8px;
+  }
+}
+
+mat-form-field{
+  width: 100%;
+}
+
+.mat-flat-button{
+  margin-left: 16px;
+  flex: 1 0 auto;
+}
+
+.add-template-button{
+  display: flex;
+  align-items: baseline;
+}
+
+.templates-search{
+  display: flex;
+  align-items: center;
+  p{
+    color: $gray-body;
+    margin-bottom: 0;
+  }
 }

@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="true"
-                   [title]="'{trip length} trips encontrados' | translate: {value: paginationOptions.length}"
+                   [title]="'{trip length} trips encontrados' | translate: {value: totalTemplates}"
                    class="detail-header-content" navUrl="/trip-templates/new">
   <div class="button-container save-button">
     <button (click)="onButtonClick()">

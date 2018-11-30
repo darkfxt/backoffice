@@ -33,6 +33,7 @@ export class UsersListComponent implements OnInit {
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface = new PaginationOptions();
   _subscription: Subscription;
+  totalElements: Number;
   constructor(private UserServiceInstance: UserService,
               private route: ActivatedRoute,
               private router: Router,
@@ -45,6 +46,9 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetUsers());
+    this.users$.subscribe( data => {
+      data.length ? this.totalElements = data.length : this.totalElements = 0;
+    });
   }
 
   onButtonClick() {

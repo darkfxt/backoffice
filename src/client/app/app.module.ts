@@ -32,6 +32,7 @@ import { LoadingModule } from './shared/loading/loading.module';
 import { StateModule } from './store/state.module';
 import { ErrorComponent } from './error/error.component';
 import { BookingModule } from './booking/booking.module';
+import {DevicesModule} from './devices/devices.module';
 
 
 
@@ -66,6 +67,7 @@ registerLocaleData(localeEs, 'es');
     BookingModule,
     UsersModule,
     AccountsModule,
+    DevicesModule,
     LoginRoutingModule,
     AppRoutingModule,
     MatButtonModule, MatIconModule, MatMenuModule,

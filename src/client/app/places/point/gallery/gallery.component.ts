@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import {StaticsService} from '../../../shared/services/statics.service';
 
 @Component({
   selector: 'app-gallery',
@@ -16,7 +17,8 @@ export class GalleryComponent implements OnInit {
   previewImages = [];
   deletedItems = [];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+              private staticsService: StaticsService) { }
 
   ngOnInit() {
   }

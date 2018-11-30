@@ -1,12 +1,13 @@
 <div class="box-container">
   <div class="status-header">
-    <div class="icon-ctn draft">
-      <mat-icon>edit</mat-icon>
+    <div class="icon-ctn {{status}}">
+      <mat-icon>{{status === 'DRAFT' ? 'edit' : (status === 'PUBLISHED' ? 'check' : 'close')}}</mat-icon>
     </div>
-    <h1>Estado borrador</h1>
+    <h1>Estado {{status | translate}}</h1>
   </div>
-  <p>
-    El viaje se encuentra en borrador. Puedes ver el itinerario haciendo click en <a href="https://app.taylorgps.com/trips/65-Patagonia 2017?status=draft" target="_blank">https://app.taylorgps.com/trips/65-Patagonia 2017?status=draft</a>, pero tus clientes no podrán acceder hasta que publiques el viaje.
-    Para publicar el viaje haz click en el boton <i>"publicar viaje"</i>
+  <p *ngIf="status === 'DRAFT'">
+    La reserva se encuentra en estado borrador. Para publicar el viaje  y que los viajeros puedan acceder a ella, haz click en el boton <i>"publicar reserva"</i>
   </p>
+  <p *ngIf="status === 'PUBLISHED'">La reserva se encuentra publicada. Comparte el siguiente link a los viajeros para que puedan acceder a su itinerario. <a href="https://{{basePath}}/trips/{{booking._id}}-{{booking.name}}" target="_blank">https://{{basePath}}/trips/{{booking._id}}-{{booking.name}}</a></p>
+  <p *ngIf="status === 'CANCELED'">Esta reserva ha sido cancelada. Para volver a publicarla has click en <i>"publicar reserva"</i></p>
 </div>

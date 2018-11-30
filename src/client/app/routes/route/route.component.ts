@@ -68,6 +68,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
+          this.router.navigate(['/routes']);
         }
       });
 
@@ -89,8 +90,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       images: this.fb.array(this.segment.images),
       origin: [this.segment.origin, Validators.required],
       destination: [this.segment.destination, Validators.required],
-      middle_points: this.fb.array(this.segment.middle_points.map(value => this.fb.group(value))),
-      things_to_know: this.fb.array(this.segment.things_to_know.map(value => this.fb.group(value))),
+      middle_points: this.fb.array(this.segment.middle_points.map(value => this.fb.group([value, Validators.required]))),
+      things_to_know: this.fb.array(this.segment.things_to_know.map(value => this.fb.group([value, Validators.required]))),
       file: undefined,
       deleted_images: this.fb.array([]),
       legs: this.segment.legs
@@ -113,11 +114,16 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       this.bussy = true;
       const formData = this.prepareToSave();
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
-    } else {
+    } else
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
-        control.markAsTouched({onlySelf: true});
+        markAsTtouched(control);
       });
+
+    function markAsTtouched(control) {
+      if (control.controls && control.controls.length)
+        return control.controls.forEach(subControl => markAsTtouched(subControl));
+      control.markAsTouched({onlySelf: true});
     }
   }
 

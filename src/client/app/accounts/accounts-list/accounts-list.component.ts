@@ -32,6 +32,7 @@ export class AccountsListComponent implements OnInit {
   drawingComponent: ListItemComponent;
   paginationOptions: PaginationOptionsInterface = new PaginationOptions();
   _subscription: Subscription;
+  totalElements: Number;
 
   constructor(private AccountServiceInstance: AccountsService,
               private route: ActivatedRoute,
@@ -45,6 +46,9 @@ export class AccountsListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new GetAccounts());
+    this.accounts$.subscribe( data => {
+      data.length ? this.totalElements = data.length : this.totalElements = 0;
+    });
 
   }
 

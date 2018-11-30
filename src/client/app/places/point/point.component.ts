@@ -80,6 +80,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
             return;
           }
+
+          this.router.navigate(['/places']);
       }
     });
 

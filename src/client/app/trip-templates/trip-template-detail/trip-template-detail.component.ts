@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,7 @@ import {
   SaveTripTemplate,
   TripTemplateEditionLeft,
   TripTemplateSelected,
-  GetTripTemplates, CreateTripTemplate, ImportTripTemplate
+  GetTripTemplates, CreateTripTemplate, ImportTripTemplate, FillItinerary
 } from '../../store/trip-template/trip-template.actions';
 import { TripTemplate, Event, DayOfTrip } from '../../shared/models/TripTemplate';
 import { AppState } from '../../store/shared/app.interfaces';
@@ -35,14 +35,15 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   @Input() fromBooking: boolean;
   @Input() set templateToImport(templateToImport: string) {
-    if(templateToImport !== null) {
-      console.log('me estás metiendo el' + templateToImport);
+    if (templateToImport !== null) {
       this._templateToImport = templateToImport;
       this.importTemplate(templateToImport);
     }
   }
+  @Input() fillDays?: Array<DayOfTrip>;
   _templateToImport: string;
-  form: FormGroup;
+  _bookingToFill: string;
+  @Input() form: FormGroup;
   loading = false;
   loadItinerary = false;
   tripTemplate = new TripTemplate();
@@ -50,9 +51,11 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   tripSubscription: Subscription;
   events: Event[];
   days$: Observable<DayOfTrip[]>;
+  daysSubscription: Subscription;
   _deleteSubscription: Subscription;
-
   _selectedRouteTemplateId: string;
+
+  @Output() templateUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -62,13 +65,22 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialog: MatDialog
     ) {
-    this.form = this.fb.group({
-      itinerary: this.fb.array([
-        this.fb.control('')
-      ]),
-      name: ['', Validators.required],
-      description: this.fb.control('')
-    });
+    if (this.fromBooking) {
+      this.form = this.fb.group({
+        itinerary: this.fb.array([
+          this.fb.control('')
+        ]),
+      });
+    } else {
+      this.form = this.fb.group({
+        itinerary: this.fb.array([
+          this.fb.control('')
+        ]),
+        name: ['', Validators.required],
+        description: this.fb.control('')
+      });
+    }
+
 
     this.tripTemplate$ = this.store.pipe(select(getAllTripTemplates));
     this.store.dispatch(new GetTripTemplates(new PaginationOptions()));
@@ -93,7 +105,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       } else {
         this.tripTemplate = new TripTemplate();
         this.tripTemplate._id = 'new';
-        this.tripTemplate.days = [new DayOfTrip([])];
+        this.tripTemplate.days = this.fillDays ? this.fillDays : [new DayOfTrip([])];
         const templateIDs: Observable<string[]> = this.store.pipe(select(getTripTemplatesIds));
         this.tripSubscription = templateIDs
           .subscribe((templates: any) => {
@@ -109,26 +121,9 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(value => this._selectedRouteTemplateId = value.id );
-
-    if (this.tripTemplate._id !== 'new') {
-      this.store.select(getCurrentTripTemplate).subscribe((data: any) => {
-        if (data) {
-          if (data._id &&
-            data._id !== 'new' && this._selectedRouteTemplateId === 'new') {
-            this.router.navigate([`/trip-templates/${data._id}`]);
-          }
-          /*if (data.selectedTripTemplateEvents) {
-            this.events = data.selectedTripTemplateEvents;
-            this.form = this.fb.group({
-              itinerary: this.fb.array(data.selectedTripTemplateEvents),
-              name: [this.form.value.name, Validators.required],
-              description: this.fb.control(this.form.value.description)
-            });
-          }*/
-        }
-      });
+    if (this.fillDays) {
+      setTimeout(() => this.fillItineraryWithDays(this.fillDays), 0);
     }
-
 
   }
 
@@ -143,6 +138,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
+
+    if (this.daysSubscription)
+      this.daysSubscription.unsubscribe();
+
   }
 
   saveTripTemplate() {
@@ -163,7 +162,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   attachItineraryToTrip(tripTemplate: TripTemplate) {
-    return this.days$.subscribe(days => tripTemplate.days = days);
+    this.daysSubscription = this.days$.subscribe(days => {
+      if (days)
+        tripTemplate.days = days;
+    });
   }
 
   deleteTripTemplate() {
@@ -194,7 +196,14 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   importTemplate(templateId) {
-    console.log('mirá hasta donde llegaste con este ' + templateId);
     this.store.dispatch(new ImportTripTemplate({tripTemplateId: templateId}));
+  }
+
+  fillItineraryWithDays(daysToImport: Array<DayOfTrip>) {
+    this.store.dispatch(new FillItinerary({days: daysToImport}))
+  }
+
+  onTemplateUpdated(event) {
+    this.templateUpdated.emit(event);
   }
 }

@@ -9,8 +9,16 @@
 
   color: rgba(0,0,0,0.54);
 
-  &.draft{
+  &.DRAFT{
     background: #ffe000;
+  }
+
+  &.PUBLISHED{
+    background: #54bf39;
+  }
+
+  &.CANCELED{
+    background: #f44336;
   }
 }
 

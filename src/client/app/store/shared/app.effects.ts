@@ -10,31 +10,41 @@ import * as fromRoute from '../route/route.actions';
 import * as fromPlace from '../place/place.actions';
 import * as fromAccounts from '../account/account.actions';
 import * as fromTemplates from '../trip-template/trip-template.actions';
+import * as fromBooking from '../booking/booking.actions';
+import * as fromDevices from '../device/device.actions';
 
 const showLoaderActions = [].concat(
   fromUser.showLoaderActions,
   fromRoute.showLoaderActions,
   fromPlace.showLoaderActions,
   fromAccounts.showLoaderActions,
-  fromTemplates.showLoaderActions
+  fromTemplates.showLoaderActions,
+  fromBooking.showLoaderActions,
+  fromDevices.showLoaderActions
 );
 const hideLoaderActions = [].concat(
   fromUser.hideLoaderActions,
   fromRoute.hideLoaderActions,
   fromPlace.hideLoaderActions,
   fromAccounts.hideLoaderActions,
-  fromTemplates.hideLoaderActions
+  fromTemplates.hideLoaderActions,
+  fromBooking.hideLoaderActions,
+  fromDevices.hideLoaderActions
 );
 type showLoaderTypes = fromUser.showLoaderTypes
                      & fromPlace.showLoaderTypes
                      & fromRoute.showLoaderTypes
                      & fromAccounts.showLoaderTypes
-                     & fromTemplates.showLoaderTypes;
+                     & fromTemplates.showLoaderTypes
+                     & fromBooking.showLoaderTypes
+                     & fromDevices.showLoaderTypes;
 type hideLoaderTypes = fromUser.hideLoaderTypes
                      & fromPlace.hideLoaderTypes
                      & fromRoute.hideLoaderTypes
                      & fromAccounts.hideLoaderTypes
-                     & fromTemplates.hideLoaderTypes;
+                     & fromTemplates.hideLoaderTypes
+                     & fromBooking.hideLoaderTypes
+                     & fromDevices.hideLoaderTypes;
 @Injectable()
 export class AppEffects {
 

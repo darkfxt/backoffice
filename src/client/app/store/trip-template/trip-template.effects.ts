@@ -1,6 +1,6 @@
   import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import {switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter, delay} from 'rxjs/internal/operators';
+import { switchMap, map, mergeMap, catchError, withLatestFrom, tap, filter, delay } from 'rxjs/internal/operators';
 
 import {
   GetTripTemplates,
@@ -11,23 +11,26 @@ import {
   SaveTripTemplate,
   TripTemplateProcessedSuccesfully,
   TripTemplateSelected,
-  TripTemplatesMetadataRetrieved, UpdateTripTemplate, ImportTripTemplate
+  TripTemplatesMetadataRetrieved, UpdateTripTemplate, ImportTripTemplate, FillItinerary
 } from './trip-template.actions';
-import { TripTemplate, TripTemplateWithMetadata, Event } from '../../shared/models/TripTemplate';
+import {TripTemplate, TripTemplateWithMetadata, Event, DayOfTrip} from '../../shared/models/TripTemplate';
 import { TripTemplateService } from '../../shared/services/trip-template.service';
   import { of } from 'rxjs';
   import { HttpError } from '../shared/actions/error.actions';
   import { HttpErrorResponse } from '@angular/common/http';
   import { SnackbarOpen } from '../shared/actions/snackbar.actions';
-  import {ClearEvents, EventsRetrieved} from './event/event.actions';
+  import { ClearEvents, EventsRetrieved } from './event/event.actions';
   import { AppState } from '../shared/app.interfaces';
   import { Store } from '@ngrx/store';
-  import { DaysRetrieved } from './day/day.actions';
+  import {AddDay, DaysRetrieved} from './day/day.actions';
+  import { BookingService } from '../../shared/services/booking.service';
+  import {Booking} from '../../shared/models/Booking';
 
 @Injectable()
 export class TripTemplateEffects {
   constructor(private actions$: Actions,
               private TripTemplateServiceInstance: TripTemplateService,
+              private BookingServiceInstance: BookingService,
               private store: Store<AppState>) {
   }
 
@@ -42,21 +45,6 @@ export class TripTemplateEffects {
       ]),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))
     );
-
-  // @Effect()
-  // createTripTemplate$ = this.actions$
-  //   .ofType(TripTemplateActionTypes.CREATE_TRIP_TEMPLATE)
-  //   .pipe(
-  //     switchMap((tripTemplate: CreateTripTemplate) => this.TripTemplateServiceInstance.create(tripTemplate.payload)),
-  //     mergeMap((serverResponse: any) => [
-  //       new TripTemplatesRetrieved(serverResponse),
-  //       new SnackbarOpen({
-  //         message: 'Template creado',
-  //         action: 'Success'
-  //       })
-  //     ]),
-  //     catchError((e: HttpErrorResponse) => of(new HttpError(e)))
-  //   );
 
   @Effect()
   setDaysForSelectedTrip = this.actions$
@@ -80,6 +68,22 @@ export class TripTemplateEffects {
         const updated: TripTemplate =
           Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate],
             {days: updatedDays});
+        return new UpdateTripTemplate({tripTemplate: updated});
+      }),
+      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+    );
+
+  @Effect()
+  importDaysFromBooking = this.actions$
+    .ofType(TripTemplateActionTypes.FILL_ITINERARY)
+    .pipe(
+      switchMap((action: any) => of(action.payload)),
+      withLatestFrom(this.store),
+      map((response: any) => {
+        const days = response[0].days.slice(0);
+        const updated: TripTemplate =
+          Object.assign({}, response[1].tripTemplates.entities[response[1].tripTemplates.selectedTripTemplate],
+            {days});
         return new UpdateTripTemplate({tripTemplate: updated});
       }),
       catchError((e: HttpErrorResponse) => of(new HttpError(e)))

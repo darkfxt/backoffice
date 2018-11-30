@@ -6,6 +6,8 @@ export class AccountsService {
 
   public static async getAll(query, headers): Promise<any> {
     let queryParams = `?size=${query.size}&page=${query.page}`;
+    if(query.company_id)
+      queryParams += '&company_id=' + query.company_id;
     if (query.search) {
       queryParams += `&search=${query.search}`;
     }
@@ -23,7 +25,7 @@ export class AccountsService {
   }
 
   public static async update(id, body, headers): Promise<any> {
-    return axios.patch(`${config.core.url}/accounts/${id}`, body, {headers: {authorization: headers.authorization}});
+    return axios.put(`${config.core.url}/accounts/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 
   public static async delete(id, headers): Promise<any> {

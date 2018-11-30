@@ -36,6 +36,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state};
     case TripTemplateActionTypes.TRIP_TEMPLATES_RETRIEVED:
       return adapter.addAll(action.payload, state);
+    case TripTemplateActionTypes.TRIP_TEMPLATES_METADATA_RETRIEVED:
+      return {...state, metadata: action.payload};
     case TripTemplateActionTypes.TRIP_TEMPLATE_SELECTED:
       return {...state, selectedTripTemplate: action.payload};
     case TripTemplateActionTypes.SAVE_TRIP_TEMPLATE:
@@ -56,6 +58,8 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state, entities, ids};
     case TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE:
       return {...state, importTemplateId: action.payload.tripTemplateId};
+    case TripTemplateActionTypes.FILL_ITINERARY:
+      return {...state};
     default:
       return state;
   }
