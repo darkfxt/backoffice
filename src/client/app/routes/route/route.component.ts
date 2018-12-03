@@ -90,8 +90,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       images: this.fb.array(this.segment.images),
       origin: [this.segment.origin, Validators.required],
       destination: [this.segment.destination, Validators.required],
-      middle_points: this.fb.array(this.segment.middle_points.map(value => this.fb.group([value, Validators.required]))),
-      things_to_know: this.fb.array(this.segment.things_to_know.map(value => this.fb.group([value, Validators.required]))),
+      middle_points: this.fb.array(this.segment.middle_points.map(value => this.fb.group(value))),
+      things_to_know: this.fb.array(this.segment.things_to_know.map(value => this.fb.group(value))),
       file: undefined,
       deleted_images: this.fb.array([]),
       legs: this.segment.legs

@@ -6,9 +6,10 @@ mixin driving(event)
       if(event.meta.via)
         span  - Via #{event.meta.via}
     p
-      span.avg-time Avg. time #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min
+      span.avg-time Avg. time #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min.
       span.distance Distance #{event.meta.distance}km
-    p= event.description
+    if event.description
+      p= event.description !== ''
     if event.meta.highlights.length
       div
         h5 Puntos de interes
@@ -44,7 +45,7 @@ html
         margin-bottom: 1cm;
       }
 
-      ul, li{
+      ul, li, p{
         margin: 0;
         list-style: none;
         padding: 0;
@@ -70,41 +71,43 @@ html
 
       .main{
         background: #fff;
-        padding: 1.5em 1em;
+        padding: 1.5rem 1rem;
         box-sizing: border-box;
+        border-radius: 8px;
+        margin-bottom: 2rem;
       }
       .event-cluster{
-        padding: 1em 0;
+        padding: 1rem 0;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        margin: 0 1em 1.5em;
+        margin: 0 1rem 1.5rem;
       }
       .event-cluster h4{
         font-weight: 500;
-        font-size: 1em;
-        line-height: 1.25em;
+        font-size: 1rem;
+        line-height: 1.25rem;
         color: rgba(0,0,0,0.7);
-        margin-bottom: 0.625em;
+        margin-bottom: 0.625rem;
         margin-top: 0;
       }
 
       .event-cluster h5 {
         font-weight: 500;
-        font-size: 0.625em;
-        line-height: 0.625em;
+        font-size: 0.625rem;
+        line-height: 0.625rem;
         color: rgba(0, 0, 0, 0.54);
-        margin-bottom: 0;
+        margin: 0;
       }
 
       .event-cluster p{
-        font-size: 0.875em;
-        line-height: 1.25em;
-        margin: 0 0 0.5em 0;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin: 0 0 0.5rem 0;
         color: rgba(0,0,0,0.7);
       }
 
       .event-type{
-        font-size: 0.625em;
-        line-height: 0.625em;
+        font-size: 0.625rem;
+        line-height: 0.625rem;
         color: rgba(0,0,0,0.54);
       }
 
@@ -112,26 +115,27 @@ html
         page-break-inside: avoid;
       }
 
-      .day-list li{
-        page-break-after: auto;
+      .day-list li:last-child .event-cluster{
+        margin-bottom: 0;
+        border-bottom: none;
       }
 
       .day-ctn{
         float: left;
-        width: 2.5em;
-        margin-top: 1em;
+        width: 2.5rem;
+        margin-top: 1rem;
         color: #FF5252;
         text-align: center;
       }
       .nod-ctn{
-        font-size: 1.625em;
+        font-size: 1.625rem;
         font-weight: 500;
         display: block;
       }
 
       .month-ctn{
-        font-size: 1.125em;
-        line-height: 0.625em;
+        font-size: 1.125rem;
+        line-height: 0.625rem;
         display: block;
       }
 
@@ -159,15 +163,43 @@ html
 
       .events-list{
         float: left;
-        width: calc(100% - 2.5em);
+        width: calc(100% - 2.5rem);
+      }
+
+      .title{
+        padding: 1rem;
       }
 
       .title h1{
         float: left;
+        margin: 0;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.7);
       }
 
       .title span{
         float: right;
+      }
+
+      .description{
+        color: rgba(0,0,0,0.54);
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        padding: 0 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .description a{
+        white-space: nowrap;
+        color: #1356CC;
+      }
+
+      header h2{
+        font-size: 1.5rem;
+        color: rgba(0,0,0,0.7);
+        font-weight: 500;
+        padding: 0 1rem;
+        margin: 0 0 0.75rem 0;
       }
 
       /* close commented backslash hack */
@@ -178,7 +210,13 @@ html
         h1= header.name
         span= header.start_date + ' - ' + header.end_date
       h2= header.passenger_name
-      a(href="https://#{basePath}/trips/#{header.id}-#{header.name}") https://#{basePath}/trips/#{header.id}-#{header.name}
+      div.description
+        p
+          span Accede al viaje a través de tu smartphone ingresando a&nbsp;
+          a(href="https://#{basePath}/trips/#{header.id}-#{header.name}") https://#{basePath}/trips/#{header.id}-#{header.name}
+          span .
+          br
+          span En él encontraras el detalle de tu itinerario, fotos y descripciones de los lugares que visitarás y todas las rutas para que navegues desde tu dispositivo.
     main.main
       ul.day-list
         each day in itinerary
@@ -194,7 +232,6 @@ html
                       +driving(event)
                     else
                       +place(event)
-      footer footer
 
 
 
