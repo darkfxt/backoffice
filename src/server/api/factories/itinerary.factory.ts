@@ -38,7 +38,9 @@ export class ItineraryFactory {
       name: booking.name,
       passenger_name: (<any>booking).passenger_name,
       start_date: (<any>booking.start_date).substr(0, 10).split('-').reverse().join('/'),
-      end_date: booking.end_date ? booking.end_date.toJSON().substr(0, 10).split('-').reverse().join('/') : ''
+      end_date: (<any>booking.end_date).substr(0, 10).split('-').reverse().join('/'),
+      booking_reference: booking.booking_reference,
+      comment: booking.comment
     };
     this.itinerary = this.transformItinerary(booking.days, booking.start_date);
   }

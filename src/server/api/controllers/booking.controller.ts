@@ -78,7 +78,6 @@ export class BookingController {
       // Construct file
       const fileName: string = 'Booking' + request.params.id + '.gpx';
       fs.writeFile(fileName, content, function () {
-        console.log('Booking GPX file created');
         const file = fs.createReadStream(fileName);
         file.on('end', function () {
           fs.unlink(fileName, function () {
@@ -103,6 +102,7 @@ export class BookingController {
         pdf.create(html, {}).toStream((error, stream) => {
           if (error)
             throw error;
+          response.header('Content-Disposition', 'attachment; filename="Booking.pdf"');
           stream.pipe(response);
         });
       });

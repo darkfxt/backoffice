@@ -5,14 +5,8 @@ import { config } from '../../config/env';
 export class AccountsService {
 
   public static async getAll(query, headers): Promise<any> {
-    let queryParams = `?size=${query.size}&page=${query.page}`;
-    if(query.company_id)
-      queryParams += '&company_id=' + query.company_id;
-    if (query.search) {
-      queryParams += `&search=${query.search}`;
-    }
     return axios
-      .get(`${config.core.url}/accounts`, {headers: {authorization: headers.authorization}});
+      .get(`${config.core.url}/accounts`,  { params: query, headers: {authorization: headers.authorization}});
   }
 
   public static async create(body, headers): Promise<any> {

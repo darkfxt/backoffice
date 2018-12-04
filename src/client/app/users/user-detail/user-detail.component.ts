@@ -13,6 +13,7 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
+import { TRANSLATE } from '../../translate-marker';
 
 export class ComparePasswordValidator implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -22,6 +23,13 @@ export class ComparePasswordValidator implements ErrorStateMatcher {
     return (invalidCtrl || invalidParent);
   }
 }
+
+const roles = [
+  TRANSLATE('TAYLOR_ADMIN'),
+  TRANSLATE('USER_ADMIN'),
+  TRANSLATE('USER_CONTENT'),
+  TRANSLATE('USER_EXECUTIVE')
+];
 
 @Component({
   selector: 'app-user-detail',

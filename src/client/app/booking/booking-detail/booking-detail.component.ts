@@ -97,8 +97,10 @@ export class BookingDetailComponent implements OnInit {
   }
 
   prepareToSave(): Booking {
-    const booking: Booking = new Booking();
+    const booking: any = new Booking();
     Object.assign(booking, {days: this.formItinerary.value}, this.formHeader.value);
+    booking.end_date = new Date(booking.start_date);
+    booking.end_date.setDate(booking.end_date.getDate() + booking.days.length);
     return booking;
   }
 
@@ -124,16 +126,17 @@ export class BookingDetailComponent implements OnInit {
     return invalidEvents.length <= 0;
   }
 
-  exportGPS() {
+  exportFile(type) {
 
-    this.bs.exportGPX(this.booking._id).subscribe(res => {
-      const blob = new Blob([res], { type: 'Content-Disposition'});
+    this.bs.exportFile(this.booking._id, type).subscribe(res => {
+      const contentType = type === 'pdf' ? 'application/pdf' : 'Content-Disposition';
+      const blob = new Blob([res], { type: contentType});
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       document.body.appendChild(a);
       a.setAttribute('style', 'display: none');
       a.href = url;
-      a.download = this.booking.name + ' - ' + this.booking.passenger_name + '.gpx';
+      a.download = this.booking.name + ' - ' + this.booking.passenger_name + '.' + type;
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove(); // remove the element
