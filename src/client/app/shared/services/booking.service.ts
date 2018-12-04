@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
@@ -40,9 +40,9 @@ export class BookingService {
     return this.http.delete(`/api/bookings/${id}`);
   }
 
-  exportGPX(id: string): Observable<any> {
+  exportFile(id: string, type: string): Observable<any> {
     return this.http
-      .get(`/api/bookings/${id}/export/gpx`, {responseType: 'text'});
+      .get(`/api/bookings/${id}/export/${type}`, {responseType: 'blob'});
   }
 
   /**

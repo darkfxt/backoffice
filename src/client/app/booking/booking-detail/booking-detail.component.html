@@ -5,7 +5,8 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" overlapTrigger="false">
-      <button mat-menu-item (click)="exportGPS()">Exportar GPX</button>
+      <button mat-menu-item (click)="exportFile('gpx')">Exportar GPX</button>
+      <button mat-menu-item (click)="exportFile('pdf')">Exportar PDF</button>
     </mat-menu>
   </div>
   <div class="button-container save-button">

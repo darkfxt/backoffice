@@ -12,15 +12,11 @@ export class DeviceSummarizedCardComponent implements OnInit {
   @Input() selectionMode = false;
   imageUrl: string;
   title: string;
-  subtitleData: any;
   description: string;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.imageUrl = ( this.data.logo && this.data.logo.url )
-      ? this.data.logo.url
-      : '/assets/images/imageNotFound.png';
     this.title = this.data.name;
     // this.description = this.data.role.name;
   }
