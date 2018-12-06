@@ -33,6 +33,7 @@ import { StateModule } from './store/state.module';
 import { ErrorComponent } from './error/error.component';
 import { BookingModule } from './booking/booking.module';
 import {DevicesModule} from './devices/devices.module';
+import {FooterComponent} from './shared/footer/footer.component';
 
 
 
@@ -48,6 +49,7 @@ registerLocaleData(localeEs, 'es');
   declarations: [
     AppComponent,
     HeaderComponent,
+    FooterComponent,
     PageNotFoundComponent,
     LoginComponent,
     TagsComponent,

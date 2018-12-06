@@ -67,6 +67,17 @@ ul{
   }
 }
 
+.footer-ctn {
+  border-top: 1px solid $gray-line;
+  height: 27px;
+  .tg-bo-version {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    size: 12px;
+    color: #777;
+    margin-right: 16px;
+    float: right;
+  }
+}
 
 .box-container{
   padding: 24px;
