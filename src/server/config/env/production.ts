@@ -16,7 +16,7 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://tg-geolocation-production:6006/geov2'
+    url: 'http://gl-apibe-production:6002/geo'
   },
   routes: {
     url: 'http://gl-routes-production:6001/routes'
