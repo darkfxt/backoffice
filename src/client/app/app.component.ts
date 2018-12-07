@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
   template: `
     <app-header></app-header>
     <router-outlet></router-outlet>
-    <app-footer></app-footer>
     <app-loading [hidden]="!loading"></app-loading>
+    <app-footer></app-footer>
   `
 })
 export class AppComponent implements OnInit {
