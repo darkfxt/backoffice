@@ -1,9 +1,10 @@
-import PlaceDTO from '../dto/PlaceDTO';
+import { PlaceDTO } from '../dto/PlaceDTO';
 import { PlaceDAO } from '../dao/PlaceDAO';
+import { Place } from '../Place';
 
 export class PlaceAdapter {
   fitToDAO(): PlaceDAO {
-    const transformed = new PlaceDAO;
+    const transformed = new PlaceDAO();
     console.log(this);
     return transformed;
   }
@@ -13,3 +14,4 @@ export class PlaceAdapter {
     return transformed;
   }
 }
+

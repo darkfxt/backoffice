@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlaceService } from '../../shared/services/place.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import Place from '../../../../server/api/entity/Place';
 import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog } from '@angular/material';
@@ -17,6 +16,7 @@ import { EventSelected, TerminalSelected, RemoveEvent } from '../../store/trip-t
 import { getSelectedDriving } from '../../store/trip-template';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { Place } from '../../shared/models/Place';
 
 @Component({
   selector: 'app-point',
@@ -99,17 +99,17 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       type: [this.place.type, Validators.required],
       description: [this.place.description],
       geo: this.fb.group({
-        label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
-        point: this.place.geo.point,
+        label: [`${this.place.geo.lat},${this.place.geo.lng}`, Validators.required],
+        point: this.place.geo,
         address: this.fb.group({
-          country_code: this.place.geo.address.country_code,
-          country: this.place.geo.address.country,
-          locality: this.place.geo.address.locality,
-          region: this.place.geo.address.region,
-          postalCode: this.place.geo.address.postalCode,
-          route: this.place.geo.address.route,
-          street_number: this.place.geo.address.street_number,
-          formatted_address: this.place.geo.address.formatted_address
+          country_code: this.place.address.country_code,
+          country: this.place.address.country,
+          locality: this.place.address.locality,
+          region: this.place.address.region,
+          postalCode: this.place.address.postalCode,
+          route: this.place.address.route,
+          street_number: this.place.address.street_number,
+          formatted_address: this.place.address.formatted_address
         })
       }),
       place_id: this.place.place_id,

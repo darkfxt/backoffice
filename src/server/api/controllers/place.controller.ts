@@ -86,13 +86,11 @@ export class PlaceController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       data.company_id = (request as any).loggedUser.CompanyID;
       data.created_by = (request as any).loggedUser.Username;
-      // const oPlace = new Place(data);
+      const oPlace = new Place(data);
       let place;
       if (request.params.place_id) {
-        const oPlace = new Place(data);
         place = await PlaceService.update(request.params.place_id, oPlace, request.headers);
       } else {
-        const oPlace = new PlaceDTO(data);
         delete oPlace._id;
         place = await PlaceService.create(oPlace, request.headers);
       }

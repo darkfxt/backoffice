@@ -1,4 +1,5 @@
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
+import { PlaceType } from './enum/PlaceType';
 
 export class Point {
 
@@ -19,4 +20,28 @@ export class PointWithMetadata {
     this.data = points;
     this.metadata = metadata;
   }
+}
+
+
+export class Place {
+  _id: string;
+  name: string;
+  company_id: number;
+  created_by: string;
+  description: string;
+  geo: Coordinates;
+  images: Array<any>;
+  type: PlaceType;
+  search_name: string;
+  status: ActiveStatus;
+}
+
+interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+enum ActiveStatus {
+  'ACTIVE',
+  'INACTIVE'
 }
