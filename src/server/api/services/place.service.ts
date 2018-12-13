@@ -6,6 +6,8 @@ import { until } from 'selenium-webdriver';
 import elementIsSelected = until.elementIsSelected;
 import { PlaceFactory } from '../factories/place.factory';
 import Place from '../entity/Place';
+import PlaceDTO from '../entity/dto/PlaceDTO';
+import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
 
 
 export class PlaceService {
@@ -15,8 +17,10 @@ export class PlaceService {
       .get(`${config.geo.url}/places`, {params: query, headers: {authorization: headers.authorization}});
   }
 
-  public static async create(body, headers: any): Promise<any> {
-    const ret = await axios.post(`${config.geo.url}/places`, body, {headers: {authorization: headers.authorization}});
+  public static async create(body: PlaceDTO, headers: any): Promise<any> {
+    const PlaceAdapterInstance = new PlaceAdapter();
+    const PlaceDAOInstance = PlaceAdapterInstance.fitToDAO();
+    const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
     return ret;
   }
 
@@ -62,7 +66,7 @@ export class PlaceService {
           query.push(`${key}=${value}`);
       }
     );
-    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`, {headers: {authorization: headers.authorization}});
+    return axios.get(`${config.geo.url}/places?search=${params.q /*query.join('&')*/}`, {headers: {authorization: headers.authorization}});
   }
 
 }

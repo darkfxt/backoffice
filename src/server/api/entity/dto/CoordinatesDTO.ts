@@ -1,7 +1,6 @@
-import PointDTO from './PointDTO';
-
 interface CoordinatesDTO {
-    point: PointDTO;
+  lat: number;
+  lng: number;
 }
 
 export default CoordinatesDTO;

@@ -16,7 +16,7 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'https://dev.api.taylorgps.com/geo'
+    url: 'https://dev.api.taylorgps.com/geov2'
   },
   routes: {
     url: 'https://dev.api.taylorgps.com/routes'
