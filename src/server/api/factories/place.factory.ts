@@ -1,16 +1,16 @@
 import Place from '../entity/Place';
 import GooglePlace, { AddressComponent } from '../entity/GooglePlace';
 import { config } from '../../config/env';
+import { PlaceType } from '../entity/enum/PlaceType';
 
 export class PlaceFactory {
 
   static getPlaceFromGoogle(glPlace: GooglePlace): Place {
     const place: Place = new Place();
-    place.place_id = glPlace.place_id;
     place.name = glPlace.name;
     place.description = '';
     place.status = 1;
-    place.type = 'POI';
+    place.type = PlaceType.POI;
     place.geo = {
       point: glPlace.geometry.location,
       address: {

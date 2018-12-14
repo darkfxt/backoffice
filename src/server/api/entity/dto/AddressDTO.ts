@@ -1,9 +1,12 @@
-export interface AddressDTO {
+import { IAddressDTO } from './IAddressDTO';
+
+export class AddressDTO implements IAddressDTO {
   country: string;
-  Locality: string;
-  Region: string;
-  PostalCode: string;
-  Route: string;
-  StreetNumber: string;
-  FormattedAddress: string;
+  country_code: string;
+  formatted_address: string;
+  locality: string;
+  postalCode: string;
+  region: string;
+  route: string;
+  street_number: string;
 }

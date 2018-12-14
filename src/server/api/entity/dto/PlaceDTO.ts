@@ -1,15 +1,16 @@
-import CoordinatesDTO from './CoordinatesDTO';
-import ProductDTO from './ProductDTO';
-import ImageDTO from './ImageDTO';
-import { PlaceType } from '../enum/PlaceType';
 import { ActiveStatus } from '../enum/ActiveStatus';
+import { PlaceType } from '../enum/PlaceType';
+import { ProductDTO } from './ProductDTO';
 import { GeoDTO } from './GeoDTO';
+import { IPlaceDTO } from './IPlaceDTO';
+import { ImageDTO } from './ImageDTO';
 
-export interface PlaceDTO extends ProductDTO {
+export class PlaceDTO extends ProductDTO implements IPlaceDTO {
   description: string;
   geo: GeoDTO;
   images: Array<ImageDTO>;
-  type: PlaceType;
   search_name: string;
   status: ActiveStatus;
+  type: PlaceType;
+
 }

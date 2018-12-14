@@ -1,7 +1,7 @@
-export interface ProductDAO {
-  id: string;
+export interface IProductDAO {
+  _id: string;
   name: string;
-  type: string;
+  type;
   company_id: number;
   createdBy: string;
   createdAt: string;

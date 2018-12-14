@@ -1,5 +1,5 @@
 import EventType from '../enum/EventType';
-import ProductDTO from './ProductDTO';
+import IProductDTO from './IProductDTO';
 
 interface EventDTO {
   _id: string;
@@ -9,7 +9,7 @@ interface EventDTO {
   eventType: EventType;
   time: Date;
   order: number;
-  product?: ProductDTO;
+  product?: IProductDTO;
   company_id: number;
   color: string;
   created_by: string;

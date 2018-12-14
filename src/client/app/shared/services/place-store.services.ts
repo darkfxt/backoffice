@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import Place from '../../../../server/api/entity/Place';
+import { Place } from '../models/Place';
 
 
 @Injectable({

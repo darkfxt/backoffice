@@ -1,7 +1,9 @@
 import BookingDTO from '../api/entity/dto/BookingDTO';
 import EventType from '../api/entity/enum/EventType';
-import PlaceDTO from '../api/entity/dto/PlaceDTO';
-import RouteDTO from '../api/entity/dto/RouteDTO';
+import { IPlaceDTO } from '../api/entity/dto/IPlaceDTO';
+import IRouteDTO from '../api/entity/dto/IRouteDTO';
+import {PlaceDTO} from '../api/entity/dto/PlaceDTO';
+import {RouteDTO} from '../api/entity/dto/RouteDTO';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -18,7 +20,7 @@ class GPXBuilder {
       day.events.forEach(event => {
         switch (event.product.type) {
           case undefined: // FIXME No tiene que ser asi, deberiamos tener un type en cada evento de cada dia, para distinguir de que se trata. Ponerlo en el insert de un booking.
-            const route: RouteDTO = event.product as RouteDTO;
+            const route: IRouteDTO = event.product as RouteDTO;
             routes = routes.concat(this.initRoute(event.name, startDate, routeIndex++));
             /**
              * First, we must add every route waypoint to the first part of the GPX file
@@ -27,32 +29,32 @@ class GPXBuilder {
              * We must add origin, middle_point and destination as waypoints, respectively
              */
 
-            // Route Origin
+            // route Origin
             order += 1;
             gpxContent = gpxContent
               .concat(this.addWaypoint(route.origin.name, route.origin.geo.point.lat, route.origin.geo.point.lng, order));
             routes = routes.concat(this.addRoutePoint(route.origin.name, route.origin.geo.point.lat, route.origin.geo.point.lng, order));
 
-            // Route Middle points
+            // route Middle points
             route.middle_points.forEach(point => {
               order += 1;
               gpxContent = gpxContent.concat(this.addWaypoint(point.name, point.geo.point.lat, point.geo.point.lng, order));
               routes = routes.concat(this.addRoutePoint(point.name, point.geo.point.lat, point.geo.point.lng, order));
             });
 
-            // Route Destination
+            // route Destination
             order += 1;
             gpxContent = gpxContent
               .concat(this.addWaypoint(route.destination.name, route.destination.geo.point.lat, route.destination.geo.point.lng, order));
             routes = routes
               .concat(this.addRoutePoint(route.destination.name, route.destination.geo.point.lat, route.destination.geo.point.lng, order));
 
-            // Close Route tag
+            // Close route tag
             routes = routes.concat('\n</rte>');
             break;
           default:
             order += 1;
-            const place: PlaceDTO = event.product as PlaceDTO;
+            const place: IPlaceDTO = event.product as PlaceDTO;
             gpxContent = gpxContent.concat(this.addWaypoint(event.name, place.geo.point.lat, place.geo.point.lng, order));
             break;
         }

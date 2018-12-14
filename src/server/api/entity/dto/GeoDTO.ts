@@ -1,8 +1,14 @@
-import CoordinatesDTO from './CoordinatesDTO';
+import { IGeoDTO } from './IGeoDTO';
 import { AddressDTO } from './AddressDTO';
+import { CoordinatesDTO } from './CoordinatesDTO';
 
-export interface GeoDTO {
-  address: AddressDTO;
-  label: string;
-  point: CoordinatesDTO;
+export class GeoDTO implements IGeoDTO {
+
+  constructor(
+    public address: AddressDTO,
+    public label: string,
+    public point: CoordinatesDTO
+  ) {
+
+  }
 }

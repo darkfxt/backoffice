@@ -22,16 +22,16 @@ export class Address {
 }
 
 export class Geo {
-  point: Point;
+  point: point;
   address: Address;
 
   constructor(params: any = {}) {
-    this.point = params.point || new Point();
+    this.point = params.point || new point();
     this.address = params.address || new Address();
   }
 }
 
-export class Point {
+export class point {
   lat: number;
   lng: number;
 
@@ -69,18 +69,19 @@ export default class Place {
   }
 }
 */
-import { PlaceDTO } from './dto/PlaceDTO';
-import CoordinatesDTO from './dto/CoordinatesDTO';
-import ImageDTO from './dto/ImageDTO';
+import { IPlaceDTO } from './dto/IPlaceDTO';
+import ICoordinatesDTO from './dto/ICoordinatesDTO';
+import { ImageDTO } from './dto/ImageDTO';
 import { PlaceType } from './enum/PlaceType';
 import { ActiveStatus } from './enum/ActiveStatus';
+import { IGeoDTO } from './dto/IGeoDTO';
 
-export default class Place implements PlaceDTO {
+export default class Place implements IPlaceDTO {
   _id: string;
   company_id: number;
   created_by: string;
   description: string;
-  geo: CoordinatesDTO;
+  geo: IGeoDTO;
   images: Array<ImageDTO>;
   name: string;
   type: PlaceType;
@@ -99,4 +100,6 @@ export default class Place implements PlaceDTO {
     this.company_id = params.company_id;
     this.created_by = params.created_by;
   }
+
+
 }

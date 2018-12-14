@@ -1,37 +1,50 @@
-import { ProductDAO } from './ProductDAO';
-import { ImageDAO } from './ImageDAO';
-import { GeoDAO } from './GeoDAO';
+import { IAncestorsDAO, IDescendantsDAO, IPlaceDAO } from './IPlaceDAO';
+import { GeoDAO, IGeoDAO } from './GeoDAO';
+import { IImageDAO, ImageDAO } from './ImageDAO';
 import { ActiveStatus } from '../enum/ActiveStatus';
+import { PlaceType } from '../enum/PlaceType';
+import { AddressDAO } from './AddressDAO';
 import { ObjectID } from 'typeorm';
 import { GeometryType } from '../enum/GeometryType';
 
-export interface PlaceDAO extends ProductDAO {
-  search_name: string;
+export class PlaceDAO implements IPlaceDAO {
+  ancestors: AncestorsDAO;
+  company_id: number;
+  createdAt: string;
+  createdBy: string;
+  descendants: DescendantsDAO;
   description: string;
   geo: GeoDAO;
-  images: ImageDAO;
+  id: string;
+  images: Array<ImageDAO>;
+  name: string;
+  search_name: string;
   status: ActiveStatus;
-  ancestors: AncestorsDAO;
-  descendants: DescendantsDAO;
+  type: PlaceType;
+  _id: string;
+  address: AddressDAO;
+  terminal: boolean;
+
 }
 
-interface AncestorsDAO {
+export class AncestorsDAO implements IAncestorsDAO {
   id: ObjectID;
   type: GeometryType;
 }
 
-interface DescendantsDAO {
-  Cities: ObjectID;
-  Countries: ObjectID;
-  POIs: ObjectID;
-  HighLevelRegions: ObjectID;
-  TrainStations: ObjectID;
-  MetroStations: ObjectID;
-  Neighbourhoods: ObjectID;
-  ProvinceStates: ObjectID;
-  MultiCityVicinities: ObjectID;
-  Hotels: ObjectID;
-  Destinations: ObjectID;
+export class DescendantsDAO implements IDescendantsDAO {
   Activities: ObjectID;
   Airports: ObjectID;
+  Cities: ObjectID;
+  Countries: ObjectID;
+  Destinations: ObjectID;
+  HighLevelRegions: ObjectID;
+  Hotels: ObjectID;
+  MetroStations: ObjectID;
+  MultiCityVicinities: ObjectID;
+  Neighbourhoods: ObjectID;
+  POIs: ObjectID;
+  ProvinceStates: ObjectID;
+  TrainStations: ObjectID;
 }
+

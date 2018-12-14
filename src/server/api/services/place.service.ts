@@ -6,20 +6,21 @@ import { until } from 'selenium-webdriver';
 import elementIsSelected = until.elementIsSelected;
 import { PlaceFactory } from '../factories/place.factory';
 import Place from '../entity/Place';
-import PlaceDTO from '../entity/dto/PlaceDTO';
+import { IPlaceDTO } from '../entity/dto/IPlaceDTO';
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
 
 
 export class PlaceService {
 
   public static async getAll(query, headers): Promise<any> {
-    return axios
+    const resp = await axios
       .get(`${config.geo.url}/places`, {params: query, headers: {authorization: headers.authorization}});
+    return resp;
   }
 
-  public static async create(body: PlaceDTO, headers: any): Promise<any> {
+  public static async create(body: IPlaceDTO, headers: any): Promise<any> {
     const PlaceAdapterInstance = new PlaceAdapter();
-    const PlaceDAOInstance = PlaceAdapterInstance.fitToDAO();
+    const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
     const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
     return ret;
   }
@@ -49,7 +50,9 @@ export class PlaceService {
     return axios
       .get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
       .then(resp => {
-        return resp.data;
+        const PlaceAdapterInstance = new PlaceAdapter();
+        const PlaceDAOInstance = PlaceAdapter.fitFromDAO(resp.data);
+        return PlaceDAOInstance;
       });
   }
 

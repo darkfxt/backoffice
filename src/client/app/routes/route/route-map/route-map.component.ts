@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
 import { PlaceStore } from '../../../shared/services/place-store.services';
-import Place from '../../../../../server/api/entity/Place';
 import { FormGroup } from '@angular/forms';
+import { Place } from '../../../shared/models/Place';
 
 @Component({
   selector: 'app-route-map',
@@ -61,7 +61,7 @@ export class RouteMapComponent implements OnInit {
       this.addMarker();
     });
 
-    this.placeStore.getPlace('origin').subscribe((place) => {
+    this.placeStore.getPlace('origin').subscribe((place: Place) => {
       if (!place)
         return false;
       this.origin = place;
