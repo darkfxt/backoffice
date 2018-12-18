@@ -93,7 +93,7 @@ export class RoutePointsComponent implements OnInit {
 
   private createGroups(list: any): any[] {
     const pointsByType = {};
-    list.data.forEach((item) => {
+    list.forEach((item) => {
       pointsByType[item.type] = pointsByType[item.type] || [];
       pointsByType[item.type].push(item);
     });

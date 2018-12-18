@@ -38,7 +38,7 @@ export class PlaceController {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
       const resp = await PlaceService.search(request.query, request.query.lang, request.headers);
-      response.json(resp.data);
+      response.json(resp);
     } catch (err) {
       next(err);
     }
@@ -95,7 +95,7 @@ export class PlaceController {
         place = await PlaceService.create(oPlace, request.headers);
       }
 
-      response.json(place.data);
+      response.json(place);
     } catch (err) {
       next(err);
     }

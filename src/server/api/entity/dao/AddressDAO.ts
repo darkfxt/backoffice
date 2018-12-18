@@ -6,34 +6,34 @@ export interface IAddressDAO {
   region: string;
   postalCode: string;
   route: string;
-  streetNumber: string;
-  formattedAddress: string;
+  street_number: string;
+  formatted_address: string;
 }
 
 export class AddressDAO implements IAddressDAO {
-  formattedAddress: string;
+  formatted_address: string;
   locality: string;
   postalCode: string;
   region: string;
   route: string;
-  streetNumber: string;
+  street_number: string;
   country: string;
 
   constructor(params: any = {}) {
-    this.formattedAddress = params.FormattedAddress || '';
+    this.formatted_address = params.formatted_address || '';
     this.locality = params.locality || '';
     this.postalCode = params.postalCode || '';
     this.region = params.region || '';
     this.route = params.route || '';
-    this.streetNumber = params.streetNumber || '';
+    this.street_number = params.street_number || '';
     this.country = params.country || '';
   }
 
   static fitFromDTO(adaptee: AddressDTO) {
     const params = {
       country: adaptee.country,
-      streetNumber: adaptee.street_number,
-      formattedAddress: adaptee.formatted_address,
+      street_number: adaptee.street_number,
+      formatted_address: adaptee.formatted_address,
       locality: adaptee.locality,
       postalCode: adaptee.postalCode,
       region: adaptee.region,

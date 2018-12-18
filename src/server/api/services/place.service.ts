@@ -19,14 +19,14 @@ export class PlaceService {
   }
 
   public static async create(body: IPlaceDTO, headers: any): Promise<any> {
-    const PlaceAdapterInstance = new PlaceAdapter();
     const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
     const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
-    return ret;
+    return PlaceAdapter.fitFromDAO(ret.data);
   }
 
   public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.geo.url}/places/${id}`, body, {headers: {authorization: headers.authorization}});
+    const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
+    return axios.put(`${config.geo.url}/places/${id}`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
   }
 
   public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
@@ -50,15 +50,14 @@ export class PlaceService {
     return axios
       .get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
       .then(resp => {
-        const PlaceAdapterInstance = new PlaceAdapter();
-        const PlaceDAOInstance = PlaceAdapter.fitFromDAO(resp.data);
-        return PlaceDAOInstance;
+        return PlaceAdapter.fitFromDAO(resp.data);
       });
   }
 
   public static async deleteOne(place_id: string, headers: any): Promise<any> {
-    return axios
+    const resp = await axios
       .delete(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}});
+    return resp;
   }
 
   public static async search(params, lang: string = 'en', headers: any): Promise<any> {
@@ -69,7 +68,8 @@ export class PlaceService {
           query.push(`${key}=${value}`);
       }
     );
-    return axios.get(`${config.geo.url}/places?search=${params.q /*query.join('&')*/}`, {headers: {authorization: headers.authorization}});
+    const resp = await axios.get(`${config.geo.url}/places?limit=10&page=1&search=${params.q}`, {headers: {authorization: headers.authorization}});
+    return resp.data.data.map((option) => PlaceAdapter.fitFromDAO(option));
   }
 
 }

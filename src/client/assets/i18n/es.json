@@ -95,5 +95,19 @@
 	"puntos encontrados": "{{value}} lugares encontrados",
 	"{trip length} trips encontrados": "{{value}} templates encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas",
-	"ó": "ó"
+	"ó": "ó",
+  "CITY" : "Ciudad",
+  "COUNTRY" : "País",
+  "CONTINENT" : "Continente",
+  "HIGH_LEVEL_REGION" : "Región de alto nivel",
+  "METRO_STATION" : "Estación de metro",
+  "PROVINCE_STATE" : "Provincia/Estado",
+  "MULTI_CITY_VICINITY" : "Multiciudad",
+  "NEIGHBORHOOD" : "Vecindario",
+  "TRAIN_STATION" : "Estación de tren",
+  "AIRPORT" : "Aeropuerto",
+  "HIGHLIGHT" : "Destacado",
+  "DESTINATION" : "Destino",
+  "WAYPOINT" : "Punto de referencia"
+
 }

@@ -9,7 +9,7 @@ import { AddressDTO } from '../dto/AddressDTO';
 import { CoordinatesDAO, GeoDAO } from '../dao/GeoDAO';
 import { AddressDAO } from '../dao/AddressDAO';
 import { ImageDAO } from '../dao/ImageDAO';
-import {PlaceType} from '../enum/PlaceType';
+import { PlaceType } from '../enum/PlaceType';
 
 export class PlaceAdapter {
   static fitToDAO(DTOData: IPlaceDTO): PlaceDAO {
@@ -19,7 +19,7 @@ export class PlaceAdapter {
     transformed.description = DTOData.description;
     transformed.search_name = DTOData.search_name;
     transformed.status = DTOData.status;
-    transformed.type = PlaceType[DTOData.type];
+    transformed.type = DTOData.type;
     transformed.createdBy = DTOData.created_by;
     transformed.company_id = DTOData.company_id;
     transformed.geo = new GeoDAO({center: CoordinatesDAO.fitFromDTO(DTOData.geo.point)});
@@ -38,9 +38,9 @@ export class PlaceAdapter {
     transformed.status = DAOData.status;
     transformed.type = DAOData.type;
     const point = new CoordinatesDTO(DAOData.geo.center.latitude, DAOData.geo.center.longitude);
-    const address = new AddressDTO();
+    const address = new AddressDTO(DAOData.address);
     transformed.geo = new GeoDTO(address, ' ', point);
-    transformed.images = DAOData.images;
+    transformed.images = DAOData.images || [];
     return transformed;
   }
 }

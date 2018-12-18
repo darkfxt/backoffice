@@ -59,7 +59,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
     return Object.keys(pointsByType).map(key => ({type: key, points: pointsByType[key]}));
   }
 
-  onEnter(event) {
+  onSearchButton(event) {
     this.filterChanged.emit(event);
   }
 
