@@ -1,5 +1,9 @@
 @import '../../../../assets/variables';
 
+:host{
+  display: block;
+}
+
 .image{
   background: no-repeat scroll center transparent;
   background-size: contain;
