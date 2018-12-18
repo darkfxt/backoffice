@@ -26,7 +26,8 @@ export class PlaceService {
 
   public static async update(id, body, headers: any): Promise<any> {
     const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
-    return axios.put(`${config.geo.url}/places/${id}`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+    const res = await axios.put(`${config.geo.url}/places/${id}`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+    return PlaceAdapter.fitFromDAO(res.data);
   }
 
   public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
