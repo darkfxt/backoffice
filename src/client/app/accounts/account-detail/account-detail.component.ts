@@ -44,8 +44,8 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
 
     this.form = this.fb.group({
       name: [this.account.name, [Validators.required, Validators.maxLength(50)]],
-      primary_color: [this.account.primary_color, Validators.required],
-      secondary_color: [this.account.secondary_color, Validators.required],
+      primary_color: ['#' + this.account.primary_color, Validators.required],
+      secondary_color: ['#' + this.account.secondary_color, Validators.required],
       logo: [this.account.logo, Validators.required],
       file: undefined,
       deleted_images: this.fb.array([])

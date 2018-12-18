@@ -19,6 +19,10 @@ export class AccountsService {
   }
 
   public static async update(id, body, headers): Promise<any> {
+    body.primary_color = body.primary_color.replace('#', '');
+    body.secondary_color = body.secondary_color.replace('#', '');
+    Reflect.deleteProperty(body, 'file');
+    Reflect.deleteProperty(body, 'deleted_images');
     return axios.put(`${config.core.url}/accounts/${id}`, body, {headers: {authorization: headers.authorization}});
   }
 

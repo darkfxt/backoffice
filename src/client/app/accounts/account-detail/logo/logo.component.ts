@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import {StaticsService} from '../../../shared/services/statics.service';
+import { StaticsService } from '../../../shared/services/statics.service';
 
 @Component({
   selector: 'app-account-logo',
@@ -11,11 +11,12 @@ export class LogoComponent implements OnInit {
 
   @Input()
   form: FormGroup;
+  errorMessage;
 
   previewImage;
 
   constructor(private fb: FormBuilder,
-              private staticsService: StaticsService) { }
+              public staticsService: StaticsService) { }
 
   ngOnInit() {
     this.previewImage = this.form.get('logo').value;
@@ -23,6 +24,7 @@ export class LogoComponent implements OnInit {
 
   // Images control
   async onFilesLoaded(file) {
+    this.errorMessage = false;
     const image = await this.preview(file[0]);
     this.previewImage = image;
     this.form.patchValue({file: file[0]});
@@ -49,5 +51,9 @@ export class LogoComponent implements OnInit {
     this.form.patchValue({logo: ''});
     this.form.setControl('deleted_images', this.fb.array(deletedImage));
     this.previewImage = undefined;
+  }
+
+  onExtensionError(event) {
+    this.errorMessage = true;
   }
 }

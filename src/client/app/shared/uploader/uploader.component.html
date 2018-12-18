@@ -1,5 +1,5 @@
 <div class="uploader-ctn" [formGroup]="group">
-  <input type="file" #fileInput (change)="onFileSelected($event)" name="files" [multiple]="multiple" style="display: none">
+  <input type="file" [accept]="accept" #fileInput (change)="onFileSelected($event)" name="files" [multiple]="multiple" style="display: none">
   <div *ngIf="mode == 'DRAG_DROP'" class="dd-container" (drop)="onDrag($event)" (dragenter)="onDrag($event)" (dragleave)="onDrag($event)"  (dragover)="onDrag($event)">
     <mat-icon class="upload-icon" color="primary">cloud_upload</mat-icon>
     <div class="instruction-content">
