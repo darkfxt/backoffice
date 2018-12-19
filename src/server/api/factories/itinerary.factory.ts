@@ -3,12 +3,12 @@ import DayOfTripDTO from '../entity/dto/DayOfTripDTO';
 import { config } from '../../config/env';
 
 const eventTypes = {
-  POI: 'Highlight',
-  ACTIVITY: 'Activity',
-  REFERENCE: 'Destination',
-  HOTEL: 'Hotel',
-  TERMINAL: 'Terminal',
-  DRIVING: 'Driving'
+  driving: 'Driving',
+  destination: 'Destination',
+  hotel: 'Hotel',
+  terminal: 'Terminal',
+  point_of_interst: 'Point of interest',
+  activity: 'Activity'
 };
 
 class DayOfTrip {
@@ -57,12 +57,12 @@ export class ItineraryFactory {
 
   private transformEvent(event) {
     switch (event.eventType) {
-      case 'DRIVING':
+      case 'driving':
         const meta = {
           ...calculateDistanceAndTime(event.product.legs),
           ...{things_to_know: event.product.things_to_know},
           ...{highlights: event.product.middle_points
-              .filter(point => point.type !== 'WAYPOINT')
+              .filter(point => point.type !== 'waypoint')
               .map(point => point.name)
           },
           via: event.product.via,
@@ -70,14 +70,14 @@ export class ItineraryFactory {
         return <Event>{
           title: event.name,
           description: event.product.description,
-          type: eventTypes[event.eventType],
+          type: 'Driving',
           meta: meta
         };
       default:
         return <Event>{
           title: event.product.name,
           description: event.product.description,
-          type: eventTypes[event.eventType]
+          type: eventTypes[event.product.type]
         };
     }
 

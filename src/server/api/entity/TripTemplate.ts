@@ -1,8 +1,7 @@
 export enum event_type {
-  HOTEL = 'HOTEL',
-  DRIVING = 'DRIVING',
-  ACTIVITY = 'ACTIVITY',
-  OTHER = 'OTHER'
+  PLACE = 'place',
+  DRIVING = 'driving',
+  CUSTOM = 'custom'
 }
 
 export class Event {

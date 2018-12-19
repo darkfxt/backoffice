@@ -120,7 +120,7 @@ export class BookingDetailComponent implements OnInit {
     let invalidEvents: Array<Event> = [];
     itinerary.forEach((day) => {
       invalidEvents = invalidEvents.concat(day.events.filter( (event: Event) => {
-        return (event.eventType === 'DRIVING') && (event.product.origin === null || event.product.destination === null);
+        return (event.eventType === 'driving') && (event.product.origin === null || event.product.destination === null);
       }));
     });
     return invalidEvents.length <= 0;

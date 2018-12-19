@@ -8,7 +8,7 @@
     <h5>{{data.name}}</h5>
     <p>{{data.eventType | translate}}</p>
 
-    <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['TERMINAL', 'HOTEL']">
+    <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['place']">
       <div class="add-event-cluster">
         <span *ngIf="data.product.origin; else showEmptyOrigin">
           Desde: {{data.product.origin.name}}
@@ -19,7 +19,7 @@
       </div>
     </app-add-event>
 
-    <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['TERMINAL', 'HOTEL']">
+    <app-add-event (openedDialog)="openDialog($event, 'destination')" [filterEventType]="['place']">
       <div class="add-event-cluster">
         <span *ngIf="data.product.destination; else showEmptyDestination">
           Hasta: {{data.product.destination.name}}

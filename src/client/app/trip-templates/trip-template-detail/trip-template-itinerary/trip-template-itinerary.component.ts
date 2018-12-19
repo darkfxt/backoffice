@@ -90,12 +90,11 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
 
   state = 'out';
-  addEventText = {'in': 'close', 'out': 'add'};
   productTypes = [
-    {value: 'DRIVING', viewValue: 'driving'},
-    {value: 'HOTEL', viewValue: 'hotel'},
-    {value: 'ACTIVITY', viewValue: 'activity'},
-    {value: 'OTHER', viewValue: 'other'}
+    {value: 'driving', viewValue: 'driving'},
+    {value: 'hotel', viewValue: 'hotel'},
+    {value: 'activity', viewValue: 'activity'},
+    {value: 'other', viewValue: 'other'}
   ];
 
   constructor(

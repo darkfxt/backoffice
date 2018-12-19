@@ -45,7 +45,7 @@ export class RouteMapComponent implements OnInit {
         geo: {
           point: e.latLng.toJSON()
         },
-        type: 'WAYPOINT',
+        type: 'waypoint',
         _id: ''
       });
 
@@ -84,7 +84,7 @@ export class RouteMapComponent implements OnInit {
       this.markers.push(new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map}));
 
     this.waypoints
-      .filter(place => place.type !== 'WAYPOINT')
+      .filter(place => place.type !== 'waypoint')
       .forEach((place, i) => {
         this.markers.push(new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map}));
       });

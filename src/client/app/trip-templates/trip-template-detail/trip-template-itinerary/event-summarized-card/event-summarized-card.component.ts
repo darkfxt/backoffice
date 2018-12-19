@@ -31,7 +31,7 @@ export class EventSummarizedCardComponent implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    if (this.data.eventType === 'DRIVING')
+    if (this.data.eventType === 'driving')
       this.drawingComponent = new ListItemComponent(SummarizedDrivingComponent);
     else
       this.drawingComponent = new ListItemComponent(SummarizedDefaultComponent);

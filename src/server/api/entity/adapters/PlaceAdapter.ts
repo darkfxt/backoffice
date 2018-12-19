@@ -20,7 +20,7 @@ export class PlaceAdapter {
     transformed.search_name = DTOData.search_name;
     transformed.status = DTOData.status;
     transformed.type = DTOData.type;
-    transformed.createdBy = DTOData.created_by;
+    transformed.created_by = DTOData.created_by;
     transformed.company_id = DTOData.company_id;
     transformed.geo = new GeoDAO({center: CoordinatesDAO.fitFromDTO(DTOData.geo.point)});
     transformed.address = AddressDAO.fitFromDTO(DTOData.geo.address);

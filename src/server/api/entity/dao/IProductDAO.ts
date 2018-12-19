@@ -3,6 +3,6 @@ export interface IProductDAO {
   name: string;
   type;
   company_id: number;
-  createdBy: string;
-  createdAt: string;
+  created_by: string;
+  created_at: string;
 }

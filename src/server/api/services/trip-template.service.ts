@@ -43,7 +43,7 @@ export class TripTemplateService {
       const inflatedData = (await Promise.all(answer.data.map( async (event) => {
         let eventData: any;
         const geo = [];
-        if (event['event_type'] === event_type.ACTIVITY || event['event_type'] === event_type.HOTEL) {
+        if (event['event_type'] === event_type.PLACE) {
           eventData = await PlaceService.getDetail(event.reference_id, headers);
           geo.push(eventData.geo.point);
         }

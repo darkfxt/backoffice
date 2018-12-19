@@ -25,7 +25,7 @@ export class SummarizedDefaultComponent implements OnInit {
   }
 
   get color() {
-    return this.colors[this.data.eventType];
+    return this.colors[this.data.product.type || this.data.eventType];
   }
 
   onRemoveEvent(eventId, dayId) {

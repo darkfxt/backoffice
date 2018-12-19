@@ -10,8 +10,8 @@ import { GeometryType } from '../enum/GeometryType';
 export class PlaceDAO implements IPlaceDAO {
   ancestors: AncestorsDAO;
   company_id: number;
-  createdAt: string;
-  createdBy: string;
+  created_at: string;
+  created_by: string;
   descendants: DescendantsDAO;
   description: string;
   geo: GeoDAO;

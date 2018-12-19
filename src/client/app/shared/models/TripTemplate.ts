@@ -1,25 +1,23 @@
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
 
 export enum TypeOfEvent {
-  POI = 'POI',
-  HOTEL = 'HOTEL',
-  ACTIVITY = 'ACTIVITY',
-  DESTINATION = 'DESTINATION',
-  REFERENCE = 'REFERENCE',
-  TERMINAL = 'TERMINAL',
-  DRIVING = 'DRIVING',
-  OTHER = 'OTHER'
+  POI = 'point_of_interest',
+  HOTEL = 'hotel',
+  ACTIVITY = 'activity',
+  DESTINATION = 'destination',
+  TERMINAL = 'terminal',
+  DRIVING = 'driving',
+  CUSTOM = 'custom'
 }
 
 export const iconMap = {
-  'ACTIVITY': 'local_activity',
-  'HOTEL': 'hotel',
-  'POI': 'local_see',
-  'DESTINATION': 'place',
-  'REFERENCE': 'place',
-  'TERMINAL': 'trip_origin',
-  'DRIVING': 'directions_car',
-  'OTHER': 'not_listed_location'
+  'activity': 'local_activity',
+  'hotel': 'hotel',
+  'point_of_interest': 'local_see',
+  'destination': 'place',
+  'terminal': 'trip_origin',
+  'driving': 'directions_car',
+  'custom': 'not_listed_location'
 };
 
 export enum terminalType {
@@ -28,14 +26,13 @@ export enum terminalType {
 }
 
 export const eventColors = {
-  'ACTIVITY': '#4db6ac',
-  'HOTEL': '#7986cb',
-  'POI': '#ff8a65',
-  'DESTINATION': '#f06292',
-  'REFERENCE': '#f06292',
-  'TERMINAL': '#ba68c8',
-  'DRIVING': '#42a5f5',
-  'OTHER': '#90a4ae'
+  'activity': '#4db6ac',
+  'hotel': '#7986cb',
+  'point_of_interest': '#ff8a65',
+  'destination': '#f06292',
+  'terminal': '#ba68c8',
+  'driving': '#42a5f5',
+  'custom': '#90a4ae'
 };
 
 /**
@@ -43,8 +40,7 @@ export const eventColors = {
  */
 const terminalTypes = [
   TypeOfEvent.TERMINAL,
-  TypeOfEvent.HOTEL,
-  TypeOfEvent.POI
+  TypeOfEvent.HOTEL
 ];
 
 export class Event {
@@ -74,7 +70,7 @@ export class Event {
     if (time) this.time = time;
     if (product) {
       const productToAdd = Object.assign({}, product);
-      if (eventType === 'DRIVING') {
+      if (eventType === TypeOfEvent.DRIVING) {
         if (product.origin !== null && !terminalTypes.includes(product.origin.type)) {
           productToAdd.referencedOrigin = product.origin;
           productToAdd.origin = null;

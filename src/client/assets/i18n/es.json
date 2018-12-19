@@ -19,6 +19,7 @@
 	"Contraseña": "Contraseña",
 	"Creado por {user}": "Creado por {{user}}",
 	"Cuentas": "Cuentas",
+	"DESTINATION": "Destino",
 	"DRAFT": "Borrador",
 	"DRIVING": "Para conducir",
 	"Descripción": "Descripción",
@@ -69,7 +70,6 @@
 	"POI": "Punto de interés",
 	"PUBLISHED": "Publicado",
 	"Puntos de la ruta": "Puntos de la ruta",
-	"REFERENCE": "Destino",
 	"RESERVAS": "RESERVAS",
 	"RUTAS": "RUTAS",
 	"Registrar": "Registrar",
@@ -96,18 +96,7 @@
 	"{trip length} trips encontrados": "{{value}} templates encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas",
 	"ó": "ó",
-  "CITY" : "Ciudad",
-  "COUNTRY" : "País",
-  "CONTINENT" : "Continente",
-  "HIGH_LEVEL_REGION" : "Región de alto nivel",
-  "METRO_STATION" : "Estación de metro",
-  "PROVINCE_STATE" : "Provincia/Estado",
-  "MULTI_CITY_VICINITY" : "Multiciudad",
-  "NEIGHBORHOOD" : "Vecindario",
-  "TRAIN_STATION" : "Estación de tren",
-  "AIRPORT" : "Aeropuerto",
-  "HIGHLIGHT" : "Destacado",
-  "DESTINATION" : "Destino",
-  "WAYPOINT" : "Punto de referencia"
-
+  "point_of_interest": "Punto de interes",
+  "city": "Ciudad",
+  "neighborhood": "Barrio"
 }

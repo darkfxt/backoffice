@@ -13,8 +13,8 @@ export class EventDialogComponent implements OnInit {
   eventGroup: FormGroup;
 
   eventTypes = [
-    {value: 'DRIVING', viewValue: 'Driving'},
-    {value: 'OTHER', viewValue: 'Other'}
+    {value: 'driving', viewValue: 'Driving'},
+    {value: 'custom', viewValue: 'Other'}
   ];
 
   constructor(

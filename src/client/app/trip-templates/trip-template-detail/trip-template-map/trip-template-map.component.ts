@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
-import {Store} from '@ngrx/store';
-import {TypeOfEvent} from '../../../shared/models/TripTemplate';
-import {AppState} from '../../../store/shared/app.interfaces';
-import {getDaysForSelectedTrip, getTripTemplatesEntities} from '../../../store/trip-template';
-import {Subscription} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TypeOfEvent } from '../../../shared/models/TripTemplate';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { getDaysForSelectedTrip, getTripTemplatesEntities } from '../../../store/trip-template';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trip-template-map',
@@ -85,7 +85,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   break;
                 default:
                   this.bounds.extend(event.product.geo.point);
-                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.eventType});
+                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.product.type});
                   break;
               }
           });
@@ -113,7 +113,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   }
 
   private drawerPicker(position, options: any = {}) {
-    //this.bounds.extend(position);
+    // this.bounds.extend(position);
     const infowindow = new google.maps.InfoWindow({
       content: `<h3>${options.label}</h3>`
     });
