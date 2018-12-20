@@ -20,6 +20,7 @@ export class RouteMapComponent implements OnInit {
   waypoints = [];
   origin: Place;
   destination: Place;
+  infoWindows: google.maps.InfoWindow[] = [];
 
   private stepDisplay = new google.maps.InfoWindow;
   private directionsService = new google.maps.DirectionsService;
@@ -34,7 +35,7 @@ export class RouteMapComponent implements OnInit {
       zoom: 1,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-
+    this.infoWindows = [];
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsDisplay.setMap(this.map);
     this.directionsDisplay.setOptions({suppressMarkers: true});
@@ -51,7 +52,8 @@ export class RouteMapComponent implements OnInit {
 
       this.placeStore.setLocation(place);
       this.waypoints.push(place);
-      this.calculateAndDisplayRoute();
+      this.addMarker();
+      // this.calculateAndDisplayRoute();
     });
 
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
@@ -81,25 +83,41 @@ export class RouteMapComponent implements OnInit {
     this.markers = [];
 
     if (this.origin)
-      this.markers.push(new google.maps.Marker({position: this.origin.geo.point, title: this.origin.name, map: this.map}));
+      this.drawerPicker(this.origin.geo.point, {label: this.origin.name, type: this.origin.type});
 
     this.waypoints
-      .filter(place => place.type !== 'waypoint')
+      // .filter(place => place.type !== 'waypoint')
       .forEach((place, i) => {
-        this.markers.push(new google.maps.Marker({position: place.geo.point, title: place.name, map: this.map}));
+        this.drawerPicker(place.geo.point, {label: place.name, type: place.type});
       });
 
     if (this.destination)
-      this.markers.push(new google.maps.Marker({position: this.destination.geo.point, title: this.destination.name, map: this.map}));
-
-    this.markers.forEach((marker: google.maps.Marker) => {
-      marker.addListener('click', () => {
-        this.stepDisplay.setContent(marker.getTitle());
-        this.stepDisplay.open(this.map, marker);
-      });
-    });
+      this.drawerPicker(this.destination.geo.point, {label: this.destination.name, type: this.destination.type});
 
     this.calculateAndDisplayRoute();
+  }
+
+  private drawerPicker(position, options: any = {}) {
+    // this.bounds.extend(position);
+    const infowindow = new google.maps.InfoWindow({
+      content: `<h3>${options.label}</h3>`
+    });
+
+    const marker = new google.maps.Marker({
+      position: position,
+      map: this.map,
+      title: options.label,
+      icon: {
+        url: `/assets/icons/${options.type}.png`, // url
+        scaledSize: new google.maps.Size(30, 42), // scaled size
+      }
+    });
+    marker.addListener('click', () => {
+      this.infoWindows.forEach(info => info.close());
+      infowindow.open(this.map, marker);
+    });
+    this.infoWindows.push(infowindow);
+    this.markers.push(marker);
   }
 
   private centerMap() {

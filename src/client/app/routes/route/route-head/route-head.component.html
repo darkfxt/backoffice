@@ -9,7 +9,7 @@
     <input type="text" matInput placeholder="{{'Via (opcional)' | translate}}" name="via" formControlName="via"/>
   </mat-form-field>
 
-  <mat-form-field color="accent">
+  <mat-form-field color="accent" class="route-type">
     <mat-select placeholder="{{'Tipo de ruta' | translate}}" required name="route_type" formControlName="route_type">
       <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
         {{routeType.value | translate}}
@@ -18,7 +18,7 @@
     <mat-error *ngIf="form.get('route_type').invalid && (form.get('route_type').dirty || form.get('route_type').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-form-field color="accent">
+  <mat-form-field color="accent" class="road-surface">
     <mat-select placeholder="{{'Tipo de superficie' | translate}}" required name="road_surface" formControlName="road_surface">
       <mat-option *ngFor="let roadSurface of roadSurfaces" [value]="roadSurface.value">
         {{roadSurface.value | translate}}

@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import Place from '../../../../../server/api/entity/Place';
 import { PlaceService } from '../../../shared/services/place.service';
 import { PlaceStore } from '../../../shared/services/place-store.services';
+import { Place } from '../../../shared/models/Place';
 
 @Component({
   selector: 'app-route-points',
@@ -44,8 +44,9 @@ export class RoutePointsComponent implements OnInit {
     return value.name;
   }
 
-  addPoint(place, focusIn = true) {
-    this.middlePoints.push(this.fb.group(new Place(place)));
+  addPoint(place = {}, focusIn = true) {
+    place = new Place(place);
+    this.middlePoints.push(this.fb.group(place));
     if (focusIn) {
       setTimeout(() => {
         this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`).focus();
@@ -64,7 +65,7 @@ export class RoutePointsComponent implements OnInit {
   }
 
   setMiddlePoint(event, index) {
-    this.middlePoints.controls[index].setValue(event.option.value);
+    this.middlePoints.controls[index].patchValue(event.option.value);
     this.placeStore.setWaypoints(this.middlePoints.value);
   }
 

@@ -44,8 +44,7 @@ export class Place {
     this.status = params.status || 1;
     this.geo = params.geo || new Geo();
     this.images = params.images || [];
-    this.company_id = params.company_id;
-    this.created_by = params.created_by;
+    this.created_by = params.created_by || '';
   }
 }
 
