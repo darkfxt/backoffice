@@ -39,14 +39,14 @@ export class CustomEventComponent implements OnInit {
   }
 
   onButtonClick() {
-    const newEvent: Event = this.convertToEvent(TypeOfEvent.OTHER, this.dayOfEvent);
+    const newEvent: Event = this.convertToEvent(TypeOfEvent.CUSTOM, this.dayOfEvent);
     this.store.dispatch(new AddEvent({event: newEvent, day: this.selectedDay$.toString()}));
     this.closeDialog();
   }
 
   convertToEvent(event_type: string, order: number): Event {
     const data = this.form.value;
-    return new Event(data.name, data.description, TypeOfEvent.OTHER, order || 1);
+    return new Event(data.name, data.description, TypeOfEvent.CUSTOM, order || 1);
   }
 
   closeDialog() {
