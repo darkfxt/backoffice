@@ -6,7 +6,7 @@
   </div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
-    <p>{{data.eventType | translate}}</p>
+    <p>{{data.event_type | translate}}</p>
 
     <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['place']">
       <div class="add-event-cluster">

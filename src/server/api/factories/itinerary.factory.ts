@@ -56,7 +56,7 @@ export class ItineraryFactory {
   }
 
   private transformEvent(event) {
-    switch (event.eventType) {
+    switch (event.event_type) {
       case 'driving':
         const meta = {
           ...calculateDistanceAndTime(event.product.legs),

@@ -112,7 +112,7 @@ export class EventEffects {
         const drivingUpdated = new Event(
           originalDriving.name,
           originalDriving.description,
-          originalDriving.eventType,
+          originalDriving.event_type,
           originalDriving.order,
           originalDriving.dayId,
           Object.assign({}, originalDriving.product, {[terminal]: selectedTerminal}),

@@ -60,7 +60,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
         days.forEach((day) => {
           day.events.forEach((event) => {
             if (event.product)
-              switch (event.eventType) {
+              switch (event.event_type) {
                 case TypeOfEvent.DRIVING:
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;

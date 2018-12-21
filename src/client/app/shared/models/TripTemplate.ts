@@ -48,7 +48,7 @@ export class Event {
   _id: string;
   name: string;
   description: string;
-  eventType: string;
+  event_type: string;
   time: Date;
   order: number;
   created_by: string;
@@ -60,7 +60,7 @@ export class Event {
               order: number, dayId?: string, product?: any, id?: string, time?: Date) {
     this.name = name;
     this.description = description;
-    this.eventType = eventType;
+    this.event_type = eventType;
     this.order = order;
     if (id)
       this._id = id;

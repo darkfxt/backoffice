@@ -155,7 +155,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
                     description: evento.description,
                     product: evento.product,
                     dayId: evento.dayId,
-                    eventType: evento.eventType,
+                    eventType: evento.event_type,
                     order: evento.order,
                     _id: evento._id
                   }));
