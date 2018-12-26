@@ -9,7 +9,7 @@
       <button mat-menu-item (click)="exportFile('pdf')">Exportar PDF</button>
     </mat-menu>
   </div>
-  <div class="button-container save-button" *ngIf="booking.status !== 1">
+  <div class="button-container save-button" >
     <button (click)="saveBooking()">
       <mat-icon aria-label="New">save</mat-icon>
     </button>

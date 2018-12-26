@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { config } from '../../config/env';
-import * as _ from 'lodash';
 import { RoutesService } from './routes.service';
 import { PlaceService } from './place.service';
-import PlacesService = google.maps.places.PlacesService;
 import { event_type } from '../entity/TripTemplate';
-import event = google.maps.event;
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
+import { RouteTransformer } from '../entity/adapters/route.transformer';
 
 export class TripTemplateService {
 
@@ -87,6 +85,8 @@ export class TripTemplateService {
       day.events = day.events.map((myEvent) => {
         if (myEvent.event_type === 'place')
           myEvent.product = PlaceAdapter.fitToDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toDTO(myEvent.product);
         return myEvent;
       });
       return day;
@@ -98,6 +98,8 @@ export class TripTemplateService {
       day.events = day.events.map((myEvent) => {
         if (myEvent.event_type === 'place')
           myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toRoute(myEvent.product);
         return myEvent;
       });
       return day;
@@ -110,12 +112,14 @@ export class TripTemplateService {
         day.events = day.events.map((myEvent) => {
           if (myEvent.event_type === 'place')
             myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+          if (myEvent.event_type === 'driving')
+            myEvent.product = RouteTransformer.toRoute(myEvent.product);
           return myEvent;
         });
         return day;
       });
     }
-    return tripT;
+    return tripT.days;
   }
 
 }

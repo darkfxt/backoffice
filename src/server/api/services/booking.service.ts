@@ -4,6 +4,7 @@ import { AccountsService } from './accounts.service';
 import GPXBuilder from '../../utils/GPXBuilder';
 import BookingDTO from '../entity/dto/BookingDTO';
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
+import {RouteTransformer} from '../entity/adapters/route.transformer';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -56,6 +57,8 @@ export class BookingService {
       day.events = day.events.map((myEvent) => {
         if (myEvent.event_type === 'place')
           myEvent.product = PlaceAdapter.fitToDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toDTO(myEvent.product);
         return myEvent;
       });
       return day;
@@ -67,6 +70,8 @@ export class BookingService {
       day.events = day.events.map((myEvent) => {
         if (myEvent.event_type === 'place')
           myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toRoute(myEvent.product);
         return myEvent;
       });
       return day;
@@ -79,12 +84,14 @@ export class BookingService {
         day.events = day.events.map((myEvent) => {
           if (myEvent.event_type === 'place')
             myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+          if (myEvent.event_type === 'driving')
+            myEvent.product = RouteTransformer.toRoute(myEvent.product);
           return myEvent;
         });
         return day;
       });
     }
-    return tripT;
+    return tripT.days;
   }
 
 }

@@ -6,7 +6,7 @@ interface EventDTO {
   dayId: string;
   name: string;
   description: string;
-  eventType: EventType;
+  event_type: EventType;
   time: Date;
   order: number;
   product?: IProductDTO;

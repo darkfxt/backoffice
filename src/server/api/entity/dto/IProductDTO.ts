@@ -1,4 +1,3 @@
-import EventType from '../enum/EventType';
 import { PlaceType } from '../enum/PlaceType';
 import { RouteType } from '../enum/RouteType';
 
