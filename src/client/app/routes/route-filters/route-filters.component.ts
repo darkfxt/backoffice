@@ -22,7 +22,7 @@ export class RouteFiltersComponent implements OnInit {
 
   onOptionSelected(event) {
     this.searchString = event.option.value.name;
-    this.filterChanged.emit(event.option.value.name);
+    this.filterChanged.emit(event.option.value.search_name);
   }
 
   onSearch(event) {
