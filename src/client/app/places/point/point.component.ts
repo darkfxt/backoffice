@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlaceService } from '../../shared/services/place.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import Place from '../../../../server/api/entity/Place';
 import { Observable, Subscription } from 'rxjs';
 import { FormGuard } from '../../shared/form-guard/form-guard';
 import { MatDialog } from '@angular/material';
@@ -17,6 +16,7 @@ import { EventSelected, TerminalSelected, RemoveEvent } from '../../store/trip-t
 import { getSelectedDriving } from '../../store/trip-template';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
+import { Place } from '../../shared/models/Place';
 
 @Component({
   selector: 'app-point',
@@ -87,7 +87,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
       if (point && point._id !== '' && point._id !== 'new') {
-        this.place = point[0];
+        this.place = point;
         isUpdate = true;
       } else {
         this.place = new Place();
@@ -112,10 +112,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
           formatted_address: this.place.geo.address.formatted_address
         })
       }),
-      place_id: this.place.place_id,
       files: null,
       status: this.place.status,
-      images: this.fb.array(this.place.images),
+      images: this.fb.array(this.place.images || []),
       deleted_images: this.fb.array([]),
       _id: this.place._id
     });

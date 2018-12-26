@@ -23,7 +23,6 @@ export class CompanyController {
     try {
 
       const answer = await CompanyService.getDetail(request.params.id, request.query.lang, request.headers);
-      console.log('*********', answer);
       response.json(answer.data);
     } catch (err) {
       next(err);

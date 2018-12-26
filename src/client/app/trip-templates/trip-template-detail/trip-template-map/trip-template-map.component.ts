@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
-import {Store} from '@ngrx/store';
-import {TypeOfEvent} from '../../../shared/models/TripTemplate';
-import {AppState} from '../../../store/shared/app.interfaces';
-import {getDaysForSelectedTrip, getTripTemplatesEntities} from '../../../store/trip-template';
-import {Subscription} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TypeOfEvent } from '../../../shared/models/TripTemplate';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { getDaysForSelectedTrip, getTripTemplatesEntities } from '../../../store/trip-template';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trip-template-map',
@@ -27,7 +27,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   private directionsDisplay = new google.maps.DirectionsRenderer;
   terminalTypes = [
     TypeOfEvent.HOTEL,
-    TypeOfEvent.TERMINAL
+    TypeOfEvent.TERMINAL,
   ];
 
   constructor(private store: Store<AppState>) {
@@ -60,18 +60,15 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
         days.forEach((day) => {
           day.events.forEach((event) => {
             if (event.product)
-              switch (event.eventType) {
+              switch (event.event_type) {
                 case TypeOfEvent.DRIVING:
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
                   this.bounds.extend(origin.geo.point);
                   this.bounds.extend(destination.geo.point);
 
-                  if (this.terminalTypes.indexOf(origin.type) > -1)
-                    this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.eventType});
-
-                  if (this.terminalTypes.indexOf(destination.type) > -1)
-                    this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.eventType});
+                  this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: origin.type});
+                  this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: destination.type});
 
                   this.traceRoutes(
                     origin.geo.point,
@@ -85,7 +82,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   break;
                 default:
                   this.bounds.extend(event.product.geo.point);
-                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.eventType});
+                  this.drawerPicker(event.product.geo.point, {color: event.color, label: event.product.name, type: event.product.type});
                   break;
               }
           });
@@ -113,7 +110,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   }
 
   private drawerPicker(position, options: any = {}) {
-    //this.bounds.extend(position);
+    // this.bounds.extend(position);
     const infowindow = new google.maps.InfoWindow({
       content: `<h3>${options.label}</h3>`
     });

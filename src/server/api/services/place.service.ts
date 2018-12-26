@@ -6,22 +6,29 @@ import { until } from 'selenium-webdriver';
 import elementIsSelected = until.elementIsSelected;
 import { PlaceFactory } from '../factories/place.factory';
 import Place from '../entity/Place';
+import { IPlaceDTO } from '../entity/dto/IPlaceDTO';
+import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
 
 
 export class PlaceService {
 
   public static async getAll(query, headers): Promise<any> {
-    return axios
+    const resp = await axios
       .get(`${config.geo.url}/places`, {params: query, headers: {authorization: headers.authorization}});
+    resp.data.data = resp.data.data.map((place) => PlaceAdapter.fitFromDAO(place));
+    return resp;
   }
 
-  public static async create(body, headers: any): Promise<any> {
-    const ret = await axios.post(`${config.geo.url}/places`, body, {headers: {authorization: headers.authorization}});
-    return ret;
+  public static async create(body: IPlaceDTO, headers: any): Promise<any> {
+    const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
+    const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+    return PlaceAdapter.fitFromDAO(ret.data);
   }
 
   public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.geo.url}/places/${id}`, body, {headers: {authorization: headers.authorization}});
+    const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
+    const res = await axios.put(`${config.geo.url}/places/${id}`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+    return PlaceAdapter.fitFromDAO(res.data);
   }
 
   public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
@@ -45,13 +52,14 @@ export class PlaceService {
     return axios
       .get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
       .then(resp => {
-        return resp.data;
+        return PlaceAdapter.fitFromDAO(resp.data);
       });
   }
 
   public static async deleteOne(place_id: string, headers: any): Promise<any> {
-    return axios
+    const resp = await axios
       .delete(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}});
+    return resp;
   }
 
   public static async search(params, lang: string = 'en', headers: any): Promise<any> {
@@ -62,7 +70,8 @@ export class PlaceService {
           query.push(`${key}=${value}`);
       }
     );
-    return axios.get(`${config.geo.url}/places/search?${query.join('&')}`, {headers: {authorization: headers.authorization}});
+    const resp = await axios.get(`${config.geo.url}/places?limit=10&page=1&search=${params.q}`, {headers: {authorization: headers.authorization}});
+    return resp.data.data.map((option) => PlaceAdapter.fitFromDAO(option));
   }
 
 }

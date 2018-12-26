@@ -5,14 +5,14 @@ import { PaginationOptionsInterface } from '../../shared/common-list/common-list
 import { DialogActions } from '../dialog-actions.enum';
 
 export enum PointActionTypes {
-  GET_POINTS = '[Point] Retrieving',
-  FILTER_POINTS = '[Point] Filtering',
-  POINTS_RETRIEVED = '[Point] Retrieved Succesfully',
-  POINTS_METADATA_RETRIEVED = '[Point] Metadata Retrieved',
-  SAVE_POINT = '[Point] Adding Point',
-  POINT_SELECTED = '[Point] Selected',
-  CLEAR_POINT = '[Point] Clear',
-  TOGGLE_DIALOG = '[Point] Setting Point Dialog'
+  GET_POINTS = '[point] Retrieving',
+  FILTER_POINTS = '[point] Filtering',
+  POINTS_RETRIEVED = '[point] Retrieved Succesfully',
+  POINTS_METADATA_RETRIEVED = '[point] Metadata Retrieved',
+  SAVE_POINT = '[point] Adding point',
+  POINT_SELECTED = '[point] Selected',
+  CLEAR_POINT = '[point] Clear',
+  TOGGLE_DIALOG = '[point] Setting point Dialog'
 }
 
 export class GetPoints implements Action {

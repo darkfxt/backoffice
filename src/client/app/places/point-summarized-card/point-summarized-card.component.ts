@@ -5,7 +5,7 @@ import { ListItemInterface } from '../../shared/common-list/common-list-item/lis
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import { EventSelected, TerminalSelected, UpdateEvent } from '../../store/trip-template/event/event.actions';
-import {StaticsService} from '../../shared/services/statics.service';
+import { StaticsService } from '../../shared/services/statics.service';
 
 @Component({
   selector: 'app-point-summarized-card',

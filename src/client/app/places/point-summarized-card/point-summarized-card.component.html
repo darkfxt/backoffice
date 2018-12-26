@@ -4,7 +4,7 @@
   </div>
   <div class="info-container">
     <h3 class="summarized-card-title">{{title}}</h3>
-    <p class="summarized-card-caption">{{subtitle | translate}} - {{'Creado por {user}' | translate: {user: created_by} }}</p>
+    <p class="summarized-card-caption">{{subtitle | translate}} - {{created_by? ('Creado por {user}' | translate: {user: created_by}) : 'Importado automáticamente' }}</p>
     <p class="summarized-card-description">{{description | slice:0:150}} {{description.length > 150? '...' : ''}}</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>

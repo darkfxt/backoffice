@@ -1,15 +1,15 @@
 import EventType from '../enum/EventType';
-import ProductDTO from './ProductDTO';
+import IProductDTO from './IProductDTO';
 
 interface EventDTO {
   _id: string;
   dayId: string;
   name: string;
   description: string;
-  eventType: EventType;
+  event_type: EventType;
   time: Date;
   order: number;
-  product?: ProductDTO;
+  product?: IProductDTO;
   company_id: number;
   color: string;
   created_by: string;

@@ -63,7 +63,7 @@ export class SummarizedDrivingComponent implements OnInit {
   }
 
   get color() {
-    return this.colors[this.data.eventType];
+    return this.colors[this.data.event_type];
   }
 
   onRemoveEvent(eventId, dayId) {

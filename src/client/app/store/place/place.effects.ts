@@ -46,7 +46,7 @@ export class PointEffects {
     .pipe(
       switchMap((query: any) => this.placeServiceInstance.upsert({id: query.payload.id, body: query.payload.body})),
       mergeMap((response: any) => [
-        new PointSelected(Object.assign(new Point(), response.data[0])),
+        new PointSelected(Object.assign(new Point(), response)),
         new SnackbarOpen({
           message: 'Lugar guardado'
         })

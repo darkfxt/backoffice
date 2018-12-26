@@ -14,11 +14,11 @@ export class RouteHeadComponent implements OnInit {
 
   routeTypes = [
     {
-      value: TRANSLATE('DRIVING'),
+      value: TRANSLATE('driving'),
       viewValue: 'Driving'
     },
     {
-      value: TRANSLATE('WALKING'),
+      value: TRANSLATE('walking'),
       viewValue: 'Walking'
     }
   ];

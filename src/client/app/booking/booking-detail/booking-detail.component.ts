@@ -56,16 +56,16 @@ export class BookingDetailComponent implements OnInit {
 
     });
     this.formHeader = this.fb.group({
-      name: [this.booking.name, Validators.required],
-      account_id: [this.booking.account_id, Validators.required],
-      passenger_name: [this.booking.passenger_name, Validators.required],
-      start_date: [this.booking.startDate, Validators.required], // tslint:disable-line
+      name: [{value: this.booking.name, disabled: this.booking.status === 1}, Validators.required],
+      account_id: [{value: this.booking.account_id, disabled: this.booking.status === 1}, Validators.required],
+      passenger_name: [{value: this.booking.passenger_name, disabled: this.booking.status === 1}, Validators.required],
+      start_date: [{value: this.booking.startDate, disabled: this.booking.status === 1}, Validators.required], // tslint:disable-line
       end_date: [{value: this.booking.endDate, disabled: true}], // tslint:disable-line
-      booking_reference: this.booking.booking_reference,
-      comment: this.booking.comment,
-      device_id: this.booking.gps_device ? this.booking.gps_device : '',
-      pickup_point: this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : '',
-      dropoff_point: this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : ''
+      booking_reference: [{value: this.booking.booking_reference, disabled: this.booking.status === 1}],
+      comment: [{value: this.booking.comment, disabled: this.booking.status === 1}],
+      device_id: [{value: this.booking.gps_device ? this.booking.gps_device : '', disabled: this.booking.status === 1}],
+      pickup_point: [{value: this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : '', disabled: this.booking.status === 1}],
+      dropoff_point: [{value: this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : '', disabled: this.booking.status === 1}]
     });
     this.formItinerary = this.fb.array(this.booking.days || []);
   }
@@ -120,7 +120,7 @@ export class BookingDetailComponent implements OnInit {
     let invalidEvents: Array<Event> = [];
     itinerary.forEach((day) => {
       invalidEvents = invalidEvents.concat(day.events.filter( (event: Event) => {
-        return (event.eventType === 'DRIVING') && (event.product.origin === null || event.product.destination === null);
+        return (event.event_type === 'driving') && (event.product.origin === null || event.product.destination === null);
       }));
     });
     return invalidEvents.length <= 0;

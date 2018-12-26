@@ -15,7 +15,7 @@ export class PlaceService {
 
   getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
     const queryParams: any = {};
-    queryParams.size = paginationMetadata.pageSize;
+    queryParams.limit = paginationMetadata.pageSize;
     queryParams.page = paginationMetadata.pageIndex;
     if (paginationMetadata.search)
       queryParams.search = paginationMetadata.search;

@@ -1,0 +1,12 @@
+@import '../../../assets/variables';
+
+.footer-ctn {
+  border-top: 1px solid $gray-line;
+  padding: 16px;
+  text-align: right;
+  .bo-version {
+    size: 12px;
+    color: #777;
+  }
+}
+

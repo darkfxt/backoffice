@@ -1,10 +1,6 @@
 enum EventType {
-  HOTEL = 'HOTEL',
-  POI = 'POI',
   DRIVING = 'DRIVING',
-  TERMINAL = 'TERMINAL',
-  REFERENCE = 'REFERENCE',
-  ACTIVITY = 'ACTIVITY',
+  PLACE = 'PLACE',
   CUSTOM = 'CUSTOM'
 }
 

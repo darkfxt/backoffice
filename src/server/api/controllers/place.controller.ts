@@ -11,7 +11,9 @@ export class PlaceController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
+      request.query.page = +request.query.page + 1;
       const answer = await PlaceService.getAll(request.query, request.headers);
+      answer.data.metadata.pageIndex = (+answer.data.metadata.page_index - 1).toString();
       if (request.query.simple) {
         response.json(answer.data.data);
         return;
@@ -36,7 +38,7 @@ export class PlaceController {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
       const resp = await PlaceService.search(request.query, request.query.lang, request.headers);
-      response.json(resp.data);
+      response.json(resp);
     } catch (err) {
       next(err);
     }
@@ -93,7 +95,7 @@ export class PlaceController {
         place = await PlaceService.create(oPlace, request.headers);
       }
 
-      response.json(place.data);
+      response.json(place);
     } catch (err) {
       next(err);
     }

@@ -23,7 +23,6 @@ export class RolesController {
     try {
 
       const answer = await RolesService.getDetail(request.params.id, request.query.lang, request.headers);
-      console.log('*********', answer);
       response.json(answer.data);
     } catch (err) {
       next(err);

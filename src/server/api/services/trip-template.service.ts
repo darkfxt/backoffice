@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { config } from '../../config/env';
-import * as _ from 'lodash';
 import { RoutesService } from './routes.service';
 import { PlaceService } from './place.service';
-import PlacesService = google.maps.places.PlacesService;
 import { event_type } from '../entity/TripTemplate';
-import event = google.maps.event;
+import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
+import { RouteTransformer } from '../entity/adapters/route.transformer';
 
 export class TripTemplateService {
 
@@ -15,16 +14,24 @@ export class TripTemplateService {
       queryParams += `&search=${query.search}`;
     if (query.company_id)
       queryParams += `&company_id=${query.company_id}`;
-    return axios
+    const resp = await axios
       .get(`${config.routes.url}/trip-templates${queryParams}`, {headers: {authorization: headers.authorization}});
+    resp.data.data = resp.data.data.map((tripTemplate) => {
+      tripTemplate.days = this.fitMassiveDaysFromDAO(tripTemplate);
+      return tripTemplate;
+    });
+
+    return resp;
   }
 
   public static async create(tripTemplate, headers: any): Promise<any> {
+    tripTemplate.days = this.fitDaysToDAO(tripTemplate);
     return axios.post(`${config.routes.url}/trip-templates`, tripTemplate, {headers: {authorization: headers.authorization}});
   }
 
-  public static async update(id, body, headers: any): Promise<any> {
-    return axios.patch(`${config.routes.url}/trip-templates/${id}`, body, {headers: {authorization: headers.authorization}});
+  public static async update(id, tripTemplate, headers: any): Promise<any> {
+    tripTemplate.days = this.fitDaysToDAO(tripTemplate);
+    return axios.patch(`${config.routes.url}/trip-templates/${id}`, tripTemplate, {headers: {authorization: headers.authorization}});
   }
 
   public static async deleteOne(id, headers: any): Promise<any> {
@@ -32,7 +39,11 @@ export class TripTemplateService {
   }
 
   public static async getDetail(id: string, lang: string = 'en', headers: any): Promise<any> {
-    return axios.get(`${config.routes.url}/trip-templates/${id}?lang=${lang}`, {headers: {authorization: headers.authorization}});
+    const resp = await axios.get(
+      `${config.routes.url}/trip-templates/${id}?lang=${lang}`,
+      {headers: {authorization: headers.authorization}});
+    resp.data.days = this.fitDaysFromDAO(resp);
+    return resp;
   }
 
   public static async getEventsFromTripTemplate(id: string, headers: any): Promise<any> {
@@ -43,7 +54,7 @@ export class TripTemplateService {
       const inflatedData = (await Promise.all(answer.data.map( async (event) => {
         let eventData: any;
         const geo = [];
-        if (event['event_type'] === event_type.ACTIVITY || event['event_type'] === event_type.HOTEL) {
+        if (event['event_type'] === event_type.PLACE) {
           eventData = await PlaceService.getDetail(event.reference_id, headers);
           geo.push(eventData.geo.point);
         }
@@ -67,6 +78,48 @@ export class TripTemplateService {
 
     return axios.get(`${config.routes.url}/trip-templates/autocomplete`, {params: query, headers: {authorization: headers.authorization}});
 
+  }
+
+  private static fitDaysToDAO(tripTemplate) {
+    return tripTemplate.days.map((day) => {
+      day.events = day.events.map((myEvent) => {
+        if (myEvent.event_type === 'place')
+          myEvent.product = PlaceAdapter.fitToDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toDTO(myEvent.product);
+        return myEvent;
+      });
+      return day;
+    });
+  }
+
+  private static fitDaysFromDAO(resp) {
+    return resp.data.days.map((day) => {
+      day.events = day.events.map((myEvent) => {
+        if (myEvent.event_type === 'place')
+          myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+        if (myEvent.event_type === 'driving')
+          myEvent.product = RouteTransformer.toRoute(myEvent.product);
+        return myEvent;
+      });
+      return day;
+    });
+  }
+
+  private static fitMassiveDaysFromDAO(tripT) {
+    if (tripT.days && tripT.days.length > 0) {
+      return tripT.days.map((day) => {
+        day.events = day.events.map((myEvent) => {
+          if (myEvent.event_type === 'place')
+            myEvent.product = PlaceAdapter.fitFromDAO(myEvent.product);
+          if (myEvent.event_type === 'driving')
+            myEvent.product = RouteTransformer.toRoute(myEvent.product);
+          return myEvent;
+        });
+        return day;
+      });
+    }
+    return tripT.days;
   }
 
 }

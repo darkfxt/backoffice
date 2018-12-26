@@ -1,22 +1,21 @@
-import ImageDTO from './ImageDTO';
+import IRouteDTO from './IRouteDTO';
+import { IPlaceDTO } from './IPlaceDTO';
+import { ImageDTO } from './ImageDTO';
 import LegDTO from './LegDTO';
 import ThingToKnowDTO from './ThingToKnowDTO';
-import PlaceDTO from './PlaceDTO';
-import ProductDTO from './ProductDTO';
+import { ProductDTO } from './ProductDTO';
+import { RouteType } from '../enum/RouteType';
 
-interface RouteDTO extends ProductDTO {
-  search_name: string;
-  route_type: string;
-  road_surface: string;
+export class RouteDTO extends ProductDTO {
   description: string;
+  destination: IPlaceDTO;
   images: ImageDTO[];
-  origin: PlaceDTO;
-  destination: PlaceDTO;
-  middle_points: PlaceDTO[];
-  things_to_know: ThingToKnowDTO[];
   legs: LegDTO[];
-  company_id: number;
-  created_by: string;
+  middle_points: IPlaceDTO[];
+  origin: IPlaceDTO;
+  road_surface: string;
+  route_type: string;
+  search_name: string;
+  things_to_know: ThingToKnowDTO[];
+  type: RouteType;
 }
-
-export default RouteDTO;

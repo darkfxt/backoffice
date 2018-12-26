@@ -1,4 +1,6 @@
 import { PaginationOptionsInterface } from '../common-list/common-list-item/pagination-options.interface';
+import { PlaceType } from './enum/PlaceType';
+import { Geo } from './Geo';
 
 export class Point {
 
@@ -20,3 +22,35 @@ export class PointWithMetadata {
     this.metadata = metadata;
   }
 }
+
+
+export class Place {
+  _id: string;
+  name: string;
+  company_id: number;
+  created_by: string;
+  description: string;
+  geo: Geo;
+  images: Array<any>;
+  type: PlaceType;
+  search_name: string;
+  status: ActiveStatus;
+  constructor(params: any = {}) {
+    this._id = params._id;
+    this.name = params.name || '';
+    this.search_name = params.search_name || '';
+    this.description = params.description || '';
+    this.type = params.type || '';
+    this.status = params.status || 1;
+    this.geo = params.geo || new Geo();
+    this.images = params.images || [];
+    this.created_by = params.created_by || '';
+  }
+}
+
+enum ActiveStatus {
+  'ACTIVE',
+  'INACTIVE'
+}
+
+
