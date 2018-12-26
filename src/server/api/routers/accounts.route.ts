@@ -9,10 +9,10 @@ const s3Middleware: S3Middleware = new S3Middleware({bucket: 'accounts'});
 AccountsRouter.route('/:id')
   .get(AccountsController.getDetail)
   .delete(AccountsController.delete)
-  .patch([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], AccountsController.update);
+  .patch([s3Middleware.upload().array('files[]')], AccountsController.update);
 
 AccountsRouter.route('/')
   .get(AccountsController.getAll)
-  .post([s3Middleware.uploader().array('files[]'), s3Middleware.deleteObjects()], AccountsController.create);
+  .post([s3Middleware.upload().array('files[]')], AccountsController.create);
 
 export default AccountsRouter;

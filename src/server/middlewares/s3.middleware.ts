@@ -98,6 +98,12 @@ export class S3Middleware {
     };
   }
 
+  upload() {
+    const storage = multer.memoryStorage();
+
+    return multer({storage});
+  }
+
 }
 
 

@@ -33,12 +33,8 @@ export class AccountsController {
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
       const data = JSON.parse(request.body.data);
+      data.file = (<any>request).files[0];
 
-      data.logo = (<any>request).files.map(value => ({
-        key: value.key,
-        source: 'S3',
-        url: value.location
-      }))[0];
       data.company_id = (<any>request).loggedUser.CompanyID;
       // TODO: Make a header for requests
       const user = await AccountsService.create(data, request.headers);
@@ -52,6 +48,7 @@ export class AccountsController {
   public static async update(request: Request, response: Response, next: NextFunction) {
     try {
       const data = JSON.parse(request.body.data);
+      data.file = (<any>request).files[0];
       const user = await AccountsService.update(request.params.id, data, request.headers);
 
       response.json(user.data);
