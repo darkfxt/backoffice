@@ -19,6 +19,9 @@
              formControlName="origin" (keyup)="search($event)"
       />
       <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="points-autocomplete">
+        <mat-option *ngIf="acLoading">
+          <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
+        </mat-option>
         <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
           <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
         </mat-optgroup>
@@ -34,6 +37,9 @@
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)">
+            <mat-option *ngIf="acLoading">
+              <mat-spinner [diameter]="32" [mode]="indeterminate"></mat-spinner>
+            </mat-option>
             <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
               <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
             </mat-optgroup>
@@ -52,6 +58,9 @@
              formControlName="destination" (keyup)="search($event)"
       />
       <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')">
+        <mat-option *ngIf="acLoading">
+          <mat-spinner [diameter]="32" [mode]="indeterminate"></mat-spinner>
+        </mat-option>
         <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
           <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
         </mat-optgroup>

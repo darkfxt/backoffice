@@ -5,7 +5,7 @@ import { RoutesComponent } from './routes.component';
 import { RouteComponent } from './route/route.component';
 import {
   MatAutocompleteModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatSelectModule, MatSnackBarModule
+  MatSelectModule, MatSnackBarModule, MatProgressSpinnerModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouteMapComponent } from './route/route-map/route-map.component';
@@ -43,6 +43,7 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     MatSelectModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     MatDialogModule,
     SharedModule,

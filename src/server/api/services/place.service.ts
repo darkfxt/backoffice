@@ -8,6 +8,7 @@ import { PlaceFactory } from '../factories/place.factory';
 import Place from '../entity/Place';
 import { IPlaceDTO } from '../entity/dto/IPlaceDTO';
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
+import { PlaceType } from '../entity/enum/PlaceType';
 
 
 export class PlaceService {
@@ -62,16 +63,19 @@ export class PlaceService {
     return resp;
   }
 
-  public static async search(params, lang: string = 'en', headers: any): Promise<any> {
-    const query: string[] = [];
-    Object.entries(params).forEach(
-      ([key, value]) => {
-        if (key !== 'lang')
-          query.push(`${key}=${value}`);
-      }
-    );
-    const resp = await axios.get(`${config.geo.url}/places?limit=10&page=1&search=${params.q}`, {headers: {authorization: headers.authorization}});
-    return resp.data.data.map((option) => PlaceAdapter.fitFromDAO(option));
+  public static async search(search: string,
+                             types: Array<PlaceType>,
+                             company_id: number,
+                             publics: boolean = true,
+                             limit: number = 50,
+                             lang: string = 'en',
+                             headers: any): Promise<any> {
+    const resp = await axios.get(`${config.geo.url}/autocomplete?search=${search}` +
+                                     `&types=${types.join(',')}` +
+                                     `&company_id=${company_id}&publics=${publics}&limit=${limit}`,
+                                {headers: {authorization: headers.authorization}});
+    return resp.data.map((option) => PlaceAdapter.fitFromDAO(option));
   }
 
 }
+

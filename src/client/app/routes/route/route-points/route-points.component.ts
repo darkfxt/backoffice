@@ -17,6 +17,7 @@ export class RoutePointsComponent implements OnInit {
   autocompleteTimeout;
   options: any[];
   lastSearch = '';
+  acLoading = false;
 
   constructor(private fb: FormBuilder,
               private placeService: PlaceService,
@@ -81,13 +82,17 @@ export class RoutePointsComponent implements OnInit {
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
-
+    this.acLoading = true;
     this.lastSearch = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
-      this.placeService.search(`q=${event.target.value}`).subscribe(resp => {
+      this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
         this.options = this.createGroups(resp);
-      });
+        this.acLoading = false;
+      },
+        (err) => {
+          this.acLoading = false;
+        });
     }, 300);
 
   }

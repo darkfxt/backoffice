@@ -3,6 +3,15 @@ import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
 import { httpstatus } from 'aws-sdk/clients/glacier';
 import httpStatus = require('http-status');
+import { PlaceType } from '../entity/enum/PlaceType';
+
+const AUTOCOMPLETE_TYPES: Array<PlaceType> = [
+  PlaceType.CITY,
+  PlaceType.TERMINAL,
+  PlaceType.DESTINATION,
+  PlaceType.ACTIVITY,
+  PlaceType.HOTEL,
+  PlaceType.NEIGHBORHOOD];
 
 
 export class PlaceController {
@@ -35,9 +44,11 @@ export class PlaceController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
+      let company_id: number = (<any>request).loggedUser.CompanyID || '';
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
-        request.query.company_id = (<any>request).loggedUser.CompanyID;
-      const resp = await PlaceService.search(request.query, request.query.lang, request.headers);
+        company_id = (<any>request).loggedUser.CompanyID;
+      const {search, lang} = request.query;
+      const resp = await PlaceService.search(search, AUTOCOMPLETE_TYPES, company_id, true, 50, lang, request.headers);
       response.json(resp);
     } catch (err) {
       next(err);
