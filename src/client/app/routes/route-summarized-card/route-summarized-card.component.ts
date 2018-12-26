@@ -2,8 +2,8 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
-import {EventSelected} from '../../store/trip-template/event/event.actions';
-import {StaticsService} from '../../shared/services/statics.service';
+import { EventSelected } from '../../store/trip-template/event/event.actions';
+import { StaticsService } from '../../shared/services/statics.service';
 
 @Component({
   selector: 'app-route-summarized-card',
@@ -48,6 +48,9 @@ export class RouteSummarizedCardComponent implements OnInit {
   calculateDistanceAndTime(legs: any[]): any {
     let distance = 0;
     let duration = 0;
+    if (legs.length === 0)
+      return {distance, duration};
+
     legs.forEach((element) => {
       distance += element.distance.value;
       duration += element.duration.value;
