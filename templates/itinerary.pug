@@ -305,13 +305,15 @@ html
                     if event.type == 'Driving'
                       +driving(event)
                     else
+
                       +place(event)
-    footer
-      div.mobile-desc.clearfix
-        p
-          span GPS Device: #{header.gps.name}&nbsp
-          span Pick up: #{header.gps.pick_up}&nbsp
-          span Drop off: #{header.gps.drop_off}
+    if(header.gps)
+      footer
+        div.mobile-desc.clearfix
+          p
+            span GPS Device: #{header.gps.name}&nbsp
+            span Pick up: #{header.gps.pick_up}&nbsp
+            span Drop off: #{header.gps.drop_off}
 
 
 
