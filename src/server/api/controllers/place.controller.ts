@@ -6,12 +6,13 @@ import httpStatus = require('http-status');
 import { PlaceType } from '../entity/enum/PlaceType';
 
 const AUTOCOMPLETE_TYPES: Array<PlaceType> = [
-  PlaceType.CITY,
-  PlaceType.TERMINAL,
-  PlaceType.DESTINATION,
   PlaceType.ACTIVITY,
+  PlaceType.TERMINAL,
   PlaceType.HOTEL,
-  PlaceType.NEIGHBORHOOD];
+  PlaceType.DESTINATION,
+  PlaceType.NEIGHBORHOOD,
+  PlaceType.CITY
+];
 
 
 export class PlaceController {
@@ -48,7 +49,7 @@ export class PlaceController {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         company_id = (<any>request).loggedUser.CompanyID;
       const {search, lang} = request.query;
-      const resp = await PlaceService.search(search, AUTOCOMPLETE_TYPES, company_id, true, 50, lang, request.headers);
+      const resp = await PlaceService.search(search, AUTOCOMPLETE_TYPES, company_id, true, 20, lang, request.headers);
       response.json(resp);
     } catch (err) {
       next(err);

@@ -23,7 +23,7 @@ export class RoutesController {
 
   public static async create(request, response: Response, next: NextFunction) {
     try {
-      const dto = JSON.parse(request.body);
+      const dto = JSON.parse(request.body.data);
       dto.company_id = (request as any).loggedUser.CompanyID;
       dto.created_by = (request as any).loggedUser.Username;
       if (request.files.length > 0)
@@ -43,7 +43,7 @@ export class RoutesController {
 
   public static async update(request, response: Response, next: NextFunction) {
     try {
-      const dto = JSON.parse(request.body);
+      const dto = JSON.parse(request.body.data);
       dto.company_id = (request as any).loggedUser.CompanyID;
       dto.created_by = (request as any).loggedUser.Username;
       if (request.files.length > 0)
