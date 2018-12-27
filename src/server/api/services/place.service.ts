@@ -64,15 +64,16 @@ export class PlaceService {
   }
 
   public static async search(search: string,
-                             types: Array<PlaceType>,
+                             public_types: Array<PlaceType>,
+                             private_types: Array<PlaceType>,
                              company_id: number,
-                             publics: boolean = true,
                              limit: number = 50,
                              lang: string = 'en',
                              headers: any): Promise<any> {
     const resp = await axios.get(`${config.geo.url}/autocomplete?search=${search}` +
-                                     `&types=${types.join(',')}` +
-                                     `&company_id=${company_id}&publics=${publics}&limit=${limit}`,
+                                     `&public_types=${public_types.join(',')}` +
+                                     `&private_types=${private_types.join(',')}` +
+                                     `&company_id=${company_id}&limit=${limit}`,
                                 {headers: {authorization: headers.authorization}});
     return resp.data.map((option) => PlaceAdapter.fitFromDAO(option));
   }

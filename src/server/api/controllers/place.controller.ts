@@ -5,11 +5,14 @@ import { httpstatus } from 'aws-sdk/clients/glacier';
 import httpStatus = require('http-status');
 import { PlaceType } from '../entity/enum/PlaceType';
 
-const AUTOCOMPLETE_TYPES: Array<PlaceType> = [
+const PRIVATE_TYPES: Array<PlaceType> = [
   PlaceType.ACTIVITY,
   PlaceType.TERMINAL,
   PlaceType.HOTEL,
-  PlaceType.DESTINATION,
+  PlaceType.DESTINATION
+];
+
+const PUBLIC_TYPES: Array<PlaceType> = [
   PlaceType.NEIGHBORHOOD,
   PlaceType.CITY
 ];
@@ -49,7 +52,7 @@ export class PlaceController {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         company_id = (<any>request).loggedUser.CompanyID;
       const {search, lang} = request.query;
-      const resp = await PlaceService.search(search, AUTOCOMPLETE_TYPES, company_id, true, 20, lang, request.headers);
+      const resp = await PlaceService.search(search, PUBLIC_TYPES, PRIVATE_TYPES, company_id, 20, lang, request.headers);
       response.json(resp);
     } catch (err) {
       next(err);
