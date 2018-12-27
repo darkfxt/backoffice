@@ -1,24 +1,43 @@
-- var month = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+- var month = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dec"];
 mixin driving(event)
   div
     span.event-type= event.type
     h4= event.title
-      if(event.meta.via)
-        span  - Via #{event.meta.via}
-    p
-      span.avg-time Avg. time #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min.
-      span.distance Distance #{event.meta.distance}km
+      if(event.meta.product.via)
+        span  - Via #{event.meta.product.via}
     if event.description
       p= event.description !== ''
+
+    div.points.clearfix
+      div
+        h5 Origin
+        p
+          span= event.meta.product.origin.name
+      div
+        h5 Destination
+        p
+          span= event.meta.product.destination.name
+      div
+        h5 Avg. time
+        p
+          span #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min.
+      div
+        h5 Distance
+        p
+          span #{event.meta.distance}km.
+      div
+        h5 Road surface
+        p
+          span #{event.meta.product.road_surface.toLowerCase()}
     if event.meta.highlights.length
       div
         h5 Puntos de interes
         p
           span= event.meta.highlights.join(', ')
-    if event.meta.things_to_know.length
+    if event.meta.product.things_to_know.length
       div
         ul
-          each ttk in event.meta.things_to_know
+          each ttk in event.meta.product.things_to_know
             li
               h5= ttk.title
               p= ttk.description
@@ -90,6 +109,11 @@ html
         line-height: 0.625rem;
         color: rgba(0, 0, 0, 0.54);
         margin: 0;
+      }
+
+      .points div{
+        float: left;
+        margin-right: 24px;
       }
 
       .event-cluster p{
@@ -221,30 +245,52 @@ html
         font-size: 0.875rem;
         line-height: 1.25rem;
         width: calc(100% - 3.5rem);
+        text-align: center;
       }
 
+      .mobile-desc span{
+        margin-right: 2rem;
+      }
+
+      .logo-ctn{
+        height: 3.75rem;
+        width: 6.25rem;
+        background-size: contain !important;
+        float: left;
+        margin-right: 2rem;
+      }
+
+      .divisor{
+        height: 1px;
+        border-top: 1px solid #ccc;
+        margin: 0 1rem 2rem;
+      }
 
       /* close commented backslash hack */
 
   body.mat-typography
     header
       div.title.clearfix
+        div.logo-ctn(style="background: url('"+header.account.logo.url+"') no-repeat scroll 0 center transparent")
         h1= header.name
           span #123123
           if header.reference
             span ##{header.reference}
         div= header.start_date + ' - ' + header.end_date
-      h2= header.passenger_name
-      div.description
-        p
-          span Accede al viaje a través de tu smartphone ingresando a&nbsp;
-          a(href="https://#{basePath}/trips/#{header.id}-#{header.name}") https://#{basePath}/trips/#{header.id}-#{header.name}
-          span .
-          br
-          span En él encontraras el detalle de tu itinerario, fotos y descripciones de los lugares que visitarás y todas las rutas para que navegues desde tu dispositivo.
+      div.divisor
+      h2= 'Mrs. ' + header.passenger_name
       if header.comment
         div.description
           p= header.comment
+          br
+      div.description
+        p
+          span Accede al viaje a través de tu smartphone ingresando a&nbsp;
+          a(href="https://"+basePath+"/trips/"+header.id+"-"+header.name+"?a="+header.account.id) https://#{basePath}/trips/#{header.id}-#{header.name}?a=#{header.account.id}
+          span .
+          br
+          span En él encontraras el detalle de tu itinerario, fotos y descripciones de los lugares que visitarás y todas las rutas para que navegues desde tu dispositivo.
+
     main.main
       ul.day-list
         each day in itinerary
@@ -260,13 +306,12 @@ html
                       +driving(event)
                     else
                       +place(event)
-    //footer
+    footer
       div.mobile-desc.clearfix
-        div.image-ctn(style="background-image: url('data:image/png;base64,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')")
         p
-          span Accede al viaje a través de tu smartphone ingresando a&nbsp;
-          a(href="https://#{basePath}/trips/#{header.id}-#{header.name}") https://#{basePath}/trips/#{header.id}-#{header.name}
-          span . En él encontraras el detalle de tu itinerario, fotos y descripciones de los lugares que visitarás y todas las rutas para que navegues desde tu dispositivo.
+          span GPS Device: #{header.gps.name}&nbsp
+          span Pick up: #{header.gps.pick_up}&nbsp
+          span Drop off: #{header.gps.drop_off}
 
 
 

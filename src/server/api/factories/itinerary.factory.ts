@@ -40,7 +40,9 @@ export class ItineraryFactory {
       start_date: (<any>booking.start_date).substr(0, 10).split('-').reverse().join('/'),
       end_date: (<any>booking.end_date).substr(0, 10).split('-').reverse().join('/'),
       booking_reference: booking.booking_reference,
-      comment: booking.comment
+      comment: booking.comment,
+      gps: booking.gps_device,
+      account: booking.account_id
     };
     this.itinerary = this.transformItinerary(booking.days, booking.start_date);
   }
@@ -60,12 +62,11 @@ export class ItineraryFactory {
       case 'driving':
         const meta = {
           ...calculateDistanceAndTime(event.product.legs),
-          ...{things_to_know: event.product.things_to_know},
           ...{highlights: event.product.middle_points
               .filter(point => point.type !== 'waypoint')
               .map(point => point.name)
           },
-          via: event.product.via,
+          product: event.product
         };
         return <Event>{
           title: event.name,
