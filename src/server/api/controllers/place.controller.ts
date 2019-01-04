@@ -6,10 +6,10 @@ import httpStatus = require('http-status');
 import { PlaceType } from '../entity/enum/PlaceType';
 
 const PRIVATE_TYPES: Array<PlaceType> = [
-  PlaceType.ACTIVITY,
+  PlaceType.DESTINATION,
   PlaceType.TERMINAL,
   PlaceType.HOTEL,
-  PlaceType.DESTINATION
+  PlaceType.ACTIVITY
 ];
 
 const PUBLIC_TYPES: Array<PlaceType> = [
