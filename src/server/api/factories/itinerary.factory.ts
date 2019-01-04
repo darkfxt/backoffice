@@ -42,7 +42,8 @@ export class ItineraryFactory {
       booking_reference: booking.booking_reference,
       comment: booking.comment,
       gps: booking.gps_device,
-      account: booking.account_id
+      account: booking.account_id,
+      reference: booking.booking_reference
     };
     this.itinerary = this.transformItinerary(booking.days, booking.start_date);
   }

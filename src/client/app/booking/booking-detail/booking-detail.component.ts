@@ -63,9 +63,9 @@ export class BookingDetailComponent implements OnInit {
       end_date: [{value: this.booking.endDate, disabled: true}], // tslint:disable-line
       booking_reference: [this.booking.booking_reference],
       comment: [this.booking.comment],
-      device_id: [this.booking.gps_device ? this.booking.gps_device : ''],
-      pickup_point: [this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : ''],
-      dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : '']
+      device_id: [this.booking.gps_device ? this.booking.gps_device : undefined],
+      pickup_point: [this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : undefined],
+      dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : undefined]
     });
     this.formItinerary = this.fb.array(this.booking.days || []);
   }

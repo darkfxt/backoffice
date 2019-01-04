@@ -225,8 +225,9 @@ html
       }
 
       .mobile-desc{
-        padding: 0 1rem;
-        margin-bottom: 2rem;
+        padding: 1rem;
+        margin: 1rem;
+        border: 1px solid #ccc;
       }
 
       .mobile-desc .image-ctn{
@@ -245,7 +246,7 @@ html
         font-size: 0.875rem;
         line-height: 1.25rem;
         width: calc(100% - 3.5rem);
-        text-align: center;
+        text-align: left;
       }
 
       .mobile-desc span{
@@ -273,7 +274,6 @@ html
       div.title.clearfix
         div.logo-ctn(style="background: url('"+header.account.logo.url+"') no-repeat scroll 0 center transparent")
         h1= header.name
-          span #123123
           if header.reference
             span ##{header.reference}
         div= header.start_date + ' - ' + header.end_date
@@ -285,11 +285,21 @@ html
           br
       div.description
         p
-          span Accede al viaje a través de tu smartphone ingresando a&nbsp;
-          a(href="https://"+basePath+"/trips/"+header.id+"-"+header.name+"?a="+header.account.id) https://#{basePath}/trips/#{header.id}-#{header.name}?a=#{header.account.id}
+          span You can view your itinerary in your smartphone by following this link
+            a(href="https://"+basePath+"/trips/"+header.id+"-"+header.name+"?a="+header.account.id)  https://#{basePath}/trips/#{header.id}-#{header.name}?a=#{header.account.id}
           span .
           br
-          span En él encontraras el detalle de tu itinerario, fotos y descripciones de los lugares que visitarás y todas las rutas para que navegues desde tu dispositivo.
+          span By following the link above you will access to the web version of your trip itinerary. It displays plenty of information about your daily trip, highlights and details.
+          if(!header.gps.id)
+            br
+            span It also features an integration with Google Maps that enables you to use your smartphone to get driving instructions and directions during your trip.
+
+      if(header.gps.id)
+        div.mobile-desc.clearfix
+          p
+            span GPS Device: #{header.gps.name}&nbsp
+            span Pick up: #{header.gps.pick_up}&nbsp
+            span Drop off: #{header.gps.drop_off}
 
     main.main
       ul.day-list
@@ -307,13 +317,7 @@ html
                     else
 
                       +place(event)
-    if(header.gps)
-      footer
-        div.mobile-desc.clearfix
-          p
-            span GPS Device: #{header.gps.name}&nbsp
-            span Pick up: #{header.gps.pick_up}&nbsp
-            span Drop off: #{header.gps.drop_off}
+
 
 
 
