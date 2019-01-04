@@ -93,9 +93,9 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
       });
     } else
       this.form.patchValue({
-        device_id: '',
-        pickup_point: '',
-        dropff_point: ''
+        device_id: undefined,
+        pickup_point: undefined,
+        dropff_point: undefined
       });
 
   }
