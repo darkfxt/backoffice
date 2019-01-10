@@ -2,13 +2,13 @@ import BookingDTO from '../api/entity/dto/BookingDTO';
 import EventType from '../api/entity/enum/EventType';
 import { IPlaceDTO } from '../api/entity/dto/IPlaceDTO';
 import IRouteDTO from '../api/entity/dto/IRouteDTO';
-import {PlaceDTO} from '../api/entity/dto/PlaceDTO';
-import {RouteDTO} from '../api/entity/dto/RouteDTO';
+import { PlaceDTO } from '../api/entity/dto/PlaceDTO';
+import { RouteDTO } from '../api/entity/dto/RouteDTO';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 class GPXBuilder {
-  static build(booking: BookingDTO): string {
+  static build(booking: any): string {
 
     let gpxContent = `<?xml version='1.0' encoding='utf-8'?>\n<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" creator="TaylorGPS" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">`;
     let routes = '';
@@ -32,22 +32,22 @@ class GPXBuilder {
             // route Origin
             order += 1;
             gpxContent = gpxContent
-              .concat(this.addWaypoint(route.origin.name, route.origin.geo.point.lat, route.origin.geo.point.lng, order));
-            routes = routes.concat(this.addRoutePoint(route.origin.name, route.origin.geo.point.lat, route.origin.geo.point.lng, order));
+              .concat(this.addWaypoint(route.origin.name, route.origin.geo.center.latitude, route.origin.geo.center.longitude, order));
+            routes = routes.concat(this.addRoutePoint(route.origin.name, route.origin.geo.center.latitude, route.origin.geo.center.longitude, order));
 
             // route Middle points
             route.middle_points.forEach(point => {
               order += 1;
-              gpxContent = gpxContent.concat(this.addWaypoint(point.name, point.geo.point.lat, point.geo.point.lng, order));
-              routes = routes.concat(this.addRoutePoint(point.name, point.geo.point.lat, point.geo.point.lng, order));
+              gpxContent = gpxContent.concat(this.addWaypoint(point.name, point.geo.center.latitude, point.geo.center.longitude, order));
+              routes = routes.concat(this.addRoutePoint(point.name, point.geo.center.latitude, point.geo.center.longitude, order));
             });
 
             // route Destination
             order += 1;
             gpxContent = gpxContent
-              .concat(this.addWaypoint(route.destination.name, route.destination.geo.point.lat, route.destination.geo.point.lng, order));
+              .concat(this.addWaypoint(route.destination.name, route.destination.geo.center.latitude, route.destination.geo.center.longitude, order));
             routes = routes
-              .concat(this.addRoutePoint(route.destination.name, route.destination.geo.point.lat, route.destination.geo.point.lng, order));
+              .concat(this.addRoutePoint(route.destination.name, route.destination.geo.center.latitude, route.destination.geo.center.longitude, order));
 
             // Close route tag
             routes = routes.concat('\n</rte>');
@@ -55,7 +55,7 @@ class GPXBuilder {
           default:
             order += 1;
             const place: IPlaceDTO = event.product as PlaceDTO;
-            gpxContent = gpxContent.concat(this.addWaypoint(event.name, place.geo.point.lat, place.geo.point.lng, order));
+            gpxContent = gpxContent.concat(this.addWaypoint(event.name, place.geo.center.latitude, place.geo.center.longitude, order));
             break;
         }
       });

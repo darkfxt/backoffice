@@ -48,7 +48,7 @@ export class BookingService {
 
   public static async getGPXContent(id, headers): Promise<string> {
     const booking = await axios.get(`${config.routes.url}/bookings/${id}`, {headers: {authorization: headers.authorization}});
-    booking.data.days = this.fitDaysToDAO(booking.data);
+    // booking.data.days = this.fitDaysToDAO(booking.data);
     return GPXBuilder.build(booking.data as BookingDTO);
   }
 
