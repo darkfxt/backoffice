@@ -45,7 +45,7 @@ export class RouteSummarizedCardComponent implements OnInit {
     };
   }
 
-  calculateDistanceAndTime(legs: any[]): any {
+  calculateDistanceAndTime(legs = []): any {
     let distance = 0;
     let duration = 0;
 
