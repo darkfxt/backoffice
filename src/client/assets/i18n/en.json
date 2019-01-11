@@ -101,9 +101,9 @@
   "password": "password",
   "place": "Place",
   "pt": "Portuguese",
-  "puntos encontrados": "{{value}} places finded",
+  "puntos encontrados": "{{value}} places found",
   "walking": "Walking",
-  "{trip length} trips encontrados": "{{value}} templates finded",
-  "{value} rutas encontradas": "{{value}} routes finded",
+  "{trip length} trips encontrados": "{{value}} templates found",
+  "{value} rutas encontradas": "{{value}} routes found",
   "ó": "or"
 }
