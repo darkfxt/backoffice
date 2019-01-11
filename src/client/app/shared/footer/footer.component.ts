@@ -9,14 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class FooterComponent implements OnInit {
 
   options = [
-    {
-      imgSrc: 'assets/icons/eeuu-flag.png',
-      caption: 'en-US'
-    },
-    {
-      imgSrc: 'assets/icons/spain-flag.png',
-      caption: 'es-AR'
-    }];
+    'es',
+    'en'
+    ];
 
   userLanguage = navigator.language;
   languageSelected: {};
@@ -35,7 +30,7 @@ export class FooterComponent implements OnInit {
       navLanguage = localStorage.getItem('uiLanguage');
       navLocalization = localStorage.getItem('uiL10n');
     }
-    this.languageSelected = `${navLanguage}-${navLocalization}`;
+    this.languageSelected = navLanguage;
   }
 
   changeLanguage(event) {

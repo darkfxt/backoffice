@@ -7,6 +7,16 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/shared/app.interfaces';
 import { HideLoader, ShowLoader } from '../../../store/shared/actions/loader.actions';
 
+const language = [
+  TRANSLATE('en'),
+  TRANSLATE('es'),
+  TRANSLATE('de'),
+  TRANSLATE('it'),
+  TRANSLATE('fr'),
+  TRANSLATE('nl'),
+  TRANSLATE('pt')
+];
+
 @Component({
   selector: 'app-point-head',
   templateUrl: './point-head.component.html',

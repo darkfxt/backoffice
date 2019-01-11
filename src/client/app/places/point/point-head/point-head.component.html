@@ -1,11 +1,11 @@
-<div class="location-desc" [formGroup]="placeForm">
+<div class="location-desc row" [formGroup]="placeForm">
 
-  <mat-form-field color="accent" >
+  <mat-form-field color="accent" class="col-xs-12 col-sm-6">
     <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="name" formControlName="name"/>
     <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-form-field color="accent">
+  <mat-form-field color="accent" class="col-xs-12 col-sm-6">
     <mat-select placeholder="{{'Tipo de punto' | translate}}" name="type" required formControlName="type">
       <mat-option [value]="pointType.value" *ngFor="let pointType of pointTypes">
         {{pointType.viewValue | translate}}
@@ -14,22 +14,18 @@
     <mat-error *ngIf="placeForm.get('type').invalid && (placeForm.get('type').dirty || placeForm.get('type').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-tab-group *ngIf="tabController && availableLanguages" formGroupName="description">
+  <mat-tab-group *ngIf="tabController && availableLanguages" formGroupName="description" class="col-xs-12">
     <mat-tab *ngFor="let lang of getLanguages()">
       <ng-template mat-tab-label>
         {{lang | translate | uppercase }}
       </ng-template>
       <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Descripción' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
+        <textarea matInput placeholder="{{'Ingresa una descripción del lugar' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
           {{placeForm.value.description[lang]}}
         </textarea>
+        <mat-hint align="start">Agrega todos los idiomas que desees personalizar. No te preocupes por los otros, nosotros nos encargamos de traducirlos por ti</mat-hint>
+        <mat-hint align="end" class="count">{{placeForm.value.description[lang] ? placeForm.value.description[lang].length : 0}} / 1000</mat-hint>
       </mat-form-field>
-      <p *ngIf="placeForm.value.description[lang]" class="chars-left">
-        {{"Restan" | translate}}&nbsp;{{1000 - placeForm.value.description[lang].length}}&nbsp;{{"caracteres" | translate}}
-      </p>
-      <p [hidden]="placeForm.value.description[lang]" class="chars-left">
-        {{"Restan" | translate}}&nbsp;{{1000}}&nbsp;{{"caracteres" | translate}}
-      </p>
     </mat-tab>
     <mat-tab [disabled]="!placeForm.value.description[defaultLanguage]" *ngIf="availableLanguages.length > 0">
       <ng-template mat-tab-label>
