@@ -24,7 +24,7 @@ export class PlaceDAO implements IPlaceDAO {
   _id: string;
   address: AddressDAO;
   terminal: boolean;
-
+  default_lang: string;
 }
 
 export class AncestorsDAO implements IAncestorsDAO {

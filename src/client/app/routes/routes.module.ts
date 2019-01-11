@@ -7,6 +7,7 @@ import {
   MatAutocompleteModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatSelectModule, MatSnackBarModule, MatProgressSpinnerModule
 } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouteMapComponent } from './route/route-map/route-map.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,6 +45,7 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     MatMenuModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
     TranslateModule,
     MatDialogModule,
     SharedModule,

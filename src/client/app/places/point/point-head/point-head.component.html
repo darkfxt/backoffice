@@ -14,9 +14,34 @@
     <mat-error *ngIf="placeForm.get('type').invalid && (placeForm.get('type').dirty || placeForm.get('type').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-form-field color="accent">
-    <textarea matInput placeholder="{{'Descripción' | translate}}" name="description" formControlName="description"></textarea>
-  </mat-form-field>
+  <mat-tab-group *ngIf="tabController && availableLanguages" formGroupName="description">
+    <mat-tab *ngFor="let lang of getLanguages()">
+      <ng-template mat-tab-label>
+        {{lang | translate | uppercase }}
+      </ng-template>
+      <mat-form-field color="accent">
+        <textarea matInput placeholder="{{'Descripción' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
+          {{placeForm.value.description[lang]}}
+        </textarea>
+      </mat-form-field>
+      <p *ngIf="placeForm.value.description[lang]" class="chars-left">
+        {{"Restan" | translate}}&nbsp;{{1000 - placeForm.value.description[lang].length}}&nbsp;{{"caracteres" | translate}}
+      </p>
+      <p [hidden]="placeForm.value.description[lang]" class="chars-left">
+        {{"Restan" | translate}}&nbsp;{{1000}}&nbsp;{{"caracteres" | translate}}
+      </p>
+    </mat-tab>
+    <mat-tab [disabled]="!placeForm.value.description[defaultLanguage]" *ngIf="availableLanguages.length > 0">
+      <ng-template mat-tab-label>
+        <button [disabled]="!placeForm.value.description[defaultLanguage]" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>add</mat-icon>
+        </button>
+      </ng-template>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let lng of availableLanguages" (click)="getTranslation(lng)">{{lng | translate}}</button>
+      </mat-menu>
+    </mat-tab>
+  </mat-tab-group>
 
 
 </div>

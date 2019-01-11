@@ -101,6 +101,13 @@ export class PlaceController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       data.company_id = (request as any).loggedUser.CompanyID;
       data.created_by = (request as any).loggedUser.Username;
+      data.default_lang = data.defaultLanguage;
+      const notNullLng = {};
+      Object.keys(data.description).forEach((lng) => {
+        if (data.description[lng])
+          notNullLng[lng] = data.description[lng];
+      });
+      data.description = Object.assign({}, notNullLng);
       const oPlace = new Place(data);
       let place;
       if (request.params.place_id) {

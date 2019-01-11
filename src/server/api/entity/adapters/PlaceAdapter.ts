@@ -22,6 +22,7 @@ export class PlaceAdapter {
     transformed.type = DTOData.type;
     transformed.created_by = DTOData.created_by;
     transformed.company_id = DTOData.company_id;
+    transformed.default_lang = DTOData.default_lang;
     transformed.geo = new GeoDAO({center: CoordinatesDAO.fitFromDTO(DTOData.geo.point)});
     transformed.address = AddressDAO.fitFromDTO(DTOData.geo.address);
     transformed.images = ImageDAO.fitFromDTO(DTOData.images);
@@ -37,6 +38,7 @@ export class PlaceAdapter {
     transformed.search_name = DAOData.search_name;
     transformed.status = DAOData.status;
     transformed.type = DAOData.type;
+    transformed.default_lang = DAOData.default_lang;
     const point = new CoordinatesDTO(DAOData.geo.center.latitude, DAOData.geo.center.longitude);
     const address = new AddressDTO(DAOData.address);
     transformed.geo = new GeoDTO(address, ' ', point);

@@ -32,6 +32,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _getDetailSubscription: Subscription;
   _deleteSubscription: Subscription;
   bussy: boolean;
+  multiDescriptions: any;
   amIDialog = 'false';
   popup = false;
   private autocompleteTimeout;
@@ -39,6 +40,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   options: Observable<any[]>;
   dialogStatus: string;
   drivingStatus: string;
+  defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +53,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private placeStore: PlaceStore
   ) {
     super(matDialog, modalService);
+    this.multiDescriptions = {[this.defaultLanguage]: ''};
   }
 
   ngOnInit() {
@@ -97,7 +100,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     this.placeForm = this.fb.group({
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
-      description: [this.place.description],
+      description: this.getDescriptions(this.defaultLanguage),
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
@@ -119,6 +122,21 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       _id: this.place._id
     });
 
+
+  }
+
+  getDescriptions(defLang: string): FormGroup {
+    let multiDescriptions = {
+      en: this.place.description.en,
+      es: this.place.description.es,
+      de: this.place.description.de,
+      it: this.place.description.it,
+      fr: this.place.description.fr,
+      pt: this.place.description.pt,
+      nl: this.place.description.nl,
+    };
+    Reflect.deleteProperty(multiDescriptions, defLang);
+    return this.fb.group(Object.assign({[defLang]: this.place.description[defLang]}, multiDescriptions));
   }
 
   ngOnDestroy() {
@@ -174,7 +192,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   private prepareToSave(place): FormData {
     const formData = new FormData();
-    formData.append('data', JSON.stringify(place));
+    formData.append('data', JSON.stringify(Object.assign({}, place, {defaultLanguage: this.defaultLanguage})));
     const images = place.files;
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i++) {
@@ -217,5 +235,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
         });
     });
   }
+
+
 
 }

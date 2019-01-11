@@ -113,5 +113,14 @@
 	"waypoint": "Waypoint",
 	"{trip length} trips encontrados": "{{value}} templates encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas",
-	"ó": "ó"
+	"ó": "ó",
+  "es": "español",
+  "fr": "francés",
+  "en": "inglés",
+  "pt": "portugués",
+  "it": "italiano",
+  "nl": "neerlandés",
+  "de": "alemán",
+  "es-AR": "Español Argentina",
+  "en-US": "Inglés Norteamérica"
 }

@@ -22,8 +22,12 @@ export class PlaceService {
 
   public static async create(body: IPlaceDTO, headers: any): Promise<any> {
     const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
-    const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
-    return PlaceAdapter.fitFromDAO(ret.data);
+    try {
+      const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+      return PlaceAdapter.fitFromDAO(ret.data);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public static async update(id, body, headers: any): Promise<any> {
@@ -50,11 +54,22 @@ export class PlaceService {
   }
 
   public static async getDetail(place_id: string, headers: any, lang: string = 'en'): Promise<Place> {
-    return axios
+    const dataPromises = [
+      axios.get(`${config.content.url}/places/${place_id}`, {headers: {authorization: headers.authorization}}),
+      axios.get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
+    ];
+    const [contentResponse, placesResponse] = await Promise.all(dataPromises);
+
+    const adaptedResponse = PlaceAdapter.fitFromDAO(placesResponse.data);
+    adaptedResponse.description = contentResponse.data.description;
+
+    return adaptedResponse;
+
+    /*return axios
       .get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
       .then(resp => {
         return PlaceAdapter.fitFromDAO(resp.data);
-      });
+      });*/
   }
 
   public static async deleteOne(place_id: string, headers: any): Promise<any> {

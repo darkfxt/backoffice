@@ -15,6 +15,7 @@ import {
   MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatIconModule, MatInputModule,
   MatMenuModule, MatOptionModule, MatSelectModule, MatSnackBarModule
 } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoadingModule } from '../shared/loading/loading.module';
 import { UploaderModule } from '../shared/uploader/uploader.module';
@@ -42,6 +43,7 @@ import { PlaceDetailComponent } from './place-detail/place-detail.component';
     MatOptionModule,
     MatSelectModule,
     MatMenuModule,
+    MatTabsModule,
     TranslateModule,
     MatIconModule,
     MatSnackBarModule,
