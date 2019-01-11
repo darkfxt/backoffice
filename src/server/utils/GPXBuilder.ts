@@ -20,7 +20,7 @@ class GPXBuilder {
       day.events.forEach(event => {
         switch (event.product.type) {
           case undefined: // FIXME No tiene que ser asi, deberiamos tener un type en cada evento de cada dia, para distinguir de que se trata. Ponerlo en el insert de un booking.
-            const route: IRouteDTO = event.product as RouteDTO;
+            const route: any = event.product;
             routes = routes.concat(this.initRoute(event.name, startDate, routeIndex++));
             /**
              * First, we must add every route waypoint to the first part of the GPX file
@@ -54,7 +54,7 @@ class GPXBuilder {
             break;
           default:
             order += 1;
-            const place: IPlaceDTO = event.product as PlaceDTO;
+            const place = event.product;
             gpxContent = gpxContent.concat(this.addWaypoint(event.name, place.geo.center.latitude, place.geo.center.longitude, order));
             break;
         }
