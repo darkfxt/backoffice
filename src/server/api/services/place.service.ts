@@ -55,7 +55,7 @@ export class PlaceService {
 
   public static async getDetail(place_id: string, headers: any, lang: string = 'en'): Promise<Place> {
     const dataPromises = [
-      axios.get(`${config.content.url}/places/${place_id}`, {headers: {authorization: headers.authorization}}),
+      axios.get(`${config.content.url}/places/${place_id}?description=custom`, {headers: {authorization: headers.authorization}}),
       axios.get(`${config.geo.url}/places/${place_id}`, {headers: {authorization: headers.authorization}})
     ];
     const [contentResponse, placesResponse] = await Promise.all(dataPromises);

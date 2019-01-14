@@ -48,7 +48,7 @@ export class PointHeadComponent implements OnInit {
 
   ngOnInit() {
     const parentTranslations = Object.assign({}, this.placeForm.value.description);
-    Object.keys(parentTranslations).forEach((key) => (parentTranslations[key] == null) && delete parentTranslations[key]);
+    Object.keys(parentTranslations).forEach((key) => (parentTranslations[key] === '') && delete parentTranslations[key]);
     this.contentServiceInstance.getAvailableLanguages()
       .subscribe((resp) => {
         this.availableLanguages = resp.filter((lng) => lng !== this.defaultLanguage).slice();
@@ -69,7 +69,7 @@ export class PointHeadComponent implements OnInit {
       .subscribe((response) => {
         translations[target_lng] = response.translation;
         this.placeForm.controls['description'].setValue(translations);
-        Object.keys(translations).forEach((key) => (translations[key] == null) && delete translations[key]);
+        Object.keys(translations).forEach((key) => (translations[key] === '') && delete translations[key]);
         this.tabController = Object.assign({}, translations);
         this.availableLanguages = this.availableLanguages.filter(lng => !Object.keys(this.tabController).includes(lng));
         this.store.dispatch(new HideLoader());

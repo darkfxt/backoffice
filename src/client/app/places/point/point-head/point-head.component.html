@@ -21,7 +21,7 @@
       </ng-template>
       <mat-form-field color="accent">
         <textarea matInput placeholder="{{'Ingresa una descripción del lugar' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
-          {{placeForm.value.description[lang]}}
+          {{placeForm.value.description[lang].text}}
         </textarea>
         <mat-hint align="start">Agrega todos los idiomas que desees personalizar. No te preocupes por los otros, nosotros nos encargamos de traducirlos por ti</mat-hint>
         <mat-hint align="end" class="count">{{placeForm.value.description[lang] ? placeForm.value.description[lang].length : 0}} / 1000</mat-hint>
