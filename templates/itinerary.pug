@@ -6,7 +6,7 @@ mixin driving(event)
       if(event.meta.product.via)
         span  - Via #{event.meta.product.via}
     if event.description
-      p= event.description !== ''
+      p= event.description
 
     div.points.clearfix
       div
