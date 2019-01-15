@@ -185,7 +185,7 @@ html
       }
 
       .title{
-        padding: 2rem 1rem;
+        padding: 2rem 1rem 1rem;
       }
 
       .title h1{
@@ -254,7 +254,7 @@ html
       }
 
       .logo-ctn{
-        height: 3.75rem;
+        height: 4.75rem;
         width: 6.25rem;
         background-size: contain !important;
         float: left;
@@ -290,11 +290,11 @@ html
           span .
           br
           span By following the link above you will access to the web version of your trip itinerary. It displays plenty of information about your daily trip, highlights and details.
-          if(!header.gps.id)
+          if(header.gps && !header.gps.id)
             br
             span It also features an integration with Google Maps that enables you to use your smartphone to get driving instructions and directions during your trip.
 
-      if(header.gps.id)
+      if(header.gps && header.gps.id)
         div.mobile-desc.clearfix
           p
             span GPS Device: #{header.gps.name}&nbsp
