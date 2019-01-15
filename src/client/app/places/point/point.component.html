@@ -38,21 +38,26 @@
     <div class="box-container">
       <div class="row">
         <div class="col-xs-12">
-          <h3>{{'Descripción' | translate}}</h3>
-          <app-point-head [headGroup]="placeForm"></app-point-head>
+          <div class="head-container">
+            <h3>{{'Descripción' | translate}}</h3>
+            <app-point-head [headGroup]="placeForm"></app-point-head>
+          </div>
         </div>
 
         <div class="col-xs-12">
-          <h3>{{'Mapa' | translate}}</h3>
-          <app-point-map [mapGroup]="placeForm"></app-point-map>
+          <div class="map-container">
+            <h3>{{'Mapa' | translate}}</h3>
+            <app-point-map [mapGroup]="placeForm"></app-point-map>
+          </div>
         </div>
-
       </div>
 
-      <div class="row gallery-container">
+      <div class="row">
         <div class="col-xs-12">
-          <h3>{{'Galería' | translate}}</h3>
-          <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
+          <div class="gallery-container">
+            <h3>{{'Galería' | translate}}</h3>
+            <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
+          </div>
         </div>
       </div>
     </div>
