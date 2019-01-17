@@ -9,7 +9,8 @@ const PRIVATE_TYPES: Array<PlaceType> = [
   PlaceType.DESTINATION,
   PlaceType.TERMINAL,
   PlaceType.HOTEL,
-  PlaceType.ACTIVITY
+  PlaceType.ACTIVITY,
+  PlaceType.POI
 ];
 
 const PUBLIC_TYPES: Array<PlaceType> = [
