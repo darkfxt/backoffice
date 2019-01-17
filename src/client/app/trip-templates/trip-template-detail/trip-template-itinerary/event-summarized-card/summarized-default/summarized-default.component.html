@@ -1,11 +1,11 @@
 <div class="event-cluster" [class.edit-mode]="editMode">
   <div class="vertical-line" [style.border-color]="color"></div>
   <div class="icon-ctn" [style.border-color]="color">
-    <mat-icon [style.color]="color">{{iconMap[data.product.type]}}</mat-icon>
+    <mat-icon [style.color]="color">{{iconMap[data.event_type]}}</mat-icon>
   </div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
-    <p>{{data.product.type | translate}}</p>
+    <p>{{data.event_type | translate}}</p>
   </div>
   <div class="menu">
     <button mat-icon-button [matMenuTriggerFor]="menu">
