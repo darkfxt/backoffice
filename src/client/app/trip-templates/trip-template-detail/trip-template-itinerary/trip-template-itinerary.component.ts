@@ -212,7 +212,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       panelClass: 'eventDialogPanel',
       data: {
         productType: event.productType,
-        dialog: 'select'
+        dialog: 'select',
+        day: event.day
         },
       disableClose: true,
       closeOnNavigation: true

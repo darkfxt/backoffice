@@ -16,6 +16,7 @@ export class CustomEventComponent implements OnInit {
 
   @Input() isDialog ? = false;
   @Input() dialogRef: any;
+  @Input() day?: any;
   form: FormGroup;
   hours = new Array(24);
   minutes = new Array(60);
@@ -46,7 +47,7 @@ export class CustomEventComponent implements OnInit {
 
   convertToEvent(event_type: string, order: number): Event {
     const data = this.form.value;
-    return new Event(data.name, data.description, TypeOfEvent.CUSTOM, order || 1);
+    return new Event(data.name, data.description, TypeOfEvent.CUSTOM, order || 1, this.day, data);
   }
 
   closeDialog() {
