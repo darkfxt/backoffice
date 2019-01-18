@@ -38,7 +38,7 @@ export class RoutesController {
         }));
       const routeDTO = RouteTransformer.toDTO(dto);
       const resp = await RoutesService.create(routeDTO, request.headers);
-      response.json(resp);
+      response.json(resp.data);
     } catch (err) {
       // TODO: Delete uploaded files on error
       next(err);
