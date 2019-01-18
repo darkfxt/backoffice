@@ -22,7 +22,7 @@ export const config = {
     url: 'https://dev.api.taylorgps.com/routes'
   },
   trips: {
-    url: 'https://api-trips-development:6008/trips'
+    url: 'https://dev.api.taylorgps.com/trips'
   },
   idm: {
     url: 'https://dev.api.taylorgps.com/idm'
