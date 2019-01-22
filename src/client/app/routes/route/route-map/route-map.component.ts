@@ -37,6 +37,7 @@ export class RouteMapComponent implements OnInit {
   constructor(private placeStore: PlaceStore) { }
 
   ngOnInit() {
+    this._routeType = this.form.controls.route_type.value || 'driving';
 
     const mapProp = {
       center: new google.maps.LatLng(0, 0),
@@ -84,6 +85,7 @@ export class RouteMapComponent implements OnInit {
       this.destination = place;
       this.addMarker();
     });
+    //
   }
 
   private addMarker() {
