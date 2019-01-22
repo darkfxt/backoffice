@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TRANSLATE } from '../../../translate-marker';
 
@@ -12,6 +12,10 @@ export class RouteHeadComponent implements OnInit {
   @Input()
   form: FormGroup;
 
+  @Output()
+  routeTypeChanged: EventEmitter<any> = new EventEmitter<any>();
+
+
   routeTypes = [
     {
       value: TRANSLATE('driving'),
@@ -20,6 +24,10 @@ export class RouteHeadComponent implements OnInit {
     {
       value: TRANSLATE('walking'),
       viewValue: 'Walking'
+    },
+    {
+      value: TRANSLATE('bycicling'),
+      viewValue: 'Bycicling'
     }
   ];
   roadSurfaces = [
@@ -40,6 +48,12 @@ export class RouteHeadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  optionChanged(event) {
+    if (event.isUserInput) {
+      this.routeTypeChanged.emit(event.source.value);
+    }
   }
 
 }

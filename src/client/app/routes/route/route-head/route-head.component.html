@@ -11,7 +11,7 @@
 
   <mat-form-field color="accent" class="route-type">
     <mat-select placeholder="{{'Tipo de ruta' | translate}}" required name="route_type" formControlName="route_type">
-      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
+      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value" (onSelectionChange)="optionChanged($event)">
         {{routeType.value | translate}}
       </mat-option>
     </mat-select>
@@ -20,7 +20,7 @@
 
   <mat-form-field color="accent" class="road-surface">
     <mat-select placeholder="{{'Tipo de superficie' | translate}}" required name="road_surface" formControlName="road_surface">
-      <mat-option *ngFor="let roadSurface of roadSurfaces" [value]="roadSurface.value">
+      <mat-option *ngFor="let roadSurface of roadSurfaces" [value]="roadSurface.value" >
         {{roadSurface.value | translate}}
       </mat-option>
     </mat-select>

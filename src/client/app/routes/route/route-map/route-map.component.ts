@@ -12,6 +12,16 @@ import { Place } from '../../../shared/models/Place';
 export class RouteMapComponent implements OnInit {
   @Input()
   form: FormGroup;
+  _routeType = 'driving';
+
+  @Input() set routeType(routeType: string) {
+    if (routeType) {
+      console.log('tipo de ruta', routeType);
+      this._routeType = routeType;
+      console.log('tipo de ruta', this._routeType.toUpperCase());
+      this.calculateAndDisplayRoute();
+    }
+  }
 
   @ViewChild('gmap') gmapElement: any;
 
@@ -149,8 +159,9 @@ export class RouteMapComponent implements OnInit {
       destination: this.destination.geo.point,
       waypoints: waypts,
       optimizeWaypoints: false,
-      travelMode: 'DRIVING'
+      travelMode: google.maps.TravelMode[this._routeType.toUpperCase()]
     }, (response, status: any) => {
+      console.log('eeeenk', response, status);
       if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
         const legs = response.routes[0].legs
@@ -162,6 +173,8 @@ export class RouteMapComponent implements OnInit {
           );
 
         this.form.patchValue({legs: legs});
+      } else {
+        console.log('no disponible', response, status);
       }
     });
   }

@@ -30,7 +30,7 @@
                 <app-route-points [routeGroup]="form"></app-route-points>
               </div>
               <div class="col-sm-8 col-xs-12">
-                <app-route-map [form]="form"></app-route-map>
+                <app-route-map [form]="form" [routeType]="_selectedRouteType"></app-route-map>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@
       </div>
       <div class="row bottom-row">
         <div class="col-sm-4 col-xs-12">
-          <app-route-head [form]="form"></app-route-head>
+          <app-route-head [form]="form" (routeTypeChanged)="onSelectionTypeChanged($event)"></app-route-head>
         </div>
         <div class="col-sm-4 col-xs-12">
           <app-route-cover [form]="form"></app-route-cover>

@@ -38,6 +38,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   dialogStatus: string;
   popup = false;
   _deleteSubscription: Subscription;
+  _selectedRouteType: string;
 
   constructor(
     private fb: FormBuilder,
@@ -190,6 +191,11 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
           this.router.navigate(['/routes']);
         });
     });
+  }
+
+  onSelectionTypeChanged(event) {
+    console.log('en el main', event);
+    this._selectedRouteType = event;
   }
 
 }
