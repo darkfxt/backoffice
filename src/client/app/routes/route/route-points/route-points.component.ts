@@ -87,6 +87,7 @@ export class RoutePointsComponent implements OnInit {
       const place: Place = this.gPlaceTransformer(gPlace);
       this.placeStore.setPlace(inputName, place);
       this.options = [];
+      this.routeGroup.patchValue({[inputName]: place});
       if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
         this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
 
