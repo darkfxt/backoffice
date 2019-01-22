@@ -39,6 +39,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   popup = false;
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
+  _disabledModesOfTravel: Array<any> = [];
 
   constructor(
     private fb: FormBuilder,
@@ -194,8 +195,18 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   onSelectionTypeChanged(event) {
-    console.log('en el main', event);
     this._selectedRouteType = event;
+  }
+
+  onDisableTravelMode(event) {
+    // this._disabledModesOfTravel.push(event);
+    let arrayOfDisabledModes: Array<string> = this._disabledModesOfTravel.slice();
+    if (event == null)
+      arrayOfDisabledModes = [];
+    else
+      arrayOfDisabledModes.push(event);
+
+    this._disabledModesOfTravel = arrayOfDisabledModes;
   }
 
 }

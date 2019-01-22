@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { PlaceService } from '../../../shared/services/place.service';
 import { PlaceStore } from '../../../shared/services/place-store.services';
 import { Place } from '../../../shared/models/Place';
+import { BikingCountryAvailability } from '../../../shared/models/enum/BikingCountryAvailability';
+import {Geo} from '../../../shared/models/Geo';
+import {IAddress} from '../../../shared/models/Address';
+import {ICoordinates} from '../../../shared/models/Coordinates';
 
 @Component({
   selector: 'app-route-points',
@@ -18,6 +22,9 @@ export class RoutePointsComponent implements OnInit {
   options: any[];
   lastSearch = '';
   acLoading = false;
+
+  @Output()
+  travelModeDisabled: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder,
               private placeService: PlaceService,
@@ -71,12 +78,22 @@ export class RoutePointsComponent implements OnInit {
   }
 
   setPoint(event, inputName) {
-    const place = event.option.value;
-    this.placeStore.setPlace(inputName, place);
-    this.options = [];
-    if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
-      this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
+    this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
+      // Check this: enable or disable biking option relying on country of the selected place
+      if (!Object.keys(BikingCountryAvailability).includes(gPlace.geo.address.country_code)) {
+        this.travelModeDisabled.emit('bicycling');
+      }
+
+      const place: Place = this.gPlaceTransformer(gPlace);
+      this.placeStore.setPlace(inputName, place);
+      this.options = [];
+      if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
+        this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
+
+    });
   }
+    //
+
 
   search(event) {
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
@@ -86,9 +103,11 @@ export class RoutePointsComponent implements OnInit {
     this.lastSearch = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
-      this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
+      this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
         this.options = this.createGroups(resp);
+        this.travelModeDisabled.emit(null);
         this.acLoading = false;
+        console.log(resp)
       },
         (err) => {
           this.acLoading = false;
@@ -104,5 +123,18 @@ export class RoutePointsComponent implements OnInit {
       pointsByType[item.type].push(item);
     });
     return Object.keys(pointsByType).map(key => ({type: key, points: pointsByType[key]}));
+  }
+
+  private gPlaceTransformer(gPlace: any): Place {
+    const alterPlace: Place = new Place();
+    const address: IAddress = gPlace.geo.address;
+    const point: ICoordinates = gPlace.geo.point;
+    const alterGeo: Geo = new Geo({address, point});
+    alterPlace.description = gPlace.description;
+    alterPlace.name = gPlace.name;
+    alterPlace.geo = alterGeo;
+    alterPlace.type = gPlace.type;
+
+    return alterPlace;
   }
 }

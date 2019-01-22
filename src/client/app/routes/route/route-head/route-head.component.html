@@ -11,7 +11,7 @@
 
   <mat-form-field color="accent" class="route-type">
     <mat-select placeholder="{{'Tipo de ruta' | translate}}" required name="route_type" formControlName="route_type">
-      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value" (onSelectionChange)="optionChanged($event)">
+      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value" [disabled]="!routeType.enabled" (onSelectionChange)="optionChanged($event)">
         {{routeType.value | translate}}
       </mat-option>
     </mat-select>

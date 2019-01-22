@@ -16,9 +16,7 @@ export class RouteMapComponent implements OnInit {
 
   @Input() set routeType(routeType: string) {
     if (routeType) {
-      console.log('tipo de ruta', routeType);
       this._routeType = routeType;
-      console.log('tipo de ruta', this._routeType.toUpperCase());
       this.calculateAndDisplayRoute();
     }
   }
@@ -161,7 +159,6 @@ export class RouteMapComponent implements OnInit {
       optimizeWaypoints: false,
       travelMode: google.maps.TravelMode[this._routeType.toUpperCase()]
     }, (response, status: any) => {
-      console.log('eeeenk', response, status);
       if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
         const legs = response.routes[0].legs

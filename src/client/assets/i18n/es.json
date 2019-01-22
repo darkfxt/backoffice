@@ -113,5 +113,6 @@
 	"waypoint": "Waypoint",
 	"{trip length} trips encontrados": "{{value}} templates encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas",
-	"ó": "ó"
+	"ó": "ó",
+  "bicycling": "En bicicleta"
 }

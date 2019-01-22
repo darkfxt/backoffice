@@ -27,7 +27,8 @@
             <h3>{{'Puntos de la ruta' | translate}}</h3>
             <div class="row">
               <div class="col-sm-4 col-xs-12">
-                <app-route-points [routeGroup]="form"></app-route-points>
+                <app-route-points [routeGroup]="form"
+                                  (travelModeDisabled)="onDisableTravelMode($event)"></app-route-points>
               </div>
               <div class="col-sm-8 col-xs-12">
                 <app-route-map [form]="form" [routeType]="_selectedRouteType"></app-route-map>
@@ -38,7 +39,9 @@
       </div>
       <div class="row bottom-row">
         <div class="col-sm-4 col-xs-12">
-          <app-route-head [form]="form" (routeTypeChanged)="onSelectionTypeChanged($event)"></app-route-head>
+          <app-route-head [form]="form"
+                          (routeTypeChanged)="onSelectionTypeChanged($event)"
+                          [disabledRoutes]="_disabledModesOfTravel"></app-route-head>
         </div>
         <div class="col-sm-4 col-xs-12">
           <app-route-cover [form]="form"></app-route-cover>
