@@ -56,7 +56,7 @@ export class PlaceController {
       const [dataPublic, dataPrivate] = await Promise.all([promisePublic, promisePrivate]);
       const resp = [];
       dataPrivate.forEach((tPlace) => resp.push({name: tPlace.name, place_id: tPlace._id, type: 'private'}));
-      dataPublic.forEach((gPlace) => resp.push({name: gPlace.name, place_id: gPlace.place_id, type: 'public'}));
+      dataPublic.forEach((gPlace: any) => resp.push({name: gPlace.name, place_id: gPlace.place_id, type: 'public'}));
       response.json(resp);
     } catch (err) {
       next(err);
