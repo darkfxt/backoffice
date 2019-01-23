@@ -38,16 +38,15 @@
     <div class="box-container">
       <div class="row">
         <div class="col-xs-12">
-          <div class="head-container">
-            <h3>{{'Descripción' | translate}}</h3>
-            <app-point-head [headGroup]="placeForm"></app-point-head>
-          </div>
-        </div>
-
-        <div class="col-xs-12">
           <div class="map-container">
             <h3>{{'Mapa' | translate}}</h3>
             <app-point-map [mapGroup]="placeForm"></app-point-map>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="head-container">
+            <h3>{{'Descripción' | translate}}</h3>
+            <app-point-head [headGroup]="placeForm"></app-point-head>
           </div>
         </div>
       </div>
