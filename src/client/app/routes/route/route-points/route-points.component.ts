@@ -4,9 +4,9 @@ import { PlaceService } from '../../../shared/services/place.service';
 import { PlaceStore } from '../../../shared/services/place-store.services';
 import { Place } from '../../../shared/models/Place';
 import { BikingCountryAvailability } from '../../../shared/models/enum/BikingCountryAvailability';
-import {Geo} from '../../../shared/models/Geo';
-import {IAddress} from '../../../shared/models/Address';
-import {ICoordinates} from '../../../shared/models/Coordinates';
+import { Geo } from '../../../shared/models/Geo';
+import { IAddress } from '../../../shared/models/Address';
+import { ICoordinates } from '../../../shared/models/Coordinates';
 
 @Component({
   selector: 'app-route-points',
@@ -21,10 +21,13 @@ export class RoutePointsComponent implements OnInit {
   autocompleteTimeout;
   options: any[];
   lastSearch = '';
+  lastSelection = {};
   acLoading = false;
 
   @Output()
   travelModeDisabled: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  minimalRouteReached: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder,
               private placeService: PlaceService,
@@ -40,6 +43,7 @@ export class RoutePointsComponent implements OnInit {
 
       this.addPoint(place, false);
       this.ref.detectChanges();
+
       const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`);
       setTimeout(() => {
         this.renderer.setProperty($elem, 'value', place.name);
@@ -78,6 +82,7 @@ export class RoutePointsComponent implements OnInit {
   }
 
   setPoint(event, inputName) {
+
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
       // Check this: enable or disable biking option relying on country of the selected place
       if (!Object.keys(BikingCountryAvailability).includes(gPlace.geo.address.country_code)) {
@@ -86,11 +91,14 @@ export class RoutePointsComponent implements OnInit {
 
       const place: Place = this.gPlaceTransformer(gPlace);
       this.placeStore.setPlace(inputName, place);
+      this.lastSelection = place;
+      this.lastSearch = place.name;
       this.options = [];
       this.routeGroup.patchValue({[inputName]: place});
-      if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name)
+      if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name) {
         this.routeGroup.patchValue({name: `${this.routeGroup.get('origin').value.name} to ${this.routeGroup.get('destination').value.name}`});
-
+        this.minimalRouteReached.emit(true);
+      }
     });
   }
     //
@@ -101,14 +109,13 @@ export class RoutePointsComponent implements OnInit {
       return false;
     }
     this.acLoading = true;
-    this.lastSearch = event.target.value;
+    // this.lastSearch = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
         this.options = this.createGroups(resp);
         this.travelModeDisabled.emit(null);
         this.acLoading = false;
-        console.log(resp)
       },
         (err) => {
           this.acLoading = false;
@@ -137,5 +144,24 @@ export class RoutePointsComponent implements OnInit {
     alterPlace.type = gPlace.type;
 
     return alterPlace;
+  }
+
+  onLeave(event, inputName) {
+    if (this.lastSearch === event.target.value) {
+      return;
+    }
+    if (this.lastSelection) {
+      const $elem = this.renderer.selectRootElement(`#${event.target.id}`);
+      setTimeout(() => {
+        this.renderer.setProperty($elem, 'value', this.lastSearch);
+        this.ref.detectChanges();
+      }, 100);
+    } else {
+      const $elem = this.renderer.selectRootElement(`#${event.target.id}`);
+      setTimeout(() => {
+        this.renderer.setProperty($elem, 'value', '');
+        this.ref.detectChanges();
+      }, 100);
+    }
   }
 }

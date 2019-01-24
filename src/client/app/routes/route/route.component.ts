@@ -37,9 +37,11 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   amIDialog = false;
   dialogStatus: string;
   popup = false;
+  travelModeStatus = false;
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -85,8 +87,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     this.form = this.fb.group({
       name: [{value: this.segment.name, disabled: true}, Validators.required],
-      route_type: [this.segment.route_type, Validators.required],
-      road_surface: [this.segment.road_surface, Validators.required],
+      route_type: [{value: this.segment.route_type, disabled: !this.segment.name}, Validators.required],
+      road_surface: [{value: this.segment.road_surface, disabled: !this.segment.name}, Validators.required],
       via: this.segment.via,
       description: this.segment.description,
       images: this.fb.array(this.segment.images),
@@ -207,6 +209,11 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       arrayOfDisabledModes.push(event);
 
     this._disabledModesOfTravel = arrayOfDisabledModes;
+  }
+
+  toggleTravelMode(event) {
+    this.form.get('route_type').enable();
+    this.form.get('road_surface').enable();
   }
 
 }
