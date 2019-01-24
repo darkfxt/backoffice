@@ -27,21 +27,8 @@
     <mat-error *ngIf="form.get('road_surface').invalid && (form.get('road_surface').dirty || form.get('road_surface').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-tab-group>
-    <mat-tab label="EN">
-      <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Descripción' | translate}}" name="description_en" formControlName="description_en"></textarea>
-      </mat-form-field>
-    </mat-tab>
-    <mat-tab label="ES">
-      <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Descripción' | translate}}" name="description_es" formControlName="description_es"></textarea>
-      </mat-form-field>
-    </mat-tab>
-    <mat-tab label="FR">
-      <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Descripción' | translate}}" name="description_fr" formControlName="description_fr"></textarea>
-      </mat-form-field>
-    </mat-tab>
-  </mat-tab-group>
+  <mat-form-field color="accent">
+    <textarea matInput placeholder="{{'Descripción' | translate}}" name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
+  </mat-form-field>
 </div>

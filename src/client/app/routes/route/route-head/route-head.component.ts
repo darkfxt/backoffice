@@ -9,8 +9,6 @@ import { TRANSLATE } from '../../../translate-marker';
 })
 export class RouteHeadComponent implements OnInit {
 
-  userLanguage = navigator.language;
-
   @Input()
   form: FormGroup;
 
@@ -42,7 +40,6 @@ export class RouteHeadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('eh chaval', this.userLanguage);
   }
 
 }
