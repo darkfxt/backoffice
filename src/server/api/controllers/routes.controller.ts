@@ -11,7 +11,11 @@ export class RoutesController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
+      else
+        request.query.company_id = (<any>request).loggedUser.CompanyID;
+      request.query.page = +request.query.page + 1;
       const answer = await RoutesService.getAll(request.query, request.headers);
+      answer.data.metadata.pageIndex = (+answer.data.metadata.page_index - 1).toString();
       if (request.query.simple)
         return response.json(answer.data.data);
 
@@ -34,7 +38,7 @@ export class RoutesController {
         }));
       const routeDTO = RouteTransformer.toDTO(dto);
       const resp = await RoutesService.create(routeDTO, request.headers);
-      response.json(resp);
+      response.json(resp.data);
     } catch (err) {
       // TODO: Delete uploaded files on error
       next(err);

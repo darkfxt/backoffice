@@ -33,6 +33,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   form: FormGroup;
   bussy: boolean;
   _subscription: Subscription;
+  _placeStoreSubscription: Subscription;
   segment = new Segment();
   amIDialog = false;
   dialogStatus: string;
@@ -72,11 +73,18 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
-          this.router.navigate(['/routes']);
+          if (this._subscription)
+            this._subscription.unsubscribe();
+          if (this._placeStoreSubscription) {
+            this.placeStore.clearAll();
+            this._placeStoreSubscription.unsubscribe();
+          }
+          this.store.dispatch(new ClearSegment());
+          setTimeout(() => this.router.navigate(['/routes']));
         }
       });
 
-    this.route.data.subscribe(({segment}) => {
+    this._placeStoreSubscription = this.route.data.subscribe(({segment}) => {
       if (segment) {
         this.segment = segment;
         this.placeStore.setPlace('origin', segment.origin);
@@ -108,6 +116,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
+
+    if (this._placeStoreSubscription)
+      this._placeStoreSubscription.unsubscribe();
 
     this.store.dispatch(new ClearSegment());
   }
