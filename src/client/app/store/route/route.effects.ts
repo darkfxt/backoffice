@@ -57,11 +57,14 @@ export class SegmentEffects {
     .pipe(
       switchMap((query: any) => this.routeServiceInstance.upsert({id: query.payload.id, body: query.payload.body})),
       mergeMap((response: any) => [
-        new SegmentSelected(Object.assign(new Segment(), response.data[0])),
+        new SegmentSelected(Object.assign(new Segment(), response)),
         new SnackbarOpen({
           message: 'Ruta guardada'
         })
       ]),
-      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+      catchError((e: HttpErrorResponse) => {
+        console.log('holaholaholalalalalal')
+        return of(new HttpError(e))
+      })
     );
 }

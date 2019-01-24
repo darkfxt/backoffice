@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import {default as Segment, SegmentWithMetadata } from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
+import {ApiError} from '../../shared/models/ApiError';
 
 export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',
@@ -11,6 +12,8 @@ export enum SegmentActionTypes {
   SEGMENT_SELECTED = '[Segment] Selected',
   CLEAR_SEGMENT = '[Segment] Clear',
   SAVE_SEGMENT = '[Segment] Saving To DB',
+  SAVE_SUCCESFUL = '[Segment] Save Segment Succesful',
+  ERROR_SAVING = '[Segment] Error Saving Segment',
   TOGGLE_DIALOG = '[Segment] Set Dialog',
   SEGMENTS_METADATA_RETRIEVED = '[Segment] Metadata Retrieved'
 }
@@ -62,6 +65,12 @@ export class SegmentsRetrieved implements Action {
   }
 }
 
+export class ErrorSavingSegment implements Action {
+  readonly type = SegmentActionTypes.ERROR_SAVING;
+  constructor(public payload: ApiError) {
+  }
+}
+
 export class SegmentsMetadataRetrieved implements Action {
   readonly type = SegmentActionTypes.SEGMENTS_METADATA_RETRIEVED;
   constructor(public payload: PaginationOptionsInterface) { }
@@ -77,9 +86,10 @@ export type hideLoaderTypes = SegmentSelected | SegmentsRetrieved | ClearSegment
 export const hideLoaderActions = [
   SegmentActionTypes.CLEAR_SEGMENT,
   SegmentActionTypes.SEGMENT_SELECTED,
-  SegmentActionTypes.SEGMENTS_RETRIEVED
+  SegmentActionTypes.SEGMENTS_RETRIEVED,
+  SegmentActionTypes.ERROR_SAVING
 ];
 
 export type SegmentActions = GetSegments | SegmentsRetrieved |
   FilterSegments | SegmentSelected | SaveSegment | ClearSegment |
-  ToggleSegmentDialog | SegmentsMetadataRetrieved;
+  ToggleSegmentDialog | SegmentsMetadataRetrieved | ErrorSavingSegment;

@@ -26,6 +26,11 @@ export const getSegmentsMetadata = createSelector(
   (state: any) => state.metadata
 );
 
+export const getSegmentsErrors = createSelector(
+  getSegmentsState,
+  (state: any) => state.error
+);
+
 export const getSegmentSelected = createSelector(
   getSegmentsState,
   (state: any) => state.segmentSelected

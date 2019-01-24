@@ -21,6 +21,9 @@ export const config = {
   routes: {
     url: 'http://gl-routes-production:6001/routes'
   },
+  trips: {
+    url: 'http://api-trips-production:6008/trips'
+  },
   idm: {
     url: 'http://tg-idm-production:6003/idm',
   },

@@ -89,7 +89,7 @@ export class RoutePointsComponent implements OnInit {
         this.travelModeDisabled.emit('bicycling');
       }
 
-      const place: Place = this.gPlaceTransformer(gPlace);
+      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
       this.placeStore.setPlace(inputName, place);
       this.lastSelection = place;
       this.lastSearch = place.name;
@@ -133,7 +133,7 @@ export class RoutePointsComponent implements OnInit {
     return Object.keys(pointsByType).map(key => ({type: key, points: pointsByType[key]}));
   }
 
-  private gPlaceTransformer(gPlace: any): Place {
+  private gPlaceTransformer(gPlace: any, googleId: string): Place {
     const alterPlace: Place = new Place();
     const address: IAddress = gPlace.geo.address;
     const point: ICoordinates = gPlace.geo.point;
@@ -142,6 +142,7 @@ export class RoutePointsComponent implements OnInit {
     alterPlace.name = gPlace.name;
     alterPlace.geo = alterGeo;
     alterPlace.type = gPlace.type;
+    alterPlace._id = gPlace._id || gPlace.id || googleId;
 
     return alterPlace;
   }

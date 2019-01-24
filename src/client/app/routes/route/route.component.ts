@@ -11,16 +11,19 @@ import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import { select, Store } from '@ngrx/store';
-import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
+import {ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
-import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState } from '../../store/route';
+import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState, getSegmentsErrors } from '../../store/route';
 import { EventSelected } from '../../store/trip-template/event/event.actions';
 import { getDialogStatus, getPointSelected } from '../../store/place';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { ApiError } from '../../shared/models/ApiError';
+
+const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
 @Component({
   selector: 'app-route',
@@ -33,14 +36,17 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   form: FormGroup;
   bussy: boolean;
   _subscription: Subscription;
+  _placeStoreSubscription: Subscription;
   segment = new Segment();
   amIDialog = false;
   dialogStatus: string;
   popup = false;
   travelModeStatus = false;
+  _errorSubscription: Subscription;
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
+  defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
 
 
   constructor(
@@ -72,11 +78,18 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
-          this.router.navigate(['/routes']);
+          if (this._subscription)
+            this._subscription.unsubscribe();
+          if (this._placeStoreSubscription) {
+            this.placeStore.clearAll();
+            this._placeStoreSubscription.unsubscribe();
+          }
+          this.store.dispatch(new ClearSegment());
+          setTimeout(() => this.router.navigate(['/routes']));
         }
       });
 
-    this.route.data.subscribe(({segment}) => {
+    this._placeStoreSubscription = this.route.data.subscribe(({segment}) => {
       if (segment) {
         this.segment = segment;
         this.placeStore.setPlace('origin', segment.origin);
@@ -109,12 +122,25 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
 
+    if (this._placeStoreSubscription)
+      this._placeStoreSubscription.unsubscribe();
+
     this.store.dispatch(new ClearSegment());
   }
 
   // Form control
   onSubmit() {
     if (this.form.valid) {
+      this._errorSubscription = this.store.select(getSegmentsErrors)
+        .subscribe((APIError: ApiError) => {
+          if (APIError)
+            if (ERROR_ROUTE_NAME_REGEX.test(APIError.response.message)) {
+
+              const viaControl = this.form.get('via');
+              markAsTtouched(viaControl);
+              viaControl.setErrors({'invalid': true});
+            }
+        });
       this.bussy = true;
       const formData = this.prepareToSave();
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
@@ -154,6 +180,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
         _id: value._id,
         geo: {point: value.geo.point}
       }));
+    data.default_lang = this.defaultLanguage;
     formData.append('data', JSON.stringify(data));
     const image = data.file;
     if (image) {
