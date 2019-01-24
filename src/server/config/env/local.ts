@@ -26,6 +26,9 @@ export const config = {
   },
   core: {
     url: 'https://dev.api.taylorgps.com/core'
+  },
+  content: {
+    url: 'https://dev.api.taylorgps.com/content'
   }
 
 };

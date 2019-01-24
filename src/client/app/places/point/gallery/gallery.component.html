@@ -21,7 +21,7 @@
         <mat-icon [matMenuTriggerFor]="menu" color="accent">more_vert</mat-icon>
         <mat-menu #menu="matMenu">
           <button mat-menu-item>
-            <span>Set as default</span>
+            <span>{{'Predeterminado' | translate}}</span>
           </button>
           <button mat-menu-item (click)="deleteStoredItem(i)">
             <span>{{'Eliminar' | translate}}</span>
