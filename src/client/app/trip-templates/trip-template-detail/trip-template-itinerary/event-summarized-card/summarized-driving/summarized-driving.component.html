@@ -2,11 +2,13 @@
 <div class="event-cluster" [class.edit-mode]="editMode">
   <div class="vertical-line" [style.border-color]="color"></div>
   <div class="icon-ctn" [style.border-color]="color">
-    <mat-icon [style.color]="color">directions_car</mat-icon>
+    <mat-icon [style.color]="color" *ngIf="data.product.route_type === 'driving'">directions_car</mat-icon>
+    <mat-icon [style.color]="color" *ngIf="data.product.route_type === 'walking'">directions_walk</mat-icon>
+    <mat-icon [style.color]="color" *ngIf="data.product.route_type === 'bycicling'">directions_bike</mat-icon>
   </div>
   <div class="summary-ctn">
     <h5>{{data.name}}</h5>
-    <p>{{data.event_type | translate}}</p>
+    <p>{{data.product.route_type | translate}}</p>
 
     <app-add-event (openedDialog)="openDialog($event, 'origin')" [filterEventType]="['place']">
       <div class="add-event-cluster">

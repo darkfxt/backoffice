@@ -1,7 +1,36 @@
+@import "../../../../assets/variables";
+
+:host{
+  display: block;
+  min-height: 510px;
+}
+
 mat-form-field{
   width: 100%;
 }
 
 textarea{
   min-height: 161px;
+}
+
+.chars-left {
+  height: 24px;
+}
+
+.location-desc{
+  margin-bottom: 28px;
+}
+
+h3{
+  margin-bottom: 0;
+  color: $gray-title;
+  font-size: 24px;
+}
+
+p{
+  color: $gray-title;
+}
+
+.description-ctn{
+  margin-top: 38px;
 }

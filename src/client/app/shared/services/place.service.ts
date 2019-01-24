@@ -78,7 +78,7 @@ export class PlaceService {
     }
   }
 
-  getDetail (place_id: string): Observable<any> {
+  getDetail (place_id: string, language: string = 'en'): Observable<any> {
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(
         catchError(this.handleError('getDetail', []))

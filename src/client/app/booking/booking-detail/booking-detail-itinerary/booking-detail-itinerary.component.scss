@@ -2,15 +2,11 @@
 
 .box-container{
   background: white;
-  border: 1px solid #DEDEDE;
-  padding: 16px;
+  padding: 34px;
 }
 
 .template-header{
-  max-width: 1024px;
-  margin: 0 auto -40px;
   padding: 0 16px;
-  box-sizing: border-box;
 
   @media only screen and (max-width: 736px) {
     margin-bottom: 8px;

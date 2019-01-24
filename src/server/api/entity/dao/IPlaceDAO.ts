@@ -18,6 +18,7 @@ export interface IPlaceDAO extends IProductDAO {
   type: PlaceType;
   address: AddressDAO;
   terminal: boolean;
+  default_lang: string;
 }
 
 export interface IAncestorsDAO {

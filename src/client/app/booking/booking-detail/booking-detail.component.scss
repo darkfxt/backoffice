@@ -1,3 +1,5 @@
+@import "../../../assets/variables";
+
 /deep/.mat-horizontal-stepper-header-container{
   max-width: 1024px;
   margin: 34px auto 0;
@@ -18,30 +20,56 @@ mat-horizontal-stepper{
 }
 
 .buttons-ctn{
-  background: white;
-  border: 1px solid #DEDEDE;
-  padding: 16px;
   display: flex;
   justify-content: flex-end;
-  box-sizing: border-box;
-  border-top: none;
-  max-width: 1024px;
-  margin: 0 auto 44px;
-  box-sizing: border-box;
+  padding: 16px;
 
-  &.status-step{
-    max-width: 680px;
-    margin: 0 auto;
-  }
-
-  &.itinerary-step{
-    max-width: 992px;
-    margin-top: -8px;
+  button{
+    margin-left: 16px;
   }
 }
 
 .more-options{
   button{
     color: #fff;
+  }
+}
+
+.main-container{
+  display: flex;
+  background: #fff;
+
+  .sidebar{
+    padding-top: 38px;
+    flex: 0 0 200px;
+    max-width: 200px;
+    border-right: 1px solid $gray-line;
+
+    @media only screen and (max-device-width: 736px) {
+      display: none;
+    }
+
+    li{
+      padding: 16px;
+      font-size: 16px;
+      color: $gray-title;
+      cursor: pointer;
+      height: 20px;
+
+      button{
+        padding: 0;
+        text-align: left;
+        min-width: auto;
+        line-height: 18px;
+      }
+      &.current, &:hover{
+        button{
+          border-bottom: 2px solid $primary-color;
+        }
+      }
+    }
+  }
+  .content{
+    flex: 1 1 auto;
   }
 }

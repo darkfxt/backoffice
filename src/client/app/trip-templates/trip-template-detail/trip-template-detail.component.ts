@@ -54,6 +54,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   daysSubscription: Subscription;
   _deleteSubscription: Subscription;
   _selectedRouteTemplateId: string;
+  stepper = {
+    header: false,
+    itinerary: true
+  };
 
   @Output() templateUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -205,5 +209,13 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   onTemplateUpdated(event) {
     this.templateUpdated.emit(event);
+  }
+
+  setStep(step) {
+    Object.keys(this.stepper).forEach(field => {
+      this.stepper[field] = true;
+    });
+    this.stepper[step] = false;
+    window.scroll(0, 0);
   }
 }

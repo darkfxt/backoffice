@@ -78,7 +78,7 @@ ul {
   box-sizing: border-box;
 
   @media only screen and (max-device-width: 736px) {
-    padding: 16px;
+    padding: 16px !important;
     margin-top: 0px !important;
   }
 

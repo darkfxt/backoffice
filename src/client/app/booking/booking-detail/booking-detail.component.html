@@ -9,44 +9,53 @@
       <button mat-menu-item (click)="exportFile('pdf')">Exportar PDF</button>
     </mat-menu>
   </div>
-  <div class="button-container save-button" >
-    <button (click)="saveBooking()">
-      <mat-icon aria-label="New">save</mat-icon>
-    </button>
-  </div>
 </app-detail-header>
-<div>
-  <mat-horizontal-stepper [linear]="false" #stepper>
-    <mat-step [stepControl]="formHeader">
-      <ng-template matStepLabel>Datos de la reserva</ng-template>
-      <form [formGroup]="formHeader" class="app-container full-size body-content" novalidate>
-        <app-booking-detail-header [form]="formHeader"></app-booking-detail-header>
-        <div class="buttons-ctn">
-          <button mat-button matStepperNext color="accent">CONTINUAR</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="formItinerary">
-      <form [formGroup]="formItinerary" novalidate>
-        <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
-        <app-booking-detail-itinerary [formItinerary]="formItinerary" (templateUpdated)="updateItinerary($event)"></app-booking-detail-itinerary>
-        <div class="buttons-ctn itinerary-step">
-          <button mat-button matStepperPrevious color="accent">ATRAS</button>
-          <button mat-button matStepperNext color="accent">CONTINUAR</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Publicar reserva</ng-template>
-      <div class="app-container full-size body-content">
+
+<div class="main-container">
+  <section class="sidebar">
+    <ul>
+      <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Datos de la reserva' | translate}}</button></li>
+      <li [class.current]="!stepper.itinerary" >
+        <button mat-button (click)="setStep('itinerary')" [disabled]="formHeader.invalid">{{'Descripción' | translate}}</button>
+      </li>
+      <li [class.current]="!stepper.publish">
+        <button mat-button (click)="setStep('publish')" [disabled]="formHeader.invalid">{{'Publicar reserva' | translate}}</button>
+      </li>
+    </ul>
+  </section>
+  <section class="content">
+    <ul class="stepper">
+
+      <li class="step-item location" [hidden]="stepper.header">
+        <form [formGroup]="formHeader" class="" novalidate>
+          <app-booking-detail-header [form]="formHeader"></app-booking-detail-header>
+          <div class="buttons-ctn">
+            <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="formHeader.invalid">Siguiente</button>
+          </div>
+        </form>
+      </li>
+
+      <li class="step-item description" *ngIf="!stepper.itinerary">
+        <form [formGroup]="formItinerary" novalidate>
+          <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
+          <app-booking-detail-itinerary [formItinerary]="formItinerary" (templateUpdated)="updateItinerary($event)"></app-booking-detail-itinerary>
+          <div class="buttons-ctn">
+            <button mat-flat-button color="primary" (click)="setStep('header')">Anterior</button>
+            <button mat-flat-button color="primary" (click)="setStep('publish')" [disabled]="formHeader.invalid">Siguiente</button>
+          </div>
+        </form>
+      </li>
+
+      <li class="step-item gallery" [hidden]="stepper.publish">
         <app-booking-detail-status [booking]="booking"></app-booking-detail-status>
-        <div class="buttons-ctn status-step">
-          <button mat-button matStepperPrevious color="accent">ATRAS</button>
-          <button *ngIf="!booking.status || (booking.status && booking.status === 2)" (click)="publishBooking(statusType.PUBLISHED)" mat-button color="primary">PUBLICAR RESERVA</button>
-          <button *ngIf="booking.status && booking.status === 1" (click)="publishBooking(statusType.CANCELED)" mat-button color="primary">CANCELAR RESERVA</button>
+        <div class="buttons-ctn">
+          <button mat-flat-button color="primary" (click)="setStep('itinerary')">Anterior</button>
+          <button *ngIf="!booking.status || (booking.status && booking.status === 2)" (click)="publishBooking(statusType.PUBLISHED)" mat-flat-button color="primary">Publicar reserva</button>
+          <button *ngIf="booking.status && booking.status === 1" (click)="publishBooking(statusType.CANCELED)" mat-flat-button color="primary">Cancelar reserva</button>
         </div>
-      </div>
-    </mat-step>
-  </mat-horizontal-stepper>
+      </li>
+    </ul>
+
+  </section>
 </div>
 

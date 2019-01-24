@@ -18,6 +18,7 @@ import SignRouter from './routers/sign.route';
 import { authorization, authentication } from 'gl-auth';
 import BookingRouter from './routers/booking.route';
 import * as path from 'path';
+import ContentRouter from './routers/content.route';
 
 class Api {
 
@@ -44,6 +45,7 @@ class Api {
     this.api.use('/accounts', [authentication, authorization('ACCOUNT')], AccountsRouter);
     this.api.use('/assets', [authentication, authorization('ASSET')], AssetsRouter);
     this.api.use('/companies', [authentication, authorization('COMPANY')], CompanyRouter);
+    this.api.use('/content', ContentRouter);
     this.api.use('/roles', [authentication], RolesRouter);
 
     // try to convert all error to common interface
