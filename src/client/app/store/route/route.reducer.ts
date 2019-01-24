@@ -4,11 +4,13 @@ import { SegmentActions, SegmentActionTypes } from './route.actions';
 import { default as Segment } from '../../shared/models/Segment';
 import { PaginationOptionsInterface, PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
+import { ApiError } from '../../shared/models/ApiError';
 
 export interface SegmentState extends EntityState<Segment> {
     metadata: PaginationOptionsInterface;
     segmentSelected?: Segment;
     dialog?: DialogActions;
+    error?: ApiError;
   }
 
 export const adapter: EntityAdapter<Segment> = createEntityAdapter({
@@ -32,9 +34,11 @@ export function segmentReducer(state: SegmentState = initialState, action: Segme
     case SegmentActionTypes.FILTER_SEGMENTS:
       return {...state, metadata: action.payload};
     case SegmentActionTypes.SAVE_SEGMENT:
-      return {...state};
+      return {...state, error: undefined};
     case SegmentActionTypes.CLEAR_SEGMENT:
       return {...state, segmentSelected: null};
+    case SegmentActionTypes.ERROR_SAVING:
+      return {...state, error: action.payload};
     case SegmentActionTypes.TOGGLE_DIALOG:
       return {...state, dialog: action.payload};
     default:

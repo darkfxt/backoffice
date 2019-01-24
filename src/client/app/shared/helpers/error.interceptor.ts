@@ -9,6 +9,10 @@ import { AppState } from '../../store/shared/app.interfaces';
 import { Store } from '@ngrx/store';
 import { HideLoader } from '../../store/shared/actions/loader.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import {ApiError} from '../models/ApiError';
+import {ErrorSavingSegment} from '../../store/route/route.actions';
+
+const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -22,6 +26,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
 
           switch (err.status) {
+            case 400:
+              if (err.error && err.error.code === 400) {
+                const APIError: ApiError = err.error;
+                if (ERROR_ROUTE_NAME_REGEX.test(APIError.response.message)) {
+                  this.store.dispatch(new SnackbarOpen(
+                    {message: 'Ya existe una ruta con ese nombre y vía. Por favor, modificar via.', action: 'Error'}
+                  ));
+                  this.store.dispatch(new ErrorSavingSegment(APIError));
+                }
+              }
+              break;
             case 401:
               if (err.error && err.error.code === 401) {
                 const APIError = err.error;

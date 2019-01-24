@@ -35,6 +35,7 @@ export class Place {
   type: PlaceType;
   search_name: string;
   status: ActiveStatus;
+  default_lang: string;
   constructor(params: any = {}) {
     this._id = params._id;
     this.name = params.name || '';
