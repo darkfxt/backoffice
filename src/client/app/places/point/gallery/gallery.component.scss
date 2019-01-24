@@ -1,22 +1,38 @@
 @import "../../../../assets/variables";
 
+:host{
+  display: block;
+  min-height: 456px;
+}
+
+app-uploader{
+  height: 450px;
+  display: block;
+}
+
 .preview-content{
   ul{
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: scroll;
+    flex-wrap: wrap;
+
+    @media only screen and (max-device-width: 736px) {
+      justify-content: space-between;
+    }
   }
 
   li{
-    height: 130px;
-    margin-right: 8px;
-    flex: 1 0 170px;
-    max-width: 170px;
+    height: 140px;
+    margin: 4px;
+    flex: 1 0 190px;
+    max-width: 190px;
     overflow: hidden;
     position: relative;
     box-sizing: border-box;
-    //box-shadow: 1px 1px 4px rgba(0,0,0, 0.5);
+
+    @media only screen and (max-device-width: 736px) {
+      max-width: 160px;
+    }
 
     &.default{
       border: 4px solid $primary-color;

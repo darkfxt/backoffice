@@ -12,54 +12,72 @@
         <button mat-menu-item (click)="deletePlace()">Eliminar</button>
       </mat-menu>
     </div>
-    <div class="button-container save-button">
-      <button (click)="onSubmit()">
-        <mat-icon aria-label="New">save</mat-icon>
-      </button>
-      <span class="save-label">{{'Guardar y cerrar' | translate}}</span>
-    </div>
   </app-detail-header>
-  <div class="app-container full-size body-content">
-    <div class="row header-ctn">
-      <div class="col-xs-12">
-        <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Ingresa el nombre o dirección del lugar' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)"/>
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-hint align="start"><strong>Puedes utilizar nuestro buscador de lugares para conseguir las coordenadas, dirección o fotos del lugar o simplemente completa los campos manualmente.</strong> </mat-hint>
-          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div class="col-xs-12 col-sm-6" hidden>
-        <p>Puedes utilizar nuestro buscador de lugares para conseguir las coordenadas, dirección o fotos del lugar o simplemente completa los campos manualmente.</p>
-      </div>
-    </div>
-    <div class="box-container">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="map-container">
-            <h3>{{'Mapa' | translate}}</h3>
-            <app-point-map [mapGroup]="placeForm"></app-point-map>
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <div class="head-container">
-            <h3>{{'Descripción' | translate}}</h3>
-            <app-point-head [headGroup]="placeForm"></app-point-head>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="gallery-container">
-            <h3>{{'Galería' | translate}}</h3>
-            <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
+
+  <div class="main-container">
+    <section class="sidebar">
+      <ul>
+        <li [class.current]="!stepper.location"><button mat-button (click)="setStep('location')">{{'Ubicación' | translate}}</button></li>
+        <li [class.current]="!stepper.description" >
+          <button mat-button (click)="setStep('description')" [disabled]="placeForm.get('geo').value.point.lat === 0">{{'Descripción' | translate}}</button>
+        </li>
+        <li [class.current]="!stepper.gallery">
+          <button mat-button (click)="setStep('gallery')" [disabled]="placeForm.get('name').invalid || placeForm.get('type').invalid">{{'Fotos' | translate}}</button>
+        </li>
+      </ul>
+    </section>
+    <section class="content">
+      <ul class="stepper">
+
+        <li class="step-item location" [hidden]="stepper.location">
+          <div class="map-container">
+            <div class="box-container">
+              <h3>{{'Ubicación' | translate}}</h3>
+              <mat-form-field color="accent" >
+                <input type="text" matInput placeholder="{{'Ingresa el nombre o dirección del lugar o ubica en el mapa el lugar que deseas crear' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)"/>
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <app-point-map [mapGroup]="placeForm"></app-point-map>
+            </div>
+
+            <div class="button-ctn">
+              <button mat-flat-button color="primary" (click)="setStep('description')" [disabled]="placeForm.get('geo').value.point.lat === 0">{{'Siguiente' | translate}}</button>
+            </div>
+
           </div>
-        </div>
-      </div>
-    </div>
+        </li>
+
+        <li class="step-item description" [hidden]="stepper.description">
+          <div class="head-container">
+            <div class="box-container">
+              <app-point-head [headGroup]="placeForm"></app-point-head>
+            </div>
+            <div class="button-ctn">
+              <button mat-flat-button color="primary" (click)="setStep('location')">{{'Anterior' | translate}}</button>
+              <button mat-flat-button color="primary" (click)="setStep('gallery')" [disabled]="placeForm.get('name').invalid || placeForm.get('type').invalid">{{'Siguiente' | translate}}</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="step-item gallery" [hidden]="stepper.gallery">
+          <div class="gallery-container">
+            <div class="box-container">
+              <h3>{{'Galería' | translate}}</h3>
+              <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
+            </div>
+            <div class="button-ctn">
+              <button mat-flat-button color="primary" (click)="setStep('description')">{{'Anterior' | translate}}</button>
+              <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="placeForm.get('name').invalid">{{'Guardar y cerrar' | translate}}</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </section>
   </div>
 </form>
 
