@@ -1,29 +1,36 @@
-<h3>{{'Información util' | translate}}</h3>
-<div *ngIf="thingsToKnow.controls.length == 0">
+<h1>{{'Información util' | translate}}</h1>
+<div>
   <p>{{'Agrega información util para que los viajeros cuenten con todo lo necesario para su viaje. Ej: Documentación, equipamiento, estaciones de combustible, etc.' | translate}}</p>
-  <div class="button-ctn">
-    <button type="button" mat-raised-button color="accent" (click)="addTTK($event)" >{{'Agregar información' | translate}}</button>
-  </div>
 </div>
 <div [formGroup]="form" *ngIf="thingsToKnow.controls.length > 0">
   <div formArrayName="things_to_know">
     <div *ngFor="let ttk of thingsToKnow.controls; let i= index;" [formGroupName]="i" class="ttk-content">
-      <mat-form-field color="accent">
-        <input type="text" matInput placeholder="{{'Titulo' | translate}}" required name="title" formControlName="title"/>
-        <mat-error *ngIf="ttk.get('title').invalid && (ttk.get('title').dirty || ttk.get('title').touched)">{{'Campo requerido' | translate}}</mat-error>
-      </mat-form-field>
+      <mat-card>
+        <button mat-icon-button color="accent" (click)="deleteTTK($event, i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <mat-form-field color="accent">
+          <input type="text" matInput placeholder="{{'Titulo' | translate}}" required name="title" formControlName="title"/>
+          <mat-error *ngIf="ttk.get('title').invalid && (ttk.get('title').dirty || ttk.get('title').touched)">{{'Campo requerido' | translate}}</mat-error>
+        </mat-form-field>
 
-      <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Descripción' | translate}}" required name="description" formControlName="description"></textarea>
-        <mat-error *ngIf="ttk.get('description').invalid && (ttk.get('description').dirty || ttk.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
-      </mat-form-field>
-      <a (click)="deleteTTK($event, i)" class="link">{{'Eliminar' | translate}}</a>
+        <mat-form-field color="accent">
+          <textarea matInput placeholder="{{'Descripción' | translate}}" required name="description" formControlName="description"
+                    cdkAutosizeMinRows="6"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"></textarea>
+          <mat-error *ngIf="ttk.get('description').invalid && (ttk.get('description').dirty || ttk.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
+        </mat-form-field>
+      </mat-card>
     </div>
   </div>
-  <div class="add-more-ctn">
+  <!--div class="add-more-ctn">
     <mat-icon class="add-point-circle">add_circle_outline</mat-icon>
     <a (click)="addTTK($event)">{{'Agregar otro' | translate}}</a>
-  </div>
+  </div-->
+</div>
+<div class="button-ctn">
+  <button type="button" mat-button (click)="addTTK($event)" >{{'+Agregar información' | translate}}</button>
 </div>
 
 

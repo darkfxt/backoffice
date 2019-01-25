@@ -1,45 +1,5 @@
 @import '../../../assets/variables';
 
-
-.main-container{
-  display: flex;
-  background: #fff;
-
-  .sidebar{
-    padding-top: 38px;
-    flex: 0 0 200px;
-    max-width: 200px;
-    border-right: 1px solid $gray-line;
-
-    @media only screen and (max-device-width: 736px) {
-      display: none;
-    }
-
-    li{
-      padding: 16px;
-      font-size: 16px;
-      color: $gray-title;
-      cursor: pointer;
-      height: 20px;
-
-      button{
-        padding: 0;
-        text-align: left;
-        min-width: auto;
-        line-height: 18px;
-      }
-      &.current, &:hover{
-        button{
-          border-bottom: 2px solid $primary-color;
-        }
-      }
-    }
-  }
-  .content{
-    flex: 1 1 auto;
-  }
-}
-
 .body-content{
 
   @media only screen and (max-device-width: 736px) {
@@ -67,10 +27,12 @@
 }
 
 .box-container{
-  padding: 16px;
+  padding: 0;
 }
 
-
+.head-container{
+  max-width: 600px;
+}
 
 .head-container, .map-container, .gallery-container{
 
@@ -80,23 +42,10 @@
     font-size: 24px;
   }
 
-  .button-ctn{
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px;
-
-    button{
-      margin-left: 16px;
-    }
-  }
 }
 
-.more-options{
-  margin-left: 16px;
-  margin-right: -16px;
-  mat-icon{
-    color: white;
-  }
+.delete-point{
+  color: #fff;
 }
 
 mat-form-field{
@@ -111,6 +60,7 @@ mat-form-field{
     color: $gray-body;
   }
 }
+
 
 
 

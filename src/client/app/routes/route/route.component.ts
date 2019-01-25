@@ -48,6 +48,12 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
   defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
+  stepper = {
+    header: true,
+    cover: true,
+    map: false,
+    ttk: true
+  };
 
 
   constructor(
@@ -250,6 +256,14 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       !Object.keys(BikingCountryAvailability).includes(destinationCountry)) {
       this.onDisableTravelMode('bicycling');
     }
+  }
+
+  setStep(step) {
+    Object.keys(this.stepper).forEach(field => {
+      this.stepper[field] = true;
+    });
+    this.stepper[step] = false;
+    window.scroll(0, 0);
   }
 
 }

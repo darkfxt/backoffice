@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
   selector: 'app-root',
   template: `
     <app-header></app-header>
-    <router-outlet></router-outlet>
+    <div id="main">
+      <router-outlet></router-outlet>
+    </div>
     <app-loading [hidden]="!loading"></app-loading>
     <app-footer></app-footer>
   `

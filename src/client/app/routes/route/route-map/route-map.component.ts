@@ -7,7 +7,7 @@ import { Place } from '../../../shared/models/Place';
 @Component({
   selector: 'app-route-map',
   template: `
-    <div #gmap style="width:100%; height:340px"></div>`,
+    <div #gmap style="width:100%; height:500px"></div>`,
 })
 export class RouteMapComponent implements OnInit {
   @Input()

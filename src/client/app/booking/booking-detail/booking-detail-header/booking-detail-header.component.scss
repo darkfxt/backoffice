@@ -1,7 +1,3 @@
-:host{
-  min-height: 570px;
-  display: block;
-}
 
 mat-form-field{
   width: 100%;
@@ -20,10 +16,5 @@ mat-slide-toggle{
 }
 
 .box-container{
-  @media only screen and (max-device-width: 736px) {
-    padding: 16px !important;
-  }
 
-  background: white;
-  padding: 34px;
 }

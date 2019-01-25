@@ -1,22 +1,28 @@
-<app-detail-header title="{{booking._id ? 'Reserva ' + booking.name : 'Nueva Reserva'}}"
-                   (backButtonClicked)="goBack()">
-  <div class="more-options">
+<app-detail-header title="{{booking._id ? 'Reserva ' + booking.name : 'Nueva Reserva'}}" (backButtonClicked)="goBack()" class="detail-header-content">
+  <div class="more-options hidden-desktop">
     <button mat-icon-button [matMenuTriggerFor]="menu" >
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" overlapTrigger="false">
       <button mat-menu-item (click)="exportFile('gpx')">Exportar GPX</button>
       <button mat-menu-item (click)="exportFile('pdf')">Exportar PDF</button>
+      <button mat-menu-item (click)="saveBooking()">Guardar</button>
     </mat-menu>
+  </div>
+
+  <div class="buttons-ctn hidden-mobile">
+    <button (click)="exportFile('gpx')" mat-button color="accent">Exportar GPX</button>
+    <button (click)="exportFile('pdf')" mat-button color="accent">Exportar PDF</button>
+    <button (click)="saveBooking()" mat-flat-button color="accent">Guardar</button>
   </div>
 </app-detail-header>
 
 <div class="main-container">
   <section class="sidebar">
     <ul>
-      <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Datos de la reserva' | translate}}</button></li>
+      <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Acerca de la reserva' | translate}}</button></li>
       <li [class.current]="!stepper.itinerary" >
-        <button mat-button (click)="setStep('itinerary')" [disabled]="formHeader.invalid">{{'Descripción' | translate}}</button>
+        <button mat-button (click)="setStep('itinerary')" [disabled]="formHeader.invalid">{{'Itinerario' | translate}}</button>
       </li>
       <li [class.current]="!stepper.publish">
         <button mat-button (click)="setStep('publish')" [disabled]="formHeader.invalid">{{'Publicar reserva' | translate}}</button>
@@ -27,6 +33,7 @@
     <ul class="stepper">
 
       <li class="step-item location" [hidden]="stepper.header">
+        <h1>{{'Acerca de la reserva' | translate}}</h1>
         <form [formGroup]="formHeader" class="" novalidate>
           <app-booking-detail-header [form]="formHeader"></app-booking-detail-header>
           <div class="buttons-ctn">

@@ -30,22 +30,7 @@
   }
 }
 
-.more-options{
-  margin-left: 16px;
-  margin-right: -16px;
-  mat-icon{
-    color: white;
-  }
-}
 
-.box-container{
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-
-.gallery-container{
-}
 
 .itinerary-ctn{
   //margin-bottom: 24px;
@@ -67,55 +52,5 @@
 
 .map-ctn{
 }
-
-.main-container{
-  display: flex;
-  background: #fff;
-
-  .sidebar{
-    padding-top: 38px;
-    flex: 0 0 200px;
-    max-width: 200px;
-    border-right: 1px solid $gray-line;
-
-    @media only screen and (max-device-width: 736px) {
-      display: none;
-    }
-
-    li{
-      padding: 16px;
-      font-size: 16px;
-      color: $gray-title;
-      cursor: pointer;
-      height: 20px;
-
-      button{
-        padding: 0;
-        text-align: left;
-        min-width: auto;
-        line-height: 18px;
-      }
-      &.current, &:hover{
-        button{
-          border-bottom: 2px solid $primary-color;
-        }
-      }
-    }
-  }
-  .content{
-    flex: 1 1 auto;
-  }
-}
-
-.buttons-ctn{
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
-
-  button{
-    margin-left: 16px;
-  }
-}
-
 
 

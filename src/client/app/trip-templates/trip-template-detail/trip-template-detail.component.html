@@ -1,57 +1,75 @@
 <form [formGroup]="form" #formDir="ngForm" novalidate>
-  <app-detail-header title="{{'Nuevo template'}}"
-                     (backButtonClicked)="goBack()"
-                     hidden="{{fromBooking}}">
-    <div class="more-options">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu" overlapTrigger="false">
-        <button mat-menu-item (click)="deleteTripTemplate()">Eliminar</button>
-      </mat-menu>
+  <div *ngIf="fromBooking">
+    <div class="row itinerary">
+      <div class="col-xs-12 col-sm-4">
+        <div class="itinerary-ctn">
+          <app-trip-template-itinerary *ngIf="loadItinerary" [itinerary]="form" (itineraryUpdated)="onTemplateUpdated($event)"></app-trip-template-itinerary>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-8 map-ctn">
+        <app-trip-template-map></app-trip-template-map>
+      </div>
     </div>
-  </app-detail-header>
+  </div>
 
-  <div class="main-container">
-    <section class="sidebar" *ngIf="!fromBooking">
-      <ul>
-        <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Datos de la reserva' | translate}}</button></li>
-        <li [class.current]="!stepper.itinerary" >
-          <button mat-button (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">{{'Itinerario' | translate}}</button>
-        </li>
-      </ul>
-    </section>
-    <section class="content">
-      <ul class="stepper">
+  <div *ngIf="!fromBooking">
+    <app-detail-header title="{{'Nuevo template'}}" (backButtonClicked)="goBack()" class="detail-header-content">
+      <div class="more-options hidden-desktop">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" overlapTrigger="false">
+          <button mat-menu-item (click)="deleteTripTemplate()">Eliminar</button>
+          <button mat-menu-item (click)="saveTripTemplate()" >Guardar</button>
+        </mat-menu>
+      </div>
+      <div class="buttons-ctn hidden-mobile">
+        <button mat-button (click)="deleteTripTemplate()" >Eliminar</button>
+        <button mat-flat-button color="accent" (click)="saveTripTemplate()" >Guardar</button>
+      </div>
+    </app-detail-header>
 
-        <li class="step-item" [hidden]="stepper.header" *ngIf="!fromBooking">
-          <app-trip-template-detail-header [form]="form"></app-trip-template-detail-header>
-          <div class="buttons-ctn">
-            <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">Siguiente</button>
-          </div>
-        </li>
+    <div class="main-container">
+      <section class="sidebar">
+        <ul>
+          <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Información básica' | translate}}</button></li>
+          <li [class.current]="!stepper.itinerary" >
+            <button mat-button (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">{{'Itinerario' | translate}}</button>
+          </li>
+        </ul>
+      </section>
+      <section class="content">
+        <ul class="stepper">
 
-        <li class="step-item" *ngIf="!stepper.itinerary || fromBooking">
-          <div class="row itinerary">
-            <div class="col-xs-12 col-sm-4">
-              <div class="itinerary-ctn">
-                <app-trip-template-itinerary *ngIf="loadItinerary" [itinerary]="form" (itineraryUpdated)="onTemplateUpdated($event)"></app-trip-template-itinerary>
+          <li class="step-item" [hidden]="stepper.header">
+            <app-trip-template-detail-header [form]="form"></app-trip-template-detail-header>
+            <div class="buttons-ctn">
+              <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">Siguiente</button>
+            </div>
+          </li>
+
+          <li class="step-item" *ngIf="!stepper.itinerary">
+            <div class="row itinerary">
+              <div class="col-xs-12 col-sm-4">
+                <div class="itinerary-ctn">
+                  <app-trip-template-itinerary *ngIf="loadItinerary" [itinerary]="form" (itineraryUpdated)="onTemplateUpdated($event)"></app-trip-template-itinerary>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-8 map-ctn">
+                <app-trip-template-map></app-trip-template-map>
               </div>
             </div>
-            <div class="col-xs-12 col-sm-8 map-ctn">
-              <app-trip-template-map></app-trip-template-map>
+            <div class="buttons-ctn itinerary-step" >
+              <button mat-flat-button color="primary" (click)="setStep('header')">Anterior</button>
             </div>
-          </div>
-          <div class="buttons-ctn itinerary-step" *ngIf="!fromBooking">
-            <button mat-flat-button color="primary" (click)="setStep('header')">Anterior</button>
-            <button mat-flat-button color="primary" (click)="saveTripTemplate()" [disabled]="form.invalid">Guardar</button>
-          </div>
-        </li>
+          </li>
 
-      </ul>
+        </ul>
 
-    </section>
+      </section>
+    </div>
   </div>
+
 
 </form>
 

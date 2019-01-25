@@ -4,13 +4,18 @@
                      [title]="'Actualizar lugar' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
-    <div class="more-options">
+    <div class="more-options hidden-desktop">
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" overlapTrigger="false">
         <button mat-menu-item (click)="deletePlace()">Eliminar</button>
+        <button mat-menu-item (click)="onSubmit()" [disabled]="placeForm.get('name').invalid">{{'Guardar y cerrar' | translate}}</button>
       </mat-menu>
+    </div>
+    <div class="buttons-ctn hidden-mobile">
+      <button mat-button class="delete-point" (click)="deletePlace()">Eliminar</button>
+      <button mat-flat-button color="accent" (click)="onSubmit()" [disabled]="placeForm.get('name').invalid">{{'Guardar y cerrar' | translate}}</button>
     </div>
   </app-detail-header>
 
@@ -20,7 +25,7 @@
       <ul>
         <li [class.current]="!stepper.location"><button mat-button (click)="setStep('location')">{{'Ubicación' | translate}}</button></li>
         <li [class.current]="!stepper.description" >
-          <button mat-button (click)="setStep('description')" [disabled]="placeForm.get('geo').value.point.lat === 0">{{'Descripción' | translate}}</button>
+          <button mat-button (click)="setStep('description')" [disabled]="placeForm.get('geo').value.point.lat === 0">{{'Acerca del lugar' | translate}}</button>
         </li>
         <li [class.current]="!stepper.gallery">
           <button mat-button (click)="setStep('gallery')" [disabled]="placeForm.get('name').invalid || placeForm.get('type').invalid">{{'Fotos' | translate}}</button>
@@ -32,19 +37,17 @@
 
         <li class="step-item location" [hidden]="stepper.location">
           <div class="map-container">
-            <div class="box-container">
-              <h3>{{'Ubicación' | translate}}</h3>
-              <mat-form-field color="accent" >
-                <input type="text" matInput placeholder="{{'Ingresa el nombre o dirección del lugar o ubica en el mapa el lugar que deseas crear' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)"/>
-                <mat-icon matSuffix>search</mat-icon>
-                <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-              <app-point-map [mapGroup]="placeForm"></app-point-map>
-            </div>
+            <h1>{{'Ubicación' | translate}}</h1>
+            <mat-form-field color="accent" >
+              <input type="text" matInput placeholder="{{'Ingresa el nombre o dirección del lugar o ubica en el mapa el lugar que deseas crear' | translate}}" required [matAutocomplete]="autoGroup" (keyup)="search($event)"/>
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <app-point-map [mapGroup]="placeForm"></app-point-map>
 
-            <div class="button-ctn">
+            <div class="buttons-ctn">
               <button mat-flat-button color="primary" (click)="setStep('description')" [disabled]="placeForm.get('geo').value.point.lat === 0">{{'Siguiente' | translate}}</button>
             </div>
 
@@ -53,10 +56,8 @@
 
         <li class="step-item description" [hidden]="stepper.description">
           <div class="head-container">
-            <div class="box-container">
-              <app-point-head [headGroup]="placeForm"></app-point-head>
-            </div>
-            <div class="button-ctn">
+            <app-point-head [headGroup]="placeForm"></app-point-head>
+            <div class="buttons-ctn">
               <button mat-flat-button color="primary" (click)="setStep('location')">{{'Anterior' | translate}}</button>
               <button mat-flat-button color="primary" (click)="setStep('gallery')" [disabled]="placeForm.get('name').invalid || placeForm.get('type').invalid">{{'Siguiente' | translate}}</button>
             </div>
@@ -65,13 +66,10 @@
 
         <li class="step-item gallery" [hidden]="stepper.gallery">
           <div class="gallery-container">
-            <div class="box-container">
-              <h3>{{'Galería' | translate}}</h3>
-              <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
-            </div>
-            <div class="button-ctn">
+            <h1>{{'Galería' | translate}}</h1>
+            <app-gallery [form]="placeForm" [preloadedImages]="place.images"></app-gallery>
+            <div class="buttons-ctn">
               <button mat-flat-button color="primary" (click)="setStep('description')">{{'Anterior' | translate}}</button>
-              <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="placeForm.get('name').invalid">{{'Guardar y cerrar' | translate}}</button>
             </div>
           </div>
         </li>

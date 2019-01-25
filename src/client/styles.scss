@@ -26,9 +26,14 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 @import "./assets/variables";
 @import "./assets/fonts/style.css";
 
+html{
+  height: 100%;
+}
+
 body {
   margin: 0;
   background: #F5F5F5;
+  height: 100%;
 }
 
 .primary {
@@ -54,6 +59,11 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+#main{
+  min-height: calc(100% - 106px);
+}
+
 
 .app-container {
   max-width: 1024px;
@@ -87,5 +97,98 @@ ul {
   }
 }
 
+h1, h2, h3{
+  color: $gray-title;
+}
 
+.hidden-mobile{
+  @media only screen and (max-device-width: 736px) {
+    display: none !important;
+  }
+}
+
+.hidden-desktop{
+  @media only screen and (min-device-width: 736px) {
+    display: none !important;
+  }
+}
+
+.main-container{
+  display: flex;
+  background: #fff;
+  min-height: calc(100vh - 106px);
+
+  .sidebar{
+    padding-top: 16px;
+    flex: 0 0 200px;
+    max-width: 200px;
+    border-right: 1px solid $gray-line;
+
+    @media only screen and (max-device-width: 736px) {
+      display: none;
+    }
+
+    li{
+      padding: 16px;
+      font-size: 16px;
+      color: $gray-title;
+      cursor: pointer;
+      height: 20px;
+
+      button{
+        padding: 0;
+        text-align: left;
+        min-width: auto;
+        line-height: 18px;
+      }
+      &.current, &:hover{
+        button{
+          border-bottom: 2px solid $primary-color;
+        }
+      }
+    }
+  }
+  .content{
+    flex: 1 1 auto;
+    padding: 48px 24px 24px;
+
+    @media only screen and (max-device-width: 736px) {
+      padding: 32px 16px;
+    }
+
+    .buttons-ctn{
+      margin-top: 24px;
+      justify-content: flex-start;
+
+      button{
+        margin-left: 0;
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
+.buttons-ctn{
+  display: flex;
+  justify-content: flex-end;
+
+  button{
+    margin-left: 16px;
+  }
+}
+
+.detail-header-content{
+  .buttons-ctn {
+    button{
+      color: #fff;
+    }
+  }
+
+  .more-options{
+    margin-left: 16px;
+    mat-icon{
+      color: white;
+    }
+  }
+}
 

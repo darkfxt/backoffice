@@ -1,8 +1,6 @@
 @import "../../../../assets/variables";
 
 .box-container{
-  background: white;
-  padding: 34px;
 }
 
 .template-header{
@@ -29,11 +27,14 @@ mat-form-field{
 }
 
 .templates-search{
-  display: flex;
-  align-items: center;
-  p{
-    color: $gray-body;
-    margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  margin: -42px -24px 48px;
+  padding: 0 16px;
+
+  @media only screen and (max-width: 736px) {
+    margin: -26px -16px 48px;
+    padding: 0;
   }
+
 }
 
