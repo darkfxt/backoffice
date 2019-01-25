@@ -22,6 +22,7 @@ import { getDialogStatus, getPointSelected } from '../../store/place';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ApiError } from '../../shared/models/ApiError';
+import {BikingCountryAvailability} from '../../shared/models/enum/BikingCountryAvailability';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -241,6 +242,14 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   toggleTravelMode(event) {
     this.form.get('route_type').enable();
     this.form.get('road_surface').enable();
+    const originCountry = this.form.get('origin').value.geo.address.country_code;
+    const destinationCountry = this.form.get('destination').value.geo.address.country_code;
+    // Check this: enable or disable biking option relying on country of the selected place
+    if (
+      !Object.keys(BikingCountryAvailability).includes(originCountry) ||
+      !Object.keys(BikingCountryAvailability).includes(destinationCountry)) {
+      this.onDisableTravelMode('bicycling');
+    }
   }
 
 }

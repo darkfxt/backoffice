@@ -84,11 +84,6 @@ export class RoutePointsComponent implements OnInit {
   setPoint(event, inputName) {
 
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
-      // Check this: enable or disable biking option relying on country of the selected place
-      if (!Object.keys(BikingCountryAvailability).includes(gPlace.geo.address.country_code)) {
-        this.travelModeDisabled.emit('bicycling');
-      }
-
       const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
       this.placeStore.setPlace(inputName, place);
       this.lastSelection = place;

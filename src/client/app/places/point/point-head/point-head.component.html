@@ -33,7 +33,7 @@
         <textarea matInput placeholder="{{'Debes ingresar una descripción antes de agregar más idiomas' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
           {{placeForm.value.description[lang] ? placeForm.value.description[lang].text : ''}}
         </textarea>
-        <mat-hint align="end" class="count">{{placeForm.value.description[lang] ? placeForm.value.description[lang].length : 0}} / 1000</mat-hint>
+        <mat-hint align="end" class="count">{{placeForm.value.description[lang].text ? placeForm.value.description[lang].text.length : 0}} / 1000</mat-hint>
       </mat-form-field>
     </mat-tab>
     <mat-tab [disabled]="!placeForm.value.description[defaultLanguage]" *ngIf="availableLanguages.length > 0">
