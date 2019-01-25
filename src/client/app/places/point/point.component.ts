@@ -140,8 +140,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       pt: this.place.description.pt ? this.place.description.pt.text : '',
       nl: this.place.description.nl ? this.place.description.nl.text : '',
     };
+    const defaultDesc = multiDescriptions[defLang];
     Reflect.deleteProperty(multiDescriptions, defLang);
-    return this.fb.group(Object.assign({[defLang]: this.place.description[defLang].text}, multiDescriptions));
+    return this.fb.group(Object.assign({[defLang]: defaultDesc}, multiDescriptions));
   }
 
   ngOnDestroy() {

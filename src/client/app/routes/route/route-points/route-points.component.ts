@@ -77,8 +77,11 @@ export class RoutePointsComponent implements OnInit {
   }
 
   setMiddlePoint(event, index) {
-    this.middlePoints.controls[index].patchValue(event.option.value);
-    this.placeStore.setWaypoints(this.middlePoints.value);
+    this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
+      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
+      this.middlePoints.controls[index].patchValue(place);
+      this.placeStore.setWaypoints(this.middlePoints.value);
+    });
   }
 
   setPoint(event, inputName) {
