@@ -57,7 +57,7 @@ export class SegmentEffects {
     .pipe(
       switchMap((query: any) => this.routeServiceInstance.upsert({id: query.payload.id, body: query.payload.body})),
       mergeMap((response: any) => [
-        new SegmentSelected(Object.assign(new Segment(), response.data[0])),
+        new SegmentSelected(Object.assign(new Segment(), response)),
         new SnackbarOpen({
           message: 'Ruta guardada'
         })
