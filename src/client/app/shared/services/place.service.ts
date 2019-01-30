@@ -19,8 +19,8 @@ export class PlaceService {
     queryParams.page = paginationMetadata.pageIndex;
     if (paginationMetadata.search)
       queryParams.search = paginationMetadata.search;
-    if (paginationMetadata.type)
-      queryParams.type = paginationMetadata.type;
+    if (paginationMetadata.types)
+      queryParams.types = paginationMetadata.types;
     if (withoutMetadata)
       queryParams.simple = true;
 

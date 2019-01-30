@@ -14,7 +14,7 @@ if (config.logger.console) {
 // if (config.logger.remote) {
 //   logger.addStream({
 //     username: 'tg-backoffice',
-//     type: 'raw',
+//     types: 'raw',
 //     stream: require('bunyan-logstash-tcp').createStream(config.logger.remote)
 //   });
 // }
@@ -23,7 +23,7 @@ if (config.logger.console) {
 //   import NewRelicStream from 'bunyan-newrelic-stream';
 //   logger.addStream({
 //     level: 'error',
-//     type: 'raw',
+//     types: 'raw',
 //     stream: new NewRelicStream()
 //   });
 // }

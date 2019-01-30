@@ -47,7 +47,7 @@ export default class Place {
   name: string;
   search_name: string;
   description: string;
-  type: string;
+  types: string;
   status: number;
   geo: Geo;
   images: any[];
@@ -60,7 +60,7 @@ export default class Place {
     this.name = params.name || '';
     this.search_name = params.search_name || '';
     this.description = params.description || '';
-    this.type = params.type || '';
+    this.types = params.types || '';
     this.status = params.status || 1;
     this.geo = params.geo || new Geo();
     this.images = params.images || [];

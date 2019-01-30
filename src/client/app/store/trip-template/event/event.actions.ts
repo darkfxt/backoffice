@@ -14,7 +14,7 @@ export enum EventActionTypes {
   DRIVING_EVENT_SELECTED = '[Events] Selected driving for update',
   SET_NAME_FOR_TEMPLATE = '[Events] Set username',
   SET_DESCRIPTION_FOR_TEMPLATE = '[Events] Set description',
-  SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting type, index & day for event'
+  SELECT_EVENT_TYPE_DAY_ORDINAL = '[Events] Setting types, index & day for event'
 }
 
 export class GetEventsForTripTemplate implements Action {

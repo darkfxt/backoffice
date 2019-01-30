@@ -2,9 +2,9 @@ import { Params, RouterStateSnapshot } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
 /**
- * This function coerces a string into a string literal type.
+ * This function coerces a string into a string literal types.
  * Using tagged union types in TypeScript 2.0, this enables
- * powerful type checking of reducers.
+ * powerful types checking of reducers.
  *
  * Since every action label passes through this function it
  * is a good place to ensure the action labels are unique.

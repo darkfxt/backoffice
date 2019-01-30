@@ -1,12 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ListItemComponent } from './common-list-item/common-list-item.component';
 import { PageEvent } from '@angular/material';
 import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
 import { PaginationOptionsInterface } from './common-list-item/pagination-options.interface';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../store/shared/app.interfaces';
-import {selectLoaderEntity} from '../../store/shared/reducers';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/shared/app.interfaces';
+import { selectLoaderEntity } from '../../store/shared/reducers';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import {first} from 'rxjs/internal/operators';
+
+const ALLOWED_PAGE_SIZE = [5, 10, 25, 50];
 
 @Component({
   selector: 'app-common-list',
@@ -18,7 +23,7 @@ export class CommonListComponent implements OnInit {
   @Input() list: any;
   @Input() component: ListItemComponent;
   @Input() totalElements: number;
-  @Input() paginationMetadata: PaginationOptionsInterface;
+  @Input() paginationMetadata: any;
   @Input() storeToWatch: string;
   @Input() filterComponent: any;
   @Input() hideFilter = false;
@@ -28,20 +33,64 @@ export class CommonListComponent implements OnInit {
   @Output() itemSelected: EventEmitter<any> = new EventEmitter<any>();
   _subscription: Subscription;
   loading = false;
+  queryLocation: string;
 
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private store: Store<AppState>
+  ) {
     this._subscription = this.store.select(selectLoaderEntity).subscribe(loader => this.loading = loader.show);
   }
 
   ngOnInit() {
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      console.log('aloha2', params);
+      const setMetadata = {
+        pageIndex: +this.paginationMetadata.pageIndex || +(!params.pageIndex ? 0 : +params.pageIndex),
+        pageSize: +this.paginationMetadata.page_size || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
+      };
+      if (this.paginationMetadata.filter && this.paginationMetadata.filter.search_name)
+        setMetadata['search'] = this.paginationMetadata.filter.search_name;
+      else
+        setMetadata['search'] = params.search;
+      setMetadata['types'] = this.paginationMetadata.types || params.types;
+      this.paginationMetadata = Object.assign({}, this.paginationMetadata, setMetadata);
+      this.queryBuilder(this.paginationMetadata);
+    });
+
   }
 
   changePage(event) {
-    Object.assign({}, this.paginationMetadata, event);
-    this.pageChanged.emit(event);
+    this.paginationMetadata = Object.assign(
+      {},
+      this.paginationMetadata,
+      {pageSize: this.paginationMetadata.page_size, pageIndex: this.paginationMetadata.page_index});
+    this.queryBuilder(this.paginationMetadata);
+    this.pageChanged.emit(this.paginationMetadata);
+  }
+
+  queryBuilder(pageOp: PaginationOptionsInterface) {
+    const actualQuery = this.location.normalize(this.location.path()).split('?');
+    this.queryLocation = `${actualQuery[0]}?pageIndex=${pageOp.pageIndex}&pageSize=${pageOp.pageSize}`;
+    if (pageOp.search) this.queryLocation += `&search=${pageOp.search}`;
+    if (pageOp.types) this.queryLocation += `&types=${pageOp.types}`;
+    this.location.replaceState(this.queryLocation);
+  }
+
+  parseQuery(pageOp: any) {
+    const actualQueryParams = this.location.normalize(this.location.path()).split('?')[1];
+
+  }
+
+  resetFilters() {
+    const actualQuery = this.location.normalize(this.location.path()).split('?');
+    this.queryLocation = `${actualQuery[0]}?pageIndex=0&pageSize=10`;
+    this.location.replaceState(this.queryLocation);
   }
 
 }

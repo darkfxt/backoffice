@@ -13,11 +13,15 @@ import Route from '../../../server/api/entity/Route';
 import { AppState } from '../store/shared/app.interfaces';
 import { getPointsMetadata, getAllPoints } from '../store/place';
 import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
-import {filter, first, map, skip, take, takeUntil} from 'rxjs/internal/operators';
+import { filter, first, map, skip, take, takeUntil } from 'rxjs/internal/operators';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+
+const ALLOWED_PAGE_SIZE = [5, 10, 25, 50];
 
 @Component({
   selector: 'app-places',
   templateUrl: './places.component.html',
+  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
   styleUrls: ['./places.component.scss']
 })
 export class PlacesComponent implements OnInit, OnDestroy {
@@ -33,13 +37,15 @@ export class PlacesComponent implements OnInit, OnDestroy {
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;
   drawingComponent: ListItemComponent;
-  paginationOptions: PaginationOptionsInterface = new PaginationOptions();
+  paginationOptions: any = new PaginationOptions();
   _subscription: Subscription;
   totalElements: Number;
+  queryLocation: string;
 
   constructor(private placesServiceInstance: PlaceService,
               private route: ActivatedRoute,
               private router: Router,
+              private location: Location,
               private store: Store<AppState>) {
     this.points$ = this.store.pipe(select(getAllPoints));
     this.metadata$ = this.store.pipe(select(getPointsMetadata));
@@ -53,7 +59,24 @@ export class PlacesComponent implements OnInit, OnDestroy {
       this.paginationOptions = Object.assign({}, this.paginationOptions, this.query);
     }
     this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
-    this.store.dispatch(new GetPoints(this.paginationOptions));
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      console.log('aloha1', params);
+      const setMetadata = {
+        pageIndex: +(!params.pageIndex ? 0 : params.pageIndex),
+        pageSize: +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
+      };
+      if (this.paginationOptions.filter && this.paginationOptions.filter.search_name)
+        setMetadata['search'] = this.paginationOptions.filter.search_name;
+      else
+        setMetadata['search'] = params.search;
+      setMetadata['types'] = this.paginationOptions.types || params.types;
+      this.paginationOptions = Object.assign({}, this.paginationOptions, setMetadata);
+      this.store.dispatch(new GetPoints(this.paginationOptions));
+    });
+    // console.log(this.location, this.query, this.paginationOptions);
+    // this.queryBuilder(this.paginationOptions);
+    // console.log(this.location.normalize(this.location.path()), this.query, this.paginationOptions);
+
   }
 
   ngOnDestroy() {
@@ -66,11 +89,12 @@ export class PlacesComponent implements OnInit, OnDestroy {
      this.paginationOptions = Object.assign(
        {}, this.paginationOptions, event
      );
+     // this.queryBuilder(this.paginationOptions);
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
   onFilterChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions, {search: event});
+    this.paginationOptions = Object.assign({}, this.paginationOptions, {search: event, pageIndex: 0, pageSize: 10});
     this.store.dispatch(new   GetPoints(this.paginationOptions));
   }
 
@@ -91,6 +115,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
       return;
     } else
       this.router.navigate(['/places']);
+  }
+
+  queryBuilder(pageOp: PaginationOptionsInterface) {
+    const actualQuery = this.location.normalize(this.location.path()).split('?');
+    this.queryLocation = `${actualQuery[0]}?pageIndex=${pageOp.pageIndex}&pageSize=${pageOp.pageSize}`;
+    if (pageOp.search) this.queryLocation += `&search=${pageOp.search}`;
+    if (pageOp.types) this.queryLocation += `&types=${pageOp.types}`;
+    this.location.replaceState(this.queryLocation);
   }
 
 }

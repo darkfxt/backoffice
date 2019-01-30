@@ -86,7 +86,7 @@ export class RouteMapComponent implements OnInit {
       this.drawerPicker(this.origin.geo.point, {label: this.origin.name, type: this.origin.type});
 
     this.waypoints
-      // .filter(place => place.type !== 'waypoint')
+      // .filter(place => place.types !== 'waypoint')
       .forEach((place, i) => {
         this.drawerPicker(place.geo.point, {label: place.name, type: place.type});
       });
