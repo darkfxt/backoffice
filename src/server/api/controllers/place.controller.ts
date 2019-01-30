@@ -49,7 +49,7 @@ export class PlaceController {
 
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
-      const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : undefined;
+      const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
       const {search, lang} = request.query;
       const resp = await PlaceService.search(search, PUBLIC_TYPES, PRIVATE_TYPES, company_id, 20, lang, request.headers);
       response.json(resp);
