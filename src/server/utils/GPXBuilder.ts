@@ -71,7 +71,7 @@ class GPXBuilder {
   }
 
   private static initRoute(name: string, date: Date, index: number): string {
-    return '\n<rte>\n<name>' + index + ') ' + date.getDate() + '/' + monthNames[date.getMonth() - 1] + '/' + date.getFullYear().toString().substr(-2) + ' - ' + this.convertInvalidStrings(name) + '</name>';
+    return '\n<rte>\n<name>' + index + ') ' + date.getDate() + '/' + monthNames[date.getMonth()] + '/' + date.getFullYear().toString().substr(-2) + ' - ' + this.convertInvalidStrings(name) + '</name>';
   }
 
   private static addRoutePoint(name: string, lat: number, lon: number, order: number): string {
