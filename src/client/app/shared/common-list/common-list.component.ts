@@ -49,7 +49,6 @@ export class CommonListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      console.log('aloha2', params);
       const setMetadata = {
         pageIndex: +this.paginationMetadata.pageIndex || +(!params.pageIndex ? 0 : +params.pageIndex),
         pageSize: +this.paginationMetadata.page_size || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)

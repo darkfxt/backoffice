@@ -60,7 +60,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
     }
     this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      console.log('aloha1', params);
       const setMetadata = {
         pageIndex: +(!params.pageIndex ? 0 : params.pageIndex),
         pageSize: +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)

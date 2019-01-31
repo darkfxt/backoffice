@@ -63,7 +63,6 @@ export class SegmentEffects {
         })
       ]),
       catchError((e: HttpErrorResponse) => {
-        console.log('holaholaholalalalalal')
         return of(new HttpError(e))
       })
     );
