@@ -25,6 +25,11 @@ import { Place } from '../../shared/models/Place';
 })
 export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
+  stepper = {
+    location: false,
+    description: true,
+    gallery: true
+  };
   placeForm: FormGroup;
   place: Place = new Place();
   _subscription: Subscription;
@@ -126,7 +131,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   getDescriptions(defLang: string): FormGroup {
-    let multiDescriptions = {
+    const multiDescriptions = {
       en: this.place.description.en ? this.place.description.en.text : '',
       es: this.place.description.es ? this.place.description.es.text : '',
       de: this.place.description.de ? this.place.description.de.text : '',
@@ -234,6 +239,14 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
           this.router.navigate(['/places']);
         });
     });
+  }
+
+  setStep(step) {
+    Object.keys(this.stepper).forEach(field => {
+      this.stepper[field] = true;
+    });
+    this.stepper[step] = false;
+    window.scroll(0, 0);
   }
 
 

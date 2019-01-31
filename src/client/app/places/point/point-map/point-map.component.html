@@ -1,25 +1,21 @@
 <div class="map-container" [formGroup]="placeForm" >
   <div class="row">
-    <mat-form-field class="col-sm-6 col-xs-12" color="accent" formGroupName="geo">
+    <mat-form-field class="col-sm-6 col-xs-12" color="accent" formGroupName="geo" style="display: none !important;">
       <input #location type="text"
              matInput
              placeholder="{{'Ingresa las coordenadas o busca en el mapa' | translate}}"
-             name="label" formControlName="label"
-             (keyup)="onChangeCoords($event)"
-      />
+             name="label" formControlName="label"/>
       <mat-error *ngIf="placeForm.get('geo.label').invalid && (placeForm.get('geo.label').dirty || placeForm.get('geo.label').touched)">{{'Campo es requerido' | translate}}</mat-error>
     </mat-form-field>
-    <div formGroupName="geo" class="col-sm-6 col-xs-12">
+    <div formGroupName="geo" class="col-sm-6 col-xs-12" style="display: none !important;">
       <mat-form-field color="accent" formGroupName="address">
         <input #address type="text"
                matInput
                placeholder="{{'Ingresa la direccion o busca en el mapa' | translate}}"
-               name="address" formControlName="formatted_address"
-               (keyup)="onChangeAddress($event)"
-        />
+               name="address" formControlName="formatted_address"/>
         <mat-error *ngIf="placeForm.get('geo.address').invalid && (placeForm.get('geo.address').dirty || placeForm.get('geo.address').touched)">{{'Campo es requerido' | translate}}</mat-error>
       </mat-form-field>
     </div>
   </div>
-  <div #gmap style="width:100%; height:240px"></div>
+  <div #gmap style="width:100%; height: 400px"></div>
 </div>

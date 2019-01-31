@@ -27,28 +27,8 @@
     <mat-error *ngIf="form.get('road_surface').invalid && (form.get('road_surface').dirty || form.get('road_surface').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-tab-group *ngIf="tabController && availableLanguages" formGroupName="description" class="col-xs-12">
-    <mat-tab *ngFor="let lang of getLanguages()">
-      <ng-template mat-tab-label>
-        {{lang | translate | uppercase }}
-      </ng-template>
-      <mat-form-field color="accent">
-        <textarea matInput placeholder="{{'Ingresa una descripción del lugar' | translate}}" name="{{lang}}" formControlName="{{lang}}" maxlength="1000">
-          {{placeForm.value.description[lang] ? placeForm.value.description[lang].text : ''}}
-        </textarea>
-        <mat-hint align="start">Agrega todos los idiomas que desees personalizar. No te preocupes por los otros, nosotros nos encargamos de traducirlos por ti</mat-hint>
-        <mat-hint align="end" class="count">{{placeForm.value.description[lang] ? placeForm.value.description[lang].length : 0}} / 1000</mat-hint>
-      </mat-form-field>
-    </mat-tab>
-    <mat-tab [disabled]="!placeForm.value.description[defaultLanguage]" *ngIf="availableLanguages.length > 0">
-      <ng-template mat-tab-label>
-        <button [disabled]="!placeForm.value.description[defaultLanguage]" mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>add</mat-icon>
-        </button>
-      </ng-template>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item *ngFor="let lng of availableLanguages" (click)="getTranslation(lng)">{{lng | translate}}</button>
-      </mat-menu>
-    </mat-tab>
-  </mat-tab-group>
+  <mat-form-field color="accent">
+    <textarea matInput placeholder="{{'Descripción' | translate}}" name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)">{{'Campo requerido' | translate}}</mat-error>
+  </mat-form-field>
 </div>
