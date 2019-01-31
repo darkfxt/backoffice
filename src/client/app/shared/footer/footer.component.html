@@ -1,3 +1,12 @@
 <div class="footer-ctn">
-  <span class="bo-version"></span>
+  <div>
+    <span>Version: </span>
+    <span class="bo-version"></span>
+  </div>
+
+  <mat-select [(value)]="languageSelected" (valueChange)="changeLanguage($event)" class="language">
+    <mat-option *ngFor="let option of options" [value]="option">
+      <span>{{option | translate}}</span>
+    </mat-option>
+  </mat-select>
 </div>

@@ -11,16 +11,20 @@ import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import { select, Store } from '@ngrx/store';
-import { ClearSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
+import {ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
 import { AppState } from '../../store/shared/app.interfaces';
-import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState } from '../../store/route';
+import { getSegmentDialogStatus, getSegmentSelected, getSegmentsEntityState, getSegmentsErrors } from '../../store/route';
 import { EventSelected } from '../../store/trip-template/event/event.actions';
 import { getDialogStatus, getPointSelected } from '../../store/place';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
+import { ApiError } from '../../shared/models/ApiError';
+import {BikingCountryAvailability} from '../../shared/models/enum/BikingCountryAvailability';
+
+const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
 @Component({
   selector: 'app-route',
@@ -38,7 +42,19 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   amIDialog = false;
   dialogStatus: string;
   popup = false;
+  travelModeStatus = false;
+  _errorSubscription: Subscription;
   _deleteSubscription: Subscription;
+  _selectedRouteType: string;
+  _disabledModesOfTravel: Array<any> = [];
+  defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
+  stepper = {
+    header: true,
+    cover: true,
+    map: false,
+    ttk: true
+  };
+
 
   constructor(
     private fb: FormBuilder,
@@ -91,8 +107,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     this.form = this.fb.group({
       name: [{value: this.segment.name, disabled: true}, Validators.required],
-      route_type: [this.segment.route_type, Validators.required],
-      road_surface: [this.segment.road_surface, Validators.required],
+      route_type: [{value: this.segment.route_type, disabled: !this.segment.name}, Validators.required],
+      road_surface: [{value: this.segment.road_surface, disabled: !this.segment.name}, Validators.required],
       via: this.segment.via,
       description: this.segment.description,
       images: this.fb.array(this.segment.images),
@@ -122,6 +138,16 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   // Form control
   onSubmit() {
     if (this.form.valid) {
+      this._errorSubscription = this.store.select(getSegmentsErrors)
+        .subscribe((APIError: ApiError) => {
+          if (APIError)
+            if (ERROR_ROUTE_NAME_REGEX.test(APIError.response.message)) {
+
+              const viaControl = this.form.get('via');
+              markAsTtouched(viaControl);
+              viaControl.setErrors({'invalid': true});
+            }
+        });
       this.bussy = true;
       const formData = this.prepareToSave();
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
@@ -161,6 +187,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
         _id: value._id,
         geo: {point: value.geo.point}
       }));
+    data.default_lang = this.defaultLanguage;
     formData.append('data', JSON.stringify(data));
     const image = data.file;
     if (image) {
@@ -201,6 +228,42 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
           this.router.navigate(['/routes']);
         });
     });
+  }
+
+  onSelectionTypeChanged(event) {
+    this._selectedRouteType = event;
+  }
+
+  onDisableTravelMode(event) {
+    // this._disabledModesOfTravel.push(event);
+    let arrayOfDisabledModes: Array<string> = this._disabledModesOfTravel.slice();
+    if (event == null)
+      arrayOfDisabledModes = [];
+    else
+      arrayOfDisabledModes.push(event);
+
+    this._disabledModesOfTravel = arrayOfDisabledModes;
+  }
+
+  toggleTravelMode(event) {
+    this.form.get('route_type').enable();
+    this.form.get('road_surface').enable();
+    const originCountry = this.form.get('origin').value.geo.address.country_code;
+    const destinationCountry = this.form.get('destination').value.geo.address.country_code;
+    // Check this: enable or disable biking option relying on country of the selected place
+    if (
+      !Object.keys(BikingCountryAvailability).includes(originCountry) ||
+      !Object.keys(BikingCountryAvailability).includes(destinationCountry)) {
+      this.onDisableTravelMode('bicycling');
+    }
+  }
+
+  setStep(step) {
+    Object.keys(this.stepper).forEach(field => {
+      this.stepper[field] = true;
+    });
+    this.stepper[step] = false;
+    window.scroll(0, 0);
   }
 
 }

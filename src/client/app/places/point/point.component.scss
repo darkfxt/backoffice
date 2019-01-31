@@ -27,18 +27,25 @@
 }
 
 .box-container{
-  background: white;
-  margin-top: 74px;
-  border: 1px solid #DEDEDE;
-  margin-bottom: 24px;
+  padding: 0;
 }
 
-.more-options{
-  margin-left: 16px;
-  margin-right: -16px;
-  mat-icon{
-    color: white;
+.head-container{
+  max-width: 600px;
+}
+
+.head-container, .map-container, .gallery-container{
+
+  h3{
+    margin-top: 38px;
+    color: $gray-title;
+    font-size: 24px;
   }
+
+}
+
+.delete-point{
+  color: #fff;
 }
 
 mat-form-field{
@@ -46,17 +53,14 @@ mat-form-field{
 }
 
 .header-ctn{
-  padding-bottom: 16px;
-  border-bottom: 1px solid $gray-line;
-  margin-bottom: 24px;
+  padding: 16px;
+  margin-top: 32px;
 
   p{
     color: $gray-body;
   }
 }
 
-.gallery-container{
-  margin-top: 24px;
-}
+
 
 

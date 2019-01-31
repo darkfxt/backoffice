@@ -7,11 +7,19 @@ import { Place } from '../../../shared/models/Place';
 @Component({
   selector: 'app-route-map',
   template: `
-    <div #gmap style="width:100%; height:340px"></div>`,
+    <div #gmap style="width:100%; height:500px"></div>`,
 })
 export class RouteMapComponent implements OnInit {
   @Input()
   form: FormGroup;
+  _routeType = 'driving';
+
+  @Input() set routeType(routeType: string) {
+    if (routeType) {
+      this._routeType = routeType;
+      this.calculateAndDisplayRoute();
+    }
+  }
 
   @ViewChild('gmap') gmapElement: any;
 
@@ -29,6 +37,7 @@ export class RouteMapComponent implements OnInit {
   constructor(private placeStore: PlaceStore) { }
 
   ngOnInit() {
+    this._routeType = this.form.controls.route_type.value || 'driving';
 
     const mapProp = {
       center: new google.maps.LatLng(0, 0),
@@ -76,6 +85,7 @@ export class RouteMapComponent implements OnInit {
       this.destination = place;
       this.addMarker();
     });
+    //
   }
 
   private addMarker() {
@@ -149,7 +159,7 @@ export class RouteMapComponent implements OnInit {
       destination: this.destination.geo.point,
       waypoints: waypts,
       optimizeWaypoints: false,
-      travelMode: 'DRIVING'
+      travelMode: google.maps.TravelMode[this._routeType.toUpperCase()]
     }, (response, status: any) => {
       if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
@@ -162,6 +172,8 @@ export class RouteMapComponent implements OnInit {
           );
 
         this.form.patchValue({legs: legs});
+      } else {
+        console.log('no disponible', response, status);
       }
     });
   }

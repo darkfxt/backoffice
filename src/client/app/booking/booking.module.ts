@@ -11,7 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import {
   MatButtonModule, MatFormFieldModule, MatNativeDateModule,
   MatIconModule, MatStepperModule, MatAutocompleteModule,
-  MatOptionModule, MatInputModule, MatDatepickerModule, MatSlideToggleModule, MatMenuModule
+  MatOptionModule, MatInputModule, MatDatepickerModule, MatSlideToggleModule, MatMenuModule, MatTooltipModule
 } from '@angular/material';
 import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,7 +38,8 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
     MatDatepickerModule,
     MatNativeDateModule,
     TranslateModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   declarations: [
     BookingListComponent,

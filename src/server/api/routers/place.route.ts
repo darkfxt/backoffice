@@ -8,6 +8,9 @@ const s3Middleware: S3Middleware = new S3Middleware({bucket: 'places'});
 PlaceRouter.route('/glautocomplete')
   .get(PlaceController.glAutocomplete);
 
+PlaceRouter.route('/autocomplete')
+  .get(PlaceController.autocomplete);
+
 PlaceRouter.route('/search')
   .get(PlaceController.search);
 

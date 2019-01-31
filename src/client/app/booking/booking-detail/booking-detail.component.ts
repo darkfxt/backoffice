@@ -25,6 +25,11 @@ export class BookingDetailComponent implements OnInit {
   selectedBooking$: Observable<string>;
   published: boolean;
   statusType = Status;
+  stepper = {
+    header: false,
+    itinerary: true,
+    publish: true
+  };
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
@@ -141,6 +146,14 @@ export class BookingDetailComponent implements OnInit {
       window.URL.revokeObjectURL(url);
       a.remove(); // remove the element
     });
+  }
+
+  setStep(step) {
+    Object.keys(this.stepper).forEach(field => {
+      this.stepper[field] = true;
+    });
+    this.stepper[step] = false;
+    window.scroll(0, 0);
   }
 
 }

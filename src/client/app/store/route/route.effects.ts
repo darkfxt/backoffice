@@ -62,6 +62,9 @@ export class SegmentEffects {
           message: 'Ruta guardada'
         })
       ]),
-      catchError((e: HttpErrorResponse) => of(new HttpError(e)))
+      catchError((e: HttpErrorResponse) => {
+        console.log('holaholaholalalalalal')
+        return of(new HttpError(e))
+      })
     );
 }

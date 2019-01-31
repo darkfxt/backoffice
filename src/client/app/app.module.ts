@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
 import { PlacesModule } from './places/places.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,8 +33,8 @@ import { LoadingModule } from './shared/loading/loading.module';
 import { StateModule } from './store/state.module';
 import { ErrorComponent } from './error/error.component';
 import { BookingModule } from './booking/booking.module';
-import {DevicesModule} from './devices/devices.module';
-import {FooterComponent} from './shared/footer/footer.component';
+import { DevicesModule } from './devices/devices.module';
+import { FooterComponent } from './shared/footer/footer.component';
 
 
 
@@ -72,7 +73,7 @@ registerLocaleData(localeEs, 'es');
     DevicesModule,
     LoginRoutingModule,
     AppRoutingModule,
-    MatButtonModule, MatIconModule, MatMenuModule,
+    MatButtonModule, MatIconModule, MatMenuModule, MatSelectModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

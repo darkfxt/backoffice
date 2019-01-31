@@ -63,19 +63,20 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
               switch (event.event_type) {
                 case TypeOfEvent.CUSTOM:
                   break;
-                case TypeOfEvent.DRIVING:
+                case TypeOfEvent.DRIVING || 'walking' || 'bicycling':
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
                   this.bounds.extend(origin.geo.point);
                   this.bounds.extend(destination.geo.point);
 
-                  this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: origin.type});
-                  this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: destination.type});
+                  this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.product.route_type});
+                  this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.product.route_type});
 
                   this.traceRoutes(
                     origin.geo.point,
                     event.product.middle_points.map(mp => ({location: mp.geo.point})),
-                    destination.geo.point
+                    destination.geo.point,
+                    event.event_type.toUpperCase()
                   );
                   event.product.middle_points.forEach(mp => {
                     this.bounds.extend(mp.geo.point);
@@ -134,12 +135,12 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     this.markers.push(marker);
   }
 
-  private traceRoutes(start, waypts, end): void {
+  private traceRoutes(start, waypts, end, travelMode): void {
     this.directionsService.route({
       origin: start,
       destination: end,
       waypoints: waypts,
-      travelMode: google.maps.TravelMode.DRIVING
+      travelMode: travelMode || google.maps.TravelMode.DRIVING
     }, result => {
       this.renderDirections(result);
     });

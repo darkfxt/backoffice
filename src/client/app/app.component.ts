@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
   selector: 'app-root',
   template: `
     <app-header></app-header>
-    <router-outlet></router-outlet>
+    <div id="main">
+      <router-outlet></router-outlet>
+    </div>
     <app-loading [hidden]="!loading"></app-loading>
     <app-footer></app-footer>
   `
@@ -20,11 +22,22 @@ export class AppComponent implements OnInit {
   loading = false;
   loading$: Observable<boolean>;
 
+  userLanguage = navigator.language;
+
   constructor(private translate: TranslateService,
               private customIconService: CustomIconService,
               private store: Store<AppState>) {
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
+    let navLanguage: string, navLocalization: string;
+    if (!localStorage.getItem('uiLanguage')) {
+      [navLanguage, navLocalization] = this.userLanguage.split('-');
+      localStorage.setItem('uiLanguage', navLanguage);
+      localStorage.setItem('uiL10n', navLocalization);
+    } else {
+      navLanguage = localStorage.getItem('uiLanguage');
+      navLocalization = localStorage.getItem('uiL10n');
+    }
+    this.translate.setDefaultLang(navLanguage);
+    this.translate.use(navLanguage);
     this.store.select(selectLoaderEntity).subscribe(loader => setTimeout(() => this.loading = loader.show) );
     this.customIconService.init();
     //

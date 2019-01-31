@@ -1,3 +1,5 @@
+@import "../../../../assets/variables";
+
 mat-form-field{
   width: 100%;
 }
@@ -5,3 +7,21 @@ mat-form-field{
 textarea{
   min-height: 161px;
 }
+
+.chars-left {
+  height: 24px;
+}
+
+.location-desc{
+  margin-bottom: 28px;
+}
+
+h3{
+  color: $gray-title;
+  font-size: 24px;
+}
+
+p{
+  color: $gray-title;
+}
+

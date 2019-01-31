@@ -29,6 +29,9 @@ export const config = {
   },
   core: {
     url: 'http://tg-core-development:6004/core'
+  },
+  content: {
+    url: 'http://gl-api-content-development:6007/content'
   }
 
 };

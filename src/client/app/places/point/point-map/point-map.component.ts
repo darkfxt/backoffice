@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {} from '@types/googlemaps';
 import { PlaceStore } from '../../../shared/services/place-store.services';
@@ -24,7 +24,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
   geocoder: google.maps.Geocoder = new google.maps.Geocoder();
   _subscription: Subscription;
 
-  constructor(private placeStore: PlaceStore) {
+  constructor(private placeStore: PlaceStore, private changeDetectionRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -71,6 +71,9 @@ export class PointMapComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.placeStore.clearAll();
     this._subscription.unsubscribe();
+    if (!this.changeDetectionRef['destroyed']) {
+      this.changeDetectionRef.detectChanges();
+    }
   }
 
   onChangeCoords(event) {

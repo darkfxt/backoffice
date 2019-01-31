@@ -1,4 +1,3 @@
-<h3>{{'Imagen de portada' | translate}}</h3>
 <app-uploader (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="!previewImage"></app-uploader>
 
 <div *ngIf="previewImage">

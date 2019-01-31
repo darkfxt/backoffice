@@ -7,6 +7,11 @@ mat-form-field{
 
 .ttk-content{
   margin-bottom: 24px;
+
+  button{
+    float: right;
+    margin: -24px;
+  }
 }
 
 p{
@@ -14,7 +19,9 @@ p{
 }
 
 .button-ctn{
-  text-align: center;
+  button{
+    color: $link-color;
+  }
 }
 
 .link{

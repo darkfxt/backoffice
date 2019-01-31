@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TRANSLATE } from '../../../translate-marker';
 
@@ -12,14 +12,37 @@ export class RouteHeadComponent implements OnInit {
   @Input()
   form: FormGroup;
 
+  @Input() set disabledRoutes(routeTypes: Array<string>) {
+    if (routeTypes) {
+      if (routeTypes.length > 0)
+        this.disableRouteMode(routeTypes);
+      else {
+        this.routeTypes.map((travelMode) => {
+          travelMode.enabled = true;
+        });
+      }
+    }
+  }
+
+  @Output()
+  routeTypeChanged: EventEmitter<any> = new EventEmitter<any>();
+
+
   routeTypes = [
     {
       value: TRANSLATE('driving'),
-      viewValue: 'Driving'
+      viewValue: 'Driving',
+      enabled: true
     },
     {
       value: TRANSLATE('walking'),
-      viewValue: 'Walking'
+      viewValue: 'Walking',
+      enabled: true
+    },
+    {
+      value: TRANSLATE('bicycling'),
+      viewValue: 'Bicycling',
+      enabled: true
     }
   ];
   roadSurfaces = [
@@ -40,6 +63,19 @@ export class RouteHeadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  optionChanged(event) {
+    if (event.isUserInput) {
+      this.routeTypeChanged.emit(event.source.value);
+    }
+  }
+
+  disableRouteMode(routeModes: Array<string>) {
+    this.routeTypes.map((travelMode) => {
+        if (routeModes.includes(travelMode.value))
+          travelMode.enabled = false;
+      });
   }
 
 }

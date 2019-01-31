@@ -38,6 +38,26 @@ export class PlaceService {
       );
   }
 
+  getAutocompleteDetail (autocompleteOption: any): Observable<any> {
+    if (autocompleteOption.type === 'public') {
+      return this.http.get(`/api/places/google/${autocompleteOption.place_id}?lang=es`)
+        .pipe(
+          catchError(this.handleError('getGoogleDetail', []))
+        );
+    }
+    return this.http.get(`/api/places/${autocompleteOption.place_id}?lang=es`)
+      .pipe(
+        catchError(this.handleError('getDetail', []))
+      );
+  }
+
+  improvedAutocomplete (query: string): Observable<any> {
+    return this.http.get(`/api/places/autocomplete/?q=${query}&lang=es`)
+      .pipe(
+        catchError(this.handleError('autocomplete'))
+      );
+  }
+
   search (query: string): Observable<any> {
     return this.http.get(`/api/places/search/?${query}&lang=es`);
 
@@ -58,7 +78,7 @@ export class PlaceService {
     }
   }
 
-  getDetail (place_id: string): Observable<any> {
+  getDetail (place_id: string, language: string = 'en'): Observable<any> {
     return this.http.get(`/api/places/${place_id}?lang=es`)
       .pipe(
         catchError(this.handleError('getDetail', []))

@@ -3,50 +3,94 @@
                      [title]="'Actualizar ruta' | translate"
                      class="detail-header-content"
                      (backButtonClicked)="goBack()">
-    <div class="more-options">
+    <div class="more-options hidden-desktop">
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" overlapTrigger="false">
-        <button mat-menu-item (click)="deleteRoute()">Eliminar</button>
+        <button mat-menu-item (click)="deleteRoute()">{{'Eliminar' | translate}}</button>
+        <button mat-menu-item (click)="onSubmit()">{{'Guardar y salir' | translate}}</button>
       </mat-menu>
     </div>
 
-    <div class="button-container save-button">
-      <button (click)="onSubmit()">
-        <mat-icon aria-label="New">save</mat-icon>
-      </button>
-      <span class="save-label">{{'Guardar y cerrar' | translate}}</span>
+    <div class="buttons-ctn hidden-mobile">
+      <button mat-button (click)="deleteRoute()">{{'Eliminar' | translate}}</button>
+      <button mat-flat-button color="accent" (click)="onSubmit()">{{'Guardar y salir' | translate}}</button>
     </div>
   </app-detail-header>
-  <div class="app-container full-size">
-    <div class="box-container">
-      <div class="row gallery-container">
-        <div class="col-xs-12">
-          <div>
-            <h3>{{'Puntos de la ruta' | translate}}</h3>
+
+  <div class="main-container">
+    <section class="sidebar">
+      <ul>
+        <li [class.current]="!stepper.map"><button mat-button (click)="setStep('map')">{{'Ruta' | translate}}</button></li>
+        <li [class.current]="!stepper.header" >
+          <button mat-button (click)="setStep('header')" [disabled]="">{{'Información básica' | translate}}</button>
+        </li>
+        <li [class.current]="!stepper.cover">
+          <button mat-button (click)="setStep('cover')" [disabled]="">{{'Foto de portada' | translate}}</button>
+        </li>
+        <li [class.current]="!stepper.ttk">
+          <button mat-button (click)="setStep('ttk')" [disabled]="">{{'Información importante' | translate}}</button>
+        </li>
+      </ul>
+    </section>
+    <section class="content">
+      <ul class="stepper">
+
+        <li class="step-item" [hidden]="stepper.map">
+          <div class="map-ctn">
+            <h1>{{'Completa la ruta' | translate}}</h1>
             <div class="row">
-              <div class="col-sm-4 col-xs-12">
-                <app-route-points [routeGroup]="form"></app-route-points>
+              <div class="col-sm-4 col-xs-12 col-lg-3">
+                <app-route-points [routeGroup]="form"
+                                  (travelModeDisabled)="onDisableTravelMode($event)"
+                                  (minimalRouteReached)="toggleTravelMode($event)"></app-route-points>
               </div>
-              <div class="col-sm-8 col-xs-12">
-                <app-route-map [form]="form"></app-route-map>
+              <div class="col-sm-8 col-xs-12 col-lg-9">
+                <app-route-map [form]="form" [routeType]="_selectedRouteType"></app-route-map>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row bottom-row">
-        <div class="col-sm-4 col-xs-12">
-          <app-route-head [form]="form"></app-route-head>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <app-route-cover [form]="form"></app-route-cover>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <app-route-info [form]="form"></app-route-info>
-        </div>
-      </div>
-    </div>
+          <div class="buttons-ctn">
+            <button mat-flat-button color="primary" (click)="setStep('header')" [disabled]="">{{'Siguiente' | translate}}</button>
+          </div>
+
+        </li>
+
+        <li class="step-item" [hidden]="stepper.header">
+          <div class="header-container">
+            <h1>{{'Información básica' | translate}}</h1>
+            <app-route-head [form]="form"
+                            (routeTypeChanged)="onSelectionTypeChanged($event)"
+                            [disabledRoutes]="_disabledModesOfTravel"></app-route-head>
+            <div class="buttons-ctn">
+              <button mat-flat-button color="primary" (click)="setStep('map')" [disabled]="">{{'Anterior' | translate}}</button>
+              <button mat-flat-button color="primary" (click)="setStep('cover')" [disabled]="">{{'Siguiente' | translate}}</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="step-item" [hidden]="stepper.cover">
+          <h1>{{'Foto de portada' | translate}}</h1>
+          <div class="cover-container">
+            <app-route-cover [form]="form"></app-route-cover>
+          </div>
+          <div class="buttons-ctn">
+            <button mat-flat-button color="primary" (click)="setStep('header')" [disabled]="">{{'Anterior' | translate}}</button>
+            <button mat-flat-button color="primary" (click)="setStep('ttk')" [disabled]="">{{'Siguiente' | translate}}</button>
+          </div>
+        </li>
+
+        <li class="step-item" [hidden]="stepper.ttk">
+          <div class="ttk-container">
+            <app-route-info [form]="form"></app-route-info>
+          </div>
+          <div class="buttons-ctn">
+            <button mat-flat-button color="primary" (click)="setStep('cover')" [disabled]="">{{'Anterior' | translate}}</button>
+          </div>
+        </li>
+      </ul>
+
+    </section>
   </div>
 </form>

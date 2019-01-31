@@ -14,6 +14,7 @@
     height: 54px;
     display: flex;
     align-items: center;
+    max-width: 100%;
   }
 
   .float-button{
@@ -110,6 +111,9 @@
 
   }
 
+  .buttons-ctn{
+    margin-left: 16px;
+  }
 
   @media only screen and (max-device-width: 736px) {
 

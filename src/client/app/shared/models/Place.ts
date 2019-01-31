@@ -29,23 +29,26 @@ export class Place {
   name: string;
   company_id: number;
   created_by: string;
-  description: string;
+  description: any;
   geo: Geo;
   images: Array<any>;
   type: PlaceType;
   search_name: string;
   status: ActiveStatus;
   place_id: string;
+  default_lang: string;
   constructor(params: any = {}) {
     this._id = params._id;
     this.name = params.name || '';
     this.search_name = params.search_name || '';
-    this.description = params.description || '';
+    this.description = params.description || {};
     this.type = params.type || '';
     this.status = params.status || 1;
     this.geo = params.geo || new Geo();
     this.images = params.images || [];
     this.created_by = params.created_by || '';
+    this.default_lang = params.default_lang || localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
+    if (params.place_id) this.place_id = params.place_id;
   }
 }
 

@@ -47,6 +47,22 @@ export class PlaceController {
     }
   }
 
+  public static async autocomplete(request: Request, response: Response, next: NextFunction) {
+    try {
+      const {q, lang} = request.query;
+      const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
+      const promisePublic = PlaceService.glAutocomplete(decodeURI(q), lang);
+      const promisePrivate = PlaceService.search(decodeURI(q), [], PRIVATE_TYPES, company_id, 20, lang, request.headers);
+      const [dataPublic, dataPrivate] = await Promise.all([promisePublic, promisePrivate]);
+      const resp = [];
+      dataPrivate.forEach((tPlace) => resp.push({name: tPlace.name, place_id: tPlace._id, type: 'private'}));
+      dataPublic.forEach((gPlace: any) => resp.push({name: gPlace.name, place_id: gPlace.place_id, type: 'public'}));
+      response.json(resp);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
       const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
@@ -100,6 +116,13 @@ export class PlaceController {
       data.search_name = data.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       data.company_id = (request as any).loggedUser.CompanyID;
       data.created_by = (request as any).loggedUser.Username;
+      data.default_lang = data.defaultLanguage;
+      const notNullLng = {};
+      Object.keys(data.description).forEach((lng) => {
+        if (data.description[lng])
+          notNullLng[lng] = data.description[lng];
+      });
+      data.description = Object.assign({}, notNullLng);
       const oPlace = new Place(data);
       let place;
       if (request.params.place_id) {
