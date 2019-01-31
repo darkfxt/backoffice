@@ -9,10 +9,11 @@ import { AppState } from '../../store/shared/app.interfaces';
 import { Store } from '@ngrx/store';
 import { HideLoader } from '../../store/shared/actions/loader.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
-import {ApiError} from '../models/ApiError';
-import {ErrorSavingSegment} from '../../store/route/route.actions';
+import { ApiError } from '../models/ApiError';
+import { ErrorSavingSegment } from '../../store/route/route.actions';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
+const ERROR_PLACE_ID_CONFLICT = /^.*Place with input request place_id.*and company_id.*already exist/g;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -34,6 +35,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                     {message: 'Ya existe una ruta con ese nombre y vía. Por favor, modificar via.', action: 'Error'}
                   ));
                   this.store.dispatch(new ErrorSavingSegment(APIError));
+                }
+                if (ERROR_PLACE_ID_CONFLICT.test(APIError.response.message)) {
+                  this.store.dispatch(new SnackbarOpen(
+                    {message: 'Ya existe un lugar para estas coordenadas en esta compañía.', action: 'Error'}
+                  ));
                 }
               }
               break;

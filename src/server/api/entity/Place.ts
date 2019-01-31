@@ -88,6 +88,7 @@ export default class Place implements IPlaceDTO {
   search_name: string;
   status: ActiveStatus;
   default_lang: string;
+  place_id?: string;
 
   constructor(params: any = {}) {
     this._id = params._id;
@@ -101,6 +102,7 @@ export default class Place implements IPlaceDTO {
     this.company_id = params.company_id;
     this.created_by = params.created_by;
     this.default_lang = params.default_lang;
+    if (params.place_id) this.place_id = params.place_id;
   }
 
 

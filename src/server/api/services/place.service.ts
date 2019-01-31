@@ -22,12 +22,8 @@ export class PlaceService {
 
   public static async create(body: IPlaceDTO, headers: any): Promise<any> {
     const PlaceDAOInstance = PlaceAdapter.fitToDAO(body);
-    try {
-      const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
-      return PlaceAdapter.fitFromDAO(ret.data);
-    } catch (err) {
-      console.error(err);
-    }
+    const ret = await axios.post(`${config.geo.url}/places`, PlaceDAOInstance, {headers: {authorization: headers.authorization}});
+    return PlaceAdapter.fitFromDAO(ret.data);
   }
 
   public static async update(id, body, headers: any): Promise<any> {

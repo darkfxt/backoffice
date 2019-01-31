@@ -11,6 +11,7 @@ export class PlaceFactory {
     place.description = '';
     place.status = 1;
     place.type = PlaceType.POI;
+    place.place_id = glPlace.place_id;
     place.geo = {
       point: glPlace.geometry.location,
       address: {

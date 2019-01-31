@@ -26,6 +26,7 @@ export class PlaceAdapter {
     transformed.geo = new GeoDAO({center: CoordinatesDAO.fitFromDTO(DTOData.geo.point)});
     transformed.address = AddressDAO.fitFromDTO(DTOData.geo.address);
     transformed.images = ImageDAO.fitFromDTO(DTOData.images);
+    if (DTOData.place_id) transformed.place_id = DTOData.place_id;
 
     return transformed;
   }
@@ -43,6 +44,7 @@ export class PlaceAdapter {
     const address = new AddressDTO(DAOData.address);
     transformed.geo = new GeoDTO(address, ' ', point);
     transformed.images = DAOData.images || [];
+    if (DAOData.place_id) transformed.place_id = DAOData.place_id;
     return transformed;
   }
 }
