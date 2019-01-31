@@ -12,5 +12,5 @@ export class PlaceDTO extends ProductDTO implements IPlaceDTO {
   search_name: string;
   status: ActiveStatus;
   type: PlaceType;
-
+  place_id?: string;
 }

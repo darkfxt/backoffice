@@ -116,7 +116,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       status: this.place.status,
       images: this.fb.array(this.place.images || []),
       deleted_images: this.fb.array([]),
-      _id: this.place._id
+      _id: this.place._id,
+      place_id: this.place.place_id
     });
 
   }

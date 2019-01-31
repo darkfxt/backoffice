@@ -24,6 +24,7 @@ export class PlaceDAO implements IPlaceDAO {
   _id: string;
   address: AddressDAO;
   terminal: boolean;
+  place_id?: string;
 
 }
 

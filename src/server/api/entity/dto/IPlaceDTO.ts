@@ -12,4 +12,5 @@ export interface IPlaceDTO extends IProductDTO {
   type: PlaceType;
   search_name: string;
   status: ActiveStatus;
+  place_id?: string;
 }
