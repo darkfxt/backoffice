@@ -48,16 +48,19 @@ export class CommonListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.pipe(first()).subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       const setMetadata = {
         pageIndex: +this.paginationMetadata.pageIndex || +(!params.pageIndex ? 0 : +params.pageIndex),
         pageSize: +this.paginationMetadata.page_size || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
       };
-      if (this.paginationMetadata.filter && this.paginationMetadata.filter.search_name)
-        setMetadata['search'] = this.paginationMetadata.filter.search_name;
-      else
-        setMetadata['search'] = params.search;
-      setMetadata['types'] = this.paginationMetadata.types || params.types;
+      if (this.paginationMetadata.filter) {
+        setMetadata['search'] = this.paginationMetadata.filter.search_name ?
+          this.paginationMetadata.filter.search_name : params.search;
+        if (this.paginationMetadata.filter.type)
+          setMetadata['search'] = this.paginationMetadata.filter.type;
+        else
+          setMetadata['search'] = params.search;
+      }
       this.paginationMetadata = Object.assign({}, this.paginationMetadata, setMetadata);
       this.queryBuilder(this.paginationMetadata);
     });

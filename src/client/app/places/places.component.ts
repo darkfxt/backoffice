@@ -64,8 +64,8 @@ export class PlacesComponent implements OnInit, OnDestroy {
         pageIndex: +(!params.pageIndex ? 0 : params.pageIndex),
         pageSize: +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
       };
-      if (this.paginationOptions.filter && this.paginationOptions.filter.search_name)
-        setMetadata['search'] = this.paginationOptions.filter.search_name;
+      if (this.paginationOptions.search)
+        setMetadata['search'] = this.paginationOptions.search;
       else
         setMetadata['search'] = params.search;
       setMetadata['types'] = this.paginationOptions.types || params.types;
@@ -93,8 +93,8 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onFilterChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions, {search: event, pageIndex: 0, pageSize: 10});
-    this.store.dispatch(new   GetPoints(this.paginationOptions));
+    this.paginationOptions = Object.assign({}, this.paginationOptions, event, {pageIndex: 0, pageSize: 10});
+    this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
   onButtonClick() {
@@ -114,14 +114,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
       return;
     } else
       this.router.navigate(['/places']);
-  }
-
-  queryBuilder(pageOp: PaginationOptionsInterface) {
-    const actualQuery = this.location.normalize(this.location.path()).split('?');
-    this.queryLocation = `${actualQuery[0]}?pageIndex=${pageOp.pageIndex}&pageSize=${pageOp.pageSize}`;
-    if (pageOp.search) this.queryLocation += `&search=${pageOp.search}`;
-    if (pageOp.types) this.queryLocation += `&types=${pageOp.types}`;
-    this.location.replaceState(this.queryLocation);
   }
 
 }

@@ -22,6 +22,7 @@ export class PaginationOptions implements PaginationOptionsInterface {
   search?: string;
   sort?: sort;
   orderBy?: string;
+  types?: string;
   constructor() {
    this.previousPageIndex = 0;
       this.pageIndex = 0;

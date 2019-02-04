@@ -3,6 +3,13 @@ import { PlaceService } from '../../shared/services/place.service';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { Observable, Subscription } from 'rxjs';
 import { SearchOptions } from '../../shared/common-list/common-list-item/search-options';
+import { TRANSLATE } from '../../translate-marker';
+import { PlaceType } from '../../shared/models/enum/PlaceType';
+
+interface IPlaceFilter {
+  search: string;
+  types: Array<any>;
+}
 
 @Component({
   selector: 'app-point-filters',
@@ -14,8 +21,18 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   options: any[];
   optionsSubsription: Subscription;
   lastSearch = '';
+  filterSelected = [];
+  filterOptions: IPlaceFilter = {search: '', types: []};
   private autocompleteTimeout;
-  @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() filterChanged: EventEmitter<IPlaceFilter> = new EventEmitter<IPlaceFilter>();
+
+  pointTypes = [
+    {value: PlaceType.POI, viewValue: TRANSLATE('POI')},
+    {value: PlaceType.HOTEL, viewValue: TRANSLATE('HOTEL')},
+    {value: PlaceType.ACTIVITY, viewValue: TRANSLATE('ACTIVITY')},
+    {value: PlaceType.TERMINAL, viewValue: TRANSLATE('TERMINAL')},
+    {value: PlaceType.DESTINATION, viewValue: TRANSLATE('DESTINATION')},
+  ];
 
   constructor(private placeService: PlaceService) {
 
@@ -30,8 +47,21 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
       this.optionsSubsription.unsubscribe();
   }
 
-  onOptionSelected(event) {
-    this.filterChanged.emit(event.target.value);
+  onSearchChanged(event) {
+    this.filterOptions.search = event;
+  }
+
+  onTypeChanged(event) {
+    this.filterOptions.types = event;
+  }
+
+  onFilterApply() {
+    this.filterChanged.emit(this.filterOptions);
+  }
+
+  onResetFilter() {
+    this.filterOptions = {search: '', types: []};
+    this.filterChanged.emit(this.filterOptions);
   }
 
   onSearch(event) {

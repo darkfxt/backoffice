@@ -1,14 +1,24 @@
 <div class="point-filter-container" >
-    <mat-form-field color="accent">
-      <input #location
-             type="text" matInput placeholder="{{'Buscar' | translate}}" required
-             name="name" (keyup.enter)="onOptionSelected($event)"
-             [matAutocomplete]="autoGroup"/>
-      <mat-icon (click)="onSearchButton(location.value)" matSuffix>search</mat-icon>
-      <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-        <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
-          <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
-        </mat-optgroup>
-      </mat-autocomplete>
-      </mat-form-field>
+  <mat-form-field color="accent">
+    <input #location
+           type="text" matInput placeholder="{{'Buscar' | translate}}" required
+           name="name" [matAutocomplete]="autoGroup" (keyup.enter)="onSearchChanged(location.value)" (blur)="onSearchChanged(location.value)"/>
+    <!--<mat-icon (click)="onSearchButton(location.value)" matSuffix>search</mat-icon>-->
+    <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSearchChanged($event)" [displayWith]="displayFn">
+      <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+        <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field color="accent">
+    <mat-select (valueChange)="onTypeChanged($event)" placeholder="{{'Tipo de punto' | translate}}" [value]="filterSelected" name="type" multiple>
+      <mat-option [value]="pointType.value" *ngFor="let pointType of pointTypes">
+        {{pointType.viewValue | translate}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="buttons-ctn">
+    <button mat-flat-button color="primary" (click)="onResetFilter()">{{'Borrar Filtro' | translate}}</button>
+    <button mat-flat-button color="primary" (click)="onFilterApply()">{{'Aplicar Filtro' | translate}}</button>
   </div>
+</div>
