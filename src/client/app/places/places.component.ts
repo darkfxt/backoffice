@@ -68,7 +68,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         if (params.types)
           setMetadata['types'] = params.types.split(',');
         if (params.search)
-          setMetadata['search'] = params.search;
+          setMetadata['search'] = params.search || '';
       this.paginationOptions = Object.assign({}, this.paginationOptions, setMetadata);
       this.store.dispatch(new GetPoints(this.paginationOptions));
     });
