@@ -20,8 +20,10 @@ export class RoutePointsComponent implements OnInit {
 
   autocompleteTimeout;
   options: any[];
-  lastSearch = '';
-  lastSelection = {};
+  lastSearch = [];
+  lastSelection = [];
+  lastOrigin = '';
+  lastDestination = '';
   acLoading = false;
 
   @Output()
@@ -79,6 +81,8 @@ export class RoutePointsComponent implements OnInit {
   setMiddlePoint(event, index) {
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
       const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
+      this.lastSelection['input-' + index] = place;
+      this.lastSearch['input-' + index] = place.name;
       this.middlePoints.controls[index].patchValue(place);
       this.placeStore.setWaypoints(this.middlePoints.value);
     });
@@ -89,8 +93,8 @@ export class RoutePointsComponent implements OnInit {
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
       const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
       this.placeStore.setPlace(inputName, place);
-      this.lastSelection = place;
-      this.lastSearch = place.name;
+      this.lastSelection[inputName] = place;
+      this.lastSearch[inputName] = place.name;
       this.options = [];
       this.routeGroup.patchValue({[inputName]: place});
       if (this.routeGroup.get('origin').value.name && this.routeGroup.get('destination').value.name) {
@@ -166,13 +170,13 @@ export class RoutePointsComponent implements OnInit {
   }
 
   onLeave(event, inputName) {
-    if (this.lastSearch === event.target.value) {
+    if (this.lastSearch[inputName] === event.target.value) {
       return;
     }
-    if (this.lastSelection) {
+    if (this.lastSelection[inputName]) {
       const $elem = this.renderer.selectRootElement(`#${event.target.id}`);
       setTimeout(() => {
-        this.renderer.setProperty($elem, 'value', this.lastSearch);
+        this.renderer.setProperty($elem, 'value', this.lastSearch[inputName]);
         this.ref.detectChanges();
       }, 100);
     } else {

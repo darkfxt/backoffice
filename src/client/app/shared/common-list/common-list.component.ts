@@ -9,7 +9,7 @@ import { AppState } from '../../store/shared/app.interfaces';
 import { selectLoaderEntity } from '../../store/shared/reducers';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import {first} from 'rxjs/internal/operators';
+import { first } from 'rxjs/internal/operators';
 
 const ALLOWED_PAGE_SIZE = [5, 10, 25, 50];
 
@@ -51,7 +51,7 @@ export class CommonListComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       const setMetadata = {
         pageIndex: +this.paginationMetadata.pageIndex ,
-        pageSize: +this.paginationMetadata.page_size || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
+        pageSize: +this.paginationMetadata.pageSize || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
       };
       if (this.paginationMetadata.filter) {
         /*setMetadata['search'] = this.paginationMetadata.filter.search_name ?
@@ -79,8 +79,10 @@ export class CommonListComponent implements OnInit {
   queryBuilder(pageOp: any) {
     const actualQuery = this.location.normalize(this.location.path()).split('?');
     this.queryLocation = `${actualQuery[0]}?pageIndex=${pageOp.pageIndex}&pageSize=${pageOp.pageSize}`;
-    if (pageOp.filter.search_name) this.queryLocation += `&search=${pageOp.filter.search_name}`;
-    if (pageOp.filter.type) this.queryLocation += `&types=${pageOp.filter.type}`;
+    if (pageOp.filter) {
+      if (pageOp.filter.search_name) this.queryLocation += `&search=${pageOp.filter.search_name}`;
+      if (pageOp.filter.type) this.queryLocation += `&types=${pageOp.filter.type}`;
+    }
     this.location.replaceState(this.queryLocation);
   }
 

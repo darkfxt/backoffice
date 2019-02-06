@@ -68,7 +68,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   }
 
   onSearchChanged(event) {
-    this.filterOptions.search = event;
+    this.filterOptions = Object.assign({}, this.filterOptions, {search: event});
   }
 
   onTypeChanged(event) {

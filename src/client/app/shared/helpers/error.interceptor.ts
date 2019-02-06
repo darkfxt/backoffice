@@ -11,9 +11,11 @@ import { HideLoader } from '../../store/shared/actions/loader.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ApiError } from '../models/ApiError';
 import { ErrorSavingSegment } from '../../store/route/route.actions';
+import {TRANSLATE} from '../../translate-marker';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 const ERROR_PLACE_ID_CONFLICT = /^.*Place with input request place_id.*and company_id.*already exist/g;
+const ERROR_PLACE_CONFLICT = /^.*Place with input request place_id.*company_id.*, name =.*and type =.*already exist/g;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -32,13 +34,18 @@ export class ErrorInterceptor implements HttpInterceptor {
                 const APIError: ApiError = err.error;
                 if (ERROR_ROUTE_NAME_REGEX.test(APIError.response.message)) {
                   this.store.dispatch(new SnackbarOpen(
-                    {message: 'Ya existe una ruta con ese nombre y vía. Por favor, modificar via.', action: 'Error'}
+                    {message: TRANSLATE('Ya existe una ruta con ese nombre y vía. Por favor, modificar via.'), action: 'Error'}
                   ));
                   this.store.dispatch(new ErrorSavingSegment(APIError));
                 }
                 if (ERROR_PLACE_ID_CONFLICT.test(APIError.response.message)) {
                   this.store.dispatch(new SnackbarOpen(
-                    {message: 'Ya existe un lugar para estas coordenadas en esta compañía.', action: 'Error'}
+                    {message: TRANSLATE('Ya existe un lugar para estas coordenadas en esta compañía.'), action: 'Error'}
+                  ));
+                }
+                if (ERROR_PLACE_CONFLICT.test(APIError.response.message)) {
+                  this.store.dispatch(new SnackbarOpen(
+                    {message: TRANSLATE('Ya existe un lugar similar al que estás creando en esta compañía.'), action: 'Error'}
                   ));
                 }
               }
@@ -48,7 +55,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 const APIError = err.error;
                 if (APIError.response.message === 'incorrect Username or Password') {
                   this.store.dispatch(new SnackbarOpen(
-                    {message: 'Usuario o contraseña incorrectos', action: 'Error'}
+                    {message: TRANSLATE('Usuario o contraseña incorrectos'), action: 'Error'}
                   ));
                   this.router.navigate(['/users/login']);
                 }
@@ -77,7 +84,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
             default:
               this.store.dispatch(new SnackbarOpen(
-                {message: 'Error inesperado'}
+                {message: TRANSLATE('Error inesperado')}
               ));
               // this.router.navigate(['/error', {message: 'Error inesperado', code: err.status}]);
           }
