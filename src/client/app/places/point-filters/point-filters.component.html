@@ -1,7 +1,7 @@
 <div class="point-filter-container" >
   <mat-form-field color="accent">
     <input #location
-           type="text" matInput placeholder="{{'Buscar' | translate}}" required [value]="filterOptions.search"
+           type="text" matInput placeholder="{{'Buscar' | translate}}" required [value]="filterOptions.search !== undefined ? filterOptions.search : ''"
            name="name" [matAutocomplete]="autoGroup" (keyup.enter)="onSearchChanged(location.value)" (blur)="onSearchChanged(location.value)"/>
     <!--<mat-icon (click)="onSearchButton(location.value)" matSuffix>searchEverywhere</mat-icon>-->
     <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSearchChanged($event)" [displayWith]="displayFn">
