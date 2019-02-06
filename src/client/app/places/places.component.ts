@@ -13,8 +13,9 @@ import Route from '../../../server/api/entity/Route';
 import { AppState } from '../store/shared/app.interfaces';
 import { getPointsMetadata, getAllPoints } from '../store/place';
 import { isLoaderShowing, selectLoaderEntity } from '../store/shared/reducers';
-import { filter, first, map, skip, take, takeUntil } from 'rxjs/internal/operators';
+
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { first } from 'rxjs/internal/operators';
 
 const ALLOWED_PAGE_SIZE = [5, 10, 25, 50];
 
@@ -64,11 +65,10 @@ export class PlacesComponent implements OnInit, OnDestroy {
         pageIndex: +(!params.pageIndex ? 0 : params.pageIndex),
         pageSize: +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
       };
-      if (this.paginationOptions.search)
-        setMetadata['search'] = this.paginationOptions.search;
-      else
-        setMetadata['search'] = params.search;
-      setMetadata['types'] = this.paginationOptions.types || params.types;
+        if (params.types)
+          setMetadata['types'] = params.types.split(',');
+        if (params.search)
+          setMetadata['search'] = params.search;
       this.paginationOptions = Object.assign({}, this.paginationOptions, setMetadata);
       this.store.dispatch(new GetPoints(this.paginationOptions));
     });

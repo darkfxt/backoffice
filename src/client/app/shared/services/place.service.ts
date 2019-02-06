@@ -45,7 +45,8 @@ export class PlaceService {
           catchError(this.handleError('getGoogleDetail', []))
         );
     }
-    return this.http.get(`/api/places/${autocompleteOption.place_id}?lang=es`)
+    const placeId = autocompleteOption._id || autocompleteOption.place_id;
+    return this.http.get(`/api/places/${placeId}?lang=es`)
       .pipe(
         catchError(this.handleError('getDetail', []))
       );

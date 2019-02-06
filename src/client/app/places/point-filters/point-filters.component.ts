@@ -1,15 +1,25 @@
-import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy, Input, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { PlaceService } from '../../shared/services/place.service';
-import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {
+  PaginationOptions,
+  PaginationOptionsInterface
+} from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { Observable, Subscription } from 'rxjs';
 import { SearchOptions } from '../../shared/common-list/common-list-item/search-options';
 import { TRANSLATE } from '../../translate-marker';
 import { PlaceType } from '../../shared/models/enum/PlaceType';
+import { first } from 'rxjs/internal/operators';
+import { GetPoints } from '../../store/place/place.actions';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/shared/app.interfaces';
 
 interface IPlaceFilter {
   search: string;
   types: Array<any>;
 }
+
+const ALLOWED_PAGE_SIZE = [5, 10, 25, 50];
 
 @Component({
   selector: 'app-point-filters',
@@ -21,25 +31,35 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   options: any[];
   optionsSubsription: Subscription;
   lastSearch = '';
+  paginationOptions: any = new PaginationOptions();
   filterSelected = [];
-  filterOptions: IPlaceFilter = {search: '', types: []};
+  @Input() filterOptions = new PaginationOptions();
   private autocompleteTimeout;
-  @Output() filterChanged: EventEmitter<IPlaceFilter> = new EventEmitter<IPlaceFilter>();
+  @Output() filterChanged: EventEmitter<PaginationOptions> = new EventEmitter<PaginationOptions>();
 
   pointTypes = [
-    {value: PlaceType.POI, viewValue: TRANSLATE('POI')},
-    {value: PlaceType.HOTEL, viewValue: TRANSLATE('HOTEL')},
-    {value: PlaceType.ACTIVITY, viewValue: TRANSLATE('ACTIVITY')},
-    {value: PlaceType.TERMINAL, viewValue: TRANSLATE('TERMINAL')},
-    {value: PlaceType.DESTINATION, viewValue: TRANSLATE('DESTINATION')},
+    {value: PlaceType.POI, viewValue: TRANSLATE('POI'), enabled: false},
+    {value: PlaceType.HOTEL, viewValue: TRANSLATE('HOTEL'), enabled: false},
+    {value: PlaceType.ACTIVITY, viewValue: TRANSLATE('ACTIVITY'), enabled: false},
+    {value: PlaceType.TERMINAL, viewValue: TRANSLATE('TERMINAL'), enabled: false},
+    {value: PlaceType.DESTINATION, viewValue: TRANSLATE('DESTINATION'), enabled: false},
   ];
 
-  constructor(private placeService: PlaceService) {
+  constructor(private placeService: PlaceService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private store: Store<AppState>,
+              private ref: ChangeDetectorRef,
+              private renderer: Renderer2) {
 
   }
 
   ngOnInit() {
-
+    this.pointTypes = this.pointTypes.map(ptm => {
+      if (this.filterOptions.types.includes(ptm.value))
+        ptm.enabled = true;
+      return ptm;
+    });
   }
 
   ngOnDestroy() {
@@ -56,11 +76,16 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   }
 
   onFilterApply() {
+    console.log(this.pointTypes.filter(plt => plt.enabled).map(plt => plt.value));
+    const filterApplied = Object.assign({},
+      this.filterOptions,
+      {types: this.pointTypes.filter(plt => plt.enabled).map(plt => plt.value)});
+    this.filterOptions = filterApplied;
     this.filterChanged.emit(this.filterOptions);
   }
 
   onResetFilter() {
-    this.filterOptions = {search: '', types: []};
+    this.filterOptions = new PaginationOptions();
     this.filterChanged.emit(this.filterOptions);
   }
 

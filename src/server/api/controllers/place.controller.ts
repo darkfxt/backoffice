@@ -25,6 +25,8 @@ export class PlaceController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
+      if (request.query.types &&  (typeof request.query.types === 'object'))
+        request.query.types = request.query.types.join(',');
       request.query.page = +request.query.page + 1;
       const answer = await PlaceService.getAll(request.query, request.headers);
       answer.data.metadata.pageIndex = (+answer.data.metadata.page_index - 1).toString();

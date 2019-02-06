@@ -23,6 +23,7 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ApiError } from '../../shared/models/ApiError';
 import {BikingCountryAvailability} from '../../shared/models/enum/BikingCountryAvailability';
+import {TRANSLATE} from '../../translate-marker';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -152,6 +153,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       const formData = this.prepareToSave();
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
     } else
+      this.store.dispatch(new SnackbarOpen(
+        {message: TRANSLATE('Faltan completar campos, verificar')}
+      ));
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
         markAsTtouched(control);
@@ -172,13 +176,19 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       name: data.origin.name,
       type: data.origin.type,
       _id: data.origin._id,
-      geo: {point: data.origin.geo.point}
+      place_id: data.origin.place_id,
+      geo: {point: data.origin.geo.point,
+            address: data.origin.geo.address},
+      images: data.origin.images || []
     };
     data.destination = {
       name: data.destination.name,
       type: data.destination.type,
       _id: data.destination._id,
-      geo: {point: data.destination.geo.point}
+      place_id: data.destination.place_id,
+      geo: {point: data.destination.geo.point,
+        address: data.destination.geo.address},
+      images: data.destination.images || []
     };
     data.middle_points = data.middle_points
       .map(value => ({

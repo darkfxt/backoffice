@@ -10,7 +10,7 @@ export interface PaginationOptionsInterface {
   search?: string;
   sort?: sort;
   orderBy?: string;
-  types?: string;
+  types?: Array<string>;
 
 }
 
@@ -22,11 +22,13 @@ export class PaginationOptions implements PaginationOptionsInterface {
   search?: string;
   sort?: sort;
   orderBy?: string;
-  types?: string;
+  types?: Array<string>;
   constructor() {
    this.previousPageIndex = 0;
       this.pageIndex = 0;
       this.pageSize = 10;
       this.length = 0;
+      this.search = '';
+      this.types = [];
   }
 }

@@ -122,6 +122,25 @@ export class RoutePointsComponent implements OnInit {
 
   }
 
+  searchPrivates(event) {
+    if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
+      return false;
+    }
+    this.acLoading = true;
+    // this.lastSearch = event.target.value;
+    clearTimeout(this.autocompleteTimeout);
+    this.autocompleteTimeout = setTimeout(() => {
+      this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
+          this.options = this.createGroups(resp);
+          this.travelModeDisabled.emit(null);
+          this.acLoading = false;
+        },
+        (err) => {
+          this.acLoading = false;
+        });
+    }, 300);
+  }
+
   private createGroups(list: any): any[] {
     const pointsByType = {};
     list.forEach((item) => {
@@ -140,8 +159,9 @@ export class RoutePointsComponent implements OnInit {
     alterPlace.name = gPlace.name;
     alterPlace.geo = alterGeo;
     alterPlace.type = gPlace.type;
-    alterPlace._id = gPlace._id || gPlace.id || googleId;
-
+    alterPlace._id = gPlace._id || gPlace.id;
+    alterPlace.place_id = googleId;
+    alterPlace.images = gPlace.images;
     return alterPlace;
   }
 

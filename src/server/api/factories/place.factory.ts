@@ -29,6 +29,7 @@ export class PlaceFactory {
     glPlace.photos = glPlace.photos || [];
     glPlace.photos.forEach(value => {
       place.images.push({
+        key: value.photo_reference,
         source: 'google_place',
         url: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photoreference=${value.photo_reference}&key=${config.googleApiKey}`
       });

@@ -16,6 +16,7 @@ export class PlaceService {
   public static async getAll(query, headers): Promise<any> {
     const resp = await axios
       .get(`${config.geo.url}/places`, {params: query, headers: {authorization: headers.authorization}});
+    console.log(resp.data.metadata);
     resp.data.data = resp.data.data.map((place) => PlaceAdapter.fitFromDAO(place));
     return resp;
   }

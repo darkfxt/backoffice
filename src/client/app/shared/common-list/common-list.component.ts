@@ -54,12 +54,12 @@ export class CommonListComponent implements OnInit {
         pageSize: +this.paginationMetadata.page_size || +(!params.pageSize || !ALLOWED_PAGE_SIZE.includes(params.pageSize) ? 10 : params.pageSize)
       };
       if (this.paginationMetadata.filter) {
-        setMetadata['search'] = this.paginationMetadata.filter.search_name ?
-          this.paginationMetadata.filter.search_name : params.search;
+        /*setMetadata['search'] = this.paginationMetadata.filter.search_name ?
+          this.paginationMetadata.filter.search_name : params.search;*/
         if (this.paginationMetadata.filter.type)
-          setMetadata['search'] = this.paginationMetadata.filter.type;
+          setMetadata['types'] = this.paginationMetadata.filter.type || params.types.split(',');
         else
-          setMetadata['search'] = params.search;
+          setMetadata['search'] = this.paginationMetadata.filter.search_name || params.search;
       }
       this.paginationMetadata = Object.assign({}, this.paginationMetadata, setMetadata);
       this.queryBuilder(this.paginationMetadata);
@@ -76,11 +76,11 @@ export class CommonListComponent implements OnInit {
     this.pageChanged.emit(this.paginationMetadata);
   }
 
-  queryBuilder(pageOp: PaginationOptionsInterface) {
+  queryBuilder(pageOp: any) {
     const actualQuery = this.location.normalize(this.location.path()).split('?');
     this.queryLocation = `${actualQuery[0]}?pageIndex=${pageOp.pageIndex}&pageSize=${pageOp.pageSize}`;
-    if (pageOp.search) this.queryLocation += `&search=${pageOp.search}`;
-    if (pageOp.types) this.queryLocation += `&types=${pageOp.types}`;
+    if (pageOp.filter.search_name) this.queryLocation += `&search=${pageOp.filter.search_name}`;
+    if (pageOp.filter.type) this.queryLocation += `&types=${pageOp.filter.type}`;
     this.location.replaceState(this.queryLocation);
   }
 
