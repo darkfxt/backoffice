@@ -10,6 +10,8 @@ import { CoordinatesDAO, GeoDAO } from '../dao/GeoDAO';
 import { AddressDAO } from '../dao/AddressDAO';
 import { ImageDAO } from '../dao/ImageDAO';
 import { PlaceType } from '../enum/PlaceType';
+import {IPlaceMetadataDAO} from '../dao/IPlaceMetadataDAO';
+import {PlaceMetadataDTO} from '../dto/PlaceMetadataDTO';
 
 export class PlaceAdapter {
   static fitToDAO(DTOData: IPlaceDTO): PlaceDAO {
@@ -45,6 +47,15 @@ export class PlaceAdapter {
     transformed.geo = new GeoDTO(address, ' ', point);
     transformed.images = DAOData.images || [];
     if (DAOData.place_id) transformed.place_id = DAOData.place_id;
+    return transformed;
+  }
+
+  static fitMetadataFromDAO(DAOData: IPlaceMetadataDAO): PlaceMetadataDTO {
+    const transformed = new PlaceMetadataDTO();
+    transformed.pageIndex = DAOData.page_index;
+    transformed.pageSize = DAOData.page_size;
+    transformed.filter = DAOData.filter;
+    transformed.length = DAOData.length;
     return transformed;
   }
 }

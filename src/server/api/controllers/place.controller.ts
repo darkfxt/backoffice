@@ -29,7 +29,7 @@ export class PlaceController {
         request.query.types = request.query.types.join(',');
       request.query.page = +request.query.page + 1;
       const answer = await PlaceService.getAll(request.query, request.headers);
-      answer.data.metadata.pageIndex = (+answer.data.metadata.page_index - 1).toString();
+      answer.data.metadata.pageIndex = (+answer.data.metadata.pageIndex - 1).toString();
       if (request.query.simple) {
         response.json(answer.data.data);
         return;

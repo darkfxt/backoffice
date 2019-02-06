@@ -71,7 +71,7 @@ export class CommonListComponent implements OnInit {
     this.paginationMetadata = Object.assign(
       {},
       this.paginationMetadata,
-      {pageSize: this.paginationMetadata.page_size, pageIndex: event.pageIndex});
+      {pageSize: event.pageSize, pageIndex: event.pageIndex});
     this.queryBuilder(this.paginationMetadata);
     this.pageChanged.emit(this.paginationMetadata);
   }
