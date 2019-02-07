@@ -79,7 +79,7 @@ class GPXBuilder {
   }
 
   private static convertInvalidStrings(name: string): string {
-    return name.replace('&', 'and').replace('<', 'lt').replace('>', 'gt');
+    return name.replace('&', 'and').replace('<', '').replace('>', '');
   }
 
 }
