@@ -80,7 +80,7 @@ export class RoutePointsComponent implements OnInit {
 
   setMiddlePoint(event, index) {
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
-      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
+      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id, event.option.value.type);
       this.lastSelection['input-' + index] = place;
       this.lastSearch['input-' + index] = place.name;
       this.middlePoints.controls[index].patchValue(place);
@@ -91,7 +91,7 @@ export class RoutePointsComponent implements OnInit {
   setPoint(event, inputName) {
 
     this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
-      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id);
+      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id, event.option.value.type);
       this.placeStore.setPlace(inputName, place);
       this.lastSelection[inputName] = place;
       this.lastSearch[inputName] = place.name;
@@ -154,7 +154,7 @@ export class RoutePointsComponent implements OnInit {
     return Object.keys(pointsByType).map(key => ({type: key, points: pointsByType[key]}));
   }
 
-  private gPlaceTransformer(gPlace: any, googleId: string): Place {
+  private gPlaceTransformer(gPlace: any, googleId: string, type: string): Place {
     const alterPlace: Place = new Place();
     const address: IAddress = gPlace.geo.address;
     const point: ICoordinates = gPlace.geo.point;
@@ -163,8 +163,8 @@ export class RoutePointsComponent implements OnInit {
     alterPlace.name = gPlace.name;
     alterPlace.geo = alterGeo;
     alterPlace.type = gPlace.type;
-    alterPlace._id = gPlace._id || gPlace.id;
-    alterPlace.place_id = googleId;
+    if (type === 'private') alterPlace._id = gPlace._id || gPlace.id;
+    if (type === 'public') alterPlace.place_id = googleId;
     alterPlace.images = gPlace.images;
     return alterPlace;
   }
