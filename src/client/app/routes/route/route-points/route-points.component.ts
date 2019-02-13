@@ -163,8 +163,8 @@ export class RoutePointsComponent implements OnInit {
     alterPlace.name = gPlace.name;
     alterPlace.geo = alterGeo;
     alterPlace.type = gPlace.type;
-    if (type === 'private') alterPlace._id = gPlace._id || gPlace.id;
     if (type === 'public') alterPlace.place_id = googleId;
+    else alterPlace._id = gPlace._id || gPlace.id;
     alterPlace.images = gPlace.images;
     return alterPlace;
   }
