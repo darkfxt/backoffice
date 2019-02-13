@@ -14,6 +14,7 @@ import { GetAllBookings } from '../../store/booking/booking.actions';
 import { selectLoaderEntity } from '../../store/shared/reducers';
 import {getAllBookings, getBookingMetadata} from '../../store/booking';
 import { BookingSummarizedCardComponent } from './booking-summarized-card/booking-summarized-card.component';
+import {GetSegments} from '../../store/route/route.actions';
 
 @Component({
   selector: 'app-booking-list',
@@ -61,5 +62,10 @@ export class BookingListComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/booking']);
+  }
+
+  onFilterChanged(event) {
+    this.paginationOptions = Object.assign({}, this.paginationOptions, {search: event, pageIndex: 0, pageSize: 10});
+    this.store.dispatch(new GetAllBookings({paginationOptions: this.paginationOptions}));
   }
 }

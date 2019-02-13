@@ -17,7 +17,7 @@
                      [activateSelectionMode]="isDialog"
                      [storeToWatch]="'booking'"
                      (pageChanged)="onPageChanged($event)">
-
+    <app-booking-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-booking-filters>
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
         <h2>Aun no has creado reservas!!!</h2>
         <p></p>

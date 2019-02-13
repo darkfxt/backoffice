@@ -17,6 +17,7 @@ import { TripTemplatesModule } from '../trip-templates/trip-templates.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { BookingSummarizedCardComponent } from './booking-list/booking-summarized-card/booking-summarized-card.component';
 import { CommonListModule } from '../shared/common-list/common-list.module';
+import { BookingFiltersComponent } from './booking-filters/booking-filters.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
     BookingDetailHeaderComponent,
     BookingDetailStatusComponent,
     BookingDetailItineraryComponent,
-    BookingSummarizedCardComponent
+    BookingSummarizedCardComponent,
+    BookingFiltersComponent
   ],
   providers: [],
   exports: [BookingSummarizedCardComponent]
