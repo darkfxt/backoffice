@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchOptions } from '../../shared/common-list/common-list-item/search-options';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
@@ -14,7 +14,9 @@ export class BookingFiltersComponent implements OnInit {
   searchString: string;
   options: Observable<{data: any[], metadata: object}>;
   private autocompleteTimeout;
+  @Input() myBookingFilter = false;
   @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selfToggleChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private bs: BookingService) { }
 
@@ -42,6 +44,11 @@ export class BookingFiltersComponent implements OnInit {
 
   onEnter(event) {
     this.filterChanged.emit(event);
+  }
+
+  onSelfToggle(event) {
+    console.log('evento loco', event);
+    this.selfToggleChanged.emit(event.checked);
   }
 
 }

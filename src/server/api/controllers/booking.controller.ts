@@ -3,7 +3,7 @@ import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
 import { ItineraryFactory } from '../factories/itinerary.factory';
 import * as pdf from 'html-pdf';
-import {AccountsService} from '../services/accounts.service';
+import { AccountsService } from '../services/accounts.service';
 
 const fs = require('fs');
 
@@ -12,11 +12,15 @@ export class BookingController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
+      if (request.query.self) {
+        request.query.created_by = (<any>request).loggedUser.Username;
+      }
       const answer = await BookingService.getAll(request.query, request.headers);
       if (request.query.simple) {
         response.json(answer.data.data);
         return;
       }
+      if (request.query.self) answer.data.metadata.self = true;
       response.json(answer.data);
     } catch (err) {
       next(err);
@@ -36,6 +40,7 @@ export class BookingController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.body.company_id = (<any>request).loggedUser.CompanyID;
+      request.body.created_by = (<any>request).loggedUser.Username;
       const booking = await BookingService.create(request.body, request.headers);
 
       response.json(booking.data);

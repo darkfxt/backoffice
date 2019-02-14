@@ -17,6 +17,9 @@ export class BookingService {
       if (paginationOptions.search) {
         queryParams += `&search=${paginationOptions.search}`;
       }
+      if(paginationOptions.self) {
+        queryParams += `&self=${paginationOptions.self}`;
+      }
     }
     if (withoutMetadata) {
       queryParams += '&simple=true';

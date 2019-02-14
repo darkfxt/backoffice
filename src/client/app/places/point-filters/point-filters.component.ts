@@ -76,7 +76,6 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   }
 
   onFilterApply() {
-    console.log(this.pointTypes.filter(plt => plt.enabled).map(plt => plt.value));
     const filterApplied = Object.assign({},
       this.filterOptions,
       {types: this.pointTypes.filter(plt => plt.enabled).map(plt => plt.value)});

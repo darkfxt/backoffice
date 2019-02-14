@@ -60,6 +60,9 @@ export class CommonListComponent implements OnInit {
           setMetadata['types'] = this.paginationMetadata.filter.type || params.types.split(',');
         else
           setMetadata['search'] = this.paginationMetadata.filter.search_name || params.search;
+        if (this.paginationMetadata.self) {
+          setMetadata['self'] = this.paginationMetadata.filter.self || false;
+        }
       }
       this.paginationMetadata = Object.assign({}, this.paginationMetadata, setMetadata);
       this.queryBuilder(this.paginationMetadata);
@@ -83,6 +86,7 @@ export class CommonListComponent implements OnInit {
       if (pageOp.filter.search_name) this.queryLocation += `&search=${pageOp.filter.search_name}`;
       if (pageOp.filter.type) this.queryLocation += `&types=${pageOp.filter.type}`;
     }
+    if (pageOp.self) this.queryLocation += '&self=true';
     this.location.replaceState(this.queryLocation);
   }
 

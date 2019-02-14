@@ -9,7 +9,7 @@ import { BookingRoutingModule } from './booking-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import {
-  MatButtonModule, MatFormFieldModule, MatNativeDateModule,
+  MatButtonModule, MatFormFieldModule, MatNativeDateModule, MatCheckboxModule,
   MatIconModule, MatStepperModule, MatAutocompleteModule,
   MatOptionModule, MatInputModule, MatDatepickerModule, MatSlideToggleModule, MatMenuModule, MatTooltipModule
 } from '@angular/material';
@@ -31,6 +31,7 @@ import { BookingFiltersComponent } from './booking-filters/booking-filters.compo
     MatIconModule,
     MatInputModule,
     MatOptionModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     MatStepperModule,
     MatButtonModule,

@@ -11,7 +11,7 @@ export interface PaginationOptionsInterface {
   sort?: sort;
   orderBy?: string;
   types?: Array<string>;
-
+  self?: boolean;
 }
 
 export class PaginationOptions implements PaginationOptionsInterface {
@@ -23,6 +23,7 @@ export class PaginationOptions implements PaginationOptionsInterface {
   sort?: sort;
   orderBy?: string;
   types?: Array<string>;
+  self?: boolean;
   constructor() {
    this.previousPageIndex = 0;
       this.pageIndex = 0;

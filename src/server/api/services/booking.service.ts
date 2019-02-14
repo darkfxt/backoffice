@@ -4,7 +4,7 @@ import { AccountsService } from './accounts.service';
 import GPXBuilder from '../../utils/GPXBuilder';
 import BookingDTO from '../entity/dto/BookingDTO';
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
-import {RouteTransformer} from '../entity/adapters/route.transformer';
+import { RouteTransformer } from '../entity/adapters/route.transformer';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -13,6 +13,8 @@ export class BookingService {
       queryParams += `&search=${query.search}`;
     if (query.company_id)
       queryParams += `&company_id=${query.company_id}`;
+    if (query.created_by)
+      queryParams += `&created_by=${query.created_by}`;
     const resp = await axios.get(`${config.routes.url}/bookings${queryParams}`, {headers: {authorization: headers.authorization}});
     resp.data.data = resp.data.data.map((booking) => {
       booking.days = this.fitMassiveDaysFromDAO(booking);

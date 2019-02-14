@@ -1,4 +1,7 @@
 <div class="booking-filter-container" >
+  <mat-checkbox [(ngModel)]="myBookingFilter" (change)="onSelfToggle($event)">
+    {{'Ver sólo mis Reservas' | translate}}
+  </mat-checkbox>
   <mat-form-field color="accent">
     <input #route
            type="text" matInput placeholder="{{'Buscar' | translate}}" required
