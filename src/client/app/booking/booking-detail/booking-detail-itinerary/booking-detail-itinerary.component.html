@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-sm-4">
       <div class="add-template-button">
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Ingresa el nombre del template' }}"
+          <input type="text" matInput placeholder="{{'Ingresa el nombre del template' | translate}}"
                  (keyup)="search($event)" [matAutocomplete]="autoGroup"/>
           <mat-icon matSuffix>search</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">

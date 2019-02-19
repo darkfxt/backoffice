@@ -22,9 +22,9 @@
       (pageChanged)="onPageChanged($event)">
       <app-route-filters class="common-list-filters" (filterChanged)="onFilterChanged($event)"></app-route-filters>
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Aun no has creado rutas!!!</h2>
-        <p>Las rutas te permiten unir destinos. Agregar waypoints y puntos de interes en el camino para hacerlas más atractivas</p>
-        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nueva ruta</button>
+        <h2>{{'Aun no has creado rutas!!!' | translate}}</h2>
+        <p>{{'Las rutas te permiten unir destinos. Agregar waypoints y puntos de interes en el camino para hacerlas más atractivas' | translate}}</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">{{'Crear nueva ruta' | translate}}</button>
       </div>
     </app-common-list>
   </div>

@@ -1,15 +1,17 @@
-import { NgModule }       from '@angular/core';
-import { CommonModule }   from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { MatButtonModule, MatDialogModule } from '@angular/material';
 import { GuardModalComponent } from './guard-modal.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     MatButtonModule,
     MatDialogModule,
+    TranslateModule
   ],
   exports: [
     GuardModalComponent,
@@ -19,10 +21,10 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     GuardModalComponent,
     ConfirmationModalComponent
   ],
-  providers: [
-  ],
+  providers: [],
   entryComponents: [
     GuardModalComponent,
   ],
 })
-export class ModalModule {}
+export class ModalModule {
+}

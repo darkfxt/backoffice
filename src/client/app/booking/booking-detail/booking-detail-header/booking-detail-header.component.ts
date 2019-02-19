@@ -70,7 +70,7 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
   }
 
   get minDate(): Date {
-    return new Date();
+    return this.form.get('start_date').value || new Date();
   }
 
   get minDate2(): Date {

@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
-                    [title]="totalElements + ' usuarios encontrados'"
+                    [title]="'{user_count} usuarios encontrados' | translate: {user_count: totalElements}"
                     [isDialog]="isDialog"
                     class="detail-header-content"
                     (backButtonClicked)="goBack()"
@@ -21,9 +21,9 @@
       [storeToWatch]="'users'">
 
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Aun no has creado usuarios!!!</h2>
-        <p>Crea diferentes usuarios dependiendo su rol</p>
-        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo usuario</button>
+        <h2>{{'Aun no has creado usuarios!!!' | translate}}</h2>
+        <p>{{'Crea diferentes usuarios dependiendo su rol' | translate}}</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">{{'Crear nuevo usuario' | translate}}</button>
       </div>
     </app-common-list>
   </div>

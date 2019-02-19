@@ -32,6 +32,8 @@ export const eventColors = {
   'destination': '#f06292',
   'terminal': '#ba68c8',
   'driving': '#42a5f5',
+  'walking': '#42a5f5',
+  'bicycling': '#42a5f5',
   'custom': '#90a4ae'
 };
 

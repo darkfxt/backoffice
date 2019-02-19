@@ -1,10 +1,8 @@
 <div class="booking-filter-container" >
-  <mat-checkbox [(ngModel)]="myBookingFilter" (change)="onSelfToggle($event)">
-    {{'Ver sólo mis Reservas' | translate}}
-  </mat-checkbox>
+
   <mat-form-field color="accent">
     <input #route
-           type="text" matInput placeholder="{{'Buscar' | translate}}" required
+           type="text" matInput placeholder="{{'Ingrese el nombre del pasajero' | translate}}"
            name="name" (keyup)="onSearch(route.value)"
            [matAutocomplete]="autoGroup"
            (keyup.enter)="onEnter(route.value)" [(ngModel)]="searchString"/>
@@ -13,4 +11,5 @@
       <mat-option *ngFor="let option of options | async" [value]="option">{{option.name}}</mat-option>
     </mat-autocomplete>
   </mat-form-field>
+  <mat-slide-toggle class="my-booking-filter" [(ngModel)]="myBookingFilter" (change)="onSelfToggle($event)" color="primary">{{'Mis reservas' | translate}}</mat-slide-toggle>
 </div>

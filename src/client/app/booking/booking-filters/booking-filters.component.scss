@@ -1,3 +1,5 @@
+@import "../../../assets/variables";
+
 .booking-filter-container {
   height: 100%;
   mat-form-field {
@@ -7,4 +9,9 @@
 
 .buttons-ctn {
   margin: 32px 16px;
+}
+
+.my-booking-filter{
+  color: $gray-title;
+  margin-top: 12px;
 }

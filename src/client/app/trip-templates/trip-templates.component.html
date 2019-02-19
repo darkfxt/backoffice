@@ -18,9 +18,9 @@
                      (pageChanged)="onPageChanged($event)">
 
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Aun no has creado templates!!!</h2>
-        <p>Crea modelos de reservas para ahorrar tiempo y trabajo. Las reservas creadas a partir de un template pueden editarse.</p>
-        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo template</button>
+        <h2>{{'Aun no has creado templates!!!' | translate}}</h2>
+        <p>{{'Crea modelos de reservas para ahorrar tiempo y trabajo. Las reservas creadas a partir de un template pueden editarse.' | translate}}</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">{{'Crear nuevo template' | translate}}</button>
       </div>
     </app-common-list>
   </div>

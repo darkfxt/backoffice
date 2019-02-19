@@ -4,16 +4,16 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" overlapTrigger="false">
-      <button mat-menu-item (click)="exportFile('gpx')">Exportar GPX</button>
-      <button mat-menu-item (click)="exportFile('pdf')">Exportar PDF</button>
-      <button mat-menu-item (click)="saveBooking()">Guardar</button>
+      <button mat-menu-item (click)="exportFile('gpx')">{{'Exportar GPX' | translate}}</button>
+      <button mat-menu-item (click)="exportFile('pdf')">{{'Exportar PDF' | translate}}</button>
+      <button mat-menu-item (click)="saveBooking()">{{'Guardar' | translate}}</button>
     </mat-menu>
   </div>
 
   <div class="buttons-ctn hidden-mobile">
-    <button (click)="exportFile('gpx')" mat-button color="accent">Exportar GPX</button>
-    <button (click)="exportFile('pdf')" mat-button color="accent">Exportar PDF</button>
-    <button (click)="saveBooking()" mat-flat-button color="accent">Guardar</button>
+    <button (click)="exportFile('gpx')" mat-button color="accent">{{'Exportar GPX' | translate}}</button>
+    <button (click)="exportFile('pdf')" mat-button color="accent">{{'Exportar PDF' | translate}}</button>
+    <button (click)="saveBooking()" mat-flat-button color="accent">{{'Guardar' | translate}}</button>
   </div>
 </app-detail-header>
 
@@ -37,18 +37,18 @@
         <form [formGroup]="formHeader" class="" novalidate>
           <app-booking-detail-header [form]="formHeader"></app-booking-detail-header>
           <div class="buttons-ctn">
-            <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="formHeader.invalid">Siguiente</button>
+            <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="formHeader.invalid">{{'Siguiente' | translate}}</button>
           </div>
         </form>
       </li>
 
       <li class="step-item description" *ngIf="!stepper.itinerary">
         <form [formGroup]="formItinerary" novalidate>
-          <ng-template matStepLabel>Agrega rutas y servicios</ng-template>
+          <ng-template matStepLabel>{{'Agrega rutas y servicios' | translate}}</ng-template>
           <app-booking-detail-itinerary [formItinerary]="formItinerary" (templateUpdated)="updateItinerary($event)"></app-booking-detail-itinerary>
           <div class="buttons-ctn">
-            <button mat-flat-button color="primary" (click)="setStep('header')">Anterior</button>
-            <button mat-flat-button color="primary" (click)="setStep('publish')" [disabled]="formHeader.invalid">Siguiente</button>
+            <button mat-flat-button color="primary" (click)="setStep('header')">{{'Anterior' | translate}}</button>
+            <button mat-flat-button color="primary" (click)="setStep('publish')" [disabled]="formHeader.invalid">{{'Siguiente' | translate}}</button>
           </div>
         </form>
       </li>
@@ -56,9 +56,9 @@
       <li class="step-item gallery" [hidden]="stepper.publish">
         <app-booking-detail-status [booking]="booking"></app-booking-detail-status>
         <div class="buttons-ctn">
-          <button mat-flat-button color="primary" (click)="setStep('itinerary')">Anterior</button>
-          <button *ngIf="!booking.status || (booking.status && booking.status === 2)" (click)="publishBooking(statusType.PUBLISHED)" mat-flat-button color="primary">Publicar reserva</button>
-          <button *ngIf="booking.status && booking.status === 1" (click)="publishBooking(statusType.CANCELED)" mat-flat-button color="primary">Cancelar reserva</button>
+          <button mat-flat-button color="primary" (click)="setStep('itinerary')">{{'Anterior' | translate}}</button>
+          <button *ngIf="!booking.status || (booking.status && booking.status === 2)" (click)="publishBooking(statusType.PUBLISHED)" mat-flat-button color="primary">{{'Publicar reserva' | translate}}</button>
+          <button *ngIf="booking.status && booking.status === 1" (click)="publishBooking(statusType.CANCELED)" mat-flat-button color="primary">{{'Cancelar reserva' | translate}}</button>
         </div>
       </li>
     </ul>

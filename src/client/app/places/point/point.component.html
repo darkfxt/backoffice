@@ -14,7 +14,7 @@
       </mat-menu>
     </div>
     <div class="buttons-ctn hidden-mobile">
-      <button mat-button class="delete-point" (click)="deletePlace()">Eliminar</button>
+      <button mat-button class="delete-point" (click)="deletePlace()">{{'Eliminar' | translate}}</button>
       <button mat-flat-button color="accent" (click)="onSubmit()" [disabled]="placeForm.get('name').invalid">{{'Guardar y cerrar' | translate}}</button>
     </div>
   </app-detail-header>

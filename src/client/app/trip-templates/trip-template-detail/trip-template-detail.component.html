@@ -19,13 +19,13 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu" overlapTrigger="false">
-          <button mat-menu-item (click)="deleteTripTemplate()">Eliminar</button>
-          <button mat-menu-item (click)="saveTripTemplate()" >Guardar</button>
+          <button mat-menu-item (click)="deleteTripTemplate()">{{'Eliminar' | translate}}</button>
+          <button mat-menu-item (click)="saveTripTemplate()" >{{'Guardar' | translate}}</button>
         </mat-menu>
       </div>
       <div class="buttons-ctn hidden-mobile">
-        <button mat-button (click)="deleteTripTemplate()" >Eliminar</button>
-        <button mat-flat-button color="accent" (click)="saveTripTemplate()" >Guardar</button>
+        <button mat-button (click)="deleteTripTemplate()" >{{'Eliminar' | translate}}</button>
+        <button mat-flat-button color="accent" (click)="saveTripTemplate()" >{{'Guardar' | translate}}</button>
       </div>
     </app-detail-header>
 
@@ -44,7 +44,7 @@
           <li class="step-item" [hidden]="stepper.header">
             <app-trip-template-detail-header [form]="form"></app-trip-template-detail-header>
             <div class="buttons-ctn">
-              <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">Siguiente</button>
+              <button mat-flat-button color="primary" (click)="setStep('itinerary')" [disabled]="form.get('name').invalid">{{'Siguiente' | translate}}</button>
             </div>
           </li>
 
@@ -60,7 +60,7 @@
               </div>
             </div>
             <div class="buttons-ctn itinerary-step" >
-              <button mat-flat-button color="primary" (click)="setStep('header')">Anterior</button>
+              <button mat-flat-button color="primary" (click)="setStep('header')">{{'Anterior' | translate}}</button>
             </div>
           </li>
 

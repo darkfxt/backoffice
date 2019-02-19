@@ -6,6 +6,17 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import { EventSelected, TerminalSelected, UpdateEvent } from '../../store/trip-template/event/event.actions';
 import { StaticsService } from '../../shared/services/statics.service';
+import { TRANSLATE } from '../../translate-marker';
+
+const placeType = [
+  TRANSLATE('point_of_interest'),
+  TRANSLATE('city'),
+  TRANSLATE('hotel'),
+  TRANSLATE('activity'),
+  TRANSLATE('terminal'),
+  TRANSLATE('destination'),
+  TRANSLATE('waypoint')
+];
 
 @Component({
   selector: 'app-point-summarized-card',

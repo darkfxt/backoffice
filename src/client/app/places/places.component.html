@@ -21,9 +21,9 @@
                      (pageChanged)="onPageChanged($event)">
       <app-point-filters class="common-list-filters" [filterOptions]="paginationOptions" (filterChanged)="onFilterChanged($event)"></app-point-filters>
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Aun no hay nada aquí!!!</h2>
-        <p>Crea destinos, puntos de interes, hoteles, etc y usalos para armar rutas y reservas</p>
-        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo lugar</button>
+        <h2>{{'Aun no hay nada aquí!!! | translate'}}</h2>
+        <p>{{'Crea destinos, puntos de interes, hoteles, etc y usalos para armar rutas y reservas' | translate}}</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">{{'Crear nuevo lugar' | translate}}</button>
       </div>
     </app-common-list>
   </div>

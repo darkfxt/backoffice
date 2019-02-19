@@ -5,9 +5,8 @@
   </mat-form-field>
 
   <mat-form-field color="accent">
-    <input type="text" matInput placeholder="{{'Via (opcional)' | translate}}" name="via" formControlName="via"/>
-    <mat-error hidden="{{form.get('via').valid}}">{{'Modificá el vía para este origen y destino' | translate}}</mat-error>
-    <!--<mat-error *ngIf="form.get('via').invalid">{{'Campo requerido' | translate}}</mat-error>-->
+    <input type="text" matInput placeholder="{{'Vía (opcional)' | translate}}" name="via" formControlName="via"/>
+    <mat-error hidden="{{form.get('via').valid}}">{{'Ruta existente. Ingresa la vía para diferenciar las rutas' | translate}}</mat-error>
   </mat-form-field>
 
   <mat-form-field color="accent" class="route-type">

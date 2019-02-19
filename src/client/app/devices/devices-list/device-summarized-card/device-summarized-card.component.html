@@ -1,7 +1,7 @@
 <div class="card-container" (click)="editAsset()">
   <div class="info-container">
     <h3 class="summarized-card-title">{{title}}</h3>
-    <p class="summarized-card-subtitle">Número de serie: {{data.serial_number}}</p>
+    <p class="summarized-card-subtitle">{{'Número de serie:' | translate}} {{data.serial_number}}</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

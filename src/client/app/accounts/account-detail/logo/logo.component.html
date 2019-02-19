@@ -1,7 +1,7 @@
 <h3>{{'Imagen de portada' | translate}}</h3>
 <app-uploader accept="image/png" (filesLoaded)="onFilesLoaded($event)" mode="DRAG_DROP" [group]="form" *ngIf="!previewImage" (extensionError)="onExtensionError($event)"></app-uploader>
-<div class="format-message" *ngIf="!previewImage">La imagen debe ser un archivo PNG. Dimensiones recomendadas 200 x 200</div>
-<div class="mat-error" *ngIf="errorMessage">Formato invalido</div>
+<div class="format-message" *ngIf="!previewImage">{{'La imagen debe ser un archivo PNG. Dimensiones recomendadas 200 x 200' | translate}}</div>
+<div class="mat-error" *ngIf="errorMessage">{{'Formato invalido' | translate}}</div>
 
 <div *ngIf="previewImage">
   <div class="image" [style.background-image]="'url('+staticsService.getMediumUrl(previewImage.url)+')'"></div>

@@ -1,5 +1,5 @@
 <app-detail-header *ngIf="!loading" [disableBackButton]="!isDialog"
-                   [title]="totalElements + ' cuentas encontradas'"
+                   [title]="'{account_count} cuentas encontradas' | translate: {account_count: totalElements}"
                    [isDialog]="isDialog"
                    class="detail-header-content"
                    (backButtonClicked)="goBack()"
@@ -22,9 +22,9 @@
       (pageChanged)="onPageChanged($event)">
 
       <div class="empty-state col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Aun no has creado cuentas!!!</h2>
-        <p>Las cuentas te permiten personalizar el look & feel de la aplicación para tus clientes, ej: colores, logo, etc.</p>
-        <button mat-flat-button color="accent" (click)="onButtonClick()">Crear nuevo cuenta</button>
+        <h2>{{'Aun no has creado cuentas!!!' | translate}}</h2>
+        <p>{{'Las cuentas te permiten personalizar el look & feel de la aplicación para tus clientes, ej: colores, logo, etc.' | translate}}</p>
+        <button mat-flat-button color="accent" (click)="onButtonClick()">{{'Crear nuevo cuenta' | translate}}</button>
       </div>
 
     </app-common-list>
