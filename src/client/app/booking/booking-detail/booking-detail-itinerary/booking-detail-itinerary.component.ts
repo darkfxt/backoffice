@@ -11,6 +11,7 @@ import { TripTemplateService } from '../../../shared/services/trip-template.serv
 export class BookingDetailItineraryComponent implements OnInit {
 
   @Input() formItinerary: FormGroup;
+  @Input() bookingStartDate?: string;
   options: Observable<any>;
   private autocompleteTimeout;
   private lastSearch;

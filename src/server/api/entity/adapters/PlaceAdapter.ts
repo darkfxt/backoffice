@@ -46,6 +46,7 @@ export class PlaceAdapter {
     const address = new AddressDTO(DAOData.address);
     transformed.geo = new GeoDTO(address, ' ', point);
     transformed.images = DAOData.images || [];
+    transformed.created_by = DAOData.created_by;
     if (DAOData.place_id) transformed.place_id = DAOData.place_id;
     return transformed;
   }
