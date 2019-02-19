@@ -1,4 +1,4 @@
-<app-detail-header title="{{booking._id ? 'Reserva ' + booking.name : 'Nueva Reserva'}}" (backButtonClicked)="goBack()" class="detail-header-content">
+<app-detail-header title="{{booking._id ? ('Editar {booking_name}' | translate: {booking_name: booking.name}) : ('Nueva Reserva' | translate)}}" (backButtonClicked)="goBack()" class="detail-header-content">
   <div class="more-options hidden-desktop">
     <button mat-icon-button [matMenuTriggerFor]="menu" >
       <mat-icon>more_vert</mat-icon>

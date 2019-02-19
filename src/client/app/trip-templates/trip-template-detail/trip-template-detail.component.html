@@ -17,7 +17,7 @@
   </div>
 
   <div *ngIf="!fromBooking">
-    <app-detail-header title="{{'Nuevo template'}}" (backButtonClicked)="goBack()" class="detail-header-content">
+    <app-detail-header title="{{'Editar template' | translate}}" (backButtonClicked)="goBack()" class="detail-header-content">
       <div class="more-options hidden-desktop">
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
