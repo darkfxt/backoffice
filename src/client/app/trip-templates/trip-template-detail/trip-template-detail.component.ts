@@ -34,6 +34,7 @@ import { MatDialog } from '@angular/material';
 export class TripTemplateDetailComponent implements OnInit, OnDestroy {
 
   @Input() fromBooking: boolean;
+  @Input() bookingStartDate?: string;
   @Input() set templateToImport(templateToImport: string) {
     if (templateToImport !== null) {
       this._templateToImport = templateToImport;

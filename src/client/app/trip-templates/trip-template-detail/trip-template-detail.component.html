@@ -3,7 +3,11 @@
     <div class="row itinerary">
       <div class="col-xs-12 col-sm-4">
         <div class="itinerary-ctn">
-          <app-trip-template-itinerary *ngIf="loadItinerary" [itinerary]="form" (itineraryUpdated)="onTemplateUpdated($event)"></app-trip-template-itinerary>
+          <app-trip-template-itinerary *ngIf="loadItinerary"
+                                       [itinerary]="form"
+                                       [bookingStartDate]="bookingStartDate"
+                                       (itineraryUpdated)="onTemplateUpdated($event)">
+          </app-trip-template-itinerary>
         </div>
       </div>
       <div class="col-xs-12 col-sm-8 map-ctn">

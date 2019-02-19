@@ -56,7 +56,7 @@ import { getDialogStatus, getPointsEntity } from '../../../store/place';
 import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
 import { AddDay, DaySelected, RemoveDay } from '../../../store/trip-template/day/day.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-trip-template-itinerary',
@@ -67,6 +67,7 @@ import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-m
 export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   @Input()
   itinerary: FormArray;
+  @Input() bookingStartDate?: string;
   showOverlay: boolean;
   showEmptySlot: boolean;
   loading = false;
@@ -149,6 +150,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
               data.forEach( (day: any) => {
                 let eventsForm;
                 eventsForm = this.fb.array([]);
+
                 day.events.forEach((evento: any) => {
                   eventsForm.push(this.fb.group({
                     name: evento.name,
@@ -198,6 +200,13 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
 
   toggleHeader(): void {
     this.headerCollapsed = !this.headerCollapsed;
+  }
+
+  getDay(dayIndx) {
+    const date = new Date(this.bookingStartDate);
+    date.setDate(date.getDate() + dayIndx);
+    return date;
+    //return moment(this.bookingStartDate).add(dayIndx, 'days').format('MMMM Do YYYY');
   }
 
   openDialog(event) {
