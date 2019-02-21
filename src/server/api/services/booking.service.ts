@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { config } from '../../config/env';
-import { AccountsService } from './accounts.service';
 import GPXBuilder from '../../utils/GPXBuilder';
 import BookingDTO from '../entity/dto/BookingDTO';
 import { PlaceAdapter } from '../entity/adapters/PlaceAdapter';
 import { RouteTransformer } from '../entity/adapters/route.transformer';
+import { AccountsService } from './accounts.service';
+import * as _ from 'lodash';
 
 export class BookingService {
   public static async getAll(query, headers): Promise<any> {
@@ -16,7 +17,12 @@ export class BookingService {
     if (query.created_by)
       queryParams += `&created_by=${query.created_by}`;
     const resp = await axios.get(`${config.routes.url}/bookings${queryParams}`, {headers: {authorization: headers.authorization}});
+    const accountIds = _.uniqBy(resp.data.data, 'account_id')
+      .map((book: any) => book.account_id)
+      .filter(a => a);
+    const accountInfo = await AccountsService.getAll('', headers, accountIds);
     resp.data.data = resp.data.data.map((booking) => {
+      booking.accountData = accountInfo.data.filter(acc => acc.id === booking.account_id)[0];
       booking.days = this.fitMassiveDaysFromDAO(booking);
       return booking;
     });

@@ -38,7 +38,22 @@
       }
     }
 
+    .basic-value {
+      .label{
+        font-size: 12px;
+        display: block;
+        line-height: 12px;
+        color: $gray-body;
+      }
+
+      .value{
+        font-size: 14px;
+        color: $gray-title;
+      }
+    }
+
     .summarized-card-body{
+      @extend .basic-value;
       display: flex;
 
       .data-box{
@@ -54,17 +69,20 @@
         }
       }
 
-      .label{
-        font-size: 12px;
-        display: block;
-        line-height: 12px;
-        color: $gray-body;
-      }
 
-      .value{
-        font-size: 14px;
-        color: $gray-title;
+    }
+
+    .created-box {
+      @extend .basic-value;
+      .label{
+        display: inline;
+        margin-right: 12px;
       }
+      float: right;
+    }
+
+    .separation-bar {
+      border: 1px dotted #DEDEDE;
     }
 
     .draft {

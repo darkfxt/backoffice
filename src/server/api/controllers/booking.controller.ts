@@ -3,7 +3,6 @@ import { BookingService } from '../services/booking.service';
 import httpStatus = require('http-status');
 import { ItineraryFactory } from '../factories/itinerary.factory';
 import * as pdf from 'html-pdf';
-import { AccountsService } from '../services/accounts.service';
 
 const fs = require('fs');
 
@@ -16,6 +15,7 @@ export class BookingController {
         request.query.created_by = (<any>request).loggedUser.Username;
       }
       const answer = await BookingService.getAll(request.query, request.headers);
+
       if (request.query.simple) {
         response.json(answer.data.data);
         return;

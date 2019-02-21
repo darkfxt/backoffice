@@ -5,9 +5,11 @@ import * as FormData from 'form-data';
 
 export class AccountsService {
 
-  public static async getAll(query, headers): Promise<any> {
+  public static async getAll(query, headers, ids?: Array<number> = []): Promise<any> {
+    let queryIds = '';
+    if (ids) queryIds = '?ids=' + ids.join(',');
     return axios
-      .get(`${config.core.url}/accounts`,  { params: query, headers: {authorization: headers.authorization}});
+      .get(`${config.core.url}/accounts${queryIds}`,  { params: query, headers: {authorization: headers.authorization}});
   }
 
   public static async create(body, headers): Promise<any> {

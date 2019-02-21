@@ -17,6 +17,20 @@
         <span class="label">{{'Estado' | translate}}</span>
         <span class="value">{{status | translate}}</span>
       </div>
+      <br>
+      <div class="account-box data-box">
+        <span class="label">{{'Cuenta' | translate}}</span>
+        <span class="value">{{ data.accountData ? data.accountData.name : 'N/A' | translate}}</span>
+      </div>
+      <div class="reference-box data-box">
+        <span class="label">{{'Referencia' | translate}}</span>
+        <span class="value">{{data.booking_reference | translate}}</span>
+      </div>
+    </div>
+    <hr class="separation-bar"/>
+    <div class="created-box data-box">
+      <span class="label">{{'Creado por' | translate}}</span>
+      <span class="value">{{data.created_by | translate}}</span>
     </div>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
