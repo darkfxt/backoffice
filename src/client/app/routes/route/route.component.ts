@@ -48,6 +48,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
+  _languageSelected: string;
   defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
   stepper = {
     header: true,
@@ -105,13 +106,13 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
         this.placeStore.setWaypoints(segment.middle_points);
       }
     });
-
+    this._languageSelected = this.segment.default_lang;
     this.form = this.fb.group({
       name: [{value: this.segment.name, disabled: true}, Validators.required],
       route_type: [{value: this.segment.route_type, disabled: !this.segment.name}, Validators.required],
       road_surface: [{value: this.segment.road_surface, disabled: !this.segment.name}, Validators.required],
       via: this.segment.via,
-      description: this.segment.description,
+      description: [{value: this.segment.description, disabled: !this._languageSelected}, Validators.required],
       images: this.fb.array(this.segment.images),
       origin: [this.segment.origin, Validators.required],
       destination: [this.segment.destination, Validators.required],
@@ -119,7 +120,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       things_to_know: this.fb.array(this.segment.things_to_know.map(value => this.fb.group(value))),
       file: undefined,
       deleted_images: this.fb.array([]),
-      legs: this.segment.legs
+      legs: this.segment.legs,
+      default_lang: this.segment.default_lang || ''
     });
   }
 
@@ -197,7 +199,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
         _id: value._id,
         geo: {point: value.geo.point}
       }));
-    data.default_lang = this.defaultLanguage;
+    data.default_lang = data.default_lang;
     formData.append('data', JSON.stringify(data));
     const image = data.file;
     if (image) {

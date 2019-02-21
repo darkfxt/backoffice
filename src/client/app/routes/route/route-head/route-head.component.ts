@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TRANSLATE } from '../../../translate-marker';
+import { ContentService } from '../../../shared/services/content.service';
 
 @Component({
   selector: 'app-route-head',
@@ -26,6 +27,8 @@ export class RouteHeadComponent implements OnInit {
 
   @Output()
   routeTypeChanged: EventEmitter<any> = new EventEmitter<any>();
+  languages = [];
+  languageSelected: string;
 
 
   routeTypes = [
@@ -60,9 +63,13 @@ export class RouteHeadComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private contentServiceInstance: ContentService) { }
 
   ngOnInit() {
+    this.contentServiceInstance.getAvailableLanguages()
+      .subscribe((resp) => {
+        this.languages = resp.slice();
+      });
   }
 
   optionChanged(event) {
@@ -76,6 +83,13 @@ export class RouteHeadComponent implements OnInit {
         if (routeModes.includes(travelMode.value))
           travelMode.enabled = false;
       });
+  }
+
+  onLanguageChanged(event) {
+    if(event) {
+      this.languageSelected = event.value;
+      this.form.get('description').enable();
+    }
   }
 
 }

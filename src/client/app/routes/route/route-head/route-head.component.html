@@ -27,6 +27,17 @@
     <mat-error *ngIf="form.get('road_surface').invalid && (form.get('road_surface').dirty || form.get('road_surface').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
+  <mat-form-field color="accent" class="select-language">
+    <mat-select placeholder="{{'Idioma de descripción' | translate}}"
+                required name="default_lang"
+                (selectionChange)="onLanguageChanged($event)"
+                formControlName="default_lang">
+      <mat-option *ngFor="let lang of languages" [value]="lang" >
+        {{lang | translate}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <mat-form-field color="accent">
     <textarea matInput placeholder="{{'Descripción' | translate}}" name="description"
               formControlName="description"

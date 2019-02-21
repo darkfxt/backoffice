@@ -30,6 +30,7 @@ export default class Segment {
   middle_points: Point[];
   things_to_know: ThingToKnow[];
   legs: Leg[];
+  default_lang?: string;
 
   constructor(params: any = {}) {
     this._id = params._id || '';
@@ -44,6 +45,7 @@ export default class Segment {
     this.middle_points = params.middle_points || [];
     this.things_to_know = params.things_to_know || [];
     this.legs = params.legs || [];
+    this.default_lang = params.default_lang || '';
   }
 }
 
