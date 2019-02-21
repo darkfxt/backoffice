@@ -5,7 +5,7 @@ import * as FormData from 'form-data';
 
 export class AccountsService {
 
-  public static async getAll(query, headers, ids?: Array<number> = []): Promise<any> {
+  public static async getAll(query, headers, ids?: Array<number>): Promise<any> {
     let queryIds = '';
     if (ids) queryIds = '?ids=' + ids.join(',');
     return axios
