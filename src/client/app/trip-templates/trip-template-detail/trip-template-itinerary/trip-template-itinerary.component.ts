@@ -8,7 +8,7 @@ import {
   ViewChild,
   ElementRef,
   Output,
-  EventEmitter
+  EventEmitter, PipeTransform, Pipe
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatBottomSheet, MatDialog } from '@angular/material';
 import { EventDialogComponent } from './event-dialog/event-dialog.component';
@@ -54,9 +54,20 @@ import {
 import { getSegmentDialogStatus, getSegmentsEntityState } from '../../../store/route';
 import { getDialogStatus, getPointsEntity } from '../../../store/place';
 import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
-import { AddDay, DaySelected, RemoveDay } from '../../../store/trip-template/day/day.actions';
+import {AddDay, DaySelected, MoveDay, RemoveDay} from '../../../store/trip-template/day/day.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import * as moment from 'moment';
+
+@Pipe({name: 'numberToArray'})
+export class NumberToArray implements PipeTransform {
+  transform(value, args: string[]): any {
+    const respArray = [];
+    for (let i = 0; i < value; i++) {
+      respArray.push(i);
+    }
+    return respArray;
+  }
+}
 
 @Component({
   selector: 'app-trip-template-itinerary',
@@ -206,7 +217,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     const date = new Date(this.bookingStartDate);
     date.setDate(date.getDate() + dayIndx);
     return date;
-    //return moment(this.bookingStartDate).add(dayIndx, 'days').format('MMMM Do YYYY');
+    // return moment(this.bookingStartDate).add(dayIndx, 'days').format('MMMM Do YYYY');
   }
 
   openDialog(event) {
@@ -269,6 +280,10 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       if (result)
         this.store.dispatch(new RemoveDay({_id: dayId}));
     });
+  }
+
+  moveDay(oldPosition, newPosition) {
+    this.store.dispatch(new MoveDay({fromIndex: oldPosition, toIndex: newPosition}));
   }
 
 

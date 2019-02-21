@@ -8,6 +8,7 @@ export enum DayActionTypes {
   DAY_SELECTED = '[Days] Selected',
   ADD_DAY = '[Days] Adding new Day',
   REMOVE_DAY = '[Days] Removing Day',
+  MOVE_DAY = '[Days] Moving Day',
   SELECT_ORDINAL_TO_ADD_DAY = '[Days] Selecting ordinal Index',
   UPDATE_DAY = '[Days] Adding Event'
 }
@@ -34,6 +35,13 @@ export class AddDay implements Action {
 export class RemoveDay implements Action {
   readonly type = DayActionTypes.REMOVE_DAY;
   constructor (readonly payload: {_id: number}) {
+    this.payload = payload;
+  }
+}
+
+export class MoveDay implements Action {
+  readonly type = DayActionTypes.MOVE_DAY;
+  constructor (readonly payload: {fromIndex: number, toIndex: number}) {
     this.payload = payload;
   }
 }
@@ -68,5 +76,5 @@ export const hideLoaderActions = [
   DayActionTypes.DAY_SELECTED,
 ];
 
-export type DayActions = GetDaysForTripTemplate | DaysRetrieved |
+export type DayActions = GetDaysForTripTemplate | DaysRetrieved | MoveDay |
   DaySelected | AddDay | OrdinalForDaySetted | RemoveDay | UpdateDay;

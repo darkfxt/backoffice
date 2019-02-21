@@ -10,6 +10,17 @@
       <div class="vertical-line"></div>
       <div class="day-count" [class.edit-mode]="editedDayId && editedDayId === day._id">
         <h4>Day {{dayIndex + 1}} <span *ngIf="bookingStartDate">- {{getDay(dayIndex) | date: 'dd MMM yyyy'}}</span></h4>
+        <!--<button mat-icon-button class="move-button" alt="Move" (click)="deleteDay(day._id)" *ngIf="!editedDayId" matTooltip="{{'Mover día {day}' | translate : {day: dayIndex + 1} }}">
+          <mat-icon>unfold_more</mat-icon>
+        </button>-->
+          <button class="move-button" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>unfold_more</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let position of itineraryDays.length | numberToArray" (click)="moveDay(dayIndex, position)" [disabled]="+position === +dayIndex">
+              {{position + 1}}
+            </button>
+          </mat-menu>
         <button mat-icon-button class="delete-button" alt="Delete" (click)="deleteDay(day._id)" *ngIf="!editedDayId" matTooltip="{{'Eliminar día {day}' | translate : {day: dayIndex + 1} }}">
           <mat-icon>delete</mat-icon>
         </button>

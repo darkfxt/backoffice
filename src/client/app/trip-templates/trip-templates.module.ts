@@ -14,7 +14,10 @@ import { StoreModule } from '@ngrx/store';
 import { CommonListModule } from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
-import { TripTemplateItineraryComponent } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
+import {
+  NumberToArray,
+  TripTemplateItineraryComponent
+} from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
 import { RoutesModule } from '../routes/routes.module';
 import { SharedModule } from '../shared/shared.module';
 import { EventSummarizedCardComponent } from './trip-template-detail/trip-template-itinerary/event-summarized-card/event-summarized-card.component';
@@ -60,6 +63,7 @@ import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/c
     EventDialogComponent,
     EventSummarizedCardComponent,
     AddEventComponent,
+    NumberToArray,
     TripTemplateMapComponent,
     TripTemplateDetailHeaderComponent,
     CustomEventComponent,
