@@ -18,7 +18,7 @@
              required [matAutocomplete]="autoGroupO" name="origin"
              formControlName="origin" (keyup)="search($event)" (blur)="onLeave($event, 'origin')"
       />
-      <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="points-autocomplete">
+      <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
           <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
         </mat-option>
@@ -36,7 +36,7 @@
                  [id]="'input-'+i" (keyup)="searchPrivates($event)" (blur)="onLeave($event, 'input-'+i)"
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
-          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)">
+          <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)" class="route-autocomplete">
             <mat-option *ngIf="acLoading">
               <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
             </mat-option>
@@ -57,7 +57,7 @@
              [matAutocomplete]="autoGroupD" name="destination"
              formControlName="destination" (keyup)="search($event)" (blur)="onLeave($event, 'destination')"
       />
-      <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')">
+      <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
           <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
         </mat-option>
