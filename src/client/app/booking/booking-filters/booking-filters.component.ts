@@ -47,7 +47,6 @@ export class BookingFiltersComponent implements OnInit {
   }
 
   onSelfToggle(event) {
-    console.log('evento loco', event);
     this.selfToggleChanged.emit(event.checked);
   }
 
