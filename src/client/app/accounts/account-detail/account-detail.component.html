@@ -26,7 +26,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <mat-form-field color="accent" >
-            <input type="text" matInput placeholder="{{'Nombre del cliente' | translate}}" required name="name" formControlName="name"/>
+            <input type="text" matInput placeholder="{{'Nombre del cliente' | translate}}" required name="accountName" formControlName="name"/>
             <mat-error *ngIf="form.get('name').hasError('required') && (form.get('name').dirty || form.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
             <mat-error *ngIf="form.get('name').hasError('maxlength') && (form.get('name').dirty || form.get('name').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>
           </mat-form-field>

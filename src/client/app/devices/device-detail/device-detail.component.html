@@ -27,7 +27,7 @@
         <div class="col-xs-12 col-sm-6">
 
           <mat-form-field color="accent">
-            <input type="text" #name matInput placeholder="{{'Nombre' | translate}}" name="name" formControlName="name" required/>
+            <input type="text" #name matInput placeholder="{{'Nombre' | translate}}" name="deviceName" formControlName="name" required/>
             <mat-error *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
           </mat-form-field>
 
