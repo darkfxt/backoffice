@@ -95,6 +95,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
     this._resolverSubscription = this.route.data.subscribe(({ point }) => {
       if (point && point._id !== '' && point._id !== 'new') {
+        this.defaultLanguage = point.default_lang;
         this.place = point;
         isUpdate = true;
       } else {
@@ -105,7 +106,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     this.placeForm = this.fb.group({
       name: [this.place.name, Validators.required],
       type: [this.place.type, Validators.required],
-      description: this.getDescriptions(this.defaultLanguage),
+      description: this.getDescriptions(this.place.default_lang),
       geo: this.fb.group({
         label: [`${this.place.geo.point.lat},${this.place.geo.point.lng}`, Validators.required],
         point: this.place.geo.point,
@@ -125,7 +126,8 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       images: this.fb.array(this.place.images || []),
       deleted_images: this.fb.array([]),
       _id: this.place._id,
-      place_id: this.place.place_id
+      place_id: this.place.place_id,
+      default_lang: this.place.default_lang || this.defaultLanguage
     });
 
 

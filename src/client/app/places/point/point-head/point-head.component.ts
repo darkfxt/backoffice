@@ -42,16 +42,17 @@ export class PointHeadComponent implements OnInit {
     private contentServiceInstance: ContentService,
     private store: Store<AppState>
     ) {
-      this.defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0] || 'en';
-      this.tabController[this.defaultLanguage] = '';
+
     }
 
   ngOnInit() {
+    this.defaultLanguage = this.placeForm.value.default_lang || localStorage.getItem('uiLanguage') || navigator.language.split('-')[0] || 'en';
+    this.tabController[this.defaultLanguage] = '';
     const parentTranslations = Object.assign({}, this.placeForm.value.description);
     Object.keys(parentTranslations).forEach((key) => (parentTranslations[key] === '') && delete parentTranslations[key]);
     this.contentServiceInstance.getAvailableLanguages()
       .subscribe((resp) => {
-        this.availableLanguages = resp.filter((lng) => lng !== this.defaultLanguage).slice();
+        this.availableLanguages = resp.filter((lng) => lng !== this.placeForm.value.default_lang /*this.defaultLanguage*/).slice();
         Object.assign(this.tabController, parentTranslations);
         this.availableLanguages = this.availableLanguages.filter(lng => !Object.keys(this.tabController).includes(lng));
       });

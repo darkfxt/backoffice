@@ -4,7 +4,7 @@
       {{'Información básica' | translate}}
     </h1>
     <mat-form-field color="accent">
-      <input type="text" #name matInput placeholder="{{'Nombre' | translate}}" name="name" formControlName="name" required/>
+      <input type="text" #name matInput placeholder="{{'Nombre' | translate}}" name="tripTName" formControlName="name" required/>
       <mat-error *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
     </mat-form-field>
 

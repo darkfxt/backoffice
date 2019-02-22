@@ -5,7 +5,7 @@
   </div>
 
   <mat-form-field color="accent" class="col-xs-12 col-sm-6">
-    <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="name" formControlName="name"/>
+    <input #location type="text" matInput placeholder="{{'Nombre' | translate}}" required name="placeName" formControlName="name"/>
     <mat-error *ngIf="placeForm.get('name').invalid && (placeForm.get('name').dirty || placeForm.get('name').touched)">{{'Campo requerido' | translate}}</mat-error>
   </mat-form-field>
 
