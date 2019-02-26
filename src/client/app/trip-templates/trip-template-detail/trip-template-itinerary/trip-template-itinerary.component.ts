@@ -79,7 +79,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   @Input()
   itinerary: FormArray;
   @Input() bookingStartDate?: string;
-  showOverlay: boolean;
+  first = false;
   showEmptySlot: boolean;
   loading = false;
   tripTemplateEntities$: Observable<any>;
@@ -154,7 +154,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       this.subs.push(this.selectedTripTemplate$.subscribe(selectedTemplate => {
         if (Object.keys(tripTemplateEntities).includes(selectedTemplate)) {
           this.subs.push(this.store.select(getDaysForSelectedTrip).subscribe((data: any) => {
-            if (data) {
+            if (data && data.length > 0) {
 
               this.itineraryDays = data;
               this.itinerary = this.fb.array([]);
@@ -178,8 +178,14 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
                   events: eventsForm
                 }));
               });
+              if (selectedTemplate === 'new' && data.length === 1 && !this.first) {
+                this.openEmptySlot(this.itineraryDays[0]._id);
+                this.first = true;
+              }
               this.itineraryUpdated.emit(this.itinerary);
-          }}));
+          } else {
+              if (!this.first) this.addDay();
+            }}));
         }
       }));
     }));
