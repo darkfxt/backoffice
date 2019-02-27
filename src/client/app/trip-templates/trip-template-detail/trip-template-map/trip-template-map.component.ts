@@ -63,7 +63,9 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
               switch (event.event_type) {
                 case TypeOfEvent.CUSTOM:
                   break;
-                case TypeOfEvent.DRIVING || 'walking' || 'bicycling' || 'routes':
+                case TypeOfEvent.DRIVING:
+                case 'walking':
+                case 'bicycling':
                   const origin = event.product.origin !== null ? event.product.origin : event.product.referencedOrigin;
                   const destination = event.product.destination !== null ? event.product.destination : event.product.referencedDestination;
                   this.bounds.extend(origin.geo.point);

@@ -99,7 +99,7 @@ export class AddEventComponent implements OnInit {
 })
 export class BottomSheetEventComponent implements OnInit {
   productTypes = [
-    {value: TRANSLATE('routes'), icon: 'map'},
+    {value: TRANSLATE('driving'), icon: 'map'},
     {value: TRANSLATE('place'), icon: iconMap[TypeOfEvent.POI]},
     {value: TRANSLATE('custom'), icon: iconMap[TypeOfEvent.CUSTOM]}
   ];
