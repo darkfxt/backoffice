@@ -183,9 +183,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
                 this.first = true;
               }
               this.itineraryUpdated.emit(this.itinerary);
-          } else {
-              if (!this.first) this.addDay();
-            }}));
+          }}));
         }
       }));
     }));

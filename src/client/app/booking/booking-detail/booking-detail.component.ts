@@ -9,7 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { getBookingSelected } from '../../store/booking';
 import { GetAllDevices } from '../../store/device/device.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
-import { Event } from '../../shared/models/TripTemplate';
+import {DayOfTrip, Event} from '../../shared/models/TripTemplate';
 import { BookingService } from '../../shared/services/booking.service';
 
 @Component({
@@ -72,7 +72,7 @@ export class BookingDetailComponent implements OnInit {
       pickup_point: [this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : undefined],
       dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : undefined]
     });
-    this.formItinerary = this.fb.array(this.booking.days || []);
+    this.formItinerary = this.fb.array(this.booking.days || [new DayOfTrip( [])]);
   }
 
   saveBooking(status?: Status) {
