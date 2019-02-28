@@ -7,7 +7,11 @@
       </mat-form-field>
 
       <mat-form-field color="accent" >
-        <input type="text" matInput placeholder="{{'Seleccionar cliente' | translate}}" required [matAutocomplete]="autoGroup" formControlName="account_id"/>
+        <input type="text" matInput
+               placeholder="{{'Seleccionar cliente' | translate}}"
+               required [matAutocomplete]="autoGroup"
+               (blur)="onLeaveAutocomplete($event, 'account_id')"
+               formControlName="account_id"/>
         <mat-icon matSuffix>search</mat-icon>
         <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option.name}}</mat-option>
@@ -49,7 +53,11 @@
       <mat-slide-toggle color="primary" (change)="onToggleGPS()" [checked]="has_gps">With GPS</mat-slide-toggle>
       <div *ngIf="has_gps">
         <mat-form-field color="accent" >
-          <input type="text" matInput placeholder="{{'Nombre/Número de dispositivo' | translate}}" [matAutocomplete]="auto" formControlName="device_id"/>
+          <input type="text" matInput
+                 placeholder="{{'Nombre/Número de dispositivo' | translate}}"
+                 [matAutocomplete]="auto"
+                 (blur)="onLeaveAutocomplete($event, 'device_id')"
+                 formControlName="device_id"/>
           <mat-icon matSuffix>search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" [autoActiveFirstOption]="">
             <mat-option *ngFor="let option of filteredDevices$ | async" [value]="option">{{option.name}}</mat-option>
