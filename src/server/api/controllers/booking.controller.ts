@@ -41,6 +41,13 @@ export class BookingController {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.body.company_id = (<any>request).loggedUser.CompanyID;
       request.body.created_by = (<any>request).loggedUser.Username;
+      if (request.body.device_id && (typeof request.body.device_id !== 'number'))
+        request.body.gps_device = {
+          id: request.body.device_id.id,
+          name: request.body.device_id.name,
+          pick_up: request.body.pickup_point,
+          drop_off: request.body.dropoff_point
+        };
       const booking = await BookingService.create(request.body, request.headers);
 
       response.json(booking.data);

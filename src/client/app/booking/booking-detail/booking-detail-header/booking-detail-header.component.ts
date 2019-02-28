@@ -115,4 +115,11 @@ export class BookingDetailHeaderComponent implements OnInit, OnDestroy {
     return this.devices.filter(device => device.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
+  onLeaveAutocomplete(event, control) {
+    const regexpOption = /^mat-option-.*/g;
+    if (typeof this.form.get(control).value === 'string' &&
+      (event.relatedTarget === null || !regexpOption.test(event.relatedTarget.id)))
+      this.form.get(control).setValue('');
+  }
+
 }
