@@ -23,10 +23,13 @@
     <p>{{'Agrega todos los idiomas que desees personalizar. No te preocupes por los otros, nosotros nos encargamos de traducirlos por ti' | translate}}</p>
   </div>
 
-  <mat-tab-group *ngIf="tabController && availableLanguages" formGroupName="description" class="col-xs-12">
+  <mat-tab-group *ngIf="tabController && availableLanguages" [selectedIndex]="selected.value" formGroupName="description" class="col-xs-12">
     <mat-tab *ngFor="let lang of getLanguages()">
       <ng-template mat-tab-label>
         {{lang | translate | uppercase }}
+        <button class="icon-delete-tab" (click)="onDeleteTab(lang)" [disabled]="tabsLength" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
       </ng-template>
       <mat-form-field color="accent">
         <mat-label></mat-label>
