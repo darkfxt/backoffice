@@ -6,7 +6,6 @@ import { ContentService } from '../../../shared/services/content.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/shared/app.interfaces';
 import { HideLoader, ShowLoader } from '../../../store/shared/actions/loader.actions';
-import { RelatedEvent } from 'aws-sdk/clients/configservice';
 import { SnackbarOpen } from '../../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { MatDialog } from '@angular/material';

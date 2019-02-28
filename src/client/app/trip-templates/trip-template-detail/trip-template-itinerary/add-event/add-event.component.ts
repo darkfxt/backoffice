@@ -64,7 +64,7 @@ export class AddEventComponent implements OnInit {
         <div class="product-icon">
           <mat-icon>{{productType.icon}}</mat-icon>
         </div>
-        <div class="product-label">{{productType.value | translate}}</div>
+        <div class="product-label">{{productType.label | translate}}</div>
       </li>
     </ul>
   `,
@@ -99,9 +99,9 @@ export class AddEventComponent implements OnInit {
 })
 export class BottomSheetEventComponent implements OnInit {
   productTypes = [
-    {value: TRANSLATE('driving'), icon: 'map'},
-    {value: TRANSLATE('place'), icon: iconMap[TypeOfEvent.POI]},
-    {value: TRANSLATE('custom'), icon: iconMap[TypeOfEvent.CUSTOM]}
+    {value: TRANSLATE('driving'), icon: 'map', label: TRANSLATE('routes')},
+    {value: TRANSLATE('place'), icon: iconMap[TypeOfEvent.POI], label: TRANSLATE('place')},
+    {value: TRANSLATE('custom'), icon: iconMap[TypeOfEvent.CUSTOM], label: TRANSLATE('custom')}
   ];
 
   constructor(
