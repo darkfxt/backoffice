@@ -112,7 +112,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       route_type: [{value: this.segment.route_type, disabled: !this.segment.name}, Validators.required],
       road_surface: [{value: this.segment.road_surface, disabled: !this.segment.name}, Validators.required],
       via: this.segment.via,
-      description: [{value: this.segment.description, disabled: !this._languageSelected}, Validators.required],
+      description: [{value: this.segment.description, disabled: !this._languageSelected}],
       images: this.fb.array(this.segment.images),
       origin: [this.segment.origin, Validators.required],
       destination: [this.segment.destination, Validators.required],
