@@ -20,6 +20,8 @@ export interface TripTemplateState extends EntityState<TripTemplate> {
   dayForEvent?: number;
   typeForEvent?: TypeOfEvent;
   importTemplateId?: string;
+  tripTotalLength?: number;
+  tripTotalTime?: number;
 }
 
 export const adapter: EntityAdapter<TripTemplate> = createEntityAdapter({
@@ -31,6 +33,7 @@ export const initialState: TripTemplateState = adapter.getInitialState({
 });
 
 export function tripTemplateReducer(state = initialState, action: TripTemplateActions): TripTemplateState {
+  let entities, ids: Array<any> ;
   switch (action.type) {
     case TripTemplateActionTypes.GET_TRIP_TEMPLATES :
       return {...state};
@@ -50,14 +53,28 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
         selectedEvent: null, indexForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.UPDATE_TRIP_TEMPLATE:
     case TripTemplateActionTypes.CREATE_TRIP_TEMPLATE:
-      const tripTemplate = action.payload.tripTemplate;
-      const entities = {...state.entities, [tripTemplate._id]: tripTemplate};
-      const ids: Array<any> = state.ids.slice(0);
+      // let tripTotalLength = 0, tripTotalTime = 0;
+      // action.payload.tripTemplate.days.forEach( day => {
+      //   day.events
+      //     .filter( allEvent => ['driving', 'walking', 'bicycling'].includes(allEvent.event_type))
+      //     .forEach( filteredEvent => {
+      //       tripTotalLength += filteredEvent.product.legs.map(leg => leg.distance.value).reduce((a, b) => a + b);
+      //       tripTotalTime += filteredEvent.product.legs.map(leg => leg.duration.value).reduce((a, b) => a + b);
+      //     });
+      // });
+      const tripTemplate = Object.assign({}, action.payload.tripTemplate, /*{tripTotalLength, tripTotalTime}*/);
+      entities = {...state.entities, [tripTemplate._id]: tripTemplate};
+      ids = state.ids.slice(0);
       if (!ids.includes(tripTemplate._id))
         ids.push(tripTemplate._id);
       return {...state, entities, ids};
     case TripTemplateActionTypes.IMPORT_TRIP_TEMPLATE:
       return {...state, importTemplateId: action.payload.tripTemplateId};
+    case TripTemplateActionTypes.UPDATE_TIME_DISTANCE:
+      const actualTemplate = Object.assign({}, state.entities[state.selectedTripTemplate],
+        {tripTotalLength: action.payload.distance, tripTotalTime: action.payload.duration});
+      entities = {...state.entities, [state.selectedTripTemplate]: actualTemplate};
+      return {...state, entities, tripTotalLength: action.payload.distance, tripTotalTime: action.payload.duration};
     case TripTemplateActionTypes.FILL_ITINERARY:
       return {...state};
     default:

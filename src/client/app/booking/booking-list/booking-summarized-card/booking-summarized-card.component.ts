@@ -23,7 +23,6 @@ export class BookingSummarizedCardComponent implements OnInit {
 
   ngOnInit() {
     this.status = STATUS_CONVERTER[this.data.status || 0];
-    // this.description = this.data.role.name;
   }
 
   editBooking() {

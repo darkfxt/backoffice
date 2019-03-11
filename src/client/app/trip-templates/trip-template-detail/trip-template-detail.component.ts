@@ -25,6 +25,7 @@ import { first } from 'rxjs/internal/operators';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { MatDialog } from '@angular/material';
+import {TripTemplateMapComponent} from './trip-template-map/trip-template-map.component';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -55,6 +56,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   daysSubscription: Subscription;
   _deleteSubscription: Subscription;
   _selectedRouteTemplateId: string;
+  tripTotalLength = 0;
+  tripTotalTime = 0;
   stepper = {
     header: false,
     itinerary: true
@@ -94,8 +97,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.select(selectLoaderEntity).subscribe(loader => () => this.loading = loader.show );
     this.route.data.subscribe(( data: any ) => {
-      if (data.tripTemplate && data.tripTemplate._id) {
+      if (data.tripTemplate && data.tripTemplate._id ) {
         this.tripTemplate = data.tripTemplate;
+        this.tripTotalLength = data.tripTemplate.tripTotalLength;
+        this.tripTotalTime = data.tripTemplate.tripTotalTime;
         this.form = this.fb.group({
           name: [data.tripTemplate.name, Validators.required],
           description: this.fb.control(data.tripTemplate.description)
@@ -154,6 +159,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       const tripTemplateToSave: TripTemplate = new TripTemplate();
       tripTemplateToSave.name = this.form.value.name;
       tripTemplateToSave.description = this.form.value.description;
+      tripTemplateToSave.tripTotalLength = this.tripTotalLength;
+      tripTemplateToSave.tripTotalTime = this.tripTotalTime;
       this.attachItineraryToTrip(tripTemplateToSave);
       if (this._selectedRouteTemplateId !== 'new')
         tripTemplateToSave._id = this._selectedRouteTemplateId;
@@ -218,5 +225,10 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     });
     this.stepper[step] = false;
     window.scroll(0, 0);
+  }
+
+  onTripMapUpdated(event) {
+    this.tripTotalLength = event.distance;
+    this.tripTotalTime = event.duration;
   }
 }

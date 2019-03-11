@@ -4,6 +4,11 @@
     <button mat-flat-button (click)="addDay()" color="accent" class="new-day">{{'+ Añadir día' | translate}}</button>
   </div>
 </div>
+<div class="trip-duration-ctn" *ngIf="!editedDayId">
+  <h3>{{'Distancia: ' | translate}}<span>{{tripDistance | distancePipe }}</span></h3>
+  <h3>{{'Tiempo: ' | translate}}<span>{{tripDuration | durationPipe }}</span></h3>
+</div>
+
 <div class="days-list" #dayList [hidden]="headerCollapsed">
   <ul class="event-list">
     <li *ngFor="let day of itineraryDays; let dayIndex = index;" class="day-ctn" [hidden]="editedDayId && editedDayId !== day._id">

@@ -12,6 +12,8 @@ export class TripTemplateSummarizedCardComponent implements OnInit {
   title: string;
   description: string;
   created_by: string;
+  tripTotalLength = 0;
+  tripTotalTime = 0;
 
   constructor(private router: Router) { }
 
@@ -19,6 +21,8 @@ export class TripTemplateSummarizedCardComponent implements OnInit {
     this.title = this.data.name;
     this.description = this.data.description || '';
     this.created_by = this.data.created_by;
+    this.tripTotalLength = this.data.tripTotalLength;
+    this.tripTotalTime = this.data.tripTotalTime;
   }
 
   editSegment() {
