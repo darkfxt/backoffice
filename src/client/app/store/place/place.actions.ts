@@ -61,7 +61,7 @@ export class ClearPoint implements Action {
 
 export class ToggleDialogPoint implements Action {
   readonly type = PointActionTypes.TOGGLE_DIALOG;
-  constructor(readonly payload: DialogActions = DialogActions.FALSE) {
+  constructor(readonly payload: any = DialogActions.FALSE) {
     this.payload = payload;
   }
 }

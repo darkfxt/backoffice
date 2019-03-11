@@ -66,6 +66,9 @@ export class RouteMapComponent implements OnInit {
     });
 
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
+      if (!Array.isArray(waypoints)) {
+        waypoints = Object.keys(waypoints).map( key => waypoints[key]);
+      }
       if (!waypoints)
         return false;
       this.waypoints = waypoints;

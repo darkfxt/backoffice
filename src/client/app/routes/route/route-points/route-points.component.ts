@@ -1,12 +1,21 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { PlaceService } from '../../../shared/services/place.service';
-import { PlaceStore } from '../../../shared/services/place-store.services';
-import { Place } from '../../../shared/models/Place';
-import { BikingCountryAvailability } from '../../../shared/models/enum/BikingCountryAvailability';
-import { Geo } from '../../../shared/models/Geo';
-import { IAddress } from '../../../shared/models/Address';
-import { ICoordinates } from '../../../shared/models/Coordinates';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {PlaceService} from '../../../shared/services/place.service';
+import {PlaceStore} from '../../../shared/services/place-store.services';
+import {Place} from '../../../shared/models/Place';
+import {BikingCountryAvailability} from '../../../shared/models/enum/BikingCountryAvailability';
+import {Geo} from '../../../shared/models/Geo';
+import {IAddress} from '../../../shared/models/Address';
+import {ICoordinates} from '../../../shared/models/Coordinates';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../store/shared/app.interfaces';
+import {ToggleDialogPoint} from '../../../store/place/place.actions';
+import {DialogActions} from '../../../store/dialog-actions.enum';
+import {PointComponent} from '../../../places/point/point.component';
+import {Observable, Subscription} from 'rxjs';
+import {MatDialog} from '@angular/material';
+import {getDialogStatus, getPointSelected} from '../../../store/place';
+import {EventSelected, TerminalSelected} from '../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-route-points',
@@ -17,7 +26,7 @@ export class RoutePointsComponent implements OnInit {
 
   @Input()
   routeGroup: FormGroup;
-
+  dialogReferenceSub: any;
   autocompleteTimeout;
   options: any[];
   lastSearch = [];
@@ -25,6 +34,9 @@ export class RoutePointsComponent implements OnInit {
   lastOrigin = '';
   lastDestination = '';
   acLoading = false;
+  dialogStatus$: Observable<any>;
+  _subscription: Subscription;
+  indexn: number;
 
   @Output()
   travelModeDisabled: EventEmitter<any> = new EventEmitter<any>();
@@ -32,15 +44,35 @@ export class RoutePointsComponent implements OnInit {
   minimalRouteReached: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder,
+              public dialog: MatDialog,
               private placeService: PlaceService,
               private placeStore: PlaceStore,
               private ref: ChangeDetectorRef,
+              private store: Store<AppState>,
               private renderer: Renderer2) {
   }
 
   ngOnInit() {
+    this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
+
+    this._subscription = this.store.select(getPointSelected)
+      .subscribe((selectedPoint: any) => {
+        if (selectedPoint && selectedPoint._id !== 'new' && selectedPoint._id !== undefined) {
+          if (this.indexn || this.indexn !== undefined) {
+            this.setMiddlePoint({option: {value: {_id: selectedPoint._id, type: 'private'}}}, this.indexn);
+          }
+        }
+      });
+
+    this.dialogStatus$.subscribe((data: any) => {
+      if (data && data === 'close') {
+        if (this.dialogReferenceSub)
+          this.dialogReferenceSub.close();
+        this.store.dispatch(new ToggleDialogPoint(DialogActions.FALSE));
+      }
+    });
     this.placeStore.getLocation().subscribe((place) => {
-      if (!place)
+      if (!place || (this.indexn !== undefined))
         return false;
 
       this.addPoint(place, false);
@@ -79,12 +111,35 @@ export class RoutePointsComponent implements OnInit {
   }
 
   setMiddlePoint(event, index) {
-    this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
-      const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id, event.option.value.type);
-      this.lastSelection['input-' + index] = place;
-      this.lastSearch['input-' + index] = place.name;
-      this.middlePoints.controls[index].patchValue(place);
-      this.placeStore.setWaypoints(this.middlePoints.value);
+    if (event.option.value) {
+      this.placeService.getAutocompleteDetail(event.option.value).subscribe((gPlace) => {
+        const place: Place = this.gPlaceTransformer(gPlace, event.option.value.place_id, event.option.value.type);
+        this.lastSelection['input-' + index] = place;
+        this.lastSearch['input-' + index] = place.name;
+        this.middlePoints.controls[index].patchValue(place);
+        setTimeout(() => this.placeStore.setWaypoints(this.middlePoints.value), 0);
+
+      });
+    }
+  }
+
+  createPrivate(index) {
+    const dialogConfig = {
+      height: '80%',
+      width: '80%',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        dialog: 'select'
+      },
+      disableClose: true,
+      closeOnNavigation: true
+    };
+    this.indexn = index;
+    this.store.dispatch(new ToggleDialogPoint('fromRoutes'));
+    this.dialogReferenceSub = this.dialog.open(PointComponent, dialogConfig);
+    this.dialogReferenceSub.afterClosed().subscribe(res => {
+      this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     });
   }
 
@@ -103,7 +158,8 @@ export class RoutePointsComponent implements OnInit {
       }
     });
   }
-    //
+
+  //
 
 
   search(event) {
@@ -115,10 +171,10 @@ export class RoutePointsComponent implements OnInit {
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
-        this.options = this.createGroups(resp);
-        this.travelModeDisabled.emit(null);
-        this.acLoading = false;
-      },
+          this.options = this.createGroups(resp);
+          this.travelModeDisabled.emit(null);
+          this.acLoading = false;
+        },
         (err) => {
           this.acLoading = false;
         });

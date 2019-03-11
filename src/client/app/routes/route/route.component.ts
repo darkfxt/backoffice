@@ -87,12 +87,12 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
-          if (this._subscription)
-            this._subscription.unsubscribe();
-          if (this._placeStoreSubscription) {
-            this.placeStore.clearAll();
-            this._placeStoreSubscription.unsubscribe();
-          }
+          // if (this._subscription)
+          //   this._subscription.unsubscribe();
+          // if (this._placeStoreSubscription) {
+          //   this.placeStore.clearAll();
+          //   this._placeStoreSubscription.unsubscribe();
+          // }
           this.store.dispatch(new ClearSegment());
           setTimeout(() => this.router.navigate(['/routes']));
         }
@@ -132,9 +132,10 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
 
-    if (this._placeStoreSubscription)
+    if (this._placeStoreSubscription) {
+      this.placeStore.clearAll();
       this._placeStoreSubscription.unsubscribe();
-
+    }
     this.store.dispatch(new ClearSegment());
   }
 

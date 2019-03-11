@@ -154,9 +154,6 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   }
 
   private renderDirections(directions) {
-    console.log(directions);
-
-
     directions.routes.forEach(route => {
       this.tripTotalLength += route.legs.map(leg => leg.distance.value).reduce((a, b) => a + b);
       this.tripTotalTime += route.legs.map(leg => leg.duration.value).reduce((a, b) => a + b);
