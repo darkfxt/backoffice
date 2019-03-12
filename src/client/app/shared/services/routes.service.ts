@@ -13,6 +13,7 @@ export class RoutesService {
   }
 
   getAll (paginationMetadata: PaginationOptionsInterface, withoutMetadata?: boolean): Observable<any> {
+    console.log('changos', paginationMetadata);
     let queryParams = '';
     if (paginationMetadata) {
       queryParams += `?size=${paginationMetadata.pageSize}&page=${paginationMetadata.pageIndex}`;

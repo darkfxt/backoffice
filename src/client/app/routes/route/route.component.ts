@@ -11,7 +11,7 @@ import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import { select, Store } from '@ngrx/store';
-import {ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
+import { ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
@@ -22,8 +22,10 @@ import { getDialogStatus, getPointSelected } from '../../store/place';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ApiError } from '../../shared/models/ApiError';
-import {BikingCountryAvailability} from '../../shared/models/enum/BikingCountryAvailability';
-import {TRANSLATE} from '../../translate-marker';
+import { BikingCountryAvailability } from '../../shared/models/enum/BikingCountryAvailability';
+import { TRANSLATE } from '../../translate-marker';
+import { PlaceService } from '../../shared/services/place.service';
+import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -44,11 +46,13 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   dialogStatus: string;
   popup = false;
   travelModeStatus = false;
+  minimumRouteReached = false;
   _errorSubscription: Subscription;
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
   _languageSelected: string;
+  nearPoints: Array<any> = [];
   defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
   stepper = {
     header: true,
@@ -65,6 +69,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private placeStore: PlaceStore,
+    private placeService: PlaceService,
     private daDialog: MatDialog,
     modalService: ModalService
   ) {
@@ -259,6 +264,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   toggleTravelMode(event) {
+    this.minimumRouteReached = true;
     this.form.get('route_type').enable();
     this.form.get('road_surface').enable();
     const originCountry = this.form.get('origin').value.geo.address.country_code;
@@ -277,6 +283,23 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     });
     this.stepper[step] = false;
     window.scroll(0, 0);
+  }
+
+  setPlaceTypeFilter(enabledPlaces: Array<any>) {
+    const filterOptions = new PaginationOptions();
+    filterOptions.pageSize = 50;
+    filterOptions.types = enabledPlaces.map(ep => ep.value);
+    filterOptions.origin = `${this.form.get('origin').value.geo.point.lat},${this.form.get('origin').value.geo.point.lng}`;
+    filterOptions.destination = `${this.form.get('destination').value.geo.point.lat},${this.form.get('destination').value.geo.point.lng}`;
+    filterOptions.travelMode = this._selectedRouteType || 'driving';
+    filterOptions.distance = 3000;
+    if (enabledPlaces.length > 0) {
+      this.placeService.getAll(filterOptions).subscribe(response => {
+        this.nearPoints = response.data.slice();
+      });
+    } else {
+      this.nearPoints = [];
+    }
   }
 
 }

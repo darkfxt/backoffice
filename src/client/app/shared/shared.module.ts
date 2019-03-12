@@ -3,6 +3,7 @@ import { DetailHeaderComponent } from './detail-header/detail-header.component';
 import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { PlaceTypeSelectorComponent } from './place-type-selector/place-type-selector.component';
 
 @NgModule({
   imports: [
@@ -14,9 +15,11 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     DetailHeaderComponent,
+    PlaceTypeSelectorComponent,
   ],
   declarations: [
     DetailHeaderComponent,
+    PlaceTypeSelectorComponent,
   ],
   entryComponents: [
     DetailHeaderComponent,

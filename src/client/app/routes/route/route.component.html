@@ -47,7 +47,16 @@
                                   (minimalRouteReached)="toggleTravelMode($event)"></app-route-points>
               </div>
               <div class="col-sm-8 col-xs-12 col-lg-9">
-                <app-route-map [form]="form" [routeType]="_selectedRouteType"></app-route-map>
+                <app-place-type-selector
+                  [enabledIcons]="minimumRouteReached"
+                  (selectedTypes)="setPlaceTypeFilter($event)">
+                </app-place-type-selector>
+                <app-route-map
+                  [form]="form"
+                  [routeCompleted]="minimumRouteReached"
+                  [routeType]="_selectedRouteType"
+                  [nearPoints]="nearPoints">
+                </app-route-map>
               </div>
             </div>
           </div>

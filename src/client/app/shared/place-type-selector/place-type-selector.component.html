@@ -1,0 +1,7 @@
+<ul class="place-types-icon-list">
+  <li class="place-types-icon-ctn" *ngFor="let pType of pointTypes">
+    <button (click)="onSelectionChanged(pType.value)" [disabled]="!enabledIcons">
+      <img class="pType.enabled ? place-icon-img : place-icon-img-disabled" src="{{pType.icon}}" />
+    </button>
+  </li>
+</ul>

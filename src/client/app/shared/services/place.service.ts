@@ -21,6 +21,14 @@ export class PlaceService {
       queryParams.search = paginationMetadata.search;
     if (paginationMetadata.types)
       queryParams.types = paginationMetadata.types;
+    if (paginationMetadata.origin)
+      queryParams.origin = paginationMetadata.origin;
+    if (paginationMetadata.destination)
+      queryParams.destination = paginationMetadata.destination;
+    if (paginationMetadata.travelMode)
+      queryParams.travel_mode = paginationMetadata.travelMode;
+    if (paginationMetadata.distance)
+      queryParams.distance = paginationMetadata.distance;
     if (withoutMetadata)
       queryParams.simple = true;
 

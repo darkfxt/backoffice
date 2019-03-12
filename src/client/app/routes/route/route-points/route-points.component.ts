@@ -1,21 +1,21 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {PlaceService} from '../../../shared/services/place.service';
-import {PlaceStore} from '../../../shared/services/place-store.services';
-import {Place} from '../../../shared/models/Place';
-import {BikingCountryAvailability} from '../../../shared/models/enum/BikingCountryAvailability';
-import {Geo} from '../../../shared/models/Geo';
-import {IAddress} from '../../../shared/models/Address';
-import {ICoordinates} from '../../../shared/models/Coordinates';
-import {select, Store} from '@ngrx/store';
-import {AppState} from '../../../store/shared/app.interfaces';
-import {ToggleDialogPoint} from '../../../store/place/place.actions';
-import {DialogActions} from '../../../store/dialog-actions.enum';
-import {PointComponent} from '../../../places/point/point.component';
-import {Observable, Subscription} from 'rxjs';
-import {MatDialog} from '@angular/material';
-import {getDialogStatus, getPointSelected} from '../../../store/place';
-import {EventSelected, TerminalSelected} from '../../../store/trip-template/event/event.actions';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { PlaceService } from '../../../shared/services/place.service';
+import { PlaceStore } from '../../../shared/services/place-store.services';
+import { Place } from '../../../shared/models/Place';
+import { BikingCountryAvailability } from '../../../shared/models/enum/BikingCountryAvailability';
+import { Geo } from '../../../shared/models/Geo';
+import { IAddress } from '../../../shared/models/Address';
+import { ICoordinates } from '../../../shared/models/Coordinates';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { ToggleDialogPoint } from '../../../store/place/place.actions';
+import { DialogActions } from '../../../store/dialog-actions.enum';
+import { PointComponent } from '../../../places/point/point.component';
+import { Observable, Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { getDialogStatus, getPointSelected } from '../../../store/place';
+import { EventSelected, TerminalSelected } from '../../../store/trip-template/event/event.actions';
 
 @Component({
   selector: 'app-route-points',
