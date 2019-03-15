@@ -144,7 +144,8 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
       waypoints: waypts,
       travelMode: travelMode || google.maps.TravelMode.DRIVING
     }, result => {
-      this.renderDirections(result);
+      if (result !== null)
+        this.renderDirections(result);
     });
   }
 
