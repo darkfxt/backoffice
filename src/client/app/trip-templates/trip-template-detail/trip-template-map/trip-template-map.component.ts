@@ -29,7 +29,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     TypeOfEvent.HOTEL,
     TypeOfEvent.TERMINAL,
   ];
-  const delayFactor = 0;
+  delayFactor = 0;
 
   constructor(private store: Store<AppState>) {
   }
