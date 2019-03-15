@@ -33,14 +33,6 @@
         <span class="label">{{'Nº Referencia' | translate}}</span>
         <span class="value">{{data.booking_reference | translate}}</span>
       </div>
-      <div class="reference-box data-box" [hidden]="!data.tripTotalLength">
-        <span class="label">{{'Distancia' | translate}}</span>
-        <span class="value">{{data.tripTotalLength || 'N/A' | distancePipe}}</span>
-      </div>
-      <div class="reference-box data-box" [hidden]="!data.tripTotalTime">
-        <span class="label">{{'Duración' | translate}}</span>
-        <span class="value">{{data.tripTotalTime || 'N/A'  | durationPipe }}</span>
-      </div>
     </div>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>

@@ -70,9 +70,7 @@ export class BookingDetailComponent implements OnInit {
       comment: [this.booking.comment],
       device_id: [this.booking.gps_device ? this.booking.gps_device : undefined],
       pickup_point: [this.booking.gps_device && this.booking.gps_device.pick_up ? this.booking.gps_device.pick_up : undefined],
-      dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : undefined],
-      tripTotalTime: this.booking.tripTotalTime,
-      tripTotalLength: this.booking.tripTotalLength
+      dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : undefined]
     });
     this.formItinerary = this.fb.array(this.booking.days || [new DayOfTrip( [])]);
   }
@@ -106,20 +104,6 @@ export class BookingDetailComponent implements OnInit {
   prepareToSave(): Booking {
     const booking: any = new Booking();
     Object.assign(booking, {days: this.formItinerary.value}, this.formHeader.value);
-    const days = this.formItinerary.value;
-    if (Array.isArray(this.formItinerary.value)) {
-      let tripTotalLength = 0, tripTotalTime = 0;
-      days.forEach( day => {
-        day.events
-          .filter( allEvent => ['driving', 'walking', 'bicycling'].includes(allEvent.event_type))
-          .forEach( filteredEvent => {
-            tripTotalLength += filteredEvent.product.legs.map(leg => leg.distance.value).reduce((a, b) => a + b);
-            tripTotalTime += filteredEvent.product.legs.map(leg => leg.duration.value).reduce((a, b) => a + b);
-          });
-      });
-      booking.tripTotalLength = tripTotalTime;
-      booking.tripTotalTime = tripTotalLength;
-    }
     booking.end_date = new Date(booking.start_date);
     booking.end_date.setDate(booking.end_date.getDate() + booking.days.length);
     return booking;

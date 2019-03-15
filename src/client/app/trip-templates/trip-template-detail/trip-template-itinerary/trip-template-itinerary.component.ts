@@ -45,19 +45,18 @@ import { BottomSheetEventComponent } from './add-event/add-event.component';
 import { AppState } from '../../../store/shared/app.interfaces';
 import {
   getAllDays,
-  getAllEvents, getCurrentTripTemplate,
+  getAllEvents,
   getDaysForSelectedTrip,
-  getEventEntities, getSelectedDayId, getTimeDistanceCurrentTemplate,
+  getEventEntities, getSelectedDayId,
   getTripTemplateSelectedId,
   getTripTemplatesEntities
 } from '../../../store/trip-template';
 import { getSegmentDialogStatus, getSegmentsEntityState } from '../../../store/route';
 import { getDialogStatus, getPointsEntity } from '../../../store/place';
 import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-template/event/event.actions';
-import { AddDay, DaySelected, MoveDay, RemoveDay } from '../../../store/trip-template/day/day.actions';
+import {AddDay, DaySelected, MoveDay, RemoveDay} from '../../../store/trip-template/day/day.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import * as moment from 'moment';
-import { TRANSLATE } from '../../../translate-marker';
 
 @Pipe({name: 'numberToArray'})
 export class NumberToArray implements PipeTransform {
@@ -67,20 +66,6 @@ export class NumberToArray implements PipeTransform {
       respArray.push(i);
     }
     return respArray;
-  }
-}
-
-@Pipe({name: 'distancePipe'})
-export class DistancePipe implements PipeTransform {
-  transform(value, args: string[]): any {
-    return `${Math.round(value / 1000)} km`;
-  }
-}
-
-@Pipe({name: 'durationPipe'})
-export class DurationPipe implements PipeTransform {
-  transform(value, args: string[]): any {
-    return `${Math.floor(value / 3600)} ${TRANSLATE('horas')} & ${Math.floor((value % 3600) / 60)} ${TRANSLATE('minutos')}` ;
   }
 }
 
@@ -94,10 +79,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   @Input()
   itinerary: FormArray;
   @Input() bookingStartDate?: string;
-  @Input() tripDuration?: number;
-  @Input() tripDistance?: number;
   first = false;
-  showOverlay: boolean;
   showEmptySlot: boolean;
   loading = false;
   tripTemplateEntities$: Observable<any>;
@@ -112,7 +94,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
   dialogStatus$: Observable<any>;
   segmentStatus$: Observable<any>;
   selectedDay$: Observable<string>;
-  currentTimeDistance$: Observable<any>;
   selectedTripTemplate$: Observable<string>;
   editedDayId;
   @Output() itineraryUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -144,12 +125,6 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     this.segmentStatus$ = this.store.pipe(select(getSegmentDialogStatus));
     this.selectedDay$ = this.store.pipe(select(getSelectedDayId));
     this.selectedTripTemplate$ = this.store.pipe(select(getTripTemplateSelectedId));
-    this.currentTimeDistance$ = this.store.pipe(select(getTimeDistanceCurrentTemplate));
-
-    this.currentTimeDistance$.subscribe(timeDistance => {
-      this.tripDistance = timeDistance.distance;
-      this.tripDuration = timeDistance.duration;
-    });
 
     this.dialogStatus$.subscribe((data: any) => {
       if (data && data === 'close') {
@@ -179,7 +154,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       this.subs.push(this.selectedTripTemplate$.subscribe(selectedTemplate => {
         if (Object.keys(tripTemplateEntities).includes(selectedTemplate)) {
           this.subs.push(this.store.select(getDaysForSelectedTrip).subscribe((data: any) => {
-            if (data) {
+            if (data && data.length > 0) {
 
               this.itineraryDays = data;
               this.itinerary = this.fb.array([]);

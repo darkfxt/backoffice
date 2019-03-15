@@ -1,11 +1,10 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
 import { Store } from '@ngrx/store';
 import { TypeOfEvent } from '../../../shared/models/TripTemplate';
 import { AppState } from '../../../store/shared/app.interfaces';
 import { getDaysForSelectedTrip, getTripTemplatesEntities } from '../../../store/trip-template';
 import { Subscription } from 'rxjs';
-import {UpdateTimeDistance} from '../../../store/trip-template/trip-template.actions';
 
 @Component({
   selector: 'app-trip-template-map',
@@ -24,16 +23,12 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   directions: Array<any> = [];
   _referencesRenderer: Array<any> = [];
   _subscription: Subscription;
-  tripTotalLength = 0;
-  tripTotalTime = 0;
   private directionsService = new google.maps.DirectionsService;
   private directionsDisplay = new google.maps.DirectionsRenderer;
   terminalTypes = [
     TypeOfEvent.HOTEL,
     TypeOfEvent.TERMINAL,
   ];
-
-  @Output() tripMapUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private store: Store<AppState>) {
   }
@@ -50,8 +45,6 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
 
 
     this._subscription = this.store.select(getDaysForSelectedTrip).subscribe((days: any) => {
-      this.tripTotalTime = 0;
-      this.tripTotalLength = 0;
       if (days && days.length) {
 
         this.directionsDisplay.setMap(this.map);
@@ -91,8 +84,6 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                     this.bounds.extend(mp.geo.point);
                     this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name, type: mp.type});
                   });
-                  this.tripTotalLength += event.product.legs.map(leg => leg.distance.value).reduce((a, b) => a + b);
-                  this.tripTotalTime += event.product.legs.map(leg => leg.duration.value).reduce((a, b) => a + b);
                   break;
                 default:
                   this.bounds.extend(event.product.geo.point);
@@ -106,10 +97,14 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
 
         this.map.fitBounds(this.bounds);
 
+
+        /*
         setTimeout(() => {
-          // this.tripDistanceUpdate.emit({distance: this.tripTotalLength, duration: this.tripTotalTime});
-          this.store.dispatch(new UpdateTimeDistance({distance: this.tripTotalLength, duration: this.tripTotalTime}));
-        }, 0);
+          this.directions.forEach(element => this.traceRoutes(element.origin, [], element.destination));
+        }, 100);
+*/
+
+        // this.calculateAndDisplayRoute(waypoints);
       }
     });
 
@@ -154,14 +149,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
   }
 
   private renderDirections(directions) {
-    directions.routes.forEach(route => {
-      this.tripTotalLength += route.legs.map(leg => leg.distance.value).reduce((a, b) => a + b);
-      this.tripTotalTime += route.legs.map(leg => leg.duration.value).reduce((a, b) => a + b);
-    });
 
-
-    this.tripMapUpdated.emit(Object.assign({}, {distance: this.tripTotalLength, duration: this.tripTotalTime}));
-    this.store.dispatch(new UpdateTimeDistance({distance: this.tripTotalLength, duration: this.tripTotalTime}));
     this._referencesRenderer.push(new google.maps.DirectionsRenderer({
       directions: directions,
       map: this.map,

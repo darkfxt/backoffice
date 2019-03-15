@@ -2,9 +2,6 @@
   <div class="info-container">
     <h3 class="summarized-card-title">{{title}}</h3>
     <span class="summarized-card-caption">{{'Creado por {user}' | translate: {user: created_by} }}</span>
-    <div class="summarized-card-totals" [hidden]="!tripTotalLength && !tripTotalTime">
-      <span>{{'Distancia total' | translate}} {{tripTotalLength || 'N/A' | distancePipe}} </span>
-      <span>{{'Duración Total' | translate}} {{tripTotalTime || 'N/A' | durationPipe}}</span></div>
     <p class="summarized-card-description">{{description | slice:0:150}} {{description.length > 150? '...' : ''}}</p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>

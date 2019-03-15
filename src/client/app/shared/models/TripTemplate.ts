@@ -107,8 +107,6 @@ export class TripTemplate {
   description: string;
   created_by: string;
   company_id: number;
-  tripTotalTime?: number;
-  tripTotalLength?: number;
 }
 
 export class TripTemplateWithMetadata {

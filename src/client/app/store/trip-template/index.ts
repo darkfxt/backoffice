@@ -59,13 +59,6 @@ export const getAllTripTemplates = createSelector(
   }
 );
 
-export const getTimeDistanceCurrentTemplate = createSelector(
-  getTripTemplatesState,
-  (state: any) => {
-    return {distance: state.tripTotalLength, duration: state.tripTotalTime};
-  }
-);
-
 // ***** Days Section *****
 export const getDaysState = createFeatureSelector<DayState>('days');
 

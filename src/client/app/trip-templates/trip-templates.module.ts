@@ -15,7 +15,7 @@ import { CommonListModule } from '../shared/common-list/common-list.module';
 import { TripTemplateSummarizedCardComponent } from './trip-template-summarized-card/trip-template-summarized-card.component';
 import { EventDialogComponent } from './trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import {
-  NumberToArray, DistancePipe, DurationPipe,
+  NumberToArray,
   TripTemplateItineraryComponent
 } from './trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
 import { RoutesModule } from '../routes/routes.module';
@@ -64,8 +64,6 @@ import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/c
     EventSummarizedCardComponent,
     AddEventComponent,
     NumberToArray,
-    DistancePipe,
-    DurationPipe,
     TripTemplateMapComponent,
     TripTemplateDetailHeaderComponent,
     CustomEventComponent,
@@ -79,6 +77,6 @@ import { ConfirmationModalComponent } from '../shared/modal/confirmation-modal/c
     EventDialogComponent, RouteComponent, PointComponent, BottomSheetEventComponent,
     SummarizedDefaultComponent, SummarizedDrivingComponent, ConfirmationModalComponent
   ],
-  exports: [TripTemplateDetailComponent, DistancePipe, DurationPipe, TripTemplateMapComponent]
+  exports: [TripTemplateDetailComponent]
 })
 export class TripTemplatesModule { }

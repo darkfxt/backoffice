@@ -18,12 +18,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BookingSummarizedCardComponent } from './booking-list/booking-summarized-card/booking-summarized-card.component';
 import { CommonListModule } from '../shared/common-list/common-list.module';
 import { BookingFiltersComponent } from './booking-filters/booking-filters.component';
-import {
-  DistancePipe,
-  DurationPipe, TripTemplateItineraryComponent
-} from '../trip-templates/trip-template-detail/trip-template-itinerary/trip-template-itinerary.component';
-import {TripTemplateMapComponent} from '../trip-templates/trip-template-detail/trip-template-map/trip-template-map.component';
-import {TripTemplateDetailComponent} from '../trip-templates/trip-template-detail/trip-template-detail.component';
 
 @NgModule({
   imports: [
@@ -59,8 +53,7 @@ import {TripTemplateDetailComponent} from '../trip-templates/trip-template-detai
     BookingFiltersComponent
   ],
   providers: [],
-  exports: [BookingSummarizedCardComponent],
-  bootstrap: [TripTemplateDetailComponent, TripTemplateItineraryComponent, TripTemplateMapComponent]
+  exports: [BookingSummarizedCardComponent]
 })
 export class BookingModule {
 }
