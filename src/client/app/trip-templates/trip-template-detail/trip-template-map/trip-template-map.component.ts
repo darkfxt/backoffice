@@ -29,6 +29,7 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     TypeOfEvent.HOTEL,
     TypeOfEvent.TERMINAL,
   ];
+  const delayFactor = 0;
 
   constructor(private store: Store<AppState>) {
   }
@@ -74,14 +75,12 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.product.route_type});
                   this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.product.route_type});
 
-                  setTimeout(() => {
-                    this.traceRoutes(
-                      origin.geo.point,
-                      event.product.middle_points.map(mp => ({location: mp.geo.point})),
-                      destination.geo.point,
-                      event.event_type.toUpperCase()
-                    );
-                  }, 100);
+                  this.traceRoutes(
+                    origin.geo.point,
+                    event.product.middle_points.map(mp => ({location: mp.geo.point})),
+                    destination.geo.point,
+                    event.event_type.toUpperCase()
+                  );
 
                   event.product.middle_points.forEach(mp => {
                     this.bounds.extend(mp.geo.point);
@@ -146,9 +145,17 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
       destination: end,
       waypoints: waypts,
       travelMode: travelMode || google.maps.TravelMode.DRIVING
-    }, result => {
-      if (result !== null)
+    }, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
         this.renderDirections(result);
+      } else if (status === google.maps.DirectionsStatus.OVER_QUERY_LIMIT) {
+        this.delayFactor++;
+        setTimeout( () => {
+          this.traceRoutes(start, waypts, end, travelMode);
+        }, this.delayFactor * 1000);
+      } else {
+        console.log('Route: ' + status);
+      }
     });
   }
 
