@@ -7,7 +7,7 @@ const eventTypes = {
   destination: 'Destination',
   hotel: 'Hotel',
   terminal: 'Terminal',
-  point_of_interst: 'Point of interest',
+  point_of_interest: 'Point of interest',
   activity: 'Activity'
 };
 
@@ -72,7 +72,7 @@ export class ItineraryFactory {
         return <Event>{
           title: event.name,
           description: event.product.description,
-          type: 'Driving',
+          type: event.product.route_type.toLowerCase(),
           meta: meta
         };
       default:

@@ -1,7 +1,7 @@
 - var month = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dec"];
-mixin driving(event)
+mixin routes(event)
   div
-    span.event-type= event.type
+    span.event-type= event.type.toLowerCase()
     h4= event.title
       if(event.meta.product.via)
         span  - Via #{event.meta.product.via}
@@ -48,7 +48,7 @@ mixin place(event)
   div
     span.event-type= event.type
     h4= event.title
-    p= event.description
+    p= event.description['en']
 
 doctype html
 html
@@ -127,6 +127,7 @@ html
         font-size: 0.625rem;
         line-height: 0.625rem;
         color: rgba(0,0,0,0.54);
+        text-transform: capitalize;
       }
 
       .day-list{
@@ -312,8 +313,8 @@ html
               ul
                 each event in day.events
                   li.event-cluster
-                    if event.type == 'Driving'
-                      +driving(event)
+                    if event.type == 'driving' || event.type == 'walking' || event.type == 'bicycling'
+                      +routes(event)
                     else
 
                       +place(event)
