@@ -74,12 +74,15 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
                   this.drawerPicker(origin.geo.point, {color: event.color, label: origin.name, type: event.product.route_type});
                   this.drawerPicker(destination.geo.point, {color: event.color, label: destination.name, type: event.product.route_type});
 
-                  this.traceRoutes(
-                    origin.geo.point,
-                    event.product.middle_points.map(mp => ({location: mp.geo.point})),
-                    destination.geo.point,
-                    event.event_type.toUpperCase()
-                  );
+                  setTimeout(() => {
+                    this.traceRoutes(
+                      origin.geo.point,
+                      event.product.middle_points.map(mp => ({location: mp.geo.point})),
+                      destination.geo.point,
+                      event.event_type.toUpperCase()
+                    );
+                  }, 100);
+
                   event.product.middle_points.forEach(mp => {
                     this.bounds.extend(mp.geo.point);
                     this.drawerPicker(mp.geo.point, {color: event.color, label: mp.name, type: mp.type});
