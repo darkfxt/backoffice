@@ -4,6 +4,7 @@ import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PlaceTypeSelectorComponent } from './place-type-selector/place-type-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { PlaceTypeSelectorComponent } from './place-type-selector/place-type-sel
     RouterModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   exports: [
     DetailHeaderComponent,

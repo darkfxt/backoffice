@@ -133,7 +133,7 @@ export class RouteMapComponent implements OnInit {
     // this.bounds.extend(position);
     let infoContent = `<h3>${options.label}</h3>\n`;
     if (related) {
-      infoContent += `<button id="adder-route">Agregar a la ruta</button>`;
+      infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
     }
     const infowindow = new google.maps.InfoWindow({
       content: infoContent

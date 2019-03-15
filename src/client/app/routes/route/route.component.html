@@ -9,13 +9,13 @@
       </button>
       <mat-menu #menu="matMenu" overlapTrigger="false">
         <button mat-menu-item (click)="deleteRoute()">{{'Eliminar' | translate}}</button>
-        <button mat-menu-item (click)="onSubmit()" [disabled]="!form.valid">{{'Guardar y salir' | translate}}</button>
+        <button mat-menu-item (click)="onSubmit()">{{'Guardar y salir' | translate}}</button>
       </mat-menu>
     </div>
 
     <div class="buttons-ctn hidden-mobile">
       <button mat-button (click)="deleteRoute()">{{'Eliminar' | translate}}</button>
-      <button mat-flat-button color="accent" (click)="onSubmit()" [disabled]="!form.valid">{{'Guardar y salir' | translate}}</button>
+      <button mat-flat-button color="accent" (click)="onSubmit()">{{'Guardar y salir' | translate}}</button>
     </div>
   </app-detail-header>
 
