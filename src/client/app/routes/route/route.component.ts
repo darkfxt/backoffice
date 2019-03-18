@@ -26,6 +26,8 @@ import { BikingCountryAvailability } from '../../shared/models/enum/BikingCountr
 import { TRANSLATE } from '../../translate-marker';
 import { PlaceService } from '../../shared/services/place.service';
 import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {IFilterTypeDistance} from '../../shared/place-type-selector/place-type-selector.component';
+import {HideLoader, ShowLoader} from '../../store/shared/actions/loader.actions';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -105,6 +107,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     this._placeStoreSubscription = this.route.data.subscribe(({segment}) => {
       if (segment) {
+        if (segment.origin && segment.destination) this.minimumRouteReached = true;
         this.segment = segment;
         this.placeStore.setPlace('origin', segment.origin);
         this.placeStore.setPlace('destination', segment.destination);
@@ -285,17 +288,25 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     window.scroll(0, 0);
   }
 
-  setPlaceTypeFilter(enabledPlaces: Array<any>) {
+  setPlaceTypeFilter(enabledPlaces: IFilterTypeDistance) {
     const filterOptions = new PaginationOptions();
     filterOptions.pageSize = 50;
-    filterOptions.types = enabledPlaces.map(ep => ep.value);
+    filterOptions.types = enabledPlaces.types.map(ep => ep.value);
     filterOptions.origin = `${this.form.get('origin').value.geo.point.lat},${this.form.get('origin').value.geo.point.lng}`;
     filterOptions.destination = `${this.form.get('destination').value.geo.point.lat},${this.form.get('destination').value.geo.point.lng}`;
     filterOptions.travelMode = this._selectedRouteType || 'driving';
-    filterOptions.distance = 3000;
-    if (enabledPlaces.length > 0) {
+    filterOptions.distance = +enabledPlaces.distance * 1000;
+    const originalOrigin: any = this.segment.origin;
+    const originalDestination: any = this.segment.destination;
+    const originalMiddlePoints: any = this.segment.middle_points;
+    const originalPlaces = [originalOrigin.name, originalDestination.name];
+    if (originalMiddlePoints.length > 0) originalMiddlePoints.map(point => originalPlaces.push(point.name));
+    console.log(originalPlaces);
+    if (enabledPlaces.types.length > 0) {
+      this.store.dispatch(new ShowLoader());
       this.placeService.getAll(filterOptions).subscribe(response => {
-        this.nearPoints = response.data.slice();
+        this.nearPoints = response.data.filter(point => !originalPlaces.includes(point.name)).slice();
+        this.store.dispatch(new HideLoader());
       });
     } else {
       this.nearPoints = [];

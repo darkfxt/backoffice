@@ -3,14 +3,21 @@ import { TRANSLATE } from '../../translate-marker';
 import { PlaceType } from '../models/enum/PlaceType';
 import { eventColors } from '../models/TripTemplate';
 
+export interface IFilterTypeDistance {
+  types: Array<any>;
+  distance: number;
+}
+
 @Component({
   selector: 'app-place-type-selector',
   templateUrl: './place-type-selector.component.html',
   styleUrls: ['./place-type-selector.component.scss']
 })
+
 export class PlaceTypeSelectorComponent implements OnInit {
 
   eventColors = eventColors;
+  sliderValue = 20;
 
   pointTypes = [
     {value: PlaceType.POI, viewValue: TRANSLATE('POI'), enabled: false, icon: 'photo_camera'},
@@ -20,7 +27,7 @@ export class PlaceTypeSelectorComponent implements OnInit {
     // {value: PlaceType.DESTINATION, viewValue: TRANSLATE('DESTINATION'), enabled: false, icon: ''},
   ];
   @Input() enabledIcons = false;
-  @Output() selectedTypes: EventEmitter<Array<any>> = new EventEmitter<Array<any>>();
+  @Output() selectedTypes: EventEmitter<IFilterTypeDistance> = new EventEmitter<IFilterTypeDistance>();
 
   constructor() { }
 
@@ -29,12 +36,21 @@ export class PlaceTypeSelectorComponent implements OnInit {
 
   onSelectionChanged(event) {
     this.toggleElement(event);
-    this.selectedTypes.emit(this.pointTypes.filter(pType => pType.enabled));
+    this.emitEvent();
+  }
+
+  private emitEvent() {
+    this.selectedTypes.emit({types: this.pointTypes.filter(pType => pType.enabled), distance: this.sliderValue});
   }
 
   toggleElement(element) {
     const elementIndex = this.pointTypes.map(pt => pt.value).indexOf(element);
     this.pointTypes[elementIndex].enabled = !this.pointTypes[elementIndex].enabled;
+  }
+
+  onSliderChange(event) {
+    if (event && event.value) this.sliderValue = event.value;
+    this.emitEvent();
   }
 
 }

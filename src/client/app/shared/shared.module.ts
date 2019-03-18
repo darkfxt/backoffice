@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DetailHeaderComponent } from './detail-header/detail-header.component';
 import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PlaceTypeSelectorComponent } from './place-type-selector/place-type-selector.component';
@@ -12,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     MatMenuModule,
     MatIconModule,
+    MatSliderModule,
     MatButtonModule,
     TranslateModule
   ],

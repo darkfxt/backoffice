@@ -44,7 +44,7 @@ export function tripTemplateReducer(state = initialState, action: TripTemplateAc
       return {...state};
     case TripTemplateActionTypes.TRIP_TEMPLATE_LEAVE_EDITION:
       return {...state, selectedTripTemplateEvents: null, selectedTripTemplate: null,
-        selectedEvent: null, indexForEvent: null, dayForEvent: null, tripTotalLength: null, tripTotalTime: null};
+        selectedEvent: null, indexForEvent: null, dayForEvent: null};
     case TripTemplateActionTypes.TRIP_TEMPLATE_PROCESSED_SUCCESFULLY:
       return {...state, selectedTripTemplateEvents: null,
         selectedEvent: null, indexForEvent: null, dayForEvent: null};
