@@ -78,7 +78,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     super(daDialog, modalService);
   }
   ngOnInit() {
-
+    this.placeStore.clearAll();
     this.store.pipe(
       select(getSegmentDialogStatus)
     ).subscribe(dialogStatus => {
@@ -296,9 +296,9 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     filterOptions.destination = `${this.form.get('destination').value.geo.point.lat},${this.form.get('destination').value.geo.point.lng}`;
     filterOptions.travelMode = this._selectedRouteType || 'driving';
     filterOptions.distance = +enabledPlaces.distance * 1000;
-    const originalOrigin: any = this.segment.origin;
-    const originalDestination: any = this.segment.destination;
-    const originalMiddlePoints: any = this.segment.middle_points;
+    const originalOrigin: any = this.form.value.origin;
+    const originalDestination: any = this.form.value.destination;
+    const originalMiddlePoints: any = this.form.value.middle_points;
     const originalPlaces = [originalOrigin.name, originalDestination.name];
     if (originalMiddlePoints.length > 0) originalMiddlePoints.map(point => originalPlaces.push(point.name));
     if (enabledPlaces.types.length > 0) {
@@ -306,6 +306,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       this.placeService.getAll(filterOptions).subscribe(response => {
         this.nearPoints = response.data.filter(point => !originalPlaces.includes(point.name)).slice();
         this.store.dispatch(new HideLoader());
+        if (response.data.length === 0) this.store.dispatch(new SnackbarOpen({message: TRANSLATE('No se encontraron resultados')}));
       });
     } else {
       this.nearPoints = [];

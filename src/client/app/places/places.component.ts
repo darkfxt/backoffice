@@ -37,6 +37,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   loading = false;
   points$: Observable<Point[]>;
   metadata$: Observable<PaginationOptionsInterface>;
+  md$: Subscription;
   drawingComponent: ListItemComponent;
   paginationOptions: any = new PaginationOptions();
   _subscription: Subscription;
@@ -59,7 +60,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     if (this.query) {
       this.paginationOptions = Object.assign({}, this.paginationOptions, this.query);
     }
-    this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
+    this.md$ = this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.route.queryParams.pipe(first()).subscribe((params) => {
       const setMetadata = {
         pageIndex: +(!params.pageIndex ? 0 : params.pageIndex),
@@ -81,6 +82,9 @@ export class PlacesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._subscription) {
       this._subscription.unsubscribe();
+    }
+    if (this.md$) {
+      this.md$.unsubscribe();
     }
   }
 

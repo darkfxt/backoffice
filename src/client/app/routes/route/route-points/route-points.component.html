@@ -16,7 +16,7 @@
     <mat-form-field color="accent" floatLabel="never">
       <input type="text" matInput placeholder="{{'Elije un origen' | translate}}"
              required [matAutocomplete]="autoGroupO" name="origin"
-             formControlName="origin" (keyup)="search($event)" (blur)="onLeave($event, 'origin')"
+             formControlName="origin" (keyup)="search($event, 'origin')" (blur)="onLeave($event, 'origin')"
       />
       <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
@@ -33,14 +33,14 @@
         <mat-form-field color="accent" floatLabel="never">
           <input type="text" matInput placeholder="{{'Elije un punto' | translate}}"
                  [matAutocomplete]="autoGroup" name="routeName" formControlName="name"
-                 [id]="'input-'+i" (keyup)="searchPrivates($event)" (blur)="onLeave($event, 'input-'+i)"
+                 [id]="'input-'+i" (keyup)="searchPrivates($event, 'input-'+i)" (blur)="onLeave($event, 'input-'+i)"
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)" class="route-autocomplete">
             <mat-option *ngIf="acLoading">
               <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
             </mat-option>
-            <mat-option *ngIf="!acLoading && options && options.length === 0">
+            <mat-option *ngIf="!acLoading && options && options.length === 0 && enablePrivateCreation">
               <button type="button" mat-button (click)="createPrivate(i); $event.stopPropagation()" >{{ 'Punto no encontrado, click para crearlo' | translate }}</button>
             </mat-option>
             <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
@@ -58,7 +58,7 @@
     <mat-form-field color="accent" floatLabel="never">
       <input type="text" matInput placeholder="{{'Elije un destino' | translate}}" required
              [matAutocomplete]="autoGroupD" name="destination"
-             formControlName="destination" (keyup)="search($event)" (blur)="onLeave($event, 'destination')"
+             formControlName="destination" (keyup)="search($event, 'destination')" (blur)="onLeave($event, 'destination')"
       />
       <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
