@@ -301,7 +301,6 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     const originalMiddlePoints: any = this.segment.middle_points;
     const originalPlaces = [originalOrigin.name, originalDestination.name];
     if (originalMiddlePoints.length > 0) originalMiddlePoints.map(point => originalPlaces.push(point.name));
-    console.log(originalPlaces);
     if (enabledPlaces.types.length > 0) {
       this.store.dispatch(new ShowLoader());
       this.placeService.getAll(filterOptions).subscribe(response => {
