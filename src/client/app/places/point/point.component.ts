@@ -87,6 +87,9 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
             }
             setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
             return;
+          } else if (this.dialogStatus === 'fromRoutes') {
+            setTimeout(() => this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE)), 1000);
+            return;
           }
 
           this.router.navigate(['/places']);
@@ -149,14 +152,14 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._resolverSubscription.unsubscribe();
-    if (this._subscription) {
-      this.store.dispatch(new ClearPoint());
-      this._subscription.unsubscribe();
-    }
+    // this._resolverSubscription.unsubscribe();
+    // if (this._subscription) {
+    //   this.store.dispatch(new ClearPoint());
+    //   this._subscription.unsubscribe();
+    // }
 
-    if (this._getDetailSubscription)
-      this._getDetailSubscription.unsubscribe();
+    // if (this._getDetailSubscription)
+    //   this._getDetailSubscription.unsubscribe();
 
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
@@ -212,7 +215,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.popup)
+    if (this.popup || this.dialogStatus === 'fromRoutes' )
       this.store.dispatch(new ToggleDialogPoint(DialogActions.CLOSE));
     else
       this.router.navigate(['/places']);

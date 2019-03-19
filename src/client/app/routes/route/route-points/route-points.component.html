@@ -40,6 +40,9 @@
             <mat-option *ngIf="acLoading">
               <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
             </mat-option>
+            <mat-option *ngIf="!acLoading && options && options.length === 0">
+              <button type="button" mat-button (click)="createPrivate(i); $event.stopPropagation()" >{{ 'Punto no encontrado, click para crearlo' | translate }}</button>
+            </mat-option>
             <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
               <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
             </mat-optgroup>

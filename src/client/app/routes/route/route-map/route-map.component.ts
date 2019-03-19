@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
 import { PlaceStore } from '../../../shared/services/place-store.services';
 import { FormGroup } from '@angular/forms';
 import { Place } from '../../../shared/models/Place';
+import { PlaceService } from '../../../shared/services/place.service';
 
 @Component({
   selector: 'app-route-map',
@@ -10,31 +11,49 @@ import { Place } from '../../../shared/models/Place';
     <div #gmap style="width:100%; height:500px"></div>`,
 })
 export class RouteMapComponent implements OnInit {
-  @Input()
-  form: FormGroup;
-  _routeType = 'driving';
 
+  _routeType = 'driving';
+  _routeReached = false;
+  bounds: google.maps.LatLngBounds;
+  directions: Array<any> = [];
+  _referencesRenderer: Array<any> = [];
+
+  @Input() form: FormGroup;
+  @Input() set routeCompleted(routeReached: boolean) {
+    if (routeReached) {
+      this._routeReached = true;
+      this.getRelated();
+    }
+  }
   @Input() set routeType(routeType: string) {
     if (routeType) {
       this._routeType = routeType;
       this.calculateAndDisplayRoute();
     }
   }
+  @Input() set nearPoints(nearPoint: Array<any>) {
+    nearPoint ? this.getRelated(nearPoint) : this.getRelated([]);
+  }
 
   @ViewChild('gmap') gmapElement: any;
-
+  @ViewChild('added-route') addRouteElement: any;
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
   waypoints = [];
   origin: Place;
   destination: Place;
   infoWindows: google.maps.InfoWindow[] = [];
+  nearMarkers: any = [];
+  docListener: any;
 
   private stepDisplay = new google.maps.InfoWindow;
   private directionsService = new google.maps.DirectionsService;
   private directionsDisplay = new google.maps.DirectionsRenderer({map: this.map});
 
-  constructor(private placeStore: PlaceStore) { }
+  constructor(private placeStore: PlaceStore,
+              private placeService: PlaceService,
+              private renderer: Renderer2,
+              private elementRef: ElementRef) { }
 
   ngOnInit() {
     this._routeType = this.form.controls.route_type.value || 'driving';
@@ -68,6 +87,9 @@ export class RouteMapComponent implements OnInit {
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
       if (!waypoints)
         return false;
+      if (!Array.isArray(waypoints)) {
+        waypoints = Object.keys(waypoints).map( key => waypoints[key]);
+      }
       this.waypoints = waypoints;
       this.addMarker();
     });
@@ -107,10 +129,18 @@ export class RouteMapComponent implements OnInit {
     this.calculateAndDisplayRoute();
   }
 
-  private drawerPicker(position, options: any = {}) {
+  private drawerPicker(position, options: any = {}, related = false) {
     // this.bounds.extend(position);
+    let infoContent = `<h3>${options.label}</h3>\n`;
+    if (related) {
+      infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+    }
     const infowindow = new google.maps.InfoWindow({
-      content: `<h3>${options.label}</h3>`
+      content: infoContent
+    });
+
+    infowindow. addListener('closeclick', () => {
+      if (this.docListener) this.docListener();
     });
 
     const marker = new google.maps.Marker({
@@ -125,6 +155,12 @@ export class RouteMapComponent implements OnInit {
     marker.addListener('click', () => {
       this.infoWindows.forEach(info => info.close());
       infowindow.open(this.map, marker);
+      this.docListener = this.renderer.listen('document', 'click', (evt) => {
+        if (evt.target.id === 'adder-route') {
+          const textTitle = evt.path[1].childNodes[0].textContent;
+          this.addNearPlace(textTitle);
+        }
+      });
     });
     this.infoWindows.push(infowindow);
     this.markers.push(marker);
@@ -176,6 +212,48 @@ export class RouteMapComponent implements OnInit {
         console.log('no disponible', response, status);
       }
     });
+  }
+
+  private getRelated(pointsToDraw?: Array<any>) {
+    if (this.origin && this.destination) {
+      this.cleanMarkers();
+      if (pointsToDraw) {
+        pointsToDraw.forEach(point => {
+          this.nearMarkers.push(point);
+          this.drawerPicker(point.geo.point, {label: point.name, type: point.type}, true);
+        });
+      }
+    }
+  }
+
+  private cleanMarkers() {
+    this.directionsDisplay.setMap(this.map);
+    this.bounds = new google.maps.LatLngBounds();
+    const nearMarkerTitles = this.nearMarkers.map(marker => marker.name);
+    const originalMarkersArray = [];
+    this.markers.forEach(mrk => {
+      if (nearMarkerTitles.includes(mrk.getTitle())) mrk.setMap(null);
+      else originalMarkersArray.push(mrk);
+    });
+    this.markers = originalMarkersArray.slice();
+    this.infoWindows = [];
+    this.nearMarkers = [];
+    this.directions = [];
+    this._referencesRenderer.forEach(element => {
+      element.setMap(null);
+
+    });
+  }
+
+  private addNearPlace(placeName) {
+    const place = this.nearMarkers.filter(marker => marker.name === placeName)[0];
+    this.placeStore.setLocation(place);
+    this.waypoints.push(place);
+    if (this.docListener) this.docListener();
+    this.addMarker();
+    const markerIndex = this.nearMarkers.map(pt => pt.name).indexOf(placeName);
+    if (markerIndex >= 0) this.nearMarkers.splice(markerIndex, 1);
+    this.getRelated(this.nearMarkers);
   }
 
 }

@@ -1,0 +1,36 @@
+@import "../../../assets/variables";
+
+.place-icon-img {
+  height: 32px;
+  width: 32px;
+}
+
+.place-icon-img-disabled {
+  height: 32px;
+  width: 32px;
+  color: #7F848C;
+}
+
+.place-types-icon-ctn {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.place-types-icon-list {
+  display: flex;
+  margin-left: 12px;
+}
+
+.places-filter-ctn{
+  display: flex;
+  align-items: center;
+
+  .filter-title{
+    font-size: 14px;
+    color: $gray-title;
+  }
+}

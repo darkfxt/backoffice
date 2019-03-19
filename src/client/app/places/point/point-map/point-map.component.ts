@@ -69,11 +69,11 @@ export class PointMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.placeStore.clearAll();
-    this._subscription.unsubscribe();
-    if (!this.changeDetectionRef['destroyed']) {
-      this.changeDetectionRef.detectChanges();
-    }
+    //this.placeStore.clearAll();
+    //this._subscription.unsubscribe();
+    //if (!this.changeDetectionRef['destroyed']) {
+    //  this.changeDetectionRef.detectChanges();
+    //}
   }
 
   onChangeCoords(event) {

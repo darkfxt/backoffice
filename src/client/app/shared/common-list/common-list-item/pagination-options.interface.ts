@@ -12,6 +12,12 @@ export interface PaginationOptionsInterface {
   orderBy?: string;
   types?: Array<string>;
   self?: boolean;
+  coordinates?: any;
+  origin?: any;
+  destination?: any;
+  middle_points?: any;
+  travelMode?: any;
+  distance?: number;
 }
 
 export class PaginationOptions implements PaginationOptionsInterface {
@@ -24,6 +30,12 @@ export class PaginationOptions implements PaginationOptionsInterface {
   orderBy?: string;
   types?: Array<string>;
   self?: boolean;
+  coordinates?: any;
+  origin?: any;
+  destination?: any;
+  middle_points?: any;
+  travelMode?: any;
+  distance?: number;
   constructor() {
    this.previousPageIndex = 0;
       this.pageIndex = 0;

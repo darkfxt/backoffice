@@ -11,7 +11,7 @@ import { PlaceStore } from '../../shared/services/place-store.services';
 import { PointComponent } from '../../places/point/point.component';
 import { EventDialogComponent } from '../../trip-templates/trip-template-detail/trip-template-itinerary/event-dialog/event-dialog.component';
 import { select, Store } from '@ngrx/store';
-import {ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog} from '../../store/route/route.actions';
+import { ClearSegment, ErrorSavingSegment, SaveSegment, ToggleSegmentDialog } from '../../store/route/route.actions';
 import { SegmentState } from '../../store/route/route.reducer';
 import { ClearPoint, ToggleDialogPoint } from '../../store/place/place.actions';
 import { DialogActions } from '../../store/dialog-actions.enum';
@@ -22,8 +22,12 @@ import { getDialogStatus, getPointSelected } from '../../store/place';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ApiError } from '../../shared/models/ApiError';
-import {BikingCountryAvailability} from '../../shared/models/enum/BikingCountryAvailability';
-import {TRANSLATE} from '../../translate-marker';
+import { BikingCountryAvailability } from '../../shared/models/enum/BikingCountryAvailability';
+import { TRANSLATE } from '../../translate-marker';
+import { PlaceService } from '../../shared/services/place.service';
+import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
+import {IFilterTypeDistance} from '../../shared/place-type-selector/place-type-selector.component';
+import {HideLoader, ShowLoader} from '../../store/shared/actions/loader.actions';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -44,11 +48,13 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   dialogStatus: string;
   popup = false;
   travelModeStatus = false;
+  minimumRouteReached = false;
   _errorSubscription: Subscription;
   _deleteSubscription: Subscription;
   _selectedRouteType: string;
   _disabledModesOfTravel: Array<any> = [];
   _languageSelected: string;
+  nearPoints: Array<any> = [];
   defaultLanguage = localStorage.getItem('uiLanguage') || navigator.language.split('-')[0];
   stepper = {
     header: true,
@@ -65,6 +71,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private placeStore: PlaceStore,
+    private placeService: PlaceService,
     private daDialog: MatDialog,
     modalService: ModalService
   ) {
@@ -87,12 +94,12 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
             setTimeout(() => this.store.dispatch(new ToggleSegmentDialog(DialogActions.CLOSE)), 1000);
             return;
           }
-          if (this._subscription)
-            this._subscription.unsubscribe();
-          if (this._placeStoreSubscription) {
-            this.placeStore.clearAll();
-            this._placeStoreSubscription.unsubscribe();
-          }
+          // if (this._subscription)
+          //   this._subscription.unsubscribe();
+          // if (this._placeStoreSubscription) {
+          //   this.placeStore.clearAll();
+          //   this._placeStoreSubscription.unsubscribe();
+          // }
           this.store.dispatch(new ClearSegment());
           setTimeout(() => this.router.navigate(['/routes']));
         }
@@ -100,6 +107,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
 
     this._placeStoreSubscription = this.route.data.subscribe(({segment}) => {
       if (segment) {
+        if (segment.origin && segment.destination) this.minimumRouteReached = true;
         this.segment = segment;
         this.placeStore.setPlace('origin', segment.origin);
         this.placeStore.setPlace('destination', segment.destination);
@@ -132,9 +140,10 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();
 
-    if (this._placeStoreSubscription)
+    if (this._placeStoreSubscription) {
+      this.placeStore.clearAll();
       this._placeStoreSubscription.unsubscribe();
-
+    }
     this.store.dispatch(new ClearSegment());
   }
 
@@ -258,6 +267,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   toggleTravelMode(event) {
+    this.minimumRouteReached = true;
     this.form.get('route_type').enable();
     this.form.get('road_surface').enable();
     const originCountry = this.form.get('origin').value.geo.address.country_code;
@@ -276,6 +286,30 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     });
     this.stepper[step] = false;
     window.scroll(0, 0);
+  }
+
+  setPlaceTypeFilter(enabledPlaces: IFilterTypeDistance) {
+    const filterOptions = new PaginationOptions();
+    filterOptions.pageSize = 50;
+    filterOptions.types = enabledPlaces.types.map(ep => ep.value);
+    filterOptions.origin = `${this.form.get('origin').value.geo.point.lat},${this.form.get('origin').value.geo.point.lng}`;
+    filterOptions.destination = `${this.form.get('destination').value.geo.point.lat},${this.form.get('destination').value.geo.point.lng}`;
+    filterOptions.travelMode = this._selectedRouteType || 'driving';
+    filterOptions.distance = +enabledPlaces.distance * 1000;
+    const originalOrigin: any = this.segment.origin;
+    const originalDestination: any = this.segment.destination;
+    const originalMiddlePoints: any = this.segment.middle_points;
+    const originalPlaces = [originalOrigin.name, originalDestination.name];
+    if (originalMiddlePoints.length > 0) originalMiddlePoints.map(point => originalPlaces.push(point.name));
+    if (enabledPlaces.types.length > 0) {
+      this.store.dispatch(new ShowLoader());
+      this.placeService.getAll(filterOptions).subscribe(response => {
+        this.nearPoints = response.data.filter(point => !originalPlaces.includes(point.name)).slice();
+        this.store.dispatch(new HideLoader());
+      });
+    } else {
+      this.nearPoints = [];
+    }
   }
 
 }

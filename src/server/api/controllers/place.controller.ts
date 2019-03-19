@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { PlaceService } from '../services/place.service';
 import Place from '../entity/Place';
-import { httpstatus } from 'aws-sdk/clients/glacier';
 import httpStatus = require('http-status');
 import { PlaceType } from '../entity/enum/PlaceType';
 
