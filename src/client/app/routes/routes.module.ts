@@ -5,7 +5,7 @@ import { RoutesComponent } from './routes.component';
 import { RouteComponent } from './route/route.component';
 import {
   MatAutocompleteModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatSelectModule, MatSnackBarModule, MatProgressSpinnerModule, MatCardModule
+  MatSelectModule, MatSnackBarModule, MatProgressSpinnerModule, MatCardModule, MatSliderModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouteMapComponent } from './route/route-map/route-map.component';
@@ -23,6 +23,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
 import { LoadingModule } from '../shared/loading/loading.module';
 import { PipesModule } from '../shared/pipes/pipes.module';
+import { PlaceTypeSelectorComponent } from './route/place-type-selector/place-type-selector.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     MatDialogModule,
     SharedModule,
     PipesModule,
-    MatCardModule
+    MatCardModule,
+    MatSliderModule
   ],
   exports: [
     RouteComponent,
@@ -64,7 +66,8 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     RouteInfoComponent,
     RouteSummarizedCardComponent,
     RouteFiltersComponent,
-    RouteDetailComponent
+    RouteDetailComponent,
+    PlaceTypeSelectorComponent
   ],
   providers: [ ],
 

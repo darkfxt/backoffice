@@ -39,7 +39,7 @@
 
         <li class="step-item" [hidden]="stepper.map">
           <div class="map-ctn">
-            <h1>{{'Completa la ruta' | translate}}</h1>
+            <!--h1>{{'Completa la ruta' | translate}}</h1-->
             <div class="row">
               <div class="col-sm-4 col-xs-12 col-lg-3">
                 <app-route-points [routeGroup]="form"
@@ -48,13 +48,13 @@
               </div>
               <div class="col-sm-8 col-xs-12 col-lg-9">
                 <app-place-type-selector
+                  [form]="form"
                   [enabledIcons]="minimumRouteReached"
                   (selectedTypes)="setPlaceTypeFilter($event)">
                 </app-place-type-selector>
                 <app-route-map
                   [form]="form"
                   [routeCompleted]="minimumRouteReached"
-                  [routeType]="_selectedRouteType"
                   [nearPoints]="nearPoints">
                 </app-route-map>
               </div>
@@ -69,9 +69,7 @@
         <li class="step-item" [hidden]="stepper.header">
           <div class="header-container">
             <h1>{{'Información básica' | translate}}</h1>
-            <app-route-head [form]="form"
-                            (routeTypeChanged)="onSelectionTypeChanged($event)"
-                            [disabledRoutes]="_disabledModesOfTravel"></app-route-head>
+            <app-route-head [form]="form"></app-route-head>
             <div class="buttons-ctn">
               <button mat-flat-button color="primary" (click)="setStep('map')" [disabled]="">{{'Anterior' | translate}}</button>
               <button mat-flat-button color="primary" (click)="setStep('cover')" [disabled]="">{{'Siguiente' | translate}}</button>
