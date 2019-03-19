@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
 
-import {default as Segment, SegmentWithMetadata } from '../../shared/models/Segment';
+import {default as Segment, Leg, SegmentWithMetadata } from '../../shared/models/Segment';
 import { PaginationOptionsInterface } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
-import {ApiError} from '../../shared/models/ApiError';
+import { ApiError } from '../../shared/models/ApiError';
 
 export enum SegmentActionTypes {
   GET_SEGMENTS = '[Segment] Retrieving',
@@ -15,7 +15,8 @@ export enum SegmentActionTypes {
   SAVE_SUCCESFUL = '[Segment] Save Segment Succesful',
   ERROR_SAVING = '[Segment] Error Saving Segment',
   TOGGLE_DIALOG = '[Segment] Set Dialog',
-  SEGMENTS_METADATA_RETRIEVED = '[Segment] Metadata Retrieved'
+  SEGMENTS_METADATA_RETRIEVED = '[Segment] Metadata Retrieved',
+  ROUTE_DRAWED = '[Route] Route Drawed'
 }
 
 export class GetSegments implements Action {
@@ -90,6 +91,11 @@ export const hideLoaderActions = [
   SegmentActionTypes.ERROR_SAVING
 ];
 
+export class RouteDrawed implements Action {
+  readonly type = SegmentActionTypes.ROUTE_DRAWED;
+  constructor(public payload: Leg[]) { }
+}
+
 export type SegmentActions = GetSegments | SegmentsRetrieved |
   FilterSegments | SegmentSelected | SaveSegment | ClearSegment |
-  ToggleSegmentDialog | SegmentsMetadataRetrieved | ErrorSavingSegment;
+  ToggleSegmentDialog | SegmentsMetadataRetrieved | ErrorSavingSegment | RouteDrawed;

@@ -1,16 +1,22 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {} from '@types/googlemaps';
 import { PlaceStore } from '../../../shared/services/place-store.services';
 import { FormGroup } from '@angular/forms';
 import { Place } from '../../../shared/models/Place';
 import { PlaceService } from '../../../shared/services/place.service';
+import { TerminalSelected } from '../../../store/trip-template/event/event.actions';
+import { RouteDrawed } from '../../../store/route/route.actions';
+import { Leg } from '../../../shared/models/Segment';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-route-map',
   template: `
     <div #gmap style="width:100%; height:500px"></div>`,
 })
-export class RouteMapComponent implements OnInit {
+export class RouteMapComponent implements OnInit, OnDestroy {
 
   _routeType = 'driving';
   _routeReached = false;
@@ -23,12 +29,6 @@ export class RouteMapComponent implements OnInit {
     if (routeReached) {
       this._routeReached = true;
       this.getRelated();
-    }
-  }
-  @Input() set routeType(routeType: string) {
-    if (routeType) {
-      this._routeType = routeType;
-      this.calculateAndDisplayRoute();
     }
   }
   @Input() set nearPoints(nearPoint: Array<any>) {
@@ -45,6 +45,7 @@ export class RouteMapComponent implements OnInit {
   infoWindows: google.maps.InfoWindow[] = [];
   nearMarkers: any = [];
   docListener: any;
+  routeTypeSubscription: Subscription;
 
   private stepDisplay = new google.maps.InfoWindow;
   private directionsService = new google.maps.DirectionsService;
@@ -53,10 +54,15 @@ export class RouteMapComponent implements OnInit {
   constructor(private placeStore: PlaceStore,
               private placeService: PlaceService,
               private renderer: Renderer2,
-              private elementRef: ElementRef) { }
+              private elementRef: ElementRef,
+              private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
     this._routeType = this.form.controls.route_type.value || 'driving';
+    this.routeTypeSubscription = this.form.get('route_type').valueChanges.subscribe(resp => {
+      this.calculateAndDisplayRoute();
+    });
 
     const mapProp = {
       center: new google.maps.LatLng(0, 0),
@@ -110,12 +116,16 @@ export class RouteMapComponent implements OnInit {
     //
   }
 
+  ngOnDestroy() {
+    this.routeTypeSubscription.unsubscribe();
+  }
+
   private addMarker() {
     this.markers.forEach(marker => marker.setMap(null));
     this.markers = [];
 
     if (this.origin)
-      this.drawerPicker(this.origin.geo.point, {label: this.origin.name, type: this.origin.type});
+      this.drawerPicker(this.origin.geo.point, {label: this.origin.name, type: 'destination'});
 
     this.waypoints
       // .filter(place => place.types !== 'waypoint')
@@ -124,7 +134,7 @@ export class RouteMapComponent implements OnInit {
       });
 
     if (this.destination)
-      this.drawerPicker(this.destination.geo.point, {label: this.destination.name, type: this.destination.type});
+      this.drawerPicker(this.destination.geo.point, {label: this.destination.name, type: 'destination'});
 
     this.calculateAndDisplayRoute();
   }
@@ -195,18 +205,18 @@ export class RouteMapComponent implements OnInit {
       destination: this.destination.geo.point,
       waypoints: waypts,
       optimizeWaypoints: false,
-      travelMode: google.maps.TravelMode[this._routeType.toUpperCase()]
+      travelMode: google.maps.TravelMode[this.form.get('route_type').value.toUpperCase()]
     }, (response, status: any) => {
       if (status === 'OK') {
         this.directionsDisplay.setDirections(response);
-        const legs = response.routes[0].legs
+        const legs: Leg[] = response.routes[0].legs
           .map(value => (
             {
               distance: value.distance,
               duration: value.duration
             })
           );
-
+        this.store.dispatch(new RouteDrawed(legs));
         this.form.patchValue({legs: legs});
       } else {
         console.log('no disponible', response, status);

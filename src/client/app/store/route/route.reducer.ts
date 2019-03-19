@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { SegmentActions, SegmentActionTypes } from './route.actions';
 
-import { default as Segment } from '../../shared/models/Segment';
+import {default as Segment, Leg} from '../../shared/models/Segment';
 import { PaginationOptionsInterface, PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import { DialogActions } from '../dialog-actions.enum';
 import { ApiError } from '../../shared/models/ApiError';
@@ -10,6 +10,7 @@ export interface SegmentState extends EntityState<Segment> {
     metadata: PaginationOptionsInterface;
     segmentSelected?: Segment;
     dialog?: DialogActions;
+    routeDrawed?: Leg[];
     error?: ApiError;
   }
 
@@ -41,6 +42,8 @@ export function segmentReducer(state: SegmentState = initialState, action: Segme
       return {...state, error: action.payload};
     case SegmentActionTypes.TOGGLE_DIALOG:
       return {...state, dialog: action.payload};
+    case SegmentActionTypes.ROUTE_DRAWED:
+      return {...state, routeDrawed: action.payload};
     default:
       return state;
   }

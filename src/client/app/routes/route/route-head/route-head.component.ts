@@ -13,41 +13,11 @@ export class RouteHeadComponent implements OnInit {
   @Input()
   form: FormGroup;
 
-  @Input() set disabledRoutes(routeTypes: Array<string>) {
-    if (routeTypes) {
-      if (routeTypes.length > 0)
-        this.disableRouteMode(routeTypes);
-      else {
-        this.routeTypes.map((travelMode) => {
-          travelMode.enabled = true;
-        });
-      }
-    }
-  }
-
   @Output()
   routeTypeChanged: EventEmitter<any> = new EventEmitter<any>();
   languages = [];
   languageSelected: string;
 
-
-  routeTypes = [
-    {
-      value: TRANSLATE('driving'),
-      viewValue: 'Driving',
-      enabled: true
-    },
-    {
-      value: TRANSLATE('walking'),
-      viewValue: 'Walking',
-      enabled: true
-    },
-    {
-      value: TRANSLATE('bicycling'),
-      viewValue: 'Bicycling',
-      enabled: true
-    }
-  ];
   roadSurfaces = [
     {
       value: TRANSLATE('PAVED'),
@@ -69,19 +39,6 @@ export class RouteHeadComponent implements OnInit {
     this.contentServiceInstance.getAvailableLanguages()
       .subscribe((resp) => {
         this.languages = resp.slice();
-      });
-  }
-
-  optionChanged(event) {
-    if (event.isUserInput) {
-      this.routeTypeChanged.emit(event.source.value);
-    }
-  }
-
-  disableRouteMode(routeModes: Array<string>) {
-    this.routeTypes.map((travelMode) => {
-        if (routeModes.includes(travelMode.value))
-          travelMode.enabled = false;
       });
   }
 

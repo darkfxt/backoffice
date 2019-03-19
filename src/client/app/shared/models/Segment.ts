@@ -35,7 +35,7 @@ export default class Segment {
   constructor(params: any = {}) {
     this._id = params._id || '';
     this.name = params.name || '';
-    this.route_type = params.route_type || '';
+    this.route_type = params.route_type || 'driving';
     this.search_name = params.search_name || '';
     this.road_surface = params.road_surface || '';
     this.images = params.images || [];

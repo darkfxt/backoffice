@@ -9,14 +9,6 @@
     <mat-error hidden="{{form.get('via').valid}}">{{'Ruta existente. Ingresa la vía para diferenciar las rutas' | translate}}</mat-error>
   </mat-form-field>
 
-  <mat-form-field color="accent" class="route-type">
-    <mat-select placeholder="{{'Tipo de ruta' | translate}}" required name="route_type" formControlName="route_type">
-      <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value" [disabled]="!routeType.enabled" (onSelectionChange)="optionChanged($event)">
-        {{routeType.value | translate}}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.get('route_type').invalid && (form.get('route_type').dirty || form.get('route_type').touched)">{{'Campo requerido' | translate}}</mat-error>
-  </mat-form-field>
 
   <mat-form-field color="accent" class="road-surface">
     <mat-select placeholder="{{'Tipo de superficie' | translate}}" required name="road_surface" formControlName="road_surface">

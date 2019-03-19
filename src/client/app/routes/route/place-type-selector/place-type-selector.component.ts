@@ -1,7 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TRANSLATE } from '../../translate-marker';
-import { PlaceType } from '../models/enum/PlaceType';
-import { eventColors } from '../models/TripTemplate';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { TRANSLATE } from '../../../translate-marker';
+import { PlaceType } from '../../../shared/models/enum/PlaceType';
+import { eventColors } from '../../../shared/models/TripTemplate';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/shared/app.interfaces';
+import { Subscription } from 'rxjs';
+import { getRouteDrawed } from '../../../store/route/index';
+import { RouteHelper } from '../../../shared/helpers/route.helper';
+import { FormControl } from '@angular/forms';
 
 export interface IFilterTypeDistance {
   types: Array<any>;
@@ -14,10 +20,31 @@ export interface IFilterTypeDistance {
   styleUrls: ['./place-type-selector.component.scss']
 })
 
-export class PlaceTypeSelectorComponent implements OnInit {
+export class PlaceTypeSelectorComponent implements OnInit, OnDestroy {
 
+  @Input() form: FormControl;
   eventColors = eventColors;
   sliderValue = 20;
+  storeSubscription: Subscription;
+  distanceAndTime;
+
+  routeTypes = [
+    {
+      value: TRANSLATE('driving'),
+      viewValue: 'Driving',
+      enabled: true
+    },
+    {
+      value: TRANSLATE('walking'),
+      viewValue: 'Walking',
+      enabled: true
+    },
+    {
+      value: TRANSLATE('bicycling'),
+      viewValue: 'Bicycling',
+      enabled: true
+    }
+  ];
 
   pointTypes = [
     {value: PlaceType.POI, viewValue: TRANSLATE('POI'), enabled: false, icon: 'photo_camera'},
@@ -29,9 +56,19 @@ export class PlaceTypeSelectorComponent implements OnInit {
   @Input() enabledIcons = false;
   @Output() selectedTypes: EventEmitter<IFilterTypeDistance> = new EventEmitter<IFilterTypeDistance>();
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>,
+    private routeHelper: RouteHelper
+  ) { }
 
   ngOnInit() {
+    this.storeSubscription = this.store.select(getRouteDrawed).subscribe(resp => {
+      this.distanceAndTime = this.routeHelper.calculateDistanceAndTime(resp);
+    });
+  }
+
+  ngOnDestroy() {
+    this.storeSubscription.unsubscribe();
   }
 
   onSelectionChanged(event) {

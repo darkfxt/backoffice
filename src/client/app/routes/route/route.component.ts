@@ -26,7 +26,7 @@ import { BikingCountryAvailability } from '../../shared/models/enum/BikingCountr
 import { TRANSLATE } from '../../translate-marker';
 import { PlaceService } from '../../shared/services/place.service';
 import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
-import {IFilterTypeDistance} from '../../shared/place-type-selector/place-type-selector.component';
+import {IFilterTypeDistance} from './place-type-selector/place-type-selector.component';
 import {HideLoader, ShowLoader} from '../../store/shared/actions/loader.actions';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
@@ -117,7 +117,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     this._languageSelected = this.segment.default_lang;
     this.form = this.fb.group({
       name: [{value: this.segment.name, disabled: true}, Validators.required],
-      route_type: [{value: this.segment.route_type, disabled: !this.segment.name}, Validators.required],
+      route_type: [this.segment.route_type, Validators.required],
       road_surface: [{value: this.segment.road_surface, disabled: !this.segment.name}, Validators.required],
       via: this.segment.via,
       description: [{value: this.segment.description, disabled: !this._languageSelected}],

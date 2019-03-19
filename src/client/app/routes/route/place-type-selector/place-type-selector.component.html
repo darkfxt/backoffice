@@ -1,0 +1,45 @@
+<div class="filter-ctn" [formGroup]="form">
+
+
+  <div class="distance-time">
+    <mat-form-field color="accent" class="route-type">
+      <mat-label></mat-label>
+      <mat-select placeholder="{{'Tipo de ruta' | translate}}" name="route_type" formControlName="route_type">
+        <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
+          {{routeType.value | translate}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('route_type').invalid && (form.get('route_type').dirty || form.get('route_type').touched)">{{'Campo requerido' | translate}}</mat-error>
+    </mat-form-field>
+    <span>{{distanceAndTime.distance}}km</span>
+    <span [innerHTML]="distanceAndTime.duration | hoursMinutes"></span>
+  </div>
+
+  <div class="places-filter-ctn">
+    <span class="filter-title">{{'Mostrar lugares cercanos a la ruta' | translate}}</span>
+    <ul class="place-types-icon-list">
+      <li class="place-types-icon-ctn" *ngFor="let pType of pointTypes" [style.backgroundColor]="pType.enabled ? eventColors[pType.value] : '#fff'">
+        <button mat-icon-button (click)="onSelectionChanged(pType.value)">
+          <mat-icon [style.color]="!pType.enabled ? eventColors[pType.value] : '#fff'">{{pType.icon}}</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="places-filter-ctn">
+    <span class="filter-title">{{'Distancia de búsqueda' | translate}}</span>
+    <mat-slider
+      class="distance-slider"
+      [min]=1
+      [max]=500
+      [step]=10
+      [tickInterval]="1"
+      [value]="sliderValue"
+      color="primary"
+      (change)="onSliderChange($event)">
+    </mat-slider>
+    <span class="kilometers">{{sliderValue}}km</span>
+  </div>
+
+</div>

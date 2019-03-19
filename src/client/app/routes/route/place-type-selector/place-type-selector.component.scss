@@ -1,4 +1,4 @@
-@import "../../../assets/variables";
+@import "../../../../assets/variables";
 
 .place-icon-img {
   height: 32px;
@@ -22,15 +22,41 @@
 
 .place-types-icon-list {
   display: flex;
-  margin-left: 12px;
+  margin-left: 8px;
 }
 
 .places-filter-ctn{
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   .filter-title{
     font-size: 14px;
     color: $gray-title;
   }
+}
+
+.filter-ctn{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.distance-slider{
+  margin-left: 8px;
+}
+
+.distance-time{
+  display: flex;
+  align-items: center;
+  span{
+    font-size: 14px;
+    color: $gray-title;
+    margin-left: 12px;
+  }
+}
+
+.kilometers{
+  color: $gray-body;
 }

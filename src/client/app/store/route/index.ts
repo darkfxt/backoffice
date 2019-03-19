@@ -47,3 +47,8 @@ export const getSegmentDialogStatus = createSelector(
   getSegmentsState,
   (state: any) => state.dialog
 );
+
+export const getRouteDrawed = createSelector(
+  getSegmentsState,
+  (state: any) => state.routeDrawed
+);
