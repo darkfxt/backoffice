@@ -36,6 +36,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   _resolverSubscription: Subscription;
   _getDetailSubscription: Subscription;
   _deleteSubscription: Subscription;
+  _dialogStatus: Subscription;
   bussy: boolean;
   multiDescriptions: any;
   amIDialog = 'false';
@@ -63,11 +64,12 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
 
   ngOnInit() {
     let isUpdate = false;
-    this.store.pipe(
+    this._dialogStatus = this.store.pipe(
       select(getDialogStatus)
     ).subscribe(dialogStatus => {
       this.dialogStatus = dialogStatus;
       if (dialogStatus === 'true') this.popup = true;
+      if (dialogStatus === undefined) this.placeStore.clearAll();
     });
 
     this.store.pipe(
@@ -152,14 +154,14 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this._resolverSubscription.unsubscribe();
-    // if (this._subscription) {
-    //   this.store.dispatch(new ClearPoint());
-    //   this._subscription.unsubscribe();
-    // }
-
-    // if (this._getDetailSubscription)
-    //   this._getDetailSubscription.unsubscribe();
+    this._resolverSubscription.unsubscribe();
+    if (this._subscription) {
+      this.store.dispatch(new ClearPoint());
+      this._subscription.unsubscribe();
+    }
+    if (this._dialogStatus) this._dialogStatus.unsubscribe();
+    if (this._getDetailSubscription)
+      this._getDetailSubscription.unsubscribe();
 
     if (this._deleteSubscription)
       this._deleteSubscription.unsubscribe();

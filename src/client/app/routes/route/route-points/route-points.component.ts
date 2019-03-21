@@ -29,14 +29,15 @@ export class RoutePointsComponent implements OnInit {
   dialogReferenceSub: any;
   autocompleteTimeout;
   options: any[];
-  lastSearch = [];
-  lastSelection = [];
+  lastSearch: any = {};
+  lastSelection: any = {};
   lastOrigin = '';
   lastDestination = '';
   acLoading = false;
   dialogStatus$: Observable<any>;
   _subscription: Subscription;
   indexn: number;
+  enablePrivateCreation = false;
 
   @Output()
   travelModeDisabled: EventEmitter<any> = new EventEmitter<any>();
@@ -162,12 +163,13 @@ export class RoutePointsComponent implements OnInit {
   //
 
 
-  search(event) {
+  search(event, control) {
+    console.log('search')
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
     this.acLoading = true;
-    // this.lastSearch = event.target.value;
+    // this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
@@ -182,17 +184,18 @@ export class RoutePointsComponent implements OnInit {
 
   }
 
-  searchPrivates(event) {
+  searchPrivates(event, control) {
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
     this.acLoading = true;
-    // this.lastSearch = event.target.value;
+    // this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
           this.options = this.createGroups(resp);
           this.travelModeDisabled.emit(null);
+          this.enablePrivateCreation = true;
           this.acLoading = false;
         },
         (err) => {
@@ -226,6 +229,7 @@ export class RoutePointsComponent implements OnInit {
   }
 
   onLeave(event, inputName) {
+    console.log('onleave')
     if (this.lastSearch[inputName] === event.target.value) {
       return;
     }
@@ -239,6 +243,7 @@ export class RoutePointsComponent implements OnInit {
       const $elem = this.renderer.selectRootElement(`#${event.target.id}`);
       setTimeout(() => {
         this.renderer.setProperty($elem, 'value', '');
+        this.enablePrivateCreation = false;
         this.ref.detectChanges();
       }, 100);
     }
