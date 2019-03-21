@@ -45,6 +45,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
   infoWindows: google.maps.InfoWindow[] = [];
   nearMarkers: any = [];
   docListener: any;
+  lastMarker: any;
   routeTypeSubscription: Subscription;
 
   private stepDisplay = new google.maps.InfoWindow;
@@ -76,7 +77,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
 
     this.map.addListener('click', (e) => {
       const place = new Place({
-        name: 'Waypoint',
+        name: e.latLng.toString(),
         geo: {
           point: e.latLng.toJSON()
         },
@@ -84,10 +85,45 @@ export class RouteMapComponent implements OnInit, OnDestroy {
         _id: ''
       });
 
-      this.placeStore.setLocation(place);
-      this.waypoints.push(place);
-      this.addMarker();
-      // this.calculateAndDisplayRoute();
+      let infoContent = `<h3>${e.latLng.toString()}</h3>\n`;
+      infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+
+      const infowindow = new google.maps.InfoWindow({
+        content: infoContent
+      });
+
+      const marker = new google.maps.Marker({
+        position: e.latLng.toJSON(),
+        map: this.map,
+        title: e.latLng.toString(),
+        icon: {
+          url: `/assets/icons/waypoint.png`, // url
+          scaledSize: new google.maps.Size(30, 42), // scaled size
+        }
+      });
+
+      this.lastMarker = marker;
+
+      infowindow.addListener('closeclick', (lalala) => {
+        if (this.docListener) this.docListener();
+        this.markers = this.markers.filter((thyMarker: any) => thyMarker.title !== this.lastMarker.title);
+        this.lastMarker.setMap(null);
+      });
+
+      this.infoWindows.forEach(info => info.close());
+      infowindow.open(this.map, marker);
+      this.docListener = this.renderer.listen('document', 'click', (evt) => {
+        if (evt.target.id === 'adder-route') {
+          const textTitle = evt.path[1].childNodes[0].textContent;
+          this.placeStore.setLocation(place);
+          this.waypoints.push(place);
+          this.addMarker();
+          if (this.docListener) this.docListener();
+        }
+      });
+
+      this.infoWindows.push(infowindow);
+      this.markers.push(marker);
     });
 
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
