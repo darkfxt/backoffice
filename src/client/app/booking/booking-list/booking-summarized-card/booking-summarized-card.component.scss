@@ -66,9 +66,11 @@
     .summarized-card-body{
       @extend .basic-value;
       display: flex;
+      flex-wrap: wrap;
 
       .data-box{
         margin-right: 24px;
+        margin-bottom: 12px;
 
         &.client-box{
         }
