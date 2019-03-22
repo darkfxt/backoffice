@@ -42,7 +42,7 @@ export class PlaceController {
   public static async glAutocomplete(request: Request, response: Response, next: NextFunction) {
     try {
       const data = await PlaceService.glAutocomplete(decodeURI(request.query.q), request.query.lang,
-          (<any>request).loggedUser.Company.Countries);
+          (<any>request).loggedUser.Countries);
       response.json(data);
     } catch (err) {
       next(err);
@@ -53,7 +53,7 @@ export class PlaceController {
     try {
       const { q, lang } = request.query;
       const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
-      const promisePublic = PlaceService.glAutocomplete(decodeURI(q), lang, (<any>request).loggedUser.Company.Countries);
+      const promisePublic = PlaceService.glAutocomplete(decodeURI(q), lang, (<any>request).loggedUser.Countries);
       const promisePrivate = PlaceService.search(decodeURI(q), [], PRIVATE_TYPES, company_id, 20, lang, request.headers);
       const [dataPublic, dataPrivate] = await Promise.all([promisePublic, promisePrivate]);
       const resp = [];
