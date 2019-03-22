@@ -24,7 +24,7 @@ export class PlaceController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
-      if (request.query.types &&  (typeof request.query.types === 'object'))
+      if (request.query.types && (typeof request.query.types === 'object'))
         request.query.types = request.query.types.join(',');
       request.query.page = +request.query.page + 1;
       const answer = await PlaceService.getAll(request.query, request.headers);
@@ -41,7 +41,8 @@ export class PlaceController {
 
   public static async glAutocomplete(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = await PlaceService.glAutocomplete(decodeURI(request.query.q), request.query.lang);
+      const data = await PlaceService.glAutocomplete(decodeURI(request.query.q), request.query.lang,
+          (<any>request).loggedUser.Countries);
       response.json(data);
     } catch (err) {
       next(err);
@@ -50,14 +51,14 @@ export class PlaceController {
 
   public static async autocomplete(request: Request, response: Response, next: NextFunction) {
     try {
-      const {q, lang} = request.query;
+      const { q, lang } = request.query;
       const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
-      const promisePublic = PlaceService.glAutocomplete(decodeURI(q), lang);
+      const promisePublic = PlaceService.glAutocomplete(decodeURI(q), lang, (<any>request).loggedUser.Countries);
       const promisePrivate = PlaceService.search(decodeURI(q), [], PRIVATE_TYPES, company_id, 20, lang, request.headers);
       const [dataPublic, dataPrivate] = await Promise.all([promisePublic, promisePrivate]);
       const resp = [];
-      dataPrivate.forEach((tPlace) => resp.push({name: tPlace.name, place_id: tPlace._id, type: 'private'}));
-      dataPublic.forEach((gPlace: any) => resp.push({name: gPlace.name, place_id: gPlace.place_id, type: 'public'}));
+      dataPrivate.forEach((tPlace) => resp.push({ name: tPlace.name, place_id: tPlace._id, type: 'private' }));
+      dataPublic.forEach((gPlace: any) => resp.push({ name: gPlace.name, place_id: gPlace.place_id, type: 'public' }));
       response.json(resp);
     } catch (err) {
       next(err);
@@ -67,7 +68,7 @@ export class PlaceController {
   public static async search(request: Request, response: Response, next: NextFunction) {
     try {
       const company_id = (<any>request).loggedUser.Role !== 'TAYLOR_ADMIN' ? (<any>request).loggedUser.CompanyID : '';
-      const {search, lang} = request.query;
+      const { search, lang } = request.query;
       const resp = await PlaceService.search(search, PUBLIC_TYPES, PRIVATE_TYPES, company_id, 20, lang, request.headers);
       response.json(resp);
     } catch (err) {
