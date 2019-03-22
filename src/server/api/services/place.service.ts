@@ -33,10 +33,17 @@ export class PlaceService {
     return PlaceAdapter.fitFromDAO(res.data);
   }
 
-  public static async glAutocomplete(query: string, lang: string = 'en'): Promise<Autocomplete[]> {
+  public static async glAutocomplete(query: string, lang: string = 'en', countries: Array<string>): Promise<Autocomplete[]> {
+
+    let countriesQs = '';
+    countries.forEach(c => {
+      if (countriesQs.length === 0)
+        countriesQs += 'country:' + c;
+      else countriesQs += '|country:' + c;
+    });
     return axios
       // tslint:disable-next-line:max-line-length
-      .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?&key=${config.googleApiKey}&input=${encodeURI(query)}&language=${lang}`)
+      .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?&key=${config.googleApiKey}&input=${encodeURI(query)}&language=${lang}&components=${countriesQs}`)
       .then(resp => {
         return resp.data.predictions.map(item => new Autocomplete(item.place_id, item.description));
       });
