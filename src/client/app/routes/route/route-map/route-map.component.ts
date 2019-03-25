@@ -23,6 +23,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
   bounds: google.maps.LatLngBounds;
   directions: Array<any> = [];
   _referencesRenderer: Array<any> = [];
+  originalRelated = [];
 
   @Input() form: FormGroup;
   @Input() set routeCompleted(routeReached: boolean) {
@@ -32,7 +33,12 @@ export class RouteMapComponent implements OnInit, OnDestroy {
     }
   }
   @Input() set nearPoints(nearPoint: Array<any>) {
-    nearPoint ? this.getRelated(nearPoint) : this.getRelated([]);
+    if (nearPoint) {
+      this.originalRelated = nearPoint;
+      this.getRelated(nearPoint);
+    } else {
+      this.getRelated([]);
+    }
   }
 
   @ViewChild('gmap') gmapElement: any;
@@ -237,6 +243,14 @@ export class RouteMapComponent implements OnInit, OnDestroy {
         stopover: true
       });
     });
+
+    if (this.nearMarkers.length > 0) {
+      this.nearMarkers = this.originalRelated
+        .filter(mrkRelated => !this.waypoints.map(wpt => wpt.name).includes(mrkRelated.name));
+      this.nearMarkers.forEach(point => {
+        this.drawerPicker(point.geo.point, {label: point.name, type: point.type}, true);
+      });
+    }
 
     if (!this.origin || !this.destination) {
       this.centerMap();
