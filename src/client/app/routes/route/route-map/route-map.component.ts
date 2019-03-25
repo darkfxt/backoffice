@@ -68,7 +68,10 @@ export class RouteMapComponent implements OnInit, OnDestroy {
     const mapProp = {
       center: new google.maps.LatLng(0, 0),
       zoom: 1,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      rotateControl: false,
+      streetViewControl: false
     };
     this.infoWindows = [];
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
@@ -178,8 +181,16 @@ export class RouteMapComponent implements OnInit, OnDestroy {
   private drawerPicker(position, options: any = {}, related = false) {
     // this.bounds.extend(position);
     let infoContent = `<h3>${options.label}</h3>\n`;
+    let icon = {
+      url: `/assets/icons/${options.type}.png`, // url
+      scaledSize: new google.maps.Size(30, 42)
+    };
     if (related) {
       infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+      icon = {
+        url: `/assets/icons/${options.type}_off.png`, // url
+        scaledSize: new google.maps.Size(20, 20)
+      };
     }
     const infowindow = new google.maps.InfoWindow({
       content: infoContent
@@ -193,10 +204,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       position: position,
       map: this.map,
       title: options.label,
-      icon: {
-        url: `/assets/icons/${options.type}.png`, // url
-        scaledSize: new google.maps.Size(30, 42), // scaled size
-      }
+      icon: icon
     });
     marker.addListener('click', () => {
       this.infoWindows.forEach(info => info.close());

@@ -20,7 +20,7 @@
       />
       <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
-          <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
+          <mat-spinner class="spinner-loader" [diameter]="32" mode="indeterminate"></mat-spinner>
         </mat-option>
         <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
           <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
@@ -38,10 +38,10 @@
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)" class="route-autocomplete">
             <mat-option *ngIf="acLoading">
-              <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
+              <mat-spinner class="spinner-loader" [diameter]="32" mode="indeterminate"></mat-spinner>
             </mat-option>
             <mat-option *ngIf="!acLoading && options && options.length === 0 && enablePrivateCreation">
-              <button type="button" mat-button (click)="createPrivate(i); $event.stopPropagation()" >{{ 'Punto no encontrado, click para crearlo' | translate }}</button>
+              <span (click)="createPrivate(i); $event.stopPropagation()" >{{ 'Punto no encontrado, click para crearlo' | translate }}</span>
             </mat-option>
             <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
               <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
@@ -62,7 +62,7 @@
       />
       <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
-          <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
+          <mat-spinner class="spinner-loader" [diameter]="32" mode="indeterminate"></mat-spinner>
         </mat-option>
         <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
           <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>

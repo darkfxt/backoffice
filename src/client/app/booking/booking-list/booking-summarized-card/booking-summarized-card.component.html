@@ -2,16 +2,16 @@
   <div class="info-container">
     <div class="summarized-card-title">
       <div class="title-created-by">
-        <h3>{{data.name}}&nbsp;&nbsp;</h3>
-        <div *ngIf="data.created_by">
-          <span>{{'Creado por' | translate}}</span>
-          <span>&nbsp;{{data.created_by}}</span>
-        </div>
+        <h3>{{data.name}}</h3>
       </div>
 
       <span>{{data.start_date | date: 'dd MMM yyyy'}} - {{data.end_date | date: 'dd MMM yyyy'}}</span>
     </div>
     <div class="summarized-card-body">
+      <div class="client-box data-box">
+        <span class="label">{{'Creado por' | translate}}</span>
+        <span class="value">{{data.created_by}}</span>
+      </div>
       <div class="client-box data-box">
         <span class="label">{{'Pasajero' | translate}}</span>
         <span class="value">{{data.passenger_name}}</span>
@@ -35,5 +35,4 @@
       </div>
     </div>
   </div>
-  <mat-icon color="accent">navigate_next</mat-icon>
 </div>

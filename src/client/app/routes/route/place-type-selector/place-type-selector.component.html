@@ -2,17 +2,22 @@
 
 
   <div class="distance-time">
-    <mat-form-field color="accent" class="route-type">
-      <mat-label></mat-label>
-      <mat-select placeholder="{{'Tipo de ruta' | translate}}" name="route_type" formControlName="route_type">
-        <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
-          {{routeType.value | translate}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('route_type').invalid && (form.get('route_type').dirty || form.get('route_type').touched)">{{'Campo requerido' | translate}}</mat-error>
-    </mat-form-field>
-    <span>{{distanceAndTime.distance}}km</span>
-    <span [innerHTML]="distanceAndTime.duration | hoursMinutes"></span>
+    <span class="filter-title">{{'Tipo de ruta' | translate}}</span>
+    <div class="select-route-type-ctn">
+      <mat-form-field color="accent" class="route-type">
+        <mat-label></mat-label>
+        <mat-select placeholder="{{'Tipo de ruta' | translate}}" name="route_type" formControlName="route_type">
+          <mat-option *ngFor="let routeType of routeTypes" [value]="routeType.value">
+            {{routeType.value | translate}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('route_type').invalid && (form.get('route_type').dirty || form.get('route_type').touched)">{{'Campo requerido' | translate}}</mat-error>
+      </mat-form-field>
+      <div>
+        <span>{{distanceAndTime.distance}}km</span>
+        <span [innerHTML]="distanceAndTime.duration | hoursMinutes"></span>
+      </div>
+    </div>
   </div>
 
   <div class="places-filter-ctn">
@@ -29,17 +34,19 @@
 
   <div class="places-filter-ctn">
     <span class="filter-title">{{'Distancia de búsqueda' | translate}}</span>
-    <mat-slider
-      class="distance-slider"
-      [min]=1
-      [max]=500
-      [step]=10
-      [tickInterval]="1"
-      [value]="sliderValue"
-      color="primary"
-      (change)="onSliderChange($event)">
-    </mat-slider>
-    <span class="kilometers">{{sliderValue}}km</span>
+    <div>
+      <mat-slider
+        class="distance-slider"
+        [min]=1
+        [max]=50
+        [step]=10
+        [tickInterval]="1"
+        [value]="sliderValue"
+        color="primary"
+        (change)="onSliderChange($event)">
+      </mat-slider>
+      <span class="kilometers">{{sliderValue}}km</span>
+    </div>
   </div>
 
 </div>
