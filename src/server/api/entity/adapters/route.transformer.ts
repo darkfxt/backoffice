@@ -8,12 +8,12 @@ export class RouteTransformer {
   static toDTO(dto) {
     dto.search_name = dto.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (dto.destination) {
-      dto.destination.geo = {center: CoordinatesDAO.fitFromDTO(dto.destination.geo.point)};
       if (dto.destination.geo.address) dto.destination.address = dto.destination.geo.address;
+      dto.destination.geo = {center: CoordinatesDAO.fitFromDTO(dto.destination.geo.point)};
     }
     if (dto.origin) {
-      dto.origin.geo = {center: CoordinatesDAO.fitFromDTO(dto.origin.geo.point)};
       if (dto.origin.geo.address) dto.origin.address = dto.origin.geo.address;
+      dto.origin.geo = {center: CoordinatesDAO.fitFromDTO(dto.origin.geo.point)};
     }
     if (dto.referencedOrigin) dto.referencedOrigin.geo = {center: CoordinatesDAO.fitFromDTO(dto.referencedOrigin.geo.point)};
     if (dto.referencedDestination) dto.referencedDestination.geo = {center: CoordinatesDAO.fitFromDTO(dto.referencedDestination.geo.point)};
