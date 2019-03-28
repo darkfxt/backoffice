@@ -45,7 +45,7 @@ export class PlaceService {
 
     const params: any = {
       key: config.googleApiKey,
-      input: encodeURI(query),
+      input: query,
       language: lang
     };
 
