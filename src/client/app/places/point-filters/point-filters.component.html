@@ -17,6 +17,34 @@
     </li>
   </ul>
 
+  <mat-form-field color="accent" floatLabel="never">
+    <input #pointRelated type="text" matInput placeholder="{{'Elije un punto' | translate}}"
+           [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.coordinates !== undefined ? filterOptions.coordinates : ''"
+           [id]="pointRelated" (keyup)="searchPrivates($event)" />
+    <mat-autocomplete #pointRelated="matAutocomplete"
+                      (optionSelected)="onChangeNearSelection($event)"
+                      class="route-autocomplete"
+                      [displayWith]="displayPoint">
+      <mat-option *ngIf="acLoading">
+        <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
+      </mat-option>
+      <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+        <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-slider
+    class="distance-slider"
+    [min]=1
+    [max]=500
+    [step]=10
+    [thumbLabel]="true"
+    [tickInterval]="1"
+    [value]="filterOptions.distance"
+    (change)="onSliderChange($event)">
+  </mat-slider>
+
   <div class="buttons-ctn">
     <button mat-flat-button color="primary" (click)="onResetFilter()">{{'Borrar Filtro' | translate}}</button>
     <button mat-flat-button color="primary" (click)="onFilterApply()">{{'Aplicar Filtro' | translate}}</button>

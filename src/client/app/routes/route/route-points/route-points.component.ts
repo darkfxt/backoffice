@@ -164,12 +164,11 @@ export class RoutePointsComponent implements OnInit {
 
 
   search(event, control) {
-    console.log('search')
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
     this.acLoading = true;
-    // this.lastSearch[control] = event.target.value;
+    this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
@@ -185,11 +184,11 @@ export class RoutePointsComponent implements OnInit {
   }
 
   searchPrivates(event, control) {
-    if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
+    if (event.target.value.length < 3 || event.target.value === this.lastSearch || event.code === 'ArrowDown' || event.code === 'ArrowUp') {
       return false;
     }
     this.acLoading = true;
-    // this.lastSearch[control] = event.target.value;
+    this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
@@ -229,7 +228,6 @@ export class RoutePointsComponent implements OnInit {
   }
 
   onLeave(event, inputName) {
-    console.log('onleave')
     if (this.lastSearch[inputName] === event.target.value) {
       return;
     }

@@ -106,7 +106,9 @@ export class SummarizedDrivingComponent implements OnInit {
       data: {
         productType: event.productType,
         dialog: 'update',
-        eventToUpdate: this.data
+        eventToUpdate: this.data,
+        method: 'UPDATE_TERMINAL',
+        terminal
       },
       disableClose: true,
       closeOnNavigation: true

@@ -31,9 +31,11 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
   options: any[];
   optionsSubsription: Subscription;
   lastSearch = '';
+  acLoading = false;
   paginationOptions: any = new PaginationOptions();
+  sliderValue = 20;
   filterSelected = [];
-  @Input() filterOptions = new PaginationOptions();
+  @Input() filterOptions: any = new PaginationOptions();
   private autocompleteTimeout;
   @Output() filterChanged: EventEmitter<PaginationOptions> = new EventEmitter<PaginationOptions>();
 
@@ -60,6 +62,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
         ptm.enabled = true;
       return ptm;
     });
+    this.filterOptions = Object.assign({}, this.filterOptions, {distance: this.filterOptions.distance || 20});
   }
 
   ngOnDestroy() {
@@ -88,21 +91,21 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
     this.filterChanged.emit(this.filterOptions);
   }
 
-  onSearch(event) {
-    if (event.code === 'Backspace' || event.target.value.length < 3 || event.target.value === this.lastSearch)
-      return false;
-
-    const searchParams: PaginationOptionsInterface = new SearchOptions(0, 10, 0, null, event.target.value);
-
-    clearTimeout(this.autocompleteTimeout);
-    this.autocompleteTimeout = setTimeout(() => {
-      this.optionsSubsription = this.placeService.getAll(searchParams, true).subscribe((resp) => {
-        this.lastSearch = event.target.value;
-        this.options = this.createGroups(resp);
-      });
-    }, 300);
-
-  }
+  // onSearch(event) {
+  //   if (event.code === 'Backspace' || event.target.value.length < 3 || event.target.value === this.lastSearch)
+  //     return false;
+  //
+  //   const searchParams: PaginationOptionsInterface = new SearchOptions(0, 10, 0, null, event.target.value);
+  //
+  //   clearTimeout(this.autocompleteTimeout);
+  //   this.autocompleteTimeout = setTimeout(() => {
+  //     this.optionsSubsription = this.placeService.getAll(searchParams, true).subscribe((resp) => {
+  //       this.lastSearch = event.target.value;
+  //       this.options = this.createGroups(resp);
+  //     });
+  //   }, 300);
+  //
+  // }
 
   private createGroups(list: any[]): any[] {
     const pointsByType = {};
@@ -119,6 +122,38 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
 
   displayFn(value) {
     return value.name;
+  }
+
+  displayPoint(value) {
+    return `${value.geo.point.lat},${value.geo.point.lng}`;
+  }
+
+  searchPrivates(event, control) {
+    if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
+      return false;
+    }
+    this.acLoading = true;
+    // this.lastSearch[control] = event.target.value;
+    clearTimeout(this.autocompleteTimeout);
+    this.autocompleteTimeout = setTimeout(() => {
+      this.placeService.search(`search=${event.target.value}`).subscribe(resp => {
+          this.options = this.createGroups(resp);
+          this.acLoading = false;
+        },
+        (err) => {
+          this.acLoading = false;
+        });
+    }, 300);
+  }
+
+  onSliderChange(event) {
+    this.filterOptions.distance = event.value;
+  }
+
+  onChangeNearSelection(event) {
+    this.filterOptions = Object.assign({},
+      this.filterOptions,
+      {coordinates: `${event.option.value.geo.point.lat},${event.option.value.geo.point.lng}`, distance: this.filterOptions.distance || 20});
   }
 
 }
