@@ -128,7 +128,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
     return `${value.geo.point.lat},${value.geo.point.lng}`;
   }
 
-  searchPrivates(event, control) {
+  searchPrivates(event) {
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
