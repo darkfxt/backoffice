@@ -32,8 +32,13 @@ export class AppComponent implements OnInit {
               private customIconService: CustomIconService,
               private store: Store<AppState>) {
     let navLanguage: string, navLocalization: string;
+
+    if (localStorage.getItem('uiLanguage') && this.availableLanguage.indexOf(localStorage.getItem('uiLanguage')) === -1)
+      localStorage.setItem('uiLanguage', 'en');
+
     if (!localStorage.getItem('uiLanguage')) {
       [navLanguage, navLocalization] = this.userLanguage.split('-');
+      navLanguage = this.availableLanguage.indexOf(navLanguage) > -1 ? navLanguage : 'en';
       localStorage.setItem('uiLanguage', navLanguage);
       localStorage.setItem('uiL10n', navLocalization);
     } else {
