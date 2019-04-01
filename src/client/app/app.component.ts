@@ -18,6 +18,10 @@ import { Observable } from 'rxjs';
   `
 })
 export class AppComponent implements OnInit {
+  availableLanguage = [
+    'en',
+    'es'
+  ];
   title = 'app';
   loading = false;
   loading$: Observable<boolean>;
@@ -30,6 +34,7 @@ export class AppComponent implements OnInit {
     let navLanguage: string, navLocalization: string;
     if (!localStorage.getItem('uiLanguage')) {
       [navLanguage, navLocalization] = this.userLanguage.split('-');
+      navLanguage = this.availableLanguage.indexOf(navLanguage) > -1 ? navLanguage : 'en';
       localStorage.setItem('uiLanguage', navLanguage);
       localStorage.setItem('uiL10n', navLocalization);
     } else {
