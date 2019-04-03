@@ -33,9 +33,18 @@
         <mat-form-field color="accent" floatLabel="never">
           <input type="text" matInput placeholder="{{'Elije un punto' | translate}}"
                  [matAutocomplete]="autoGroup" name="routeName" formControlName="name"
-                 [id]="'input-'+i" (keyup)="searchPrivates($event, 'input-'+i)" (blur)="onLeave($event, 'input-'+i)"
+                 [id]="'input-'+i" (keyup)="searchPrivates($event, 'input-'+i)" (blur)="onLeave($event, 'input-'+i, i)"
           />
           <mat-icon class="delete-point" matSuffix (click)="deletePoint(point.value.type, i)">close</mat-icon>
+          <mat-icon class="move-point" matSuffix [matMenuTriggerFor]="menu">unfold_more</mat-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item
+                    *ngFor="let position of arrayFromNumber(middlePoints.length)"
+                    [disabled]="+position === +i"
+                    (click)="onMoveEvent(i, position)">
+              {{position + 1}}
+            </button>
+          </mat-menu>
           <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="setMiddlePoint($event, i)" class="route-autocomplete">
             <mat-option *ngIf="acLoading">
               <mat-spinner class="spinner-loader" [diameter]="32" mode="indeterminate"></mat-spinner>
