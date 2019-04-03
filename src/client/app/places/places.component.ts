@@ -65,6 +65,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         if (this.dialogRef.componentInstance.data.eventToUpdate) {
           const data = this.dialogRef.componentInstance.data;
           const placeToSearch = data.eventToUpdate.product[`referenced${this.titleCase(data.terminal)}`];
+          this.paginationOptions.nearName = placeToSearch.name;
           this.paginationOptions.coordinates = `${placeToSearch.geo.point.lat},${placeToSearch.geo.point.lng}`;
           this.paginationOptions.distance = 20;
         }
@@ -109,7 +110,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onFilterChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions, event, {pageIndex: 0, pageSize: 10});
+    this.paginationOptions = Object.assign({}, event);
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 

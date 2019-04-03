@@ -89,6 +89,8 @@ export class CommonListComponent implements OnInit {
       if (pageOp.filter.type) this.queryLocation += `&types=${pageOp.filter.type}`;
     }
     if (pageOp.coordinates) this.queryLocation += `&coordinates=${pageOp.coordinates}`;
+    if(pageOp.distance) this.queryLocation += `&distance=${pageOp.distance}`;
+    if (pageOp.nearName) this.queryLocation += `&nearName=${pageOp.nearName}`;
     if (pageOp.self) this.queryLocation += '&self=true';
     this.location.replaceState(this.queryLocation);
   }

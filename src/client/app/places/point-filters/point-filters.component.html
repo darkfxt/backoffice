@@ -2,7 +2,7 @@
   <mat-form-field color="accent">
     <input #location
            type="text" matInput placeholder="{{'Buscar' | translate}}" required [value]="filterOptions.search !== undefined ? filterOptions.search : ''"
-           name="pointFilterName" [matAutocomplete]="autoGroup" (keyup.enter)="onSearchChanged(location.value);onFilterApply()" (blur)="onSearchChanged(location.value)"/>
+           name="pointFilterName" [matAutocomplete]="autoGroup" (keyup.enter)="onSearchChanged(location.value)" (blur)="onSearchChanged(location.value)"/>
     <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSearchChanged($event)" [displayWith]="displayFn">
       <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
         <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
@@ -11,7 +11,7 @@
   </mat-form-field>
   <ul>
     <li *ngFor="let pointType of pointTypes">
-      <mat-checkbox [(ngModel)]="pointType.enabled">
+      <mat-checkbox (change)="onFilterApply()" [(ngModel)]="pointType.enabled">
         {{pointType.viewValue | translate}}
       </mat-checkbox>
     </li>
@@ -19,12 +19,13 @@
 
   <mat-form-field color="accent" floatLabel="never">
     <input #pointRelated type="text" matInput placeholder="{{'Elije un punto' | translate}}"
-           [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.coordinates !== undefined ? filterOptions.coordinates : ''"
+           [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.nearName !== undefined ? filterOptions.nearName : ''"
            [id]="pointRelated" (keyup)="searchPrivates($event)" />
+    <mat-icon class="delete-near" matSuffix (click)="onDeleteNearSelection($event)">close</mat-icon>
     <mat-autocomplete #pointRelated="matAutocomplete"
                       (optionSelected)="onChangeNearSelection($event)"
                       class="route-autocomplete"
-                      [displayWith]="displayPoint">
+                      [displayWith]="displayFn">
       <mat-option *ngIf="acLoading">
         <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
       </mat-option>
@@ -41,6 +42,7 @@
     [step]=10
     [thumbLabel]="true"
     [tickInterval]="1"
+    [disabled]="!sliderStatus"
     [value]="filterOptions.distance"
     (change)="onSliderChange($event)">
   </mat-slider>
