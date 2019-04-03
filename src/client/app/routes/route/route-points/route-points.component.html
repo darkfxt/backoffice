@@ -16,7 +16,7 @@
     <mat-form-field color="accent" floatLabel="never">
       <input type="text" matInput placeholder="{{'Elije un origen' | translate}}"
              required [matAutocomplete]="autoGroupO" name="origin"
-             formControlName="origin" (keyup)="search($event, 'origin')" (blur)="onLeave($event, 'origin')"
+             formControlName="origin" (keyup)="search($event, 'origin')" (blur)="onLeave($event, 'origin', undefined)"
       />
       <mat-autocomplete #autoGroupO="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'origin')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
@@ -67,7 +67,7 @@
     <mat-form-field color="accent" floatLabel="never">
       <input type="text" matInput placeholder="{{'Elije un destino' | translate}}" required
              [matAutocomplete]="autoGroupD" name="destination"
-             formControlName="destination" (keyup)="search($event, 'destination')" (blur)="onLeave($event, 'destination')"
+             formControlName="destination" (keyup)="search($event, 'destination')" (blur)="onLeave($event, 'destination', undefined)"
       />
       <mat-autocomplete #autoGroupD="matAutocomplete" [displayWith]="displayFn" (optionSelected)="setPoint($event, 'destination')" class="route-autocomplete">
         <mat-option *ngIf="acLoading">
