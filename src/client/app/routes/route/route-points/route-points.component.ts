@@ -164,7 +164,6 @@ export class RoutePointsComponent implements OnInit {
 
 
   search(event, control) {
-    console.log('search')
     if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
       return false;
     }
@@ -229,7 +228,6 @@ export class RoutePointsComponent implements OnInit {
   }
 
   onLeave(event, inputName) {
-    console.log('onleave')
     if (this.lastSearch[inputName] === event.target.value) {
       return;
     }
