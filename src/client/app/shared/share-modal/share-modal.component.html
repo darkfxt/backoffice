@@ -1,0 +1,11 @@
+<div class="header" mat-dialog-title>
+  <span>{{'Compartir con otros' | translate}}</span>
+</div>
+
+<mat-dialog-content class="mat-typography dialog-content">
+  <input readonly #link [value]="data.link">
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="footer">
+  <button mat-button cdkfocusinitial mat-dialog-close (click)="copyLink()">{{'Copiar link' | translate}}</button>
+</mat-dialog-actions>

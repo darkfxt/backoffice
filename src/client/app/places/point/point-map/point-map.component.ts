@@ -31,7 +31,11 @@ export class PointMapComponent implements OnInit, OnDestroy {
     const mapProp = {
       center: this.placeForm.value.geo.point,
       zoom: (this.placeForm.value.geo.point.lat === 0) ? 1 : 17,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      streetViewControl: false,
+      fullscreenControl: false,
+      rotateControl: false,
+      mapTypeControl: false
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);

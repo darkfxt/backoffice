@@ -9,8 +9,10 @@ import { Observable, Subscription } from 'rxjs';
 import { getBookingSelected } from '../../store/booking';
 import { GetAllDevices } from '../../store/device/device.actions';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
-import {DayOfTrip, Event} from '../../shared/models/TripTemplate';
+import { DayOfTrip, Event } from '../../shared/models/TripTemplate';
 import { BookingService } from '../../shared/services/booking.service';
+import { ShareModalComponent } from '../../shared/share-modal/share-modal.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-booking-detail',
@@ -35,7 +37,9 @@ export class BookingDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>,
-              private bs: BookingService) {
+              private bs: BookingService,
+              private dialog: MatDialog
+  ) {
     this.selectedBooking$ = store.pipe(select(getBookingSelected));
   }
 
@@ -156,4 +160,20 @@ export class BookingDetailComponent implements OnInit {
     window.scroll(0, 0);
   }
 
+  shareBooking(booking) {
+    const basePath = location.host.indexOf('local.') > -1 || location.host.indexOf('develop.') > -1 ? 'dev.appv2.taylorgps.com' : 'appv2.taylorgps.com';
+    const dialogRef = this.dialog.open(ShareModalComponent, {
+      width: '500px',
+      maxWidth: '500px',
+      data: {
+        link: `https://${basePath}/trips/${booking._id}-${booking.name}?a=${booking.account_id.id}`
+      },
+      id: 'share',
+      panelClass: 'share-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }
