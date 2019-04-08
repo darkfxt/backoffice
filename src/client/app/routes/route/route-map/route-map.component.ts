@@ -104,7 +104,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       const marker = new google.maps.Marker({
         position: e.latLng.toJSON(),
         map: this.map,
-        title: e.latLng.toString(),
+        title: 'waypoint',
         icon: {
           url: `/assets/icons/waypoint.png`, // url
           scaledSize: new google.maps.Size(30, 42), // scaled size

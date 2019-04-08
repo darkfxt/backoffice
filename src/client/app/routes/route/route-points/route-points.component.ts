@@ -95,6 +95,8 @@ export class RoutePointsComponent implements OnInit {
       this.ref.detectChanges();
 
       const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`);
+      this.lastSearch[`input-${this.middlePoints.controls.length - 1}`] = this.middlePoints.value[this.middlePoints.controls.length - 1].name;
+      this.lastSelection[`input-${this.middlePoints.controls.length - 1}`] = this.middlePoints.value[this.middlePoints.controls.length - 1];
       setTimeout(() => {
         this.renderer.setProperty($elem, 'value', place.name);
         this.ref.detectChanges();
@@ -183,7 +185,6 @@ export class RoutePointsComponent implements OnInit {
       return false;
     }
     this.acLoading = true;
-    //this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
@@ -279,6 +280,11 @@ export class RoutePointsComponent implements OnInit {
     this.middlePoints.removeAt(prePos);
     this.middlePoints.insert(postPos, auxCtrl);
     this.middlePoints.patchValue(this.middlePoints.value);
+    this.middlePoints.controls.forEach((point: any, idx, array) => {
+      this.lastSearch[`input-${idx}`] = point.value.name;
+      this.lastSelection[`input-${idx}`] = point.value;
+    });
+    this.placeStore.setWaypoints(this.middlePoints.value);
     this.ref.detectChanges();
   }
 }
