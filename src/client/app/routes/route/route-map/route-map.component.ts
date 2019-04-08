@@ -86,7 +86,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
 
     this.map.addListener('click', (e) => {
       const place = new Place({
-        name: e.latLng.toString(),
+        name: 'waypoint',
         geo: {
           point: e.latLng.toJSON()
         },
