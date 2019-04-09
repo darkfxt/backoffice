@@ -38,11 +38,6 @@ export class PlaceTypeSelectorComponent implements OnInit, OnDestroy {
       value: TRANSLATE('walking'),
       viewValue: 'Walking',
       enabled: true
-    },
-    {
-      value: TRANSLATE('bicycling'),
-      viewValue: 'Bicycling',
-      enabled: true
     }
   ];
 
