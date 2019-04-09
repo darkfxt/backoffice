@@ -68,7 +68,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       select(getDialogStatus)
     ).subscribe(dialogStatus => {
       this.dialogStatus = dialogStatus;
-      if (dialogStatus === 'true') this.popup = true;
+      if (dialogStatus === 'true' || dialogStatus === 'fromRoutes') this.popup = true;
       if (dialogStatus === undefined) this.placeStore.clearAll();
     });
 

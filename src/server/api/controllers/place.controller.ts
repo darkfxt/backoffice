@@ -29,6 +29,9 @@ export class PlaceController {
       request.query.page = +request.query.page + 1;
       const answer = await PlaceService.getAll(request.query, request.headers);
       answer.data.metadata.pageIndex = (+answer.data.metadata.pageIndex - 1).toString();
+      if (request.query.nearName) answer.data.metadata.nearName = request.query.nearName;
+      if (request.query.coordinates) answer.data.metadata.coordinates = request.query.coordinates;
+      if (request.query.distance) answer.data.metadata.distance = request.query.distance;
       if (request.query.simple) {
         response.json(answer.data.data);
         return;

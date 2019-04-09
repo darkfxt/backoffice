@@ -29,6 +29,10 @@ export class PlaceService {
       queryParams.travel_mode = paginationMetadata.travelMode;
     if (paginationMetadata.distance)
       queryParams.distance = paginationMetadata.distance;
+    if (paginationMetadata.coordinates)
+      queryParams.coordinates = paginationMetadata.coordinates;
+    if (paginationMetadata.nearName)
+      queryParams.nearName = paginationMetadata.nearName;
     if (withoutMetadata)
       queryParams.simple = true;
 

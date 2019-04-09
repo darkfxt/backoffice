@@ -18,6 +18,7 @@ export interface PaginationOptionsInterface {
   middle_points?: any;
   travelMode?: any;
   distance?: number;
+  nearName?: string;
 }
 
 export class PaginationOptions implements PaginationOptionsInterface {
@@ -36,6 +37,7 @@ export class PaginationOptions implements PaginationOptionsInterface {
   middle_points?: any;
   travelMode?: any;
   distance?: number;
+  nearName?: string;
   constructor() {
    this.previousPageIndex = 0;
       this.pageIndex = 0;

@@ -60,6 +60,17 @@ export class PlacesComponent implements OnInit, OnDestroy {
     if (this.query) {
       this.paginationOptions = Object.assign({}, this.paginationOptions, this.query);
     }
+    if (this.dialogRef && this.dialogRef.componentInstance && this.dialogRef.componentInstance.data) {
+      if (this.dialogRef.componentInstance.data.method === 'UPDATE_TERMINAL') {
+        if (this.dialogRef.componentInstance.data.eventToUpdate) {
+          const data = this.dialogRef.componentInstance.data;
+          const placeToSearch = data.eventToUpdate.product[`referenced${this.titleCase(data.terminal)}`];
+          this.paginationOptions.nearName = placeToSearch.name;
+          this.paginationOptions.coordinates = `${placeToSearch.geo.point.lat},${placeToSearch.geo.point.lng}`;
+          this.paginationOptions.distance = 20;
+        }
+      }
+    }
     this.md$ = this.metadata$.subscribe(metadata => this.totalElements = metadata.length);
     this.route.queryParams.pipe(first()).subscribe((params) => {
       const setMetadata = {
@@ -70,6 +81,8 @@ export class PlacesComponent implements OnInit, OnDestroy {
           setMetadata['types'] = params.types.split(',');
         if (params.search)
           setMetadata['search'] = params.search || '';
+        if (params.coordinates)
+          setMetadata['coordinates'] = params.coordinates;
       this.paginationOptions = Object.assign({}, this.paginationOptions, setMetadata);
       this.store.dispatch(new GetPoints(this.paginationOptions));
     });
@@ -97,7 +110,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   onFilterChanged(event) {
-    this.paginationOptions = Object.assign({}, this.paginationOptions, event, {pageIndex: 0, pageSize: 10});
+    this.paginationOptions = Object.assign({}, event);
     this.store.dispatch(new GetPoints(this.paginationOptions));
   }
 
@@ -118,6 +131,12 @@ export class PlacesComponent implements OnInit, OnDestroy {
       return;
     } else
       this.router.navigate(['/places']);
+  }
+
+  private titleCase(text): string {
+    const toArr: Array<string> = Array.from(text);
+    const removed = toArr.splice(0,1, toArr[0].toUpperCase());
+    return toArr.join('');
   }
 
 }

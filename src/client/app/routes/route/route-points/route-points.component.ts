@@ -65,6 +65,21 @@ export class RoutePointsComponent implements OnInit {
         }
       });
 
+    if (this.routeGroup && this.routeGroup.value.origin) {
+      this.lastSelection['origin'] = this.routeGroup.value.origin;
+      this.lastSearch['origin'] = this.routeGroup.value.origin.name;
+    }
+    if (this.routeGroup && this.routeGroup.value.destination) {
+      this.lastSelection['destination'] = this.routeGroup.value.destination;
+      this.lastSearch['destination'] = this.routeGroup.value.destination.name;
+    }
+    if (this.routeGroup && this.routeGroup.value.middle_points) {
+      this.middlePoints.controls.forEach((point: any, idx, array) => {
+        this.lastSearch[`input-${idx}`] = point.value.name;
+        this.lastSelection[`input-${idx}`] = point.value;
+      });
+    }
+
     this.dialogStatus$.subscribe((data: any) => {
       if (data && data === 'close') {
         if (this.dialogReferenceSub)
@@ -80,6 +95,8 @@ export class RoutePointsComponent implements OnInit {
       this.ref.detectChanges();
 
       const $elem = this.renderer.selectRootElement(`#input-${this.middlePoints.controls.length - 1}`);
+      this.lastSearch[`input-${this.middlePoints.controls.length - 1}`] = this.middlePoints.value[this.middlePoints.controls.length - 1].name;
+      this.lastSelection[`input-${this.middlePoints.controls.length - 1}`] = this.middlePoints.value[this.middlePoints.controls.length - 1];
       setTimeout(() => {
         this.renderer.setProperty($elem, 'value', place.name);
         this.ref.detectChanges();
@@ -168,7 +185,6 @@ export class RoutePointsComponent implements OnInit {
       return false;
     }
     this.acLoading = true;
-    // this.lastSearch[control] = event.target.value;
     clearTimeout(this.autocompleteTimeout);
     this.autocompleteTimeout = setTimeout(() => {
       this.placeService.improvedAutocomplete(`${event.target.value}`).subscribe(resp => {
@@ -184,7 +200,7 @@ export class RoutePointsComponent implements OnInit {
   }
 
   searchPrivates(event, control) {
-    if (event.target.value.length < 3 || event.target.value === this.lastSearch) {
+    if (event.target.value.length < 3 || event.target.value === this.lastSearch[control] || event.code === 'ArrowDown' || event.code === 'ArrowUp') {
       return false;
     }
     this.acLoading = true;
@@ -227,13 +243,17 @@ export class RoutePointsComponent implements OnInit {
     return alterPlace;
   }
 
-  onLeave(event, inputName) {
+  onLeave(event, inputName, idx) {
     if (this.lastSearch[inputName] === event.target.value) {
       return;
     }
     if (this.lastSelection[inputName]) {
       const $elem = this.renderer.selectRootElement(`#${event.target.id}`);
       setTimeout(() => {
+        if (inputName === 'origin' || inputName === 'destination')
+          this.routeGroup.value[inputName] = this.lastSelection[inputName];
+        else
+          this.routeGroup.value.middle_points[idx] = this.lastSelection[inputName];
         this.renderer.setProperty($elem, 'value', this.lastSearch[inputName]);
         this.ref.detectChanges();
       }, 100);
@@ -245,5 +265,26 @@ export class RoutePointsComponent implements OnInit {
         this.ref.detectChanges();
       }, 100);
     }
+  }
+
+  arrayFromNumber(n: number) {
+      const respArray = [];
+      for (let i = 0; i < n; i++) {
+        respArray.push(i);
+      }
+      return respArray;
+    }
+
+  onMoveEvent(prePos, postPos) {
+    const auxCtrl = this.middlePoints.controls[prePos];
+    this.middlePoints.removeAt(prePos);
+    this.middlePoints.insert(postPos, auxCtrl);
+    this.middlePoints.patchValue(this.middlePoints.value);
+    this.middlePoints.controls.forEach((point: any, idx, array) => {
+      this.lastSearch[`input-${idx}`] = point.value.name;
+      this.lastSelection[`input-${idx}`] = point.value;
+    });
+    this.placeStore.setWaypoints(this.middlePoints.value);
+    this.ref.detectChanges();
   }
 }

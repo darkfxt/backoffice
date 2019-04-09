@@ -100,9 +100,9 @@ export class RouteMapComponent implements OnInit, OnDestroy {
         let infoContent = `<h3>${resp[0].formatted_address.split(',')[0]}</h3>\n`;
         infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
 
-        const infowindow = new google.maps.InfoWindow({
-          content: infoContent
-        });
+      const infowindow = new google.maps.InfoWindow({
+        content: infoContent
+      });
 
         const marker = new google.maps.Marker({
           position: e.latLng.toJSON(),
@@ -114,29 +114,28 @@ export class RouteMapComponent implements OnInit, OnDestroy {
           }
         });
 
-        this.lastMarker = marker;
+      this.lastMarker = marker;
 
-        infowindow.addListener('closeclick', (lalala) => {
-          if (this.docListener) this.docListener();
-          this.markers = this.markers.filter((thyMarker: any) => thyMarker.title !== this.lastMarker.title);
-          this.lastMarker.setMap(null);
-        });
-
-        this.infoWindows.forEach(info => info.close());
-        infowindow.open(this.map, marker);
-        this.docListener = this.renderer.listen('document', 'click', (evt) => {
-          if (evt.target.id === 'adder-route') {
-            const textTitle = evt.path[1].childNodes[0].textContent;
-            this.placeStore.setLocation(place);
-            this.waypoints.push(place);
-            this.addMarker();
-            if (this.docListener) this.docListener();
-          }
-        });
-
-        this.infoWindows.push(infowindow);
-        this.markers.push(marker);
+      infowindow.addListener('closeclick', (lalala) => {
+        if (this.docListener) this.docListener();
+        this.markers = this.markers.filter((thyMarker: any) => thyMarker.title !== this.lastMarker.title);
+        this.lastMarker.setMap(null);
       });
+
+      this.infoWindows.forEach(info => info.close());
+      infowindow.open(this.map, marker);
+      this.docListener = this.renderer.listen('document', 'click', (evt) => {
+        if (evt.target.id === 'adder-route') {
+          const textTitle = evt.path[1].childNodes[0].textContent;
+          this.placeStore.setLocation(place);
+          this.waypoints.push(place);
+          this.addMarker();
+          if (this.docListener) this.docListener();
+        }
+      });
+
+      this.infoWindows.push(infowindow);
+      this.markers.push(marker);
     });
 
     this.placeStore.getWaypoints().subscribe(( waypoints ) => {
@@ -163,6 +162,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       this.addMarker();
     });
     //
+  });
   }
 
   ngOnDestroy() {
