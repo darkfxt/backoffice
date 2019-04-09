@@ -206,7 +206,8 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
         name: value.name,
         type: value.type,
         _id: value._id,
-        geo: {point: value.geo.point}
+        geo: {point: value.geo.point},
+        place_id: value.place_id
       }));
     data.default_lang = data.default_lang;
     formData.append('data', JSON.stringify(data));

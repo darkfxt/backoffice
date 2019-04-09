@@ -39,7 +39,11 @@ export class TripTemplateMapComponent implements OnInit, OnDestroy {
     const mapProp = {
       center: new google.maps.LatLng(0, 0),
       zoom: 1,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      streetViewControl: false,
+      fullscreenControl: false,
+      rotateControl: false,
+      mapTypeControl: false
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);

@@ -11,9 +11,17 @@
   </div>
 
   <div class="buttons-ctn hidden-mobile">
-    <button (click)="exportFile('gpx')" mat-button color="accent">{{'Exportar GPX' | translate}}</button>
-    <button (click)="exportFile('pdf')" mat-button color="accent">{{'Exportar PDF' | translate}}</button>
-    <button (click)="saveBooking()" mat-flat-button color="accent">{{'Guardar' | translate}}</button>
+    <button mat-icon-button (click)="shareBooking(booking)">
+      <mat-icon>share</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="menuDownload" >
+      <mat-icon>save_alt</mat-icon>
+    </button>
+    <button (click)="saveBooking()" mat-flat-button color="accent" class="save">{{'Guardar' | translate}}</button>
+    <mat-menu #menuDownload="matMenu" overlapTrigger="false">
+      <button mat-menu-item (click)="exportFile('gpx')">{{'Exportar GPX' | translate}}</button>
+      <button mat-menu-item (click)="exportFile('pdf')">{{'Exportar PDF' | translate}}</button>
+    </mat-menu>
   </div>
 </app-detail-header>
 
@@ -23,9 +31,6 @@
       <li [class.current]="!stepper.header"><button mat-button (click)="setStep('header')">{{'Acerca de la reserva' | translate}}</button></li>
       <li [class.current]="!stepper.itinerary" >
         <button mat-button (click)="setStep('itinerary')" [disabled]="formHeader.invalid">{{'Itinerario' | translate}}</button>
-      </li>
-      <li [class.current]="!stepper.publish">
-        <button mat-button (click)="setStep('publish')" [disabled]="formHeader.invalid">{{'Publicar reserva' | translate}}</button>
       </li>
     </ul>
   </section>

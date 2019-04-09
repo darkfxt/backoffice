@@ -7,7 +7,7 @@
       <span *ngIf="via"> - Via {{via}}</span>
     </h3>
     <span class="summarized-card-caption">{{route_type | translate}} - {{'Creado por {user}' | translate: {user: created_by} }}</span>
-    <p class="summarized-card-subtitle">{{'Distancia' | translate}} {{subtitleData.distance}}km. Tiempo estimado <span [innerHTML]="subtitleData.duration | hoursMinutes"></span></p>
+    <p class="summarized-card-subtitle">{{'Distancia' | translate}} {{subtitleData.distance}}km. {{'Tiempo estimado' | translate}} <span [innerHTML]="subtitleData.duration | hoursMinutes"></span></p>
   </div>
   <mat-icon color="accent">navigate_next</mat-icon>
 </div>

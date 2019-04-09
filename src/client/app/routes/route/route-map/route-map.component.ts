@@ -57,6 +57,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
   private stepDisplay = new google.maps.InfoWindow;
   private directionsService = new google.maps.DirectionsService;
   private directionsDisplay = new google.maps.DirectionsRenderer({map: this.map});
+  private geocoder = new google.maps.Geocoder();
 
   constructor(private placeStore: PlaceStore,
               private placeService: PlaceService,
@@ -85,31 +86,33 @@ export class RouteMapComponent implements OnInit, OnDestroy {
     this.directionsDisplay.setOptions({suppressMarkers: true});
 
     this.map.addListener('click', (e) => {
-      const place = new Place({
-        name: 'waypoint',
-        geo: {
-          point: e.latLng.toJSON()
-        },
-        type: 'waypoint',
-        _id: ''
-      });
+      this.geocoder.geocode({location: e.latLng.toJSON()}, (resp) => {
+        const place = new Place({
+          name: resp[0].formatted_address.split(',')[0],
+          geo: {
+            point: e.latLng.toJSON()
+          },
+          type: 'waypoint',
+          _id: '',
+          place_id: resp[0].place_id
+        });
 
-      let infoContent = `<h3>${e.latLng.toString()}</h3>\n`;
-      infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+        let infoContent = `<h3>${resp[0].formatted_address.split(',')[0]}</h3>\n`;
+        infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
 
       const infowindow = new google.maps.InfoWindow({
         content: infoContent
       });
 
-      const marker = new google.maps.Marker({
-        position: e.latLng.toJSON(),
-        map: this.map,
-        title: 'waypoint',
-        icon: {
-          url: `/assets/icons/waypoint.png`, // url
-          scaledSize: new google.maps.Size(30, 42), // scaled size
-        }
-      });
+        const marker = new google.maps.Marker({
+          position: e.latLng.toJSON(),
+          map: this.map,
+          title: e.latLng.toString(),
+          icon: {
+            url: `/assets/icons/waypoint.png`, // url
+            scaledSize: new google.maps.Size(30, 42), // scaled size
+          }
+        });
 
       this.lastMarker = marker;
 
