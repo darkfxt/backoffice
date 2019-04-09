@@ -140,7 +140,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
       {
         coordinates: `${event.option.value.geo.point.lat},${event.option.value.geo.point.lng}`,
         nearName: event.option.value.name,
-        distance: this.filterOptions.distance || 20});
+        distance: this.filterOptions.distance * 1000 || 20000});
     this.sliderStatus = true;
     this.onFilterApply();
   }

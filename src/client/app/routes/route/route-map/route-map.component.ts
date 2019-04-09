@@ -162,6 +162,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       this.addMarker();
     });
     //
+  });
   }
 
   ngOnDestroy() {
