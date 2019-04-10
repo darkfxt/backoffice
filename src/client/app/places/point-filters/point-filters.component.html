@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <div class="filter-ctn">
-    <h3>{{'Filtrar por tipo'}}</h3>
+    <h3>{{'Filtrar por tipo' | translate}}</h3>
     <ul>
       <li *ngFor="let pointType of pointTypes">
         <mat-checkbox (change)="onFilterApply()" [(ngModel)]="pointType.enabled">
@@ -23,7 +23,7 @@
 
 
   <div class="filter-ctn near-filter">
-    <h3>{{'Filtrar lugares cercanos a'}}</h3>
+    <h3>{{'Filtrar lugares cercanos a' | translate}}</h3>
     <mat-form-field color="accent" floatLabel="never">
       <input #pointRelated type="text" matInput placeholder="{{'Ingresa un lugar' | translate}}"
              [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.nearName !== undefined ? filterOptions.nearName : ''"

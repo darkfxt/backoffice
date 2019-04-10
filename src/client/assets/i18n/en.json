@@ -124,7 +124,7 @@
 	"Mover día {day}": "Move day {{day}}",
 	"No encontramos resultados para esta búsqueda": "No results found",
 	"No se encontraron resultados": "No results found",
-	"No, me he arrepentido": "No, me he arrepentido",
+	"No, me he arrepentido": "No, I have repented",
 	"Nombre": "Name",
 	"Nombre de la reserva": "Booking name",
 	"Nombre de la ruta": "Route name",
@@ -213,10 +213,13 @@
   "Aun no has creado reservas": "You have not created bookings yet",
   "Crear nueva reserva": "Create new booking",
   "Deseas eliminar?": "Do you want to delete?",
+  "Deseas eliminar": "Do you want to delete ",
   "Click para agrandar": "Click to zoom",
   "ha sido eliminado": "was deleted",
   "Deseas eliminar este evento?": "Do you wish to delete this event?",
   "Deseas eliminar este día?": "Do you wish to delete this day?",
-  "Usuario guardado con exito": "User saved succesfully"
+  "Usuario guardado con exito": "User saved succesfully",
+  "Filtrar por tipo": "Filter by type",
+  "Filtrar lugares cercanos a": "Filter places near to"
 
 }
