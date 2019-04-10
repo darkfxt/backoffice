@@ -9,46 +9,49 @@
       </mat-optgroup>
     </mat-autocomplete>
   </mat-form-field>
-  <ul>
-    <li *ngFor="let pointType of pointTypes">
-      <mat-checkbox (change)="onFilterApply()" [(ngModel)]="pointType.enabled">
-        {{pointType.viewValue | translate}}
-      </mat-checkbox>
-    </li>
-  </ul>
 
-  <mat-form-field color="accent" floatLabel="never">
-    <input #pointRelated type="text" matInput placeholder="{{'Elije un punto' | translate}}"
-           [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.nearName !== undefined ? filterOptions.nearName : ''"
-           [id]="pointRelated" (keyup)="searchPrivates($event)" />
-    <mat-icon class="delete-near" matSuffix (click)="onDeleteNearSelection($event)">close</mat-icon>
-    <mat-autocomplete #pointRelated="matAutocomplete"
-                      (optionSelected)="onChangeNearSelection($event)"
-                      class="route-autocomplete"
-                      [displayWith]="displayFn">
-      <mat-option *ngIf="acLoading">
-        <mat-spinner class="spinner-loader" [diameter]="32" [mode]="indeterminate"></mat-spinner>
-      </mat-option>
-      <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
-        <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
-      </mat-optgroup>
-    </mat-autocomplete>
-  </mat-form-field>
+  <div class="filter-ctn">
+    <h3>{{'Filtrar por tipo'}}</h3>
+    <ul>
+      <li *ngFor="let pointType of pointTypes">
+        <mat-checkbox (change)="onFilterApply()" [(ngModel)]="pointType.enabled">
+          {{pointType.viewValue | translate}}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </div>
 
-  <mat-slider
-    class="distance-slider"
-    [min]=1
-    [max]=500
-    [step]=10
-    [thumbLabel]="true"
-    [tickInterval]="1"
-    [disabled]="!sliderStatus"
-    [value]="filterOptions.distance"
-    (change)="onSliderChange($event)">
-  </mat-slider>
 
-  <div class="buttons-ctn">
-    <button mat-flat-button color="primary" (click)="onResetFilter()">{{'Borrar Filtro' | translate}}</button>
-    <button mat-flat-button color="primary" (click)="onFilterApply()">{{'Aplicar Filtro' | translate}}</button>
+  <div class="filter-ctn near-filter">
+    <h3>{{'Filtrar lugares cercanos a'}}</h3>
+    <mat-form-field color="accent" floatLabel="never">
+      <input #pointRelated type="text" matInput placeholder="{{'Ingresa un lugar' | translate}}"
+             [matAutocomplete]="pointRelated" name="pointRelated" [value]="filterOptions.nearName !== undefined ? filterOptions.nearName : ''"
+             [id]="pointRelated" (keyup)="searchPrivates($event)" />
+      <mat-icon class="delete-near" matSuffix (click)="onDeleteNearSelection($event)">close</mat-icon>
+      <mat-autocomplete #pointRelated="matAutocomplete"
+                        (optionSelected)="onChangeNearSelection($event)"
+                        class="route-autocomplete"
+                        [displayWith]="displayFn">
+        <mat-option *ngIf="acLoading">
+          <mat-spinner class="spinner-loader" [diameter]="32" mode="indeterminate"></mat-spinner>
+        </mat-option>
+        <mat-optgroup *ngFor="let group of options" [label]="group.type | translate">
+          <mat-option *ngFor="let option of group.points" [value]="option">{{option.name}}</mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-slider
+      class="distance-slider"
+      [min]=10000
+      [max]=50000
+      [step]=10000
+      tickInterval="1"
+      [disabled]="!sliderStatus"
+      [value]="filterOptions.distance"
+      (change)="onSliderChange($event)">
+    </mat-slider>
+    <span class="distance-label">{{sliderStatus ? filterOptions.distance / 1000 + 'km': '&infin;'}}</span>
   </div>
 </div>

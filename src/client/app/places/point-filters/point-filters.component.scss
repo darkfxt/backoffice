@@ -18,3 +18,26 @@
 mat-checkbox{
   color: $gray-title;
 }
+
+.filter-ctn{
+  margin-bottom: 24px;
+  h3{
+    color: $gray-title;
+    font-weight: 500;
+  }
+}
+
+.near-filter{
+  h3{
+    margin-bottom: 0;
+  }
+}
+
+.distance-label{
+  color: $gray-body;
+}
+
+.distance-slider{
+  width: 100%;
+  max-width: 80%;
+}

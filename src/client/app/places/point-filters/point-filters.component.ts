@@ -63,7 +63,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
         ptm.enabled = true;
       return ptm;
     });
-    this.filterOptions = Object.assign({}, this.filterOptions, {distance: this.filterOptions.distance || 20});
+    this.filterOptions = Object.assign({}, this.filterOptions, {distance: this.filterOptions.distance || 10000});
     if (this.filterOptions.nearName) this.sliderStatus = true;
   }
 
@@ -140,7 +140,7 @@ export class PointFiltersComponent implements OnInit, OnDestroy {
       {
         coordinates: `${event.option.value.geo.point.lat},${event.option.value.geo.point.lng}`,
         nearName: event.option.value.name,
-        distance: this.filterOptions.distance * 1000 || 20000});
+        distance: this.filterOptions.distance || 10000});
     this.sliderStatus = true;
     this.onFilterApply();
   }
