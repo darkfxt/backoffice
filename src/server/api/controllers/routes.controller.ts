@@ -11,8 +11,7 @@ export class RoutesController {
     try {
       if ((<any>request).loggedUser.Role !== 'TAYLOR_ADMIN')
         request.query.company_id = (<any>request).loggedUser.CompanyID;
-      else
-        request.query.company_id = (<any>request).loggedUser.CompanyID;
+
       request.query.page = +request.query.page + 1;
       const answer = await RoutesService.getAll(request.query, request.headers);
       answer.data.metadata.pageIndex = (+answer.data.metadata.page_index - 1).toString();

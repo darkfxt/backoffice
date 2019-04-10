@@ -26,12 +26,14 @@ export class RouteMapComponent implements OnInit, OnDestroy {
   originalRelated = [];
 
   @Input() form: FormGroup;
+
   @Input() set routeCompleted(routeReached: boolean) {
     if (routeReached) {
       this._routeReached = true;
       this.getRelated();
     }
   }
+
   @Input() set nearPoints(nearPoint: Array<any>) {
     if (nearPoint) {
       this.originalRelated = nearPoint;
@@ -64,7 +66,8 @@ export class RouteMapComponent implements OnInit, OnDestroy {
               private renderer: Renderer2,
               private elementRef: ElementRef,
               private store: Store<AppState>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this._routeType = this.form.controls.route_type.value || 'driving';
@@ -100,9 +103,9 @@ export class RouteMapComponent implements OnInit, OnDestroy {
         let infoContent = `<h3>${resp[0].formatted_address.split(',')[0]}</h3>\n`;
         infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
 
-      const infowindow = new google.maps.InfoWindow({
-        content: infoContent
-      });
+        const infowindow = new google.maps.InfoWindow({
+          content: infoContent
+        });
 
         const marker = new google.maps.Marker({
           position: e.latLng.toJSON(),
@@ -114,35 +117,37 @@ export class RouteMapComponent implements OnInit, OnDestroy {
           }
         });
 
-      this.lastMarker = marker;
+        this.lastMarker = marker;
 
-      infowindow.addListener('closeclick', (lalala) => {
-        if (this.docListener) this.docListener();
-        this.markers = this.markers.filter((thyMarker: any) => thyMarker.title !== this.lastMarker.title);
-        this.lastMarker.setMap(null);
-      });
-
-      this.infoWindows.forEach(info => info.close());
-      infowindow.open(this.map, marker);
-      this.docListener = this.renderer.listen('document', 'click', (evt) => {
-        if (evt.target.id === 'adder-route') {
-          const textTitle = evt.path[1].childNodes[0].textContent;
-          this.placeStore.setLocation(place);
-          this.waypoints.push(place);
-          this.addMarker();
+        infowindow.addListener('closeclick', (lalala) => {
           if (this.docListener) this.docListener();
-        }
+          this.markers = this.markers.filter((thyMarker: any) => thyMarker.title !== this.lastMarker.title);
+          this.lastMarker.setMap(null);
+        });
+
+        this.infoWindows.forEach(info => info.close());
+        infowindow.open(this.map, marker);
+        this.docListener = this.renderer.listen('document', 'click', (evt) => {
+          if (evt.target.id === 'adder-route') {
+            const textTitle = evt.path[1].childNodes[0].textContent;
+            this.placeStore.setLocation(place);
+            this.waypoints.push(place);
+            this.addMarker();
+            if (this.docListener) this.docListener();
+          }
+        });
+
+        this.infoWindows.push(infowindow);
+        this.markers.push(marker);
       });
 
-      this.infoWindows.push(infowindow);
-      this.markers.push(marker);
     });
 
-    this.placeStore.getWaypoints().subscribe(( waypoints ) => {
+    this.placeStore.getWaypoints().subscribe((waypoints) => {
       if (!waypoints)
         return false;
       if (!Array.isArray(waypoints)) {
-        waypoints = Object.keys(waypoints).map( key => waypoints[key]);
+        waypoints = Object.keys(waypoints).map(key => waypoints[key]);
       }
       this.waypoints = waypoints;
       this.addMarker();
@@ -161,8 +166,6 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       this.destination = place;
       this.addMarker();
     });
-    //
-  });
   }
 
   ngOnDestroy() {
@@ -177,7 +180,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       this.drawerPicker(this.origin.geo.point, {label: this.origin.name, type: 'destination'});
 
     this.waypoints
-      // .filter(place => place.types !== 'waypoint')
+    // .filter(place => place.types !== 'waypoint')
       .forEach((place, i) => {
         this.drawerPicker(place.geo.point, {label: place.name, type: place.type});
       });
@@ -206,7 +209,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       content: infoContent
     });
 
-    infowindow. addListener('closeclick', () => {
+    infowindow.addListener('closeclick', () => {
       if (this.docListener) this.docListener();
     });
 
