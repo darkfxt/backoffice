@@ -13,6 +13,7 @@ import { DayOfTrip, Event } from '../../shared/models/TripTemplate';
 import { BookingService } from '../../shared/services/booking.service';
 import { ShareModalComponent } from '../../shared/share-modal/share-modal.component';
 import { MatDialog } from '@angular/material';
+import {TRANSLATE} from '../../translate-marker';
 
 @Component({
   selector: 'app-booking-detail',
@@ -119,7 +120,7 @@ export class BookingDetailComponent implements OnInit {
       this.published = true;
     } else
       this.store.dispatch(new SnackbarOpen({
-        message: 'No se puede publicar, el evento no tiene un origen/destino definido',
+        message: TRANSLATE('No se puede publicar, el evento no tiene un origen/destino definido'),
         action: 'error'
       }));
   }

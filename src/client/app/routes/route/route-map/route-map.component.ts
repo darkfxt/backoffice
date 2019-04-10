@@ -10,6 +10,7 @@ import { Leg } from '../../../shared/models/Segment';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/shared/app.interfaces';
 import { Subscription } from 'rxjs';
+import {TRANSLATE} from '../../../translate-marker';
 
 @Component({
   selector: 'app-route-map',
@@ -101,7 +102,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
         });
 
         let infoContent = `<h3>${resp[0].formatted_address.split(',')[0]}</h3>\n`;
-        infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+        infoContent += `<button mat-flat-button id="adder-route">${TRANSLATE('Agregar a la ruta')}</button>`;
 
         const infowindow = new google.maps.InfoWindow({
           content: infoContent
@@ -199,7 +200,7 @@ export class RouteMapComponent implements OnInit, OnDestroy {
       scaledSize: new google.maps.Size(30, 42)
     };
     if (related) {
-      infoContent += `<button mat-flat-button id="adder-route">Agregar a la ruta</button>`;
+      infoContent += `<button mat-flat-button id="adder-route">${TRANSLATE('Agregar a la ruta')}</button>`;
       icon = {
         url: `/assets/icons/${options.type}_off.png`, // url
         scaledSize: new google.maps.Size(20, 20)

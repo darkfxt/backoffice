@@ -106,10 +106,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       let responseMessage: string;
 
       this.userService.upsert({id: this.user.id, body: this.prepareToSave()}).subscribe(resp => {
-        responseMessage = 'Usuario guardado con exito';
+        responseMessage = TRANSLATE('Usuario guardado con exito');
         this.router.navigate(['/users']);
       }, err => {
-        responseMessage = 'A ocurrido un error intentelo nuevamente';
+        responseMessage = TRANSLATE('Ha ocurrido un error intentelo nuevamente');
       }, () => {
         this.bussy = false;
       });
@@ -148,7 +148,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${this.user.email}?`
+        message: `${TRANSLATE('Deseas eliminar')} ${this.user.email}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -160,7 +160,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.userService.deleteById(this.user.id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.user.email} ha sido eliminado`}
+            {message: `${this.user.email} ${TRANSLATE('ha sido eliminado')}`}
           ));
           this.router.navigate(['/users']);
         });

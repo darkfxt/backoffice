@@ -57,6 +57,7 @@ import { AddEvent, DayIndexTypeForEventSetted } from '../../../store/trip-templa
 import {AddDay, DaySelected, MoveDay, RemoveDay} from '../../../store/trip-template/day/day.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import * as moment from 'moment';
+import {TRANSLATE} from '../../../translate-marker';
 
 @Pipe({name: 'numberToArray'})
 export class NumberToArray implements PipeTransform {
@@ -272,7 +273,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: 'Deseas eliminar este día?'
+        message: TRANSLATE('Deseas eliminar este día?')
       },
       disableClose: true,
       closeOnNavigation: true,

@@ -70,10 +70,10 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       // this.store.dispatch(new SaveUser({id: this.user.id, body: this.form.value}));
       const body = this.prepareToSave();
       this.accountsService.upsert({id: this.account.id, body: body}).subscribe(resp => {
-        responseMessage = 'Cuenta guardada con exito';
+        responseMessage = TRANSLATE('Cuenta guardada con exito');
         this.router.navigate(['/accounts']);
       }, err => {
-        responseMessage = 'A ocurrido un error intentelo nuevamente';
+        responseMessage = TRANSLATE('Ha ocurrido un error intentelo nuevamente');
       }, () => {
         this.bussy = false;
         this.snackBar.open(responseMessage, undefined, {
@@ -106,7 +106,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${this.account.name}?`
+        message: TRANSLATE(`Deseas eliminar`) + this.account.name + '?'
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -118,7 +118,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.accountsService.deleteById(this.account.id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.account.name} ha sido eliminado`}
+            {message: this.account.name + TRANSLATE(`ha sido eliminado`)}
           ));
           this.router.navigate(['/accounts']);
         });

@@ -96,7 +96,7 @@ export class PointHeadComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${TRANSLATE(event)}?`
+        message: `${TRANSLATE('Deseas eliminar?')} ${TRANSLATE(event)}?`
       },
       disableClose: true,
       closeOnNavigation: true,

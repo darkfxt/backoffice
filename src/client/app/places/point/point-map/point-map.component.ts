@@ -4,6 +4,7 @@ import {} from '@types/googlemaps';
 import { PlaceStore } from '../../../shared/services/place-store.services';
 import { AddressComponent } from '../../../../../server/api/entity/GooglePlace';
 import { Subscription } from 'rxjs';
+import {TRANSLATE} from '../../../translate-marker';
 
 @Component({
   selector: 'app-point-map',
@@ -43,7 +44,7 @@ export class PointMapComponent implements OnInit, OnDestroy {
     this.marker = new google.maps.Marker({
       position: this.map.getCenter(),
       map: this.map,
-      title: 'Click to zoom'
+      title: TRANSLATE('Click para agrandar')
     });
 
     this.map.addListener('bounds_changed', () => {

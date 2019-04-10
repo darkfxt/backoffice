@@ -17,6 +17,7 @@ import { getSelectedDriving } from '../../store/trip-template';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { Place } from '../../shared/models/Place';
+import {TRANSLATE} from '../../translate-marker';
 
 @Component({
   selector: 'app-point',
@@ -231,7 +232,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${this.place.name}?`
+        message: TRANSLATE('Deseas eliminar?') + this.place.name
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -243,7 +244,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.placeService.deleteById(this.place._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.place.name} ha sido eliminado`}
+            {message: `${this.place.name} ${TRANSLATE('ha sido eliminado')}`}
           ));
           this.router.navigate(['/places']);
         });

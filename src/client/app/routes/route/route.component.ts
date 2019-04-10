@@ -233,7 +233,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${this.segment.name}?`
+        message: `${TRANSLATE('Deseas eliminar')} ${this.segment.name}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -245,7 +245,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.routesService.deleteById(this.segment._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.segment.name} ha sido eliminado`}
+            {message: `${this.segment.name} ${TRANSLATE('ha sido eliminado')}`}
           ));
           this.router.navigate(['/routes']);
         });

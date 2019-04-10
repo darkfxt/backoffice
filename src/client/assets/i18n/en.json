@@ -203,5 +203,20 @@
 	"{trip length} trips encontrados": "{{value}} templates found",
 	"{user_count} usuarios encontrados": "{{user_count}} users found",
 	"{value} rutas encontradas": "{{value}} routes found",
-	"ó": "or"
+	"ó": "or",
+  "Cuenta guardada con exito": "Account saved succesfully",
+  "Ha ocurrido un error intentelo nuevamente": "An error has occurred, please try again.",
+  "creado por": "created by",
+  "No se puede publicar, el evento no tiene un origen/destino definido": "Event can't be published, it has no origin/destination defined",
+  "Si": "yes",
+  "No": "no",
+  "Aun no has creado reservas": "You have not created bookings yet",
+  "Crear nueva reserva": "Create new booking",
+  "Deseas eliminar?": "Do you want to delete?",
+  "Click para agrandar": "Click to zoom",
+  "ha sido eliminado": "was deleted",
+  "Deseas eliminar este evento?": "Do you wish to delete this event?",
+  "Deseas eliminar este día?": "Do you wish to delete this day?",
+  "Usuario guardado con exito": "User saved succesfully"
+
 }

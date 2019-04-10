@@ -25,6 +25,7 @@ import { first } from 'rxjs/internal/operators';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { MatDialog } from '@angular/material';
+import {TRANSLATE} from '../../translate-marker';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -181,7 +182,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `Deseas eliminar ${this.tripTemplate.name}?`
+        message: `${TRANSLATE('Deseas eliminar')} ${this.tripTemplate.name}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -193,7 +194,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.tripTemplateService.deleteById(this.tripTemplate._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.tripTemplate.name} ha sido eliminado`}
+            {message: `${this.tripTemplate.name} ${TRANSLATE('ha sido eliminado')}`}
           ));
           this.router.navigate(['/trip-templates']);
         });

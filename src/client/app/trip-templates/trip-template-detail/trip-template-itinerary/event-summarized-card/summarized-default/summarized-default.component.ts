@@ -5,6 +5,7 @@ import { AppState } from '../../../../../store/shared/app.interfaces';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material';
 import { RemoveEvent } from '../../../../../store/trip-template/event/event.actions';
+import {TRANSLATE} from '../../../../../translate-marker';
 
 @Component({
   selector: 'app-summarized-default',
@@ -35,7 +36,7 @@ export class SummarizedDefaultComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: 'Deseas eliminar este evento?'
+        message: TRANSLATE('Deseas eliminar este evento?')
       },
       disableClose: true,
       closeOnNavigation: true,

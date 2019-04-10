@@ -19,6 +19,7 @@ import { getSelectedDayId, getTripTemplateSelectedId } from '../../../../../stor
 import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { eventColors } from '../../../../../shared/models/TripTemplate';
+import {TRANSLATE} from '../../../../../translate-marker';
 
 @Component({
   selector: 'app-summarized-driving',
@@ -73,7 +74,7 @@ export class SummarizedDrivingComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: 'Deseas eliminar este evento?'
+        message: TRANSLATE('Deseas eliminar este evento?')
       },
       disableClose: true,
       closeOnNavigation: true,
