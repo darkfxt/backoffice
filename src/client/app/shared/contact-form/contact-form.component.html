@@ -1,0 +1,27 @@
+<form [formGroup]="form" novalidate>
+  <div class="app-container full-size body-content">
+    <div class="box-container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <mat-form-field color="accent" >
+            <input type="text" matInput placeholder="{{'Título' | translate}}" name="title" formControlName="title"/>
+            <mat-error *ngIf="form.get('title').hasError('required') && (form.get('title').dirty || form.get('title').touched)">{{'Campo requerido' | translate}}</mat-error>
+            <mat-error *ngIf="form.get('title').hasError('maxlength') && (form.get('title').dirty || form.get('title').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>
+          </mat-form-field>
+          <mat-form-field color="accent">
+            <textarea matInput placeholder="{{'Comentario' | translate}}" name="comment"
+              formControlName="comment"
+              cdkAutosizeMinRows="6"
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"></textarea>
+            <mat-error *ngIf="form.get('comment').invalid && (form.get('comment').dirty || form.get('comment').touched)">{{'Campo requerido' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="buttons-ctn">
+        <button mat-button color="primary" [mat-dialog-close]="false" cdkFocusInitial>{{'Cancelar' | translate}}</button>
+        <button mat-button color="accent" [mat-dialog-close]="true" (click)="onSubmit()">{{'Enviar comentario' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</form>

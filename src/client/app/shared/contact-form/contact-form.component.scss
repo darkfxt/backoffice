@@ -1,0 +1,21 @@
+@import "../../../assets/variables";
+h2{
+  color: $gray-title;
+}
+
+.buttons-ctn{
+  display: flex;
+  justify-content: flex-end;
+}
+
+/deep/ #eventDialog{
+  padding: 0;
+  background: #F5F5F5;
+}
+
+/deep/ .eventDialogPanel{
+  @media only screen and (max-device-width: 736px) {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

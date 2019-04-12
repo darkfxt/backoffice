@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import {TRANSLATE} from '../../translate-marker';
+import {SnackbarOpen} from '../../store/shared/actions/snackbar.actions';
+import {ConfirmationModalComponent} from '../modal/confirmation-modal/confirmation-modal.component';
+import {ModalService} from '../modal/modal.service';
+import {MatDialog} from '@angular/material';
+import {ContactFormComponent} from '../contact-form/contact-form.component';
 
 @Component({
   selector: 'app-footer',
@@ -17,7 +23,8 @@ export class FooterComponent implements OnInit {
   languageSelected: {};
 
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -39,6 +46,27 @@ export class FooterComponent implements OnInit {
     localStorage.setItem('uiLanguage', languageToUpdate);
     localStorage.setItem('uiL10n', l10nToUpdate);
     this.translate.use(languageToUpdate);
+  }
+
+  openModal() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: ``
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ContactFormComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+
+    });
   }
 
 }

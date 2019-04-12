@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { DetailHeaderComponent } from './detail-header/detail-header.component';
-import { MatButtonModule, MatDialogModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from './pipes/pipes.module';
 import { ShareModalComponent } from './share-modal/share-modal.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 @NgModule({
   imports: [
@@ -16,21 +17,26 @@ import { ShareModalComponent } from './share-modal/share-modal.component';
     MatIconModule,
     MatSliderModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     TranslateModule,
     PipesModule,
     MatDialogModule
   ],
   exports: [
     DetailHeaderComponent,
-    ShareModalComponent
+    ShareModalComponent,
+    ContactFormComponent
   ],
   declarations: [
     DetailHeaderComponent,
-    ShareModalComponent
+    ShareModalComponent,
+    ContactFormComponent
   ],
   entryComponents: [
     DetailHeaderComponent,
-    ShareModalComponent
+    ShareModalComponent,
+    ContactFormComponent
   ],
   providers: [ ]
 })

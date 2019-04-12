@@ -19,6 +19,7 @@ import { authorization, authentication } from 'gl-auth';
 import BookingRouter from './routers/booking.route';
 import * as path from 'path';
 import ContentRouter from './routers/content.route';
+import CommentsRouter from './routers/comments.route';
 
 class Api {
 
@@ -42,6 +43,7 @@ class Api {
     this.api.use('/bookings', [authentication, authorization('BOOKING')], BookingRouter);
     this.api.use('/users', SignRouter);
     this.api.use('/users', [authentication, authorization('USER')], UserRouter);
+    this.api.use('/comments', [authentication, authorization('USER')], CommentsRouter);
     this.api.use('/accounts', [authentication, authorization('ACCOUNT')], AccountsRouter);
     this.api.use('/assets', [authentication, authorization('ASSET')], AssetsRouter);
     this.api.use('/companies', [authentication, authorization('COMPANY')], CompanyRouter);
