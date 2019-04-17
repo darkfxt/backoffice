@@ -137,6 +137,11 @@ export class BookingDetailComponent implements OnInit {
   }
 
   exportFile(type) {
+    if (!this.validateItinerary())
+      return this.store.dispatch(new SnackbarOpen({
+        message: TRANSLATE('File cannot be exported because there are incomplete fields, please check the itinerary'),
+        action: 'error'
+      }));
 
     this.bs.exportFile(this.booking._id, type).subscribe(res => {
       const contentType = type === 'pdf' ? 'application/pdf' : 'Content-Disposition';
@@ -162,6 +167,12 @@ export class BookingDetailComponent implements OnInit {
   }
 
   shareBooking(booking) {
+    if (!this.validateItinerary())
+      return this.store.dispatch(new SnackbarOpen({
+        message: TRANSLATE('You cannot share the trip because there are incomplete fields, please check the itinerary'),
+        action: 'error'
+      }));
+
     const basePath = location.host.indexOf('local.') > -1 || location.host.indexOf('develop.') > -1 ? 'dev.appv2.taylorgps.com' : 'appv2.taylorgps.com';
     const dialogRef = this.dialog.open(ShareModalComponent, {
       width: '500px',
