@@ -16,22 +16,22 @@ export const config = {
   },
   googleApiKey: 'AIzaSyB79RxuTmeFJ97NQGQCEwdhsOE8trgocRg',
   geo: {
-    url: 'http://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6006/geov2'
+    url: 'https://dev.api.taylorgps.com/geov2'
   },
   routes: {
-    url: 'http://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6001/routes'
+    url: 'https://dev.api.taylorgps.com/routes'
   },
   trips: {
-    url: 'http://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6008/trips'
+    url: 'https://dev.api.taylorgps.com/trips'
   },
   idm: {
-    url: 'http://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6003/idm'
+    url: 'https://dev.api.taylorgps.com/idm'
   },
   core: {
-    url: 'hhttp://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6004/core'
+    url: 'https://dev.api.taylorgps.com/core'
   },
   content: {
-    url: 'http://TG-PRD-ExternalLoa-12NMRNXRFWJO4-1651206308.us-east-1.elb.amazonaws.com:6007/content'
+    url: 'https://dev.api.taylorgps.com/content'
   }
 
 };
