@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from './pipes/pipes.module';
 import { ShareModalComponent } from './share-modal/share-modal.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    ReactiveFormsModule,
     TranslateModule,
     PipesModule,
     MatDialogModule

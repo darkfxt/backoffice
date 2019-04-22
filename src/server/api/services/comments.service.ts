@@ -1,51 +1,63 @@
-import axios from 'axios';
-import { config } from '../../config/env';
-import * as FormData from 'form-data';
+import * as moment from 'moment';
+import { AccountsService } from './accounts.service';
+import { CompanyService } from './company.service';
 
+export interface IMailRequest {
+  title: string;
+  comment: string;
+  username: string;
+  company: string;
+  account: string;
+  time: string;
+}
 
 export class CommentsService {
 
   public static async create(body, headers): Promise<any> {
-    const form = new FormData();
-    body.primary_color = body.primary_color.replace('#', '');
-    body.secondary_color = body.secondary_color.replace('#', '');
-
-    form.append('name', body.name);
-    form.append('company_id', body.company_id);
-    form.append('primary_color', body.primary_color);
-    form.append('secondary_color', body.secondary_color);
-    form.append('file', body.file.buffer, {
-      filename: body.file.originalname,
-      contentType: body.file.mimetype,
-      knownLength: body.file.size
-    });
-    const header = {...form.getHeaders(), ...{authorization: headers.authorization}};
-    const resp = await axios.post(`${config.core.url}/accounts`, form, {headers: header});
-    return resp;
-  }
-
-  private static async createMailNotification(body) {
+    // const account = await AccountsService.getDetail(resp.data.account_id, 'en', headers);
+    // resp.data.account_id = account.data;
+    const company = await CompanyService.getDetail(body.loggedUser.CompanyID, 'en', headers);
+    const mailReq: IMailRequest = {
+      comment: body.comment,
+      title: body.title,
+      username: body.loggedUser.Username,
+      company: company.data.name,
+      account: '',
+      time: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
+    };
     const aws = require('aws-sdk');
     aws.config = new aws.Config();
-    aws.config.update({ accessKeyId: 'AKIAYGVVKPYFIPRK5WFD', secretAccessKey: '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', region: 'us-east-1'});
-    const ses = new aws.SES({apiVersion: '2010-12-01'});
+    aws.config.update({
+      accessKeyId: 'AKIAYGVVKPYFIPRK5WFD',
+      secretAccessKey: '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',
+      region: 'us-east-1'});
     const to = ['support@taylorgps.com'];
-    const from = 'support@taylorgps.com ';
+    const from = 'support@taylorgps.com';
 
-    if (!body.message)
-      return res.json({ success: false, error: 'Message field is mandatory' });
+    if (!mailReq.comment)
+      return { success: false, error: 'Message field is mandatory' };
 
-    ses.sendEmail({
+    const params = {
       Source: from, Destination: { ToAddresses: to },
+      ReplyToAddresses: [
+        mailReq.username
+      ],
       Message: {
         Subject: { Data: `Formulario de contacto TaylorGPS` },
-        Body: { Html: { Data: '<body>'+body.message+'</body>' }}
+        Body: { Html: { Data: '<body>'
+            + `<ul>
+                  <li>Username: ${mailReq.username}</li>
+                  <li>Company: ${mailReq.company}</li>
+                  <li>Title: ${mailReq.title}</li>
+                  <li>Comment: ${mailReq.comment}</li>
+                  <li>Account: ${mailReq.account}</li>
+                  <li>Date: ${mailReq.time}</li>
+              </ul>`
+            + '</body>' }}
       }
-    }, (err, data) => {
-      if(err) return console.log(err);
-      res.json({ success: true, msg: 'Email sent successfully' });
-    });
+    };
 
+    return new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
   }
 
 }

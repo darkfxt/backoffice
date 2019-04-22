@@ -14,7 +14,7 @@ export class CommentsService {
 
   insert (params): Observable<any> {
     console.log('lalala')
-    return this.http.post('/api/comments', params.body);
+    return this.http.post('/api/comments', params);
   }
 
   /**

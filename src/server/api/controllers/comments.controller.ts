@@ -7,12 +7,14 @@ export class CommentsController {
 
   public static async create(request: Request, response: Response, next: NextFunction) {
     try {
-      const data = JSON.parse(request.body.data);
+      const data = request.body;
 
-      data.company_id = (<any>request).loggedUser.CompanyID;
-      const user = await CommentsService.create(data, request.headers);
-
-      response.json(user.data);
+      data.loggedUser = (<any>request).loggedUser;
+      const answer = await CommentsService.create(data, request.headers);
+      if (answer.MessageId)
+        response.json(answer.MessageId);
+      else
+        response.status(400);
     } catch (err) {
       next(err);
     }
