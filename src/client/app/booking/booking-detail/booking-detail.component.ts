@@ -14,6 +14,7 @@ import { BookingService } from '../../shared/services/booking.service';
 import { ShareModalComponent } from '../../shared/share-modal/share-modal.component';
 import { MatDialog } from '@angular/material';
 import {TRANSLATE} from '../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-booking-detail',
@@ -39,7 +40,8 @@ export class BookingDetailComponent implements OnInit {
               private router: Router,
               private store: Store<AppState>,
               private bs: BookingService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private ts: TranslateService
   ) {
     this.selectedBooking$ = store.pipe(select(getBookingSelected));
   }

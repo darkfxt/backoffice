@@ -58,6 +58,7 @@ import {AddDay, DaySelected, MoveDay, RemoveDay} from '../../../store/trip-templ
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import * as moment from 'moment';
 import {TRANSLATE} from '../../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 @Pipe({name: 'numberToArray'})
 export class NumberToArray implements PipeTransform {
