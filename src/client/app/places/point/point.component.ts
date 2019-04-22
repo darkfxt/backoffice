@@ -17,7 +17,8 @@ import { getSelectedDriving } from '../../store/trip-template';
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { Place } from '../../shared/models/Place';
-import {TRANSLATE} from '../../translate-marker';
+import { TRANSLATE } from '../../translate-marker';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-point',
@@ -56,6 +57,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppState>,
     private matDialog: MatDialog,
+    private ts: TranslateService,
     modalService: ModalService,
     private placeStore: PlaceStore
   ) {
@@ -232,7 +234,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: TRANSLATE('Deseas eliminar?') + this.place.name
+        message: this.ts.instant(TRANSLATE('Deseas eliminar?')) + ' ' + this.place.name
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -244,7 +246,7 @@ export class PointComponent extends FormGuard implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.placeService.deleteById(this.place._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.place.name} ${TRANSLATE('ha sido eliminado')}`}
+            {message: `${this.place.name} ${this.ts.instant(TRANSLATE('ha sido eliminado'))}`}
           ));
           this.router.navigate(['/places']);
         });
