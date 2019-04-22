@@ -20,7 +20,10 @@
     <button (click)="saveBooking()" mat-flat-button color="accent" class="save">{{'Guardar' | translate}}</button>
     <mat-menu #menuDownload="matMenu" overlapTrigger="false">
       <button mat-menu-item (click)="exportFile('gpx')">{{'Exportar GPX' | translate}}</button>
-      <button mat-menu-item (click)="exportFile('pdf')">{{'Exportar PDF' | translate}}</button>
+      <button mat-menu-item [matMenuTriggerFor]="menuDownload2">{{'Exportar PDF' | translate}}</button>
+    </mat-menu>
+    <mat-menu #menuDownload2="matMenu" overlapTrigger="false">
+      <button mat-menu-item (click)="exportFile('pdf', lang)" *ngFor="let lang of languages">{{lang | translate}}</button>
     </mat-menu>
   </div>
 </app-detail-header>

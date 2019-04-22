@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../store/shared/app.interfaces';
@@ -14,13 +14,14 @@ import { BookingService } from '../../shared/services/booking.service';
 import { ShareModalComponent } from '../../shared/share-modal/share-modal.component';
 import { MatDialog } from '@angular/material';
 import {TRANSLATE} from '../../translate-marker';
+import {ContentService} from '../../shared/services/content.service';
 
 @Component({
   selector: 'app-booking-detail',
   templateUrl: './booking-detail.component.html',
   styleUrls: ['./booking-detail.component.scss']
 })
-export class BookingDetailComponent implements OnInit {
+export class BookingDetailComponent implements OnInit, OnDestroy {
   formHeader: FormGroup;
   formItinerary: FormArray;
   booking: Booking;
@@ -28,6 +29,8 @@ export class BookingDetailComponent implements OnInit {
   selectedBooking$: Observable<string>;
   published: boolean;
   statusType = Status;
+  languages = [];
+  languages$: Subscription;
   stepper = {
     header: false,
     itinerary: true,
@@ -39,13 +42,19 @@ export class BookingDetailComponent implements OnInit {
               private router: Router,
               private store: Store<AppState>,
               private bs: BookingService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private contentService: ContentService
   ) {
     this.selectedBooking$ = store.pipe(select(getBookingSelected));
   }
 
   ngOnInit() {
     this.store.dispatch(new GetAllDevices());
+
+    this.languages$ = this.contentService.getAvailableLanguages()
+      .subscribe((resp) => {
+        this.languages = resp.slice();
+      });
 
     this.selectedBooking$.subscribe( (selectedBooking: string) => {
       if (selectedBooking) {
@@ -78,6 +87,10 @@ export class BookingDetailComponent implements OnInit {
       dropoff_point: [this.booking.gps_device && this.booking.gps_device.drop_off ? this.booking.gps_device.drop_off : undefined]
     });
     this.formItinerary = this.fb.array(this.booking.days || [new DayOfTrip( [])]);
+  }
+
+  ngOnDestroy() {
+    this.languages$.unsubscribe();
   }
 
   saveBooking(status?: Status) {
@@ -136,14 +149,14 @@ export class BookingDetailComponent implements OnInit {
     return invalidEvents.length <= 0;
   }
 
-  exportFile(type) {
+  exportFile(type, lang = 'en') {
     if (!this.validateItinerary())
       return this.store.dispatch(new SnackbarOpen({
         message: TRANSLATE('File cannot be exported because there are incomplete fields, please check the itinerary'),
         action: 'error'
       }));
 
-    this.bs.exportFile(this.booking._id, type).subscribe(res => {
+    this.bs.exportFile(this.booking._id, type, lang).subscribe(res => {
       const contentType = type === 'pdf' ? 'application/pdf' : 'Content-Disposition';
       const blob = new Blob([res], { type: contentType});
       const url = window.URL.createObjectURL(blob);

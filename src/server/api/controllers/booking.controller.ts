@@ -108,7 +108,7 @@ export class BookingController {
   public static async getPDFFile(request: Request, response: Response, next: NextFunction) {
     try {
       const resp = await BookingService.getDetail(request.params.id, request.headers);
-      const booking = new ItineraryFactory(resp.data);
+      const booking = await new ItineraryFactory().get(resp.data, request.query.lang, request.headers);
       if (request.query.edit)
         return response.render('itinerary', booking);
       response.render('itinerary', booking, (err, html) => {

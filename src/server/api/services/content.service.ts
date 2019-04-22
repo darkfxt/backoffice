@@ -18,4 +18,9 @@ export class ContentService {
     return axios
       .get(`${config.content.url}/languages`, {headers: {authorization: headers.authorization}});
   }
+
+  public static async getContent(type, id, headers): Promise<any> {
+    return axios
+      .get(`${config.content.url}/${type}/${id}`, {headers: {authorization: headers.authorization}});
+  }
 }

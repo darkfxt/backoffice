@@ -43,9 +43,9 @@ export class BookingService {
     return this.http.delete(`/api/bookings/${id}`);
   }
 
-  exportFile(id: string, type: string): Observable<any> {
+  exportFile(id: string, type: string, lang): Observable<any> {
     return this.http
-      .get(`/api/bookings/${id}/export/${type}`, {responseType: 'blob'});
+      .get(`/api/bookings/${id}/export/${type}?lang=${lang}`, {responseType: 'blob'});
   }
 
   /**

@@ -5,39 +5,39 @@ mixin routes(event)
     h4= event.title
       if(event.meta.product.via)
         span  - Via #{event.meta.product.via}
-    if event.description
-      p= event.description
+    if event.description[lang]
+      p= event.description[lang].text
 
     div.points.clearfix
       div
-        h5 Origin
+        h5 #{i18n.Origin}
         p
           span= event.meta.product.origin.name
       div
-        h5 Destination
+        h5 #{i18n.Destination}
         p
           span= event.meta.product.destination.name
       div
-        h5 Avg. time
+        h5 #{i18n['Avg. time']}
         p
           span #{event.meta.avgTime.hours}hs #{event.meta.avgTime.minutes}min.
       div
-        h5 Distance
+        h5 #{i18n['Distance']}
         p
           span #{event.meta.distance}km.
       div
-        h5 Road surface
+        h5 #{i18n['Road surface']}
         p
           span #{event.meta.product.road_surface.toLowerCase()}
     if event.meta.highlights.length
       div
-        h5 Puntos de interes
+        h5 #{i18n['Highlights']}
         p
           span= event.meta.highlights.join(', ')
-    if event.meta.product.things_to_know.length
+    if event.meta.product.things_to_know[lang] && event.meta.product.things_to_know[lang].length
       div
         ul
-          each ttk in event.meta.product.things_to_know
+          each ttk in event.meta.product.things_to_know[lang]
             li
               h5= ttk.title
               p= ttk.description
@@ -48,7 +48,8 @@ mixin place(event)
   div
     span.event-type= event.type
     h4= event.title
-    p= event.description['en']
+    if event.description[lang]
+      p= event.description[lang].text
 
 doctype html
 html
@@ -279,45 +280,46 @@ html
             span ##{header.reference}
         div= header.start_date + ' - ' + header.end_date
       div.divisor
-      h2= 'Mrs. ' + header.passenger_name
+      h2= header.passenger_name
       if header.comment
         div.description
           p= header.comment
           br
       div.description
         p
-          span You can view your itinerary in your smartphone by following this link
+          span #{i18n['You can view your itinerary in your smartphone by following this link']}
             a(href="https://"+basePath+"/trips/"+header.id+"-"+header.name+"?a="+header.account.id)  https://#{basePath}/trips/#{header.id}-#{header.name}?a=#{header.account.id}
           span .
           br
-          span By following the link above you will access to the web version of your trip itinerary. It displays plenty of information about your daily trip, highlights and details.
+          span #{i18n['By following the link above you will access to the web version of your trip itinerary. It displays plenty of information about your daily trip, highlights and details.']}
           if(header.gps && !header.gps.id)
             br
-            span It also features an integration with Google Maps that enables you to use your smartphone to get driving instructions and directions during your trip.
+            span #{i18n['It also features an integration with Google Maps that enables you to use your smartphone to get driving instructions and directions during your trip.']}
 
       if(header.gps && header.gps.id)
         div.mobile-desc.clearfix
           p
-            span GPS Device: #{header.gps.name}&nbsp
-            span Pick up: #{header.gps.pick_up}&nbsp
-            span Drop off: #{header.gps.drop_off}
+            span #{i18n['GPS Device:']} #{header.gps.name}&nbsp
+            span #{i18n['Pick up:']} #{header.gps.pick_up}&nbsp
+            span #{i18n['Drop off:']} #{header.gps.drop_off}
 
     main.main
       ul.day-list
         each day in itinerary
-          li.clearfix
-            div.day-ctn
-                span.nod-ctn= day.date.substr(8,2)
-                span.month-ctn= month[parseInt(day.date.substr(5,2))-1]
-            div.events-list
-              ul
-                each event in day.events
-                  li.event-cluster
-                    if event.type == 'driving' || event.type == 'walking' || event.type == 'bicycling'
-                      +routes(event)
-                    else
+          if day.events.length
+            li.clearfix
+              div.day-ctn
+                  span.nod-ctn= day.date.substr(8,2)
+                  span.month-ctn= month[parseInt(day.date.substr(5,2))-1]
+              div.events-list
+                ul
+                  each event in day.events
+                    li.event-cluster
+                      if event.type == 'driving' || event.type == 'walking' || event.type == 'bicycling'
+                        +routes(event)
+                      else
 
-                      +place(event)
+                        +place(event)
 
 
 

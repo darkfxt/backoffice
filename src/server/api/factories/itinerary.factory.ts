@@ -1,15 +1,8 @@
 import BookingDTO from '../entity/dto/BookingDTO';
 import DayOfTripDTO from '../entity/dto/DayOfTripDTO';
 import { config } from '../../config/env';
-
-const eventTypes = {
-  driving: 'Driving',
-  destination: 'Destination',
-  hotel: 'Hotel',
-  terminal: 'Terminal',
-  point_of_interest: 'Point of interest',
-  activity: 'Activity'
-};
+import { i18n } from '../../i18n';
+import { ContentService } from '../services/content.service';
 
 class DayOfTrip {
   constructor(
@@ -30,9 +23,15 @@ export class ItineraryFactory {
   header;
   itinerary;
   basePath;
+  i18n;
+  lang;
+  reqHeaders;
 
-  constructor(booking: BookingDTO) {
+  async get(booking: BookingDTO, lang = 'en', reqHeaders) {
     this.basePath = config.env !== 'production' ? 'dev.appv2.taylorgps.com' : 'appv2.taylorgps.com';
+    this.reqHeaders = reqHeaders;
+    this.i18n = i18n[lang];
+    this.lang = lang;
     this.header = {
       id: booking._id,
       name: booking.name,
@@ -45,22 +44,27 @@ export class ItineraryFactory {
       account: booking.account_id,
       reference: booking.booking_reference
     };
-    this.itinerary = this.transformItinerary(booking.days, booking.start_date);
+    this.itinerary = await this.transformItinerary(booking.days, booking.start_date);
+
+    return this;
   }
 
-  private transformItinerary(itinerary: DayOfTripDTO[], startDate: Date) {
-    return itinerary.map((day: any, index) => {
+  private async transformItinerary(itinerary: DayOfTripDTO[], startDate: Date) {
+    return await Promise.all(itinerary.map(async (day: any, index) => {
       const currentDate = new Date(startDate);
       currentDate.setDate(currentDate.getDate() + index);
       day.date = currentDate.toJSON();
-      day.events = day.events.map(event => this.transformEvent(event));
+      day.events = await Promise.all(day.events.map( event =>  this.transformEvent(event)));
       return day;
-    });
+    })
+    );
   }
 
-  private transformEvent(event) {
+  private async transformEvent(event) {
     switch (event.event_type) {
-      case 'driving':
+      case 'driving' || 'walking':
+        const productContent = await ContentService.getContent('routes', event.product._id, this.reqHeaders);
+        event.product.things_to_know = productContent.data.things_to_know;
         const meta = {
           ...calculateDistanceAndTime(event.product.legs),
           ...{highlights: event.product.middle_points
@@ -70,16 +74,23 @@ export class ItineraryFactory {
           product: event.product
         };
         return <Event>{
-          title: event.name,
-          description: event.product.description,
-          type: event.product.route_type.toLowerCase(),
+          title: event.product.name,
+          description: productContent.data.description,
+          type: i18n[this.lang][event.product.route_type.toLowerCase()],
           meta: meta
+        };
+      case 'place':
+        const placeConent = await ContentService.getContent('places', event.product._id, this.reqHeaders);
+        return <Event>{
+          title: event.product.name,
+          description: placeConent.data.description,
+          type: i18n[this.lang][event.product.type]
         };
       default:
         return <Event>{
           title: event.product.name,
           description: event.product.description,
-          type: eventTypes[event.product.type]
+          type: event.product.type
         };
     }
 
@@ -99,6 +110,10 @@ export class ItineraryFactory {
       const m = Math.floor(minutes % 60);
       return {hours: h, minutes: m};
     }
+  }
+
+  private async getProductContent(id, type): Promise<any> {
+    return ContentService.getContent(id, type, this.reqHeaders);
   }
 
 }
