@@ -114,7 +114,8 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private render: Renderer2
+    private render: Renderer2,
+    private ts: TranslateService
   ) {
     this.drawingComponent = new ListItemComponent(EventSummarizedCardComponent);
     this.tripTemplateEntities$ = this.store.pipe(select(getTripTemplatesEntities));
@@ -273,7 +274,7 @@ export class TripTemplateItineraryComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: TRANSLATE('Deseas eliminar este día?')
+        message: this.ts.instant(TRANSLATE('Deseas eliminar este día?'))
       },
       disableClose: true,
       closeOnNavigation: true,

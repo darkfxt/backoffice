@@ -26,6 +26,7 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { MatDialog } from '@angular/material';
 import {TRANSLATE} from '../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-trip-template-detail',
@@ -69,7 +70,8 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private tripTemplateService: TripTemplateService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ts: TranslateService
     ) {
     if (this.fromBooking) {
       this.form = this.fb.group({
@@ -182,7 +184,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `${TRANSLATE('Deseas eliminar')} ${this.tripTemplate.name}?`
+        message: `${this.ts.instant(TRANSLATE('Deseas eliminar'))} ${this.tripTemplate.name}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -194,7 +196,7 @@ export class TripTemplateDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.tripTemplateService.deleteById(this.tripTemplate._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.tripTemplate.name} ${TRANSLATE('ha sido eliminado')}`}
+            {message: `${this.tripTemplate.name} ${this.ts.instant(TRANSLATE('ha sido eliminado'))}`}
           ));
           this.router.navigate(['/trip-templates']);
         });

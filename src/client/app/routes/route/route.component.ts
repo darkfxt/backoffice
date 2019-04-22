@@ -28,6 +28,7 @@ import { PlaceService } from '../../shared/services/place.service';
 import { PaginationOptions } from '../../shared/common-list/common-list-item/pagination-options.interface';
 import {IFilterTypeDistance} from './place-type-selector/place-type-selector.component';
 import {HideLoader, ShowLoader} from '../../store/shared/actions/loader.actions';
+import {TranslateService} from '@ngx-translate/core';
 
 const ERROR_ROUTE_NAME_REGEX = /^.*Place with name.*and via.*already exist.$/g;
 
@@ -73,6 +74,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
     private placeStore: PlaceStore,
     private placeService: PlaceService,
     private daDialog: MatDialog,
+    private ts: TranslateService,
     modalService: ModalService
   ) {
     super(daDialog, modalService);
@@ -165,7 +167,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       this.store.dispatch(new SaveSegment({id: this.segment._id, body: formData}));
     } else
       this.store.dispatch(new SnackbarOpen(
-        {message: TRANSLATE('Faltan completar campos, verificar')}
+        {message: this.ts.instant(TRANSLATE('Faltan completar campos, verificar'))}
       ));
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
@@ -233,7 +235,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `${TRANSLATE('Deseas eliminar')} ${this.segment.name}?`
+        message: `${this.ts.instant(TRANSLATE('Deseas eliminar'))} ${this.segment.name}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -245,7 +247,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.routesService.deleteById(this.segment._id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.segment.name} ${TRANSLATE('ha sido eliminado')}`}
+            {message: `${this.segment.name} ${this.ts.instant(TRANSLATE('ha sido eliminado'))}`}
           ));
           this.router.navigate(['/routes']);
         });
@@ -307,7 +309,7 @@ export class RouteComponent extends FormGuard implements OnInit, OnDestroy {
       this.placeService.getAll(filterOptions).subscribe(response => {
         this.nearPoints = response.data.filter(point => !originalPlaces.includes(point.name)).slice();
         this.store.dispatch(new HideLoader());
-        if (response.data.length === 0) this.store.dispatch(new SnackbarOpen({message: TRANSLATE('No se encontraron resultados')}));
+        if (response.data.length === 0) this.store.dispatch(new SnackbarOpen({message: this.ts.instant(TRANSLATE('No se encontraron resultados'))}));
       });
     } else {
       this.nearPoints = [];

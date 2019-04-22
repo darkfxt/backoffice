@@ -14,6 +14,7 @@ import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
 import { TRANSLATE } from '../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 export class ComparePasswordValidator implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -60,6 +61,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private rolesService: RolesService,
     private dialog: MatDialog,
     private store: Store<AppState>,
+    private ts: TranslateService
   ) {}
 
   ngOnInit() {
@@ -106,10 +108,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       let responseMessage: string;
 
       this.userService.upsert({id: this.user.id, body: this.prepareToSave()}).subscribe(resp => {
-        responseMessage = TRANSLATE('Usuario guardado con exito');
+        responseMessage = this.ts.instant(TRANSLATE('Usuario guardado con exito'));
         this.router.navigate(['/users']);
       }, err => {
-        responseMessage = TRANSLATE('Ha ocurrido un error intentelo nuevamente');
+        responseMessage = this.ts.instant(TRANSLATE('Ha ocurrido un error intentelo nuevamente'));
       }, () => {
         this.bussy = false;
       });
@@ -148,7 +150,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `${TRANSLATE('Deseas eliminar')} ${this.user.email}?`
+        message: `${this.ts.instant(TRANSLATE('Deseas eliminar'))} ${this.user.email}?`
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -160,7 +162,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.userService.deleteById(this.user.id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: `${this.user.email} ${TRANSLATE('ha sido eliminado')}`}
+            {message: `${this.user.email} ${this.ts.instant(TRANSLATE('ha sido eliminado'))}`}
           ));
           this.router.navigate(['/users']);
         });

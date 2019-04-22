@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material';
 import { RemoveEvent } from '../../../../../store/trip-template/event/event.actions';
 import {TRANSLATE} from '../../../../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-summarized-default',
@@ -19,7 +20,9 @@ export class SummarizedDefaultComponent implements OnInit {
   @Input() editMode: boolean;
   iconMap = iconMap;
   colors = eventColors;
-  constructor(public dialog: MatDialog, private store: Store<AppState>) { }
+  constructor(public dialog: MatDialog,
+              private store: Store<AppState>,
+              private ts: TranslateService) { }
 
 
   ngOnInit() {
@@ -36,7 +39,7 @@ export class SummarizedDefaultComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: TRANSLATE('Deseas eliminar este evento?')
+        message: this.ts.instant(TRANSLATE('Deseas eliminar este evento?'))
       },
       disableClose: true,
       closeOnNavigation: true,

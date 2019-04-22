@@ -120,7 +120,7 @@ export class BookingDetailComponent implements OnInit {
       this.published = true;
     } else
       this.store.dispatch(new SnackbarOpen({
-        message: TRANSLATE('No se puede publicar, el evento no tiene un origen/destino definido'),
+        message: this.ts.instant(TRANSLATE('No se puede publicar, el evento no tiene un origen/destino definido')),
         action: 'error'
       }));
   }
