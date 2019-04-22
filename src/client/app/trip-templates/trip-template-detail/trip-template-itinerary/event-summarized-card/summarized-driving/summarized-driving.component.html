@@ -16,7 +16,7 @@
           {{'Desde:' | translate}} {{data.product.origin.name}}
         </span>
         <ng-template #showEmptyOrigin>
-          <span>{{'Desde: +Añadir lugar de salida' | translate}}</span>
+          <span class="empty-place">{{'Desde: +Añadir lugar de salida' | translate}}</span>
         </ng-template>
       </div>
     </app-add-event>
@@ -27,7 +27,7 @@
           {{'Hasta:' | translate}} {{data.product.destination.name}}
         </span>
         <ng-template #showEmptyDestination>
-          <span>{{'Hasta: +Añadir lugar de llegada' | translate}}</span>
+          <span class="empty-place">{{'Hasta: +Añadir lugar de llegada' | translate}}</span>
         </ng-template>
       </div>
     </app-add-event>
