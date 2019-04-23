@@ -10,6 +10,7 @@ import { ConfirmationModalComponent } from '../../shared/modal/confirmation-moda
 import { SnackbarOpen } from '../../store/shared/actions/snackbar.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/shared/app.interfaces';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-account-detail',
@@ -33,7 +34,8 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
     private accountsService: AccountsService,
     private store: Store<AppState>,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ts: TranslateService
   ) { }
 
   ngOnInit() {
@@ -70,10 +72,10 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       // this.store.dispatch(new SaveUser({id: this.user.id, body: this.form.value}));
       const body = this.prepareToSave();
       this.accountsService.upsert({id: this.account.id, body: body}).subscribe(resp => {
-        responseMessage = TRANSLATE('Cuenta guardada con exito');
+        responseMessage = this.ts.instant(TRANSLATE('Cuenta guardada con exito'));
         this.router.navigate(['/accounts']);
       }, err => {
-        responseMessage = TRANSLATE('Ha ocurrido un error intentelo nuevamente');
+        responseMessage = this.ts.instant(TRANSLATE('Ha ocurrido un error intentelo nuevamente'));
       }, () => {
         this.bussy = false;
         this.snackBar.open(responseMessage, undefined, {
@@ -106,7 +108,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: TRANSLATE(`Deseas eliminar`) + this.account.name + '?'
+        message: this.ts.instant(TRANSLATE(`Deseas eliminar`)) + this.account.name + '?'
       },
       disableClose: true,
       closeOnNavigation: true,
@@ -118,7 +120,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
       if (result)
         this._deleteSubscription = this.accountsService.deleteById(this.account.id).subscribe(resp => {
           this.store.dispatch(new SnackbarOpen(
-            {message: this.account.name + TRANSLATE(`ha sido eliminado`)}
+            {message: this.account.name + this.ts.instant(TRANSLATE(`ha sido eliminado`))}
           ));
           this.router.navigate(['/accounts']);
         });

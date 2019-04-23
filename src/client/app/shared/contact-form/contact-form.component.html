@@ -1,0 +1,30 @@
+<form [formGroup]="form" >
+
+  <div class="header" mat-dialog-title>
+    <h2>{{'Estamos aquí para ayudarte' | translate}}</h2>
+    <p>{{'Tienes alguna pregunta? Contacta a nuestro equipo de soporte y te responderemos dentro de 1 día laboral' | translate}}</p>
+  </div>
+
+  <mat-dialog-content class="mat-typography dialog-content">
+    <mat-form-field class="input-form" color="accent" >
+      <input  type="text" matInput placeholder="{{'Titulo' | translate}}" name="title" formControlName="title" required/>
+      <mat-error *ngIf="form.get('title').hasError('required') && (form.get('title').dirty || form.get('title').touched)">{{'Campo requerido' | translate}}</mat-error>
+      <mat-error *ngIf="form.get('title').hasError('maxlength') && (form.get('title').dirty || form.get('title').touched)">{{'Maximo de caracteres 50' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-form txtarea-form" color="accent">
+            <textarea matInput placeholder="{{'Comentario' | translate}}" name="comment"
+                      formControlName="comment"
+                      cdkAutosizeMinRows="10"
+                      cdkTextareaAutosize
+                      required
+                      #autosize="cdkTextareaAutosize"></textarea>
+      <mat-error *ngIf="form.get('comment').invalid && (form.get('comment').dirty || form.get('comment').touched)">{{'Campo requerido' | translate}}</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="footer">
+    <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{'Cancelar' | translate}}</button>
+    <button mat-button color="accent" (click)="onSubmit()">{{'Enviar comentario' | translate}}</button>
+  </mat-dialog-actions>
+
+</form>

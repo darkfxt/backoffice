@@ -1,0 +1,19 @@
+@import "../../../assets/variables";
+h2{
+  color: $gray-title;
+}
+
+p{
+  font-size: 14px;
+  font-weight: 400;
+  color: $gray-body;
+  line-height: 22px;
+}
+
+.input-form {
+  width: 100%;
+}
+
+.txtarea-form {
+  height: 200px;
+}

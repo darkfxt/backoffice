@@ -42,7 +42,11 @@ export const eventColors = {
  */
 const terminalTypes = [
   TypeOfEvent.TERMINAL,
-  TypeOfEvent.HOTEL
+  TypeOfEvent.HOTEL,
+  TypeOfEvent.ACTIVITY,
+  TypeOfEvent.POI,
+  TypeOfEvent.CUSTOM,
+  TypeOfEvent.DESTINATION
 ];
 
 export class Event {

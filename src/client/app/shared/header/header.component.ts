@@ -5,9 +5,10 @@ import { SignOutUser, UserSignedIn } from '../../store/user/user.actions';
 import { Location } from '@angular/common';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getUserEntities, getUserLogged } from '../../store/user';
-import { LoggedUserInterface } from '../models/User';
+import {LoggedUserInterface} from '../models/User';
+import {ContactFormComponent} from '../contact-form/contact-form.component';
+import {MatDialog} from '@angular/material';
 import { TutorialComponent } from '../modal/tutorial/tutorial.component';
-import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -68,9 +69,31 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/users/login']);
   }
 
+  openModal() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '100%',
+      width: '500px',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: ``
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ContactFormComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+
+    });
+  }
+
   openTutorial() {
     const dialogRef = this.dialog.open(TutorialComponent, {
-      width: '800px',
+      width: '1000px',
       maxWidth: '100%',
       height: '800px',
       maxHeight: '100%',

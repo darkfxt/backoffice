@@ -116,4 +116,12 @@ header{
   span, mat-icon{
     vertical-align: middle;
   }
+
+  .help-ctn {
+    margin-right: 16px;
+  }
+
+  & > div {
+    display: inline;
+  }
 }

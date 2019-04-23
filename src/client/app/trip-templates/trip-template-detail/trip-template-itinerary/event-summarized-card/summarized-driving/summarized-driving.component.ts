@@ -20,6 +20,7 @@ import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { eventColors } from '../../../../../shared/models/TripTemplate';
 import {TRANSLATE} from '../../../../../translate-marker';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-summarized-driving',
@@ -43,7 +44,9 @@ export class SummarizedDrivingComponent implements OnInit {
   @Output() openedDialog: EventEmitter<any> = new EventEmitter<any>();
   colors = eventColors;
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) { }
+  constructor(public dialog: MatDialog,
+              private store: Store<AppState>,
+              private ts: TranslateService) { }
 
   ngOnInit() {
     this.dialogStatus$ = this.store.pipe(select(getDialogStatus));
@@ -74,7 +77,7 @@ export class SummarizedDrivingComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: TRANSLATE('Deseas eliminar este evento?')
+        message: this.ts.instant(TRANSLATE('Deseas eliminar este evento?'))
       },
       disableClose: true,
       closeOnNavigation: true,

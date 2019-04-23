@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { TRANSLATE } from '../../../translate-marker';
 import { PlaceType } from '../../../shared/models/enum/PlaceType';
 import { ContentService } from '../../../shared/services/content.service';
@@ -9,6 +9,7 @@ import { HideLoader, ShowLoader } from '../../../store/shared/actions/loader.act
 import { SnackbarOpen } from '../../../store/shared/actions/snackbar.actions';
 import { ConfirmationModalComponent } from '../../../shared/modal/confirmation-modal/confirmation-modal.component';
 import { MatDialog } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
 
 const language = [
   TRANSLATE('en'),
@@ -45,6 +46,7 @@ export class PointHeadComponent implements OnInit {
   constructor(
     private contentServiceInstance: ContentService,
     private store: Store<AppState>,
+    private ts: TranslateService,
     private matDialog: MatDialog,
     ) {
 
@@ -96,7 +98,7 @@ export class PointHeadComponent implements OnInit {
       id: 'confirmDialog',
       panelClass: 'eventDialogPanel',
       data: {
-        message: `${TRANSLATE('Deseas eliminar?')} ${TRANSLATE(event)}?`
+        message: `${this.ts.instant(TRANSLATE('Deseas eliminar?'))} ${TRANSLATE(event)}?`
       },
       disableClose: true,
       closeOnNavigation: true,

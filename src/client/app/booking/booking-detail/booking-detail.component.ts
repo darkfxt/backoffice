@@ -13,8 +13,9 @@ import { DayOfTrip, Event } from '../../shared/models/TripTemplate';
 import { BookingService } from '../../shared/services/booking.service';
 import { ShareModalComponent } from '../../shared/share-modal/share-modal.component';
 import { MatDialog } from '@angular/material';
-import {TRANSLATE} from '../../translate-marker';
-import {ContentService} from '../../shared/services/content.service';
+import { TRANSLATE } from '../../translate-marker';
+import { TranslateService } from '@ngx-translate/core';
+import { ContentService } from '../../shared/services/content.service';
 
 @Component({
   selector: 'app-booking-detail',
@@ -43,6 +44,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
               private store: Store<AppState>,
               private bs: BookingService,
               private dialog: MatDialog,
+              private ts: TranslateService,
               private contentService: ContentService
   ) {
     this.selectedBooking$ = store.pipe(select(getBookingSelected));
@@ -133,7 +135,7 @@ export class BookingDetailComponent implements OnInit, OnDestroy {
       this.published = true;
     } else
       this.store.dispatch(new SnackbarOpen({
-        message: TRANSLATE('No se puede publicar, el evento no tiene un origen/destino definido'),
+        message: this.ts.instant(TRANSLATE('No se puede publicar, el evento no tiene un origen/destino definido')),
         action: 'error'
       }));
   }
