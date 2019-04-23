@@ -25,8 +25,8 @@ interface ICommentNotification {
 export class ContactFormComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
-    title: new FormControl(),
-    comment: new FormControl()
+    title: new FormControl('', Validators.required),
+    comment: new FormControl('', Validators.required)
   });
   notification: ICommentNotification = {comment: '', title: ''};
 

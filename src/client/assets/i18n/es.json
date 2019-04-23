@@ -224,5 +224,10 @@
 	"{user_count} usuarios encontrados": "{{user_count}} usuarios encontrados",
 	"{value} rutas encontradas": "{{value}} rutas encontradas",
 	"ó": "ó",
-    "Mail enviado exitosamente": "Mail enviado exitosamente"
+    "Mail enviado exitosamente": "Mail enviado exitosamente",
+  "Ayuda": "Ayuda",
+  "Contacto": "Contacto",
+  "Comentario": "Comentario",
+  "Cancelar": "Cancelar",
+  "Enviar comentario": "Enviar comentario"
 }

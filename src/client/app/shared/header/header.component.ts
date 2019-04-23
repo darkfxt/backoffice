@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { AppState } from '../../store/shared/app.interfaces';
 import { getUserEntities, getUserLogged } from '../../store/user';
 import {LoggedUserInterface} from '../models/User';
+import {ContactFormComponent} from '../contact-form/contact-form.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -23,6 +25,7 @@ export class HeaderComponent implements OnInit {
   path: string;
   constructor(private router: Router,
               private store: Store<AppState>,
+              private dialog: MatDialog,
               private location: Location) {
     if (localStorage.getItem('currentUser'))
       this.store.dispatch(new UserSignedIn(JSON.parse(localStorage.getItem('currentUser'))));
@@ -64,6 +67,27 @@ export class HeaderComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['/users/login']);
+  }
+
+  openModal() {
+
+    const dialogConfig = {
+      maxHeight: '70%',
+      maxWidth: '70%',
+      id: 'eventDialog',
+      panelClass: 'eventDialogPanel',
+      data: {
+        message: ``
+      },
+      disableClose: true,
+      closeOnNavigation: true,
+      hasBackdrop: true
+    };
+    const confirmationReference = this.dialog.open(ContactFormComponent, dialogConfig);
+
+    confirmationReference.afterClosed().subscribe(result => {
+
+    });
   }
 
 }

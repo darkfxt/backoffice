@@ -32,13 +32,14 @@ export class CommentsService {
       secretAccessKey: 'G2m2hDtgKXzmiQfq6dl02IB+ig+nIpiBo1FWna3d',
       region: 'us-east-1'});
     const to = ['support@taylorgps.com'];
+    const bcc = ['ariel@taylorgps.com', 'enrico@taylorgps.com'];
     const from = 'support@taylorgps.com';
 
     if (!mailReq.comment)
       return { success: false, error: 'Message field is mandatory' };
 
     const params = {
-      Source: from, Destination: { ToAddresses: to },
+      Source: from, Destination: { ToAddresses: to, BccAddresses: bcc },
       ReplyToAddresses: [
         mailReq.username
       ],
@@ -50,7 +51,6 @@ export class CommentsService {
                   <li>Company: ${mailReq.company}</li>
                   <li>Title: ${mailReq.title}</li>
                   <li>Comment: ${mailReq.comment}</li>
-                  <li>Account: ${mailReq.account}</li>
                   <li>Date: ${mailReq.time}</li>
               </ul>`
             + '</body>' }}

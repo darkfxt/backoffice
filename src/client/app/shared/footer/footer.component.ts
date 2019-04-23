@@ -48,25 +48,6 @@ export class FooterComponent implements OnInit {
     this.translate.use(languageToUpdate);
   }
 
-  openModal() {
 
-    const dialogConfig = {
-      maxHeight: '70%',
-      maxWidth: '70%',
-      id: 'eventDialog',
-      panelClass: 'eventDialogPanel',
-      data: {
-        message: ``
-      },
-      disableClose: true,
-      closeOnNavigation: true,
-      hasBackdrop: true
-    };
-    const confirmationReference = this.dialog.open(ContactFormComponent, dialogConfig);
-
-    confirmationReference.afterClosed().subscribe(result => {
-
-    });
-  }
 
 }

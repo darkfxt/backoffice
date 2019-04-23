@@ -14,6 +14,16 @@
       </ul>
     </nav>
     <nav class="user-nav">
+      <div class="help-ctn" [matMenuTriggerFor]="help" *ngIf="isLogged">
+        <span>{{'Ayuda' | translate}}</span>
+        <mat-menu #help="matMenu" overlapTrigger="false">
+          <div class="help-menu">
+            <button (click)="openModal()" mat-menu-item>
+              <span>{{'Contacto' | translate}}</span>
+            </button>
+          </div>
+        </mat-menu>
+      </div>
       <div (click)="goToLogin()" *ngIf="!isLogged" style="margin-top: 10px"><span>{{'Iniciar sesión' | translate}}</span></div>
       <div class="options" [matMenuTriggerFor]="options" *ngIf="isLogged">
         <span>{{loggedUser.username}}</span>
