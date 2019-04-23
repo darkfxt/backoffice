@@ -5,6 +5,7 @@ import { MatButtonModule, MatDialogModule } from '@angular/material';
 import { GuardModalComponent } from './guard-modal.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 @NgModule({
   imports: [
@@ -19,11 +20,13 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   declarations: [
     GuardModalComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    TutorialComponent
   ],
   providers: [],
   entryComponents: [
     GuardModalComponent,
+    TutorialComponent
   ],
 })
 export class ModalModule {

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from './pipes/pipes.module';
 import { ShareModalComponent } from './share-modal/share-modal.component';
+import { ModalModule } from './modal/modal.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { ShareModalComponent } from './share-modal/share-modal.component';
     MatButtonModule,
     TranslateModule,
     PipesModule,
-    MatDialogModule
+    MatDialogModule,
+    ModalModule
   ],
   exports: [
     DetailHeaderComponent,
