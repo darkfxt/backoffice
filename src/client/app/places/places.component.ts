@@ -64,7 +64,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
       if (this.dialogRef.componentInstance.data.method === 'UPDATE_TERMINAL') {
         if (this.dialogRef.componentInstance.data.eventToUpdate) {
           const data = this.dialogRef.componentInstance.data;
-          const placeToSearch = data.eventToUpdate.product[`referenced${this.titleCase(data.terminal)}`];
+          const placeToSearch = data.eventToUpdate.product[data.terminal];
           this.paginationOptions.nearName = placeToSearch.name;
           this.paginationOptions.coordinates = `${placeToSearch.geo.point.lat},${placeToSearch.geo.point.lng}`;
           this.paginationOptions.distance = 20;
